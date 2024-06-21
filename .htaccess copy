@@ -1,0 +1,29 @@
+RewriteEngine on
+
+#route
+RewriteCond $1 !^(index\.php|resources|robots\.txt)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+php_value upload_max_filesize 21M  
+php_value post_max_size 21M
+
+
+
+#Memblokir Metode TRACE dan TRACK:
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+RewriteRule .* - [F]
+
+
+#Header Keamanan:
+Header always append X-Frame-Options "SAMEORIGIN"
+Header always set Content-Security-Policy "frame-ancestors 'self'"
+
+
+#header('X-Frame-Options: DENY');
+
+###test saja ya###
+
+ 
+#RewriteCond %{REQUEST_URI} ^/themes/*
+#RewriteRule ^ - [F]

@@ -1,0 +1,25 @@
+RewriteEngine On
+
+# Allow access to the 'themes/default' folder directly
+RewriteCond %{REQUEST_URI} !^/*
+RewriteRule ^ - [L]
+
+# Forbid access to all other files and folders
+RewriteCond %{REQUEST_URI} !^/themes/default/assets/
+RewriteCond %{REQUEST_URI} !^/themes/download/
+
+RewriteCond %{REQUEST_URI} !^/themes/1acee20c8f2adc29e15fba044cba91bd.jpg
+
+RewriteCond %{REQUEST_URI} !^/themes/1c2ac35126e5d75f7b39b01f9798aa63.jpg
+RewriteCond %{REQUEST_URI} !^/themes/59c6c38a4d10bdb72c4e902724759e00.jpg
+RewriteCond %{REQUEST_URI} !^/themes/225b1d068a7a18af5b74ed828b4dfccb.jpg
+RewriteCond %{REQUEST_URI} !^/themes/c3335f7db31c777c335b4f3381effd7f.jpg
+RewriteCond %{REQUEST_URI} !^/themes/d25e4f4fafe6bca5c2697f531f672c22.jpg
+RewriteCond %{REQUEST_URI} !^/themes/fe2ef2939a985e00673f1ba64031c5b1.jpg
+RewriteCond %{REQUEST_URI} !^/themes/form-ebs.jpg
+RewriteCond %{REQUEST_URI} !^/themes/icon.png
+RewriteCond %{REQUEST_URI} !^/themes/idea-25.png
+
+
+ 
+RewriteRule ^ - [F]

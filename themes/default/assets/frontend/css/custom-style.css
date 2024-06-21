@@ -1,0 +1,34 @@
+
+/* custom-Popup */
+	.custom-popup-content {
+		display: none;
+		position: fixed;
+		z-index: 9999;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		background-color: #f9f9f9;
+		padding: 20px;
+		border: 1px solid #ccc;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	}
+
+	.custom-close-btn {
+		float: right;
+		cursor: pointer;
+	}
+
+	/* Gaya custom-Overlay */
+	.custom-overlay {
+		display: none;
+		position: fixed;
+		z-index: 9998;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(1px);
+		/* Efek blur */
+	}
+	

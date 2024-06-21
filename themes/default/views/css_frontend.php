@@ -1,0 +1,17 @@
+<?=link_tag(css_frontend_url('bootstrap.css'));?>
+<?=link_tag(css_url('font-awesome.min.css'));?>
+<?=link_tag(css_url('droid-sans-mono/css/fonts.css'));?>
+<?=link_tag(css_url('ubuntu-condensed/css/fonts.css'));?>
+<?=link_tag(css_url('ionicons.min.css'));?>
+<?=link_tag(css_frontend_url('flaticon.css'));?>
+<?=link_tag(css_frontend_url('animate.css'));?>
+<?=link_tag(css_frontend_url('owl.css'));?>
+<?=link_tag(css_frontend_url('jquery.fancybox.css'));?>
+<?=link_tag(css_frontend_url('hover.css'));?>
+<?=link_tag(css_frontend_url('stylerev.css'));?>
+<?=link_tag(css_frontend_url('revolution/settings.css'));?>
+<?=link_tag(css_frontend_url('revolution/layers.css'));?>
+<?=link_tag(css_frontend_url('revolution/navigation.css'));?>
+<?=link_tag(css_frontend_url('responsive.css'));?>
+<?=link_tag(css_url('AdminLTE.min.css'));?>
+<?=link_tag(css_frontend_url('style.css'));?>
