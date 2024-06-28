@@ -39,7 +39,8 @@ if ($status) : ?>
 	<div class="panel-heading">
 		<h6 class="panel-title" style="color:#000000;font-weight:bold;">
 			<a data-toggle="collapse" data-parent="#accordion-controls" href="#accordion-<?= $row['rcsa_no']; ?>" aria-expanded="true" class="in collapsed"><?= ++$no . '. ' . $row['name']; ?></a>
-		</h6><span class="text-warning">Tgl Propose : <?= date('d M Y', strtotime($row['date_propose_admin'])); ?> | Petugas : <?= $row['create_user']; ?></span>
+		</h6>
+  <span class="text-warning">Tgl Propose : <?= date('d M Y', strtotime($log['create_date'])); ?> | Petugas : <?= $log['create_user']; ?></span>
 	</div>
 	<div class="panel-body">
 		<table class="table table-bordered">
@@ -161,9 +162,6 @@ if ($status) : ?>
 
 <!-- Konten Popup -->
 <div id="popupContent" class="custom-popup-content">
-
-	<!-- <span class="custom-close-btn" </span> -->
-	<!-- d<?php doi::dump($rcsa_no); ?> -->
 
 	<h3>Reject Risk Context</h3>
 	<p>tambahkan catatan</p>

@@ -118,8 +118,10 @@ class Approve_Div extends BackendController
 		$id = explode(",", $this->_Group_['owner_child']);
 		$id = $this->uri->segment(3);
 		$jml = (array_key_exists('jml_child',$this->_Group_['owner']))?$this->_Group_['owner']['jml_child']:0;
-		$data = $this->data->get_data_risk_register($id);
+		$data['field'] = $this->data->get_data_risk_register($id);
 		// Doi::dump($data);
+		$log = $this->db->where('rcsa_no', $id)->where('keterangan', "Propose to Kadiv")->get("bangga_log_propose")->row_array();
+		$data['log'] = $log;
 		$data['jml'] = $jml;
 		$data['rcsa_no'] = $id;
 		$data['propose'] = $this->load->view('register', $data, true);
