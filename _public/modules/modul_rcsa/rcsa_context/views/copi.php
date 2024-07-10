@@ -4,6 +4,8 @@
     <tr style="background:#0B2161 !important; color: white">
         <td width="90%">
             <h4><b><u>Data Risk Context</u></b></h4>
+            <i class="text-danger">Catatan: Hanya data yang memiliki risiko yang akan disimpan.</i> <br> <br>
+
             <table width="100%" style="color: white">
                 <tr>
                     <td width="10%">judul</td>
@@ -27,13 +29,16 @@
                                     <td rowspan=""><?= $no++; ?></td>
 
                                     <td width="100%"><strong><?= $row['sasaran']; ?></strong>
-
                                         <?php
                                         if (count($detail) > 0) { ?>
+                                            <i class="fa fa-check text-success" aria-hidden="true"></i>
                                             <br><i> Risk Identify :
                                             </i> <br>
                                         <?php
-
+                                        } else {
+                                        ?>
+                                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                                        <?php
                                         }
                                         foreach ($detail as $d) : ?>
                                             - <?= $d['event_name']; ?> <br>
