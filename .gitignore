@@ -1,0 +1,14 @@
+_public/config/database.php
+_public/config/config.php
+logs/*
+themes/upload/*
+!themes/upload/.htaccess
+themes/download/*
+themes/file/*
+vendor
+composer.json
+composer.lock
+db
+log
+adminer
+
