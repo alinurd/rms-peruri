@@ -119,7 +119,7 @@ class Approve_Admin extends BackendController
 		$data = array();
 		$id = explode(",", $this->_Group_['owner_child']);
 		$id = $this->uri->segment(3);
-		$data = $this->data->get_data_risk_register($id);
+		$data = $this->data->get_data_risk_register_($id);
 		// Doi::dump($data);die();
 		$data['rcsa_no'] = $id;
 		$data['propose'] = $this->load->view('register', $data, true);
