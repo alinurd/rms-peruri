@@ -19,10 +19,27 @@
                     <td>
                         <table class="table table-bordered  ">
                             <?php $no = 1;
-                            foreach ($sasaran as $row) :  ?>
+                            foreach ($sasaran as $row) :
+                                $detail = $this->db->where('sasaran_no', $row['id'])->get("bangga_view_rcsa_detail")->result_array();
+
+                            ?>
                                 <tr style="background:#0B2161 !important; color: white">
-                                    <td><?= $no++; ?></td>
-                                    <td width="100%"><?= $row['sasaran']; ?></td>
+                                    <td rowspan=""><?= $no++; ?></td>
+
+                                    <td width="100%"><strong><?= $row['sasaran']; ?></strong>
+
+                                        <?php
+                                        if (count($detail) > 0) { ?>
+                                            <br><i> Risk Identify :
+                                            </i> <br>
+                                        <?php
+
+                                        }
+                                        foreach ($detail as $d) : ?>
+                                            - <?= $d['event_name']; ?> <br>
+                                        <?php endforeach; ?>
+
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
