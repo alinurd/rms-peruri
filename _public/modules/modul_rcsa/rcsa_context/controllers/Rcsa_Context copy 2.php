@@ -355,95 +355,105 @@ class Rcsa_Context extends BackendController
 			}
 			$implementasi_no = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimplementasi, 'type' => 'add'));
 		}
-
-
-		// $arrsasaran = $this->db->where('rcsa_no', $post['id'])->get(_TBL_RCSA_SASARAN)->result_array();
 		$arrsasaran = $this->db->where('rcsa_no', $post['id'])->get("bangga_view_sasaran_detail")->result_array();
-		$sasaran_no = [];
+		$mapUpdSasaran = [];
 
 		foreach ($arrsasaran as $sasaran) {
-			$upSasaran = [];
-			foreach ($sasaran as $index => $data) {
-				if (!in_array($index, ['create_user', 'event_no', 'kategori_no', 'sub_kategori', 'detail_no', 'id'])) {
-					$upSasaran[$index] = $data;
+			// Check if sasaran already exists in the map
+			$exists = false;
+			foreach ($mapUpdSasaran as $entry) {
+				if ($entry['old']['sasaran_no'] == $sasaran['id']) {
+					$exists = true;
+					break;
 				}
 			}
-			$id = $sasaran['id'];
 
-
-			if (!isset($sasaran_no[$id])) {
+			if (!$exists) {
+				$upSasaran = [];
+				foreach ($sasaran as $index => $data) {
+					if (!in_array($index, ['create_user', 'event_no', 'kategori_no', 'sub_kategori', 'detail_no', 'id'])) {
+						$upSasaran[$index] = $data;
+					}
+				}
 				$upSasaran['rcsa_no'] = $rcsa_no;
 				$upSasaran['create_user'] = $this->authentication->get_info_user('username');
-				$this->crud->crud_data(array('table' => _TBL_RCSA_SASARAN, 'field' => $upSasaran, 'type' => 'add'));
-				$sasaran_no[$id] = $this->db->insert_id();
-			} else {
-				$sasaran_no[$id] = $sasaran_no[$id];
+				$sasaran_no = $this->crud->crud_data(['table' => _TBL_RCSA_SASARAN, 'field' => $upSasaran, 'type' => 'add']);
+
+				$mapUpdSasaran[] = [
+					"old" => [
+						"detail_id" => $sasaran['detail_no'],
+						"sasaran_no" => $sasaran['id'],
+						"event_no" => $sasaran['event_no'],
+						"sub_kategori" => $sasaran['sub_kategori'],
+					],
+					"new" => [
+						"detail_id" => $sasaran['detail_no'],
+						"event_no" => $sasaran['event_no'],
+						"sub_kategori" => $sasaran['sub_kategori'],
+						"sasaran_no" => $sasaran_no,
+					],
+				];
 			}
 		}
 
 		$arrdetail = $this->db->where('rcsa_no', $post['id'])->get(_TBL_RCSA_DETAIL)->result_array();
-
+// doi::dump($mapUpdSasaran);die;
 		foreach ($arrdetail as $detail) {
-
-			foreach ($detail as $indexarray => $data) {
+			$updetail = [];
+			foreach ($detail as $index => $data) {
+				if (!in_array($index, ['rcsa_no', 'sasaran_no', 'id'])) {
+					$updetail[$index] = $data;
+				}
+			}
+			$updetail['rcsa_no'] = $rcsa_no;
+			$updetail['create_user'] = $this->authentication->get_info_user('username');
+			
+			foreach ($mapUpdSasaran as $entry) {
 				if (
-					$indexarray !== 'rcsa_no' &&
-					$indexarray !== 'sasaran_no' &&
-					$indexarray !== 'id'
+					$entry['new']['detail_id'] == $detail['id'] &&
+					$entry['new']['event_no'] == $detail['event_no'] &&
+					$entry['new']['sub_kategori'] == $detail['sub_kategori'] &&
+					$entry['new']['sasaran_no'] == $detail['sasaran_no']
 				) {
-					$updetail[$indexarray] = $data;
-					$updetail['rcsa_no'] = $rcsa_no;
-					$updetail['sasaran_no'] = $sasaran_no[$detail['sasaran_no']];
-					$updetail['create_user'] = $this->authentication->get_info_user('username');
+					$updetail['sasaran_no'] = $entry['new']['sasaran_no'];
 				}
 			}
 
-			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updetail, 'type' => 'add'));
+		
+
+			$this->crud->crud_data(['table' => _TBL_RCSA_DETAIL, 'field' => $updetail, 'type' => 'add']);
 			$dedetailtid = $this->db->insert_id();
+			
 
-			$upaction['rcsa_detail_no'] = $dedetailtid;
+
 			$arraction = $this->db->where('rcsa_detail_no', $detail['id'])->get(_TBL_RCSA_ACTION)->result_array();
-			foreach ($arraction as $ind => $action) {
-				foreach ($action as $indexarray => $data) {
-					if (
-						$indexarray !== 'rcsa_detail_no' &&
-						$indexarray !== 'id'
-					) {
-						$upaction[$indexarray] = $data;
+			foreach ($arraction as $action) {
+				$upaction = [];
+				foreach ($action as $index => $data) {
+					if (!in_array($index, ['rcsa_detail_no', 'id'])) {
+						$upaction[$index] = $data;
 					}
 				}
+				$upaction['rcsa_detail_no'] = $dedetailtid;
 				$upaction['create_user'] = $this->authentication->get_info_user('username');
-
-				// Tambahkan logika untuk mengisi $upaction['rcsa_detail_no'] dengan id yang sesuai
-				// berdasarkan $data['id'] dan _TBL_RCSA_DETAIL
-
-				// doi::dump($upaction);
-				$this->crud->crud_data(array('table' => _TBL_RCSA_ACTION, 'field' => $upaction, 'type' => 'add'));
+				$this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upaction, 'type' => 'add']);
 			}
 
-			//kri
-			$upkri['rcsa_detail'] = $dedetailtid;
-			$upkri['rcsa_no'] = $rcsa_no;
 			$arrkri = $this->db->where('rcsa_detail', $detail['id'])->get(_TBL_KRI)->result_array();
-			foreach ($arrkri as $ind => $kri) {
-				foreach ($kri as $indexarray => $data) {
-					if (
-						$indexarray !== 'rcsa_detail' &&
-						$indexarray !== 'rcsa_no' &&
-						$indexarray !== 'id'
-					) {
-						$upkri[$indexarray] = $data;
+			foreach ($arrkri as $kri) {
+				$upkri = [];
+				foreach ($kri as $index => $data) {
+					if (!in_array($index, ['rcsa_detail', 'rcsa_no', 'id'])) {
+						$upkri[$index] = $data;
 					}
 				}
+				$upkri['rcsa_detail'] = $dedetailtid;
+				$upkri['rcsa_no'] = $rcsa_no;
 				$upkri['create_user'] = $this->authentication->get_info_user('username');
-
-				// Tambahkan logika untuk mengisi $upkri['rcsa_detail_no'] dengan id yang sesuai
-				// berdasarkan $data['id'] dan _TBL_RCSA_DETAIL
-
-				// doi::dump($upkri);
-				$this->crud->crud_data(array('table' => _TBL_KRI, 'field' => $upkri, 'type' => 'add'));
+				$this->crud->crud_data(['table' => _TBL_KRI, 'field' => $upkri, 'type' => 'add']);
 			}
 		}
+
 		// die();
 
 

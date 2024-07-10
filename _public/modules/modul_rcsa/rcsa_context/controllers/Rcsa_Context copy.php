@@ -22,7 +22,7 @@ class Rcsa_Context extends BackendController
 		$this->cbo_parent_all = $this->get_combo('parent-input-all');
 		$this->cbo_type = $this->get_combo('type-project');
 		$this->cbo_bulan = $this->get_combo('bulan');
-
+		
 		$this->set_Open_Tab('General Information');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
 		$this->addField(array('field' => 'judul_assesment', 'size' => 100, 'search' => false));
@@ -34,12 +34,12 @@ class Rcsa_Context extends BackendController
 		$this->addField(array('field' => 'owner_pic', 'size' => 100, 'search' => false));
 		$this->addField(array('field' => 'anggota_pic', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'tugas_pic', 'input' => 'multitext:sms', 'size' => 10000));
-		$this->addField(array('field' => 'tupoksi', 'title' => 'Pekerjaan di luar Tupoksi', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Appetite', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		$this->addField(array('field' => 'tupoksi','title'=>'Pekerjaan di luar Tupoksi', 'input' => 'multitext', 'size' => 10000));
+		$this->addField(array('field' => 'sasaran', 'title'=> 'Risk Appetite', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->addField(array('field' => 'tahun_rcsa', 'show' => false));
 		$this->addField(array('field' => 'bulan_rcsa', 'show' => false));
 
-
+		
 		// $this->set_Open_Tab('Risk Appetite'); // implementasi_risiko
 		// $this->addField(array('field' => 'appetite', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		// $this->set_Close_Tab();
@@ -47,7 +47,7 @@ class Rcsa_Context extends BackendController
 		$this->set_Open_Tab('Rencana Implementasi MR'); // implementasi_risiko
 		$this->addField(array('field' => 'implementasi_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
-
+		
 		$this->addField(array('field' => 'item_use', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 		$this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 		$this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
@@ -71,8 +71,8 @@ class Rcsa_Context extends BackendController
 		$this->addField(array('field' => 'politics', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'economics', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'social', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'tecnology', 'title' => 'Technology', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'environment', 'title' => 'Environment', 'input' => 'multitext', 'size' => 10000));
+		$this->addField(array('field' => 'tecnology','title' => 'Technology', 'input' => 'multitext', 'size' => 10000));
+		$this->addField(array('field' => 'environment','title' => 'Environment', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'legal', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
@@ -80,7 +80,7 @@ class Rcsa_Context extends BackendController
 		$this->set_Open_Tab('Kriteria Kemungkinan Risiko ');
 		$this->addField(array('field' => 'kriteria_kemungkinan_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
-
+		
 		$this->set_Open_Tab('Kriteria Dampak Risiko ');
 		$this->addField(array('field' => 'kriteria_dampak_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
@@ -134,7 +134,7 @@ class Rcsa_Context extends BackendController
 
 		return $result;
 	}
-
+	 
 	function updateBox_KRITERIA_KEMUNGKINAN_RISIKO($field)
 	{
 		$content = $this->get_kriteria_kemungkinan_risiko();
@@ -280,10 +280,10 @@ class Rcsa_Context extends BackendController
 		$id = $this->uri->segment(3);
 		$data['rcsa'] = $this->db->where('id', $id)->get(_TBL_VIEW_RCSA)->row_array();
 		$data['sasaran'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCSA_SASARAN)->result_array();
-
-		$disable = 'disabled';
-		$data['judul'] = form_input('cjudul', ($data['rcsa']) ? $data['rcsa']['judul_assesment'] : '', 'class="form-control disable" style="width:100%;" id="cjudul"' . $disable);
-		$data['cboowner'] = form_dropdown('owner_no', $this->cbo_parent, ($data['rcsa']) ? $data['rcsa']['owner_no'] : '', 'class="form-control select2 disable"  style="width:100%;"id="cowner"' . $disable);
+   
+		$disable='disabled';
+ 		$data['judul'] = form_input('cjudul', ($data['rcsa']) ? $data['rcsa']['judul_assesment'] : '', 'class="form-control disable" style="width:100%;" id="cjudul"'.$disable);
+ 		$data['cboowner'] = form_dropdown('owner_no', $this->cbo_parent, ($data['rcsa']) ? $data['rcsa']['owner_no'] : '', 'class="form-control select2 disable"  style="width:100%;"id="cowner"' . $disable);
 		$data['tahun'] = form_dropdown('ctahun', $this->cbo_periode, '', 'class="form-control select2" style="width:100%;" id="ctahun"');
 		$data['id'] = form_hidden(['id' => $id]);
 		$data['detail'] = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
@@ -296,197 +296,157 @@ class Rcsa_Context extends BackendController
 	}
 
 
-	function simpan_copy()
-	{
+	function simpan_copy() {
 		$post = $this->input->post();
 		$rcsa = $this->db->where('id', $post['id'])->get(_TBL_RCSA)->row_array();
-
-		$upd['period_no'] = $post['ctahun'];
-		$upd['sts_propose'] = 0;
-		$upd['date_propose'] = '';
-		$upd['date_propose_kadep'] = '';
-		$upd['date_approve_kadiv'] = '';
-		$upd['date_approve_admin'] = '';
-		$upd['user_approve'] = '';
-		$upd['user_approve_kadep'] = '';
-		$upd['user_approve_kadiv'] = '';
-		$upd['user_approve_rm'] = '';
-		$upd['note_approve_kadep'] = '';
-		$upd['note_approve_kadiv'] = '';
-		$upd['note_approve_admin'] = '';
-		$upd['approve_kadep'] = '';
-
-		$upd['create_user'] = $this->authentication->get_info_user('username');
+	
+		// Prepare updated RCSA data
+		$upd = [
+			'period_no' => $post['ctahun'],
+			'sts_propose' => 0,
+			'date_propose' => '',
+			'date_propose_kadep' => '',
+			'date_approve_kadiv' => '',
+			'date_approve_admin' => '',
+			'user_approve' => '',
+			'user_approve_kadep' => '',
+			'user_approve_kadiv' => '',
+			'user_approve_rm' => '',
+			'note_approve_kadep' => '',
+			'note_approve_kadiv' => '',
+			'note_approve_admin' => '',
+			'approve_kadep' => '',
+			'create_user' => $this->authentication->get_info_user('username')
+		];
+	
 		foreach ($rcsa as $indexarray => $data) {
-			if (
-				$indexarray !== 'period_no' &&
-				$indexarray !== 'id' &&
-				$indexarray !== 'sts_propose' &&
-				$indexarray !== 'date_approve_kadiv' &&
-				$indexarray !== 'date_approve_admin' &&
-				$indexarray !== 'user_approve' &&
-				$indexarray !== 'user_approve_kadep' &&
-				$indexarray !== 'user_approve_kadiv' &&
-				$indexarray !== 'user_approve_rm' &&
-				$indexarray !== 'note_approve_kadep' &&
-				$indexarray !== 'note_approve_kadiv' &&
-				$indexarray !== 'note_approve_admin' &&
-				$indexarray !== 'approve_kadep' &&
-				$indexarray !== 'create_user'
-
-			) {
+			if (!in_array($indexarray, ['period_no', 'id', 'sts_propose', 'date_approve_kadiv', 'date_approve_admin', 'user_approve', 'user_approve_kadep', 'user_approve_kadiv', 'user_approve_rm', 'note_approve_kadep', 'note_approve_kadiv', 'note_approve_admin', 'approve_kadep', 'create_user'])) {
 				$upd[$indexarray] = $data;
 			}
 		}
-		$id = $this->crud->crud_data(array('table' => _TBL_RCSA, 'field' => $upd, 'type' => 'add'));
+	
+		// Insert new RCSA record
+		$this->crud->crud_data(['table' => _TBL_RCSA, 'field' => $upd, 'type' => 'add']);
 		$rcsa_no = $this->db->insert_id();
-
+	
+		// Copy implementasi data
 		$arrimplementasi = $this->db->where('rcsa_no', $post['id'])->get(_TBL_RCSA_IMPLEMENTASI)->result_array();
-		foreach ($arrimplementasi as $indexarrayx => $implementasi) {
+		foreach ($arrimplementasi as $implementasi) {
+			$upimplementasi = [];
 			foreach ($implementasi as $indexarrayx => $data) {
-				if (
-					$indexarrayx !== 'create_user' &&
-					$indexarrayx !== 'id'
-				) {
+				if (!in_array($indexarrayx, ['create_user', 'id'])) {
 					$upimplementasi[$indexarrayx] = $data;
-					$upimplementasi['rcsa_no'] = $rcsa_no;
-					$upimplementasi['create_user'] = $this->authentication->get_info_user('username');
 				}
 			}
-			$implementasi_no = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimplementasi, 'type' => 'add'));
+			$upimplementasi['rcsa_no'] = $rcsa_no;
+			$upimplementasi['create_user'] = $this->authentication->get_info_user('username');
+			$this->crud->crud_data(['table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimplementasi, 'type' => 'add']);
 		}
-
-
-		// $arrsasaran = $this->db->where('rcsa_no', $post['id'])->get(_TBL_RCSA_SASARAN)->result_array();
-		$arrsasaran = $this->db->where('rcsa_no', $post['id'])->get("bangga_view_sasaran_detail")->result_array();
-		$sasaran_no = [];
-
-		foreach ($arrsasaran as $sasaran) {
+	
+		// Copy detail data and related entities
+		$arrdetail = $this->db->where('rcsa_no', $post['id'])->get(_TBL_RCSA_DETAIL)->result_array();
+		$mapUpdSasaran = [];
+	
+		foreach ($arrdetail as $detail) {
+			$updetail = [];
+			foreach ($detail as $index => $data) {
+				if (!in_array($index, ['rcsa_no', 'sasaran_no', 'id'])) {
+					$updetail[$index] = $data;
+				}
+			}
+			$updetail['rcsa_no'] = $rcsa_no;
+			$updetail['create_user'] = $this->authentication->get_info_user('username');
+	
+			// Insert updated detail into the database
+			$this->crud->crud_data(['table' => _TBL_RCSA_DETAIL, 'field' => $updetail, 'type' => 'add']);
+			$dedetailtid = $this->db->insert_id();
+	
+			// Fetch and process sasaran
+			$sasaran = $this->db->where('rcsa_no', $post['id'])->where('detail_no', $detail['id'])->get("bangga_view_sasaran_detail")->row_array();
 			$upSasaran = [];
 			foreach ($sasaran as $index => $data) {
-				if (!in_array($index, ['create_user', 'event_no', 'kategori_no', 'sub_kategori', 'detail_no', 'id'])) {
+				if (!in_array($index, ['create_user', 'id', 'event_no', 'kategori_no', 'sub_kategori', 'detail_no'])) {
 					$upSasaran[$index] = $data;
 				}
 			}
-			$id = $sasaran['id'];
 
-
-			if (!isset($sasaran_no[$id])) {
-				$upSasaran['rcsa_no'] = $rcsa_no;
-				$upSasaran['create_user'] = $this->authentication->get_info_user('username');
-				$this->crud->crud_data(array('table' => _TBL_RCSA_SASARAN, 'field' => $upSasaran, 'type' => 'add'));
-				$sasaran_no[$id] = $this->db->insert_id();
-			} else {
-				$sasaran_no[$id] = $sasaran_no[$id];
+			$upSasaran['rcsa_no'] = $rcsa_no;
+			$upSasaran['create_user'] = $this->authentication->get_info_user('username');
+			$sasaran_no = $this->crud->crud_data(['table' => _TBL_RCSA_SASARAN, 'field' => $upSasaran, 'type' => 'add']);
+	
+			// Update mapUpdSasaran
+			if (empty($mapUpdSasaran) || $sasaran['detail_no'] != $mapUpdSasaran[count($mapUpdSasaran) - 1]["referensi"]["detail_id"]) {
+				$mapUpdSasaran[] = [
+					"referensi" => [
+						"detail_id" => $sasaran['detail_no'],
+						"sasaran_no" => $sasaran['id'],
+					],
+					"databaru" => [
+						"detail_id" => $dedetailtid,
+						"sasaran_no" => $sasaran_no,
+					]
+				];
 			}
-		}
-
-		$arrdetail = $this->db->where('rcsa_no', $post['id'])->get(_TBL_RCSA_DETAIL)->result_array();
-
-		foreach ($arrdetail as $detail) {
-
-			foreach ($detail as $indexarray => $data) {
-				if (
-					$indexarray !== 'rcsa_no' &&
-					$indexarray !== 'sasaran_no' &&
-					$indexarray !== 'id'
-				) {
-					$updetail[$indexarray] = $data;
-					$updetail['rcsa_no'] = $rcsa_no;
-					$updetail['sasaran_no'] = $sasaran_no[$detail['sasaran_no']];
-					$updetail['create_user'] = $this->authentication->get_info_user('username');
-				}
-			}
-
-			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updetail, 'type' => 'add'));
-			$dedetailtid = $this->db->insert_id();
-
-			$upaction['rcsa_detail_no'] = $dedetailtid;
+	
+			// Process actions related to the detail
 			$arraction = $this->db->where('rcsa_detail_no', $detail['id'])->get(_TBL_RCSA_ACTION)->result_array();
-			foreach ($arraction as $ind => $action) {
-				foreach ($action as $indexarray => $data) {
-					if (
-						$indexarray !== 'rcsa_detail_no' &&
-						$indexarray !== 'id'
-					) {
-						$upaction[$indexarray] = $data;
+			foreach ($arraction as $action) {
+				$upaction = [];
+				foreach ($action as $index => $data) {
+					if (!in_array($index, ['rcsa_detail_no', 'id'])) {
+						$upaction[$index] = $data;
 					}
 				}
+				$upaction['rcsa_detail_no'] = $dedetailtid;
 				$upaction['create_user'] = $this->authentication->get_info_user('username');
-
-				// Tambahkan logika untuk mengisi $upaction['rcsa_detail_no'] dengan id yang sesuai
-				// berdasarkan $data['id'] dan _TBL_RCSA_DETAIL
-
-				// doi::dump($upaction);
-				$this->crud->crud_data(array('table' => _TBL_RCSA_ACTION, 'field' => $upaction, 'type' => 'add'));
+				$this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upaction, 'type' => 'add']);
 			}
-
-			//kri
-			$upkri['rcsa_detail'] = $dedetailtid;
-			$upkri['rcsa_no'] = $rcsa_no;
+	
+			// Process KRI related to the detail
 			$arrkri = $this->db->where('rcsa_detail', $detail['id'])->get(_TBL_KRI)->result_array();
-			foreach ($arrkri as $ind => $kri) {
-				foreach ($kri as $indexarray => $data) {
-					if (
-						$indexarray !== 'rcsa_detail' &&
-						$indexarray !== 'rcsa_no' &&
-						$indexarray !== 'id'
-					) {
-						$upkri[$indexarray] = $data;
+			foreach ($arrkri as $kri) {
+				$upkri = [];
+				foreach ($kri as $index => $data) {
+					if (!in_array($index, ['rcsa_detail', 'rcsa_no', 'id'])) {
+						$upkri[$index] = $data;
 					}
 				}
+				$upkri['rcsa_detail'] = $dedetailtid;
+				$upkri['rcsa_no'] = $rcsa_no;
 				$upkri['create_user'] = $this->authentication->get_info_user('username');
-
-				// Tambahkan logika untuk mengisi $upkri['rcsa_detail_no'] dengan id yang sesuai
-				// berdasarkan $data['id'] dan _TBL_RCSA_DETAIL
-
-				// doi::dump($upkri);
-				$this->crud->crud_data(array('table' => _TBL_KRI, 'field' => $upkri, 'type' => 'add'));
+				$this->crud->crud_data(['table' => _TBL_KRI, 'field' => $upkri, 'type' => 'add']);
 			}
 		}
-		// die();
-
-
-		$type = 1;
-		$arrstakeholder1 = $this->db->where('stakeholder_type', $type)->where('rcsa_no', $post['id'])->get(_TBL_RCSA_STAKEHOLDER)->result_array();
-		foreach ($arrstakeholder1 as $ind => $detail) {
-
-			foreach ($detail as $indexarray => $data) {
-				if (
-					$indexarray !== 'rcsa_no' &&
-					$indexarray !== 'id'
-				) {
-					$upStak1[$indexarray] = $data;
-					$upStak1['rcsa_no'] = $rcsa_no;
-					$upStak1['create_user'] = $this->authentication->get_info_user('username');
+	
+		// Update sasaran_no in new details
+		doi::dump($mapUpdSasaran);die;
+		$upSasaranBaru = [];
+		foreach ($mapUpdSasaran as $entry) {
+			$wr['id'] = $entry['databaru']['detail_id'];
+			$upSasaranBaru['sasaran_no'] = $entry['databaru']['sasaran_no'];
+			$this->crud->crud_data(['table' => _TBL_RCSA_DETAIL, 'field' => $upSasaranBaru, 'where' => $wr, 'type' => 'update']);
+		}
+	
+		// Copy stakeholders data
+		foreach ([1, 2] as $type) {
+			$arrstakeholder = $this->db->where('stakeholder_type', $type)->where('rcsa_no', $post['id'])->get(_TBL_RCSA_STAKEHOLDER)->result_array();
+			foreach ($arrstakeholder as $detail) {
+				$upStak = [];
+				foreach ($detail as $indexarray => $data) {
+					if (!in_array($indexarray, ['rcsa_no', 'id'])) {
+						$upStak[$indexarray] = $data;
+					}
 				}
+				$upStak['rcsa_no'] = $rcsa_no;
+				$upStak['create_user'] = $this->authentication->get_info_user('username');
+				$this->crud->crud_data(['table' => _TBL_RCSA_STAKEHOLDER, 'field' => $upStak, 'type' => 'add']);
 			}
-			$takeholder1 = $this->crud->crud_data(array('table' => _TBL_RCSA_STAKEHOLDER, 'field' => $upStak1, 'type' => 'add'));
 		}
-
-		$type = 2;
-		$arrstakeholder2 = $this->db->where('stakeholder_type', $type)->where('rcsa_no', $post['id'])->get(_TBL_RCSA_STAKEHOLDER)->result_array();
-		foreach ($arrstakeholder2 as $ind => $detail) {
-
-			foreach ($detail as $indexarray => $data) {
-				if (
-					$indexarray !== 'rcsa_no' &&
-					$indexarray !== 'id'
-				) {
-					$upStak2[$indexarray] = $data;
-					$upStak2['rcsa_no'] = $rcsa_no;
-					$upStak2['create_user'] = $this->authentication->get_info_user('username');
-				}
-			}
-			$takeholder1 = $this->crud->crud_data(array('table' => _TBL_RCSA_STAKEHOLDER, 'field' => $upStak2, 'type' => 'add'));
-		}
-		// doi::dump('detail: ' . $detail);
-		// $cek_error = $this->db->error();
-		// doi::dump($updetail);
-		// doi::dump($takeholder1);
-		// die();
+	
+		// Redirect to RCSA list
 		header('location:' . base_url('rcsa'));
 	}
+	
 
 	function simpan_propose()
 	{
@@ -613,7 +573,7 @@ class Rcsa_Context extends BackendController
 	function get_implementasi()
 	{
 		$id = $this->uri->segment(3);
-		$mode = $this->uri->segment(2);
+		$mode= $this->uri->segment(2);
 		$data['id'] = $id;
 		$data['mode'] = $mode;
 		$data['combo'] = $this->db
@@ -621,60 +581,64 @@ class Rcsa_Context extends BackendController
 			->order_by('kode', 'asc')
 			->get(_TBL_DATA_COMBO)
 			->result_array();
-
+		
 		$result = $this->load->view('implementasi', $data, true);
 		return $result;
 	}
 
-	public function POST_CHECK_BEFORE_INSERT($data)
+public function POST_CHECK_BEFORE_INSERT($data)
 	{
 		$files = $_FILES;
 		$result = true;
 		$errors = [];
-		if ($files['l_nm_file']['type']) {
-			if ($files['l_nm_file']['type'] != "application/pdf")
-				// }
-				$pesan = "format" . $files['l_nm_file']['type'] . "tidak didukung";
+ 		if($files['l_nm_file']['type']){
+			if($files['l_nm_file']['type'] !="application/pdf")
+		// }
+		$pesan = "format". $files['l_nm_file']['type']."tidak didukung";
+
+
 		}
 
-		if (!empty($pesan)) {
+		if (!empty($pesan)){
 			$this->session->set_userdata('result_proses_error', $pesan);
 
 			// $this->session->set_userdata(array('result_proses_error'=>$pesan));
 			return FALSE;
-		} else {
+		}else{
 			return TRUE;
 		}
 	}
 
-	function POST_CHECK_BEFORE_UPDATE($new_data, $old_data)
-	{
+	function POST_CHECK_BEFORE_UPDATE($new_data, $old_data){
 		$files = $_FILES;
 
-		$result = true;
-		if ($files['l_nm_file']['name']) {
+		$result=true;
+		if($files['l_nm_file']['name']){
 			if ($files['l_nm_file']['name'] !== $old_data['l_username'])
-				$files = $_FILES;
-			// $result = true;
-			$errors = [];
-			if ($files['l_nm_file']['type']) {
-				if ($files['l_nm_file']['type'] != "application/pdf")
-					// }
-					$pesan = "format" . $files['l_nm_file']['type'] . "tidak didukung";
-			}
+		$files = $_FILES;
+		// $result = true;
+		$errors = [];
+ 		if($files['l_nm_file']['type']){
+			if($files['l_nm_file']['type'] !="application/pdf")
+		// }
+		$pesan = "format". $files['l_nm_file']['type']."tidak didukung";
 
-			if (!empty($pesan)) {
-				$this->session->set_userdata('result_proses_error', $pesan);
 
-				// $this->session->set_userdata(array('result_proses_error'=>$pesan));
-				$result = FALSE;
-			} else {
-				$result = TRUE;
-			}
-		} else {
-			$result = TRUE;
 		}
 
+		if (!empty($pesan)){
+			$this->session->set_userdata('result_proses_error', $pesan);
+
+			// $this->session->set_userdata(array('result_proses_error'=>$pesan));
+			 $result=FALSE;
+		}else{
+			 $result=TRUE;
+			}
+		}else{
+			$result=TRUE;
+
+		}
+		
 
 
 		return $result;
