@@ -111,13 +111,13 @@ if ($status) : ?>
 				$ttl_exposure_residual = 0;
 
 				foreach ($field as $keys => $row) {
-				?>
+ 				?>
 					<tr>
 						<td><?php echo $i; ?></td>
 						<td> <button data-urgency="<?= $row['id_rcsa_detail']; ?>" data-rcsa="<?= $row['rcsa_no']; ?>" value="<?= $row['urgensi_no_kadiv']; ?>" class="btn btn-xs btn-success move">select</button></td>
 						<td style="width: 50%"><?= $row['area_name']; ?></td>
 						<td><?= $row['kategori']; ?></td>
-						<td><?= $row['sub_kategori']; ?></td>
+						<td ><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td>
 						<td><?= $row['event_name']; ?></td>
 						<td><?= format_list($row['couse'], "###"); ?></td>
 						<td><?= format_list($row['impact'], "###"); ?></td>
@@ -128,13 +128,25 @@ if ($status) : ?>
 						<td><?= $row['impact_ket']; ?></td>
 						<td><?= intval($row['level_like']) * intval($row['level_impact']); ?></td>
 						<td><?= $row['level_mapping']; ?></td>
-						<td><?= format_list($row['penanggung_jawab'], "###"); ?></td>
+						<?php
+					$arrCouse = json_decode($row['penangung_no'], true);
+					$rows_couse=array();
+					if ($arrCouse)
+					$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+					$arrCouse=array();
+					foreach($rows_couse as $rc){
+						$arrCouse[]=$rc['name'];
+					}
+					$row['penanggung_jawab']=implode('### ',$arrCouse);
+					?>
+					<td><?= format_list($row['penanggung_jawab'], "###"); ?></td>
+					
 						<!-- <td><?= $row['urgensi_no_kadiv']; ?></td> -->
 						<!-- <td><?= format_list($row['control_name'], "###"); ?></td> -->
 						<?php
 						$cn = $row['control_name'];
 						if (!empty($cn)) : ?>
-							<td><?= format_list($cn); ?></td>
+							<td><?= format_list($cn, "###"); ?></td>
 
 						<?php else : ?>
 							<td><?= $cn; ?></td>

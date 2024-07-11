@@ -101,7 +101,9 @@ if ($status) : ?>
 					<td class="hide"> <button data-urgency="<?= $row['id_rcsa_detail']; ?>" data-rcsa="<?= $row['rcsa_no']; ?>" value="<?= $row['urgensi_no']; ?>" class="btn btn-xs btn-success move">select</button></td>
 					<td style="width: 50%"><?= $row['area_name']; ?></td>
 					<td><?= $row['kategori']; ?></td>
-					<td><?= $row['sub_kategori']; ?></td>
+					<td ><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td>
+
+					<!-- <td><?= $row['sub_kategori']; ?></td> -->
 					<td><?= $row['event_name']; ?></td>
 					<!-- 								<td><?= format_list($row['couse'], '###'); ?></td>
 								<td><?= format_list($row['impact'], '###'); ?></td> -->
@@ -122,17 +124,21 @@ if ($status) : ?>
 					<td><?= $tmp[4]; ?></td>
 					<td><?= $tmp[5]; ?></td>
 					<td class="urgensi text-center"> <?= $row['urgensi_no_kadiv']; ?> </td>
-					<td><?= $row['level_like']; ?>ss</td>
+					<td><?= $row['level_like']; ?></td>
 					<td><?= $row['like_ket']; ?></td>
 					<td><?= $row['level_impact']; ?></td>
 					<td><?= $row['impact_ket']; ?></td>
 					<td><?= intval($row['level_like']) * intval($row['level_impact']); ?></td>
 					<td><?= $row['level_mapping']; ?></td>
-					<td><?= $row['penanggung_jawab']; ?></td>
+					<td><?= format_list($row['penanggung_jawab'], "###"); ?></td>
+
+					
+
+					<!-- <td><?= $row['penanggung_jawab']; ?></td> -->
 					<?php
 					$cn = $row['control_name'];
 					if (!empty($cn)) : ?>
-						<td><?= format_list($cn); ?></td>
+						<td><?= format_list($cn,  "###"); ?></td>
 
 					<?php else : ?>
 						<td><?= $cn; ?></td>
