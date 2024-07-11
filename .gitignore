@@ -11,4 +11,6 @@ composer.lock
 db
 log
 adminer
+_public\config
+
 

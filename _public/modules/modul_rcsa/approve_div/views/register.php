@@ -40,7 +40,7 @@ if ($status) : ?>
 		<h6 class="panel-title" style="color:#000000;font-weight:bold;">
 			<a data-toggle="collapse" data-parent="#accordion-controls" href="#accordion-<?= $row['rcsa_no']; ?>" aria-expanded="true" class="in collapsed"><?= ++$no . '. ' . $row['name']; ?></a>
 		</h6>
-  <span class="text-warning">Tgl Propose : <?= date('d M Y', strtotime($log['create_date'])); ?> | Petugas : <?= $log['create_user']; ?></span>
+		<span class="text-warning">Tgl Propose : <?= date('d M Y', strtotime($log['create_date'])); ?> | Petugas : <?= $log['create_user']; ?></span>
 	</div>
 	<div class="panel-body">
 		<table class="table table-bordered">
@@ -122,7 +122,7 @@ if ($status) : ?>
 					<td><?= $tmp[4]; ?></td>
 					<td><?= $tmp[5]; ?></td>
 					<td class="urgensi text-center"> <?= $row['urgensi_no_kadiv']; ?> </td>
-					<td><?= $row['level_like']; ?></td>
+					<td><?= $row['level_like']; ?>ss</td>
 					<td><?= $row['like_ket']; ?></td>
 					<td><?= $row['level_impact']; ?></td>
 					<td><?= $row['impact_ket']; ?></td>
@@ -141,7 +141,32 @@ if ($status) : ?>
 					<td><?= $row['control_ass']; ?></td>
 					<td><?= $row['proaktif']; ?></td>
 					<td><?= $row['reaktif']; ?></td>
-					<td><?= format_list($row['accountable_unit_name'], '###'); ?></td>
+					<?php
+					//  doi::dump($row);
+					$act = $this->db
+						->where('rcsa_detail_no', $row['id_rcsa_detail'])
+						->get('bangga_rcsa_action')->row_array();
+
+
+					$arrayData = json_decode($act['owner_no'], true);
+
+					if ($arrayData !== null) {
+						$owners = array();
+						foreach ($arrayData as $element) {
+							$element = strval($element);
+							$Accountable = $this->db->where('id', $element)->get('bangga_owner')->row_array();
+							if ($Accountable) {
+								$owners[] = $Accountable['name'];
+							}
+						}
+
+						$ownersString = implode(", ", $owners);
+					} else {
+						$ownersString = '-';
+					}
+					?>
+
+					<td valign="top"><?= format_list($ownersString); ?></td>
 					<td><?= $row['sumber_daya']; ?></td>
 					<?php $originalDate = $row['target_waktu']; ?>
 					<td valign="top"><?= date("d-m-Y", strtotime($originalDate)); ?></td>
