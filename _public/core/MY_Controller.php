@@ -517,11 +517,12 @@ alert('Session anda telah berakhir. Silahkan login kembali.');
 							break;
 						case 'combo':
 						case 'combo:search':
-							if (array_key_exists('combo',$row['input']))
+							$size = ($row['size'] == 100) ? '600px' : ($row['size'] * 10) . 'px';
+ 							if (array_key_exists('combo',$row['input']))
 								$combo = $row['input']['combo'];
 							else
 								$combo=array();
-							$content = form_dropdown($name, $combo, $isi,"class='form-control wauto' style='width:100%!important;' id='".$label."'  ");
+							$content = form_dropdown($name, $combo, $isi,"class='form-control  select2' style='width:{$size};' id='".$label."'  ");
 							if (array_key_exists($isi, $combo))
 								$isi = $row['input']['combo'][$isi];
 							break;

@@ -341,12 +341,34 @@ function cetak_lap(tipe)
 </div>
 
 <script>
-$(function() {
-	$("form#form_input_search").submit(function(){
-		looding("light",$("#mySearch").find(".modal-content"));
-		// var frm = $("form#form_input_search");
-		// frm.submit();
-	});
-	$("#datatables_filter").css('margin-right','5px');
+	
+	$(function() {
+
+		$('body').on('shown.bs.modal', '.modal', function() {
+  $(this).find('select').each(function() {
+    var dropdownParent = $(document.body);
+    if ($(this).parents('.modal.in:first').length !== 0)
+      dropdownParent = $(this).parents('.modal.in:first');
+	
+    $(this).select2({
+      dropdownParent: dropdownParent
+    });
+	$(this).css('width', '100%');
+  });
 });
+	 
+
+    // Fungsi submit form
+    $("form#form_input_search").submit(function(event){
+        event.preventDefault(); // Mencegah submit form default
+        looding("light", $("#mySearch").find(".modal-content"));
+        // Anda bisa melakukan tindakan submit form disini jika diperlukan
+        // $(this).off('submit').submit();
+    });
+
+    // Penyesuaian margin
+    $("#datatables_filter").css('margin-right', '5px');
+});
+
+
 </script>
