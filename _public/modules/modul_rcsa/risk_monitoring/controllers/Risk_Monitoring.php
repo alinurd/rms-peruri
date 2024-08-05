@@ -34,8 +34,12 @@ class Risk_Monitoring extends BackendController
 		$this->set_Open_Tab('Risk Monitoring');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 11));
 		$this->addField(array('field' => 'rcsa_no', 'show' => false, 'size' => 100));
-		$this->addField(array('field' => 'name', 'show' => true, 'search' => true, 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'save' => false, 'size' => 100));
+		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true));
+
+		// $this->addField(array('field' => 'name', 'show' => true, 'search' => false, 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'save' => false, 'size' => 100));
 		$this->addField(array('field' => 'event_name', 'show' => true, 'save' => false, 'size' => 100));
+		$this->addField(array('field' => 'tahun', 'show' => true, 'save' => false, 'size' => 100));
+		$this->addField(array('field' => 'name', 'show' => true, 'save' => false, 'size' => 100));
 		$this->addField(array('field' => 'period_no', 'input' => 'combo:search', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => true));
 
 		// $this->addField(array('field'=>'progress_date', 'show'=>false, 'size'=>100));
@@ -82,6 +86,7 @@ class Risk_Monitoring extends BackendController
 		// $this->set_Sort_Table($this->tbl_master, 'id', 'desc');
 
 		$this->set_Table_List($this->tbl_master, 'name', 'Risk Owner');
+		$this->set_Table_List($this->tbl_master, 'period_no', 'Tahun');
 		$this->set_Table_List($this->tbl_master, 'event_name', 'Peristiwa Risiko');
 		// $this->set_Table_List($this->tbl_master,'reaktif','Treatment');
 		// $this->set_Table_List($this->tbl_master,'progress_date','Due Date');
@@ -193,6 +198,17 @@ class Risk_Monitoring extends BackendController
 		return $tombol;
 	}
 
+	function listBox_PERIOD_NO($rows, $value)
+	{
+
+		if ($value) {
+			$p = $this->db->where('id', $value)->get(_TBL_PERIOD)->row_array();
+			$hasil=$p['periode_name'];
+ 		} else {
+			$hasil = 'tidak ditemukan';
+		}
+		return $hasil;
+	}
 	function listBox_KETERANGAN($rows, $value)
 	{
 
