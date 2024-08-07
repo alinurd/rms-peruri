@@ -118,7 +118,7 @@ class Approve_Div extends BackendController
 		$id = explode(",", $this->_Group_['owner_child']);
 		$id = $this->uri->segment(3);
 		$jml = (array_key_exists('jml_child',$this->_Group_['owner']))?$this->_Group_['owner']['jml_child']:0;
-		$data['field'] = $this->data->get_data_risk_register($id);
+		$data['field'] = $this->data->get_data_risk_register($id, "approval");
 		// Doi::dump($data);
 		$log = $this->db->where('rcsa_no', $id)->where('keterangan', "Propose to Kadiv")->get("bangga_log_propose")->row_array();
 		$data['log'] = $log;
@@ -139,7 +139,7 @@ class Approve_Div extends BackendController
 	{
 		$id_rcsa = $this->input->post('id');
 		$owner_no = $this->input->post('owner_no');
-		$data['field'] = $this->data->get_data_risk_register($id_rcsa);
+		$data['field'] = $this->data->get_data_risk_register($id_rcsa, "showRegister");
 		// $data['field'] = $this->data->get_data_risk_register_list($id_rcsa);
 		$data['fieldxx'] = $this->data->get_data_risk_reg_acc($id_rcsa);
 		$data['tgl'] = $this->data->get_data_tanggal($id_rcsa);

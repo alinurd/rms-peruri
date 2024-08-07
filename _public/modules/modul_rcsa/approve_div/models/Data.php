@@ -95,10 +95,14 @@ class Data extends MX_Model
 
 		return $result;
 	}
-	function get_data_risk_register($id)
+	function get_data_risk_register($id, $x)
 	{
 		// $rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-		$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		if($x=="approval"){
+			$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_REGISTER)->result_array();
+		}else{
+			$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		}
 
 		// $rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_REGISTER)->result_array();
 		// doi::dump($rows)
