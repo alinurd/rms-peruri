@@ -340,8 +340,25 @@ class Risk_Monitoring extends BackendController
 			->where('bulan', $month)
 			->get('bangga_view_rcsa_action_detail')->row_array();
 
+
+			$detail = $this->db
+			->select('periode_name')
+			->where('id', $id)
+ 			->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
+			
 		$blnnow = date('m');
-		if ($blnnow >= $month) {
+		$thnRcsa   = substr( $detail['periode_name'], 0, 4 );
+		$tgl           = 01;
+
+		$dateRcsa  = new DateTime( $thnRcsa . '-' . $month . '-' . $tgl );
+		$hariIni   = new DateTime();
+		// doi::dump($dateRcsa);
+		// doi::dump($hariIni);
+		if($hariIni >= $dateRcsa ){
+			
+		
+
+		// if ($blnnow >= $month) {
 
 
 			$result['before'] = $this->db
