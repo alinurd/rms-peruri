@@ -55,7 +55,18 @@
     <table class="table table-bordered table-sm" id="datatables_event" border="1">
         <thead>
             <tr>
-                <td colspan="2" rowspan="6" style="text-align: left;border-right:none;"><img src="<?= img_url('logo.png'); ?>" width="100"></td>
+                <td colspan="2" rowspan="6" style="text-align: left;border-right:none;">
+                <?php
+                    $relative_path = "themes/default/assets/images/logo.png";
+                    if (file_exists($relative_path)) {
+                        ?><img src="<?= $relative_path ?>" width="100"></td>
+                    <?php
+                    } else {
+                        echo $relative_path.'<br>File does not exist.';
+                    }
+
+                    ?>
+
                 <td colspan="21" rowspan="6" style="text-align:center;border-left:none;">
                     <h1>RISK REGISTER</h1>
                 </td>
