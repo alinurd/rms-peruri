@@ -360,7 +360,7 @@ function cetak_lap(tipe)
 
     // Fungsi submit form
     $("form#form_input_search").submit(function(event){
-        event.preventDefault(); // Mencegah submit form default
+        // event.preventDefault(); // Mencegah submit form default
         looding("light", $("#mySearch").find(".modal-content"));
         // Anda bisa melakukan tindakan submit form disini jika diperlukan
         // $(this).off('submit').submit();
