@@ -1,8 +1,5 @@
 var asal_event;
-$(document).ready(function() {
-    $("#tab-05").addClass('hide');
-    $("#tab-06").addClass('hide');
-});
+ 
 
 
 $(function () {
@@ -12,11 +9,7 @@ $(function () {
 		row.append('<tr><td class="text-center">' + edit + '</td><td>' + sasaran + '</td><td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_install(this,0)"><i class="fa fa-cut"></span></td></tr>');
 	});
 
-	$("#add_sasaran_new").click(function () {
-		var row = $("#tbl_sasaran_new > tbody");
-		// row.append('<tr><td class="text-center">' + edit + '</td><td>' + sasaran + '</td><td>' + statement + '</td><td>' + appetite + '</td><td>-</td><td>' + appetite_max + '</td><td>' + tolerance + '</td><td>-</td><td>' + tolerance_max + '</td><td>' + limit + '</td><td>-</td><td>' + limit_max + '</td><td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_installx(this,0)"><i class="fa fa-cut"></span></td></tr>');
-		row.append('<tr><td class="text-center">' + edit + '</td><td>' + sasaran + '</td><td>' + statement + '</td><td>' + appetite + '</td><td>-</td><td>' + appetite_max + '</td><td>' + tolerance + '</td><td>-</td><td>' + tolerance_max + '</td><td>' + limit + '</td><td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_installx(this,0)"><i class="fa fa-cut"></span></td></tr>');
-	});
+
 
 
 	$("#add_internal").click(function () {

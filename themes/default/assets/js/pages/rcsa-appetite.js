@@ -1,8 +1,5 @@
 var asal_event;
-$(document).ready(function() {
-    $("#tab-05").addClass('hide');
-    $("#tab-06").addClass('hide');
-});
+ 
 
 
 $(function () {
