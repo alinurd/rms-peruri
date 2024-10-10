@@ -561,6 +561,9 @@ $msg="risk impcat yang anda masukan sudah ada";
 		if ($data['sub_kategori']) {
 			$upd['sub_kategori'] = $data['sub_kategori'];
 		}
+		// field baru
+		// $upd['risk_asumsi_perhitungan_dampak'] = $data['risk_asumsi_perhitungan_dampak'];
+		// $upd['sts_heatmap'] = $data['sts_heatmap'];
 
 		$upd['risk_impact_kuantitatif'] = str_replace(',', '', $data['risk_impact_kuantitatif']);
 

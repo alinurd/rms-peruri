@@ -48,7 +48,7 @@ if ($detail['pi'] == 1) {
 $krion = "hide";
 
 if ($field['iskri'] == 0) {
-    $chektdk = "checked";
+    $chekya = "checked";
     $treatmentact = 'active';
 } else {
     $chekya = "checked";
@@ -56,6 +56,16 @@ if ($field['iskri'] == 0) {
     $treatmentacthide = '';
     $kriact = 'active';
 }
+
+// test 
+$pb = [
+    ''=>'- Pilih Proses Bisnis -',
+    'proses bisnis 1' => 'Pembelian',
+    'penjualan' => 'Penjualan',
+    'produksi' => 'Produksi',
+    'distribusi' => 'Distribusi',
+    'logistik' => 'Logistik',
+];
 ?>
 
 
@@ -173,6 +183,16 @@ if ($field['iskri'] == 0) {
                                             <td colspan="2"><?= form_dropdown('subrisiko', $np, ($detail) ? $detail['subrisiko'] : '', 'class="select2 form-control" style="width:100%;" id="subrisiko"' . $disable); ?></td>
                                         </tr>
 
+                                        
+                                        <tr>
+                                            <td width="20%">Proses Bisnis</td>
+                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $pb, ($detail) ? $detail['proses_bisnis'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="20%">Tampilkan di Heatmap</td>
+                                            <td colspan="2"><?= form_checkbox('sts_heatmap', 'sts_heatmap',1, ($detail) ? $detail['sts_heatmap'] : '', 'class="select2 form-control form-check-input" style="width:100%;"' . $disable); ?></td>
+                                        </tr>
 
 
                                         <tr>
@@ -347,7 +367,21 @@ if ($field['iskri'] == 0) {
                                             <table class="table table-borderless" id="">
                                                 <thead>
                                                     <tr>
-                                                        <td width="20%">Dampak Kuantitatif </td>
+                                                        <td width="25%">Asumsi Perhitungan Dampak </td>
+                                                        <td>
+                                                            <div id="risk_asumsi_perhitungan_dampak" class="input-group">
+                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </tr>
+                                        <tr>
+                                            <table class="table table-borderless" id="">
+                                                <thead>
+                                                    <tr>
+                                                        <td width="25%">Dampak Kuantitatif </td>
                                                         <td>
                                                             <div id="l_risk_impact_kuantitatif_parent" class="input-group">
                                                                 <span id="span_l_amoun" class="input-group-addon"> Rp </span>
@@ -362,7 +396,7 @@ if ($field['iskri'] == 0) {
                                             <table class="table table-borderless" id="">
                                                 <thead>
                                                     <tr>
-                                                        <td width="20%">PIC </td>
+                                                        <td width="25%">PIC </td>
                                                         <td><?= form_dropdown('pic', $area, ($detail) ? $detail['pic'] : '', 'class="select2 form-control" style="width:100%;" id="pic"' . $disable); ?></td>
 
                                                 </thead>

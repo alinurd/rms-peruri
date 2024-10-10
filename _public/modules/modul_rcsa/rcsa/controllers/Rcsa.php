@@ -805,36 +805,36 @@ if($dtkri){
 			}
 
 			$arl = $residual_level['level_mapping'];
-// doi::dump($residual_level);
-$data['inherent_level']= $inherent_level;
-$data['residual_level']= $residual_level;
-			$cboControl = $this->db->where('status', 1)->get(_TBL_EXISTING_CONTROL)->result_array();
-			$jml = intval(count($cboControl) / 2);
+			// doi::dump($residual_level);
+			$data['inherent_level']= $inherent_level;
+			$data['residual_level']= $residual_level;
+			// $cboControl = $this->db->where('status', 1)->get(_TBL_EXISTING_CONTROL)->result_array();
+			// $jml = intval(count($cboControl) / 2);
 			$check = '';
-			$i = 1;
-			$control = array();
-			$check .= '<div class="well p100">';
-			if (is_array($arrControl))
-				$control = $arrControl;
-			foreach ($cboControl as $row) {
-				if ($i == 1)
-					$check .= '<div class="col-md-6">';
+			// $i = 1;
+			// $control = array();
+			// $check .= '<div class="well p100">';
+			// if (is_array($arrControl))
+			// 	$control = $arrControl;
+			// foreach ($cboControl as $row) {
+			// 	if ($i == 1)
+			// 		$check .= '<div class="col-md-6">';
 
-				$sts = false;
-				foreach ($control as $ctrl) {
-					if ($row['component'] == $ctrl) {
-						$sts = true;
-						break;
-					}
-				}
+			// 	$sts = false;
+			// 	foreach ($control as $ctrl) {
+			// 		if ($row['component'] == $ctrl) {
+			// 			$sts = true;
+			// 			break;
+			// 		}
+			// 	}
 
-				$check .= '<label class="pointer">' . form_checkbox('check_item[]', $row['component'], $sts);
-				$check .= '&nbsp;' . $row['component'] . '</label><br/>';
-				if ($i == $jml)
-					$check .= '</div><div class="col-md-6">';
+			// 	$check .= '<label class="pointer">' . form_checkbox('check_item[]', $row['component'], $sts);
+			// 	$check .= '&nbsp;' . $row['component'] . '</label><br/>';
+			// 	if ($i == $jml)
+			// 		$check .= '</div><div class="col-md-6">';
 
-				++$i;
-			}
+			// 	++$i;
+			// }
 		}
 		$check .= '</div>' . form_textarea("note_control", ($data['detail']) ? $data['detail']['note_control'] : '', ' class="form-control" style="width:100%;height:150px"' . $readonly) . '</div><br/>';
 
