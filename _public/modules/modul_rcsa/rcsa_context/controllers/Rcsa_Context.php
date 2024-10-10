@@ -77,6 +77,10 @@ class Rcsa_Context extends BackendController
 		$this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
 
+		$this->set_Open_Tab('Dokumen Lainnnya');
+		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
+		$this->set_Close_Tab();
+		
 		$this->set_Open_Tab('Kriteria Kemungkinan Risiko ');
 		$this->addField(array('field' => 'kriteria_kemungkinan_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
@@ -85,9 +89,7 @@ class Rcsa_Context extends BackendController
 		$this->addField(array('field' => 'kriteria_dampak_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
 
-		$this->set_Open_Tab('Dokumen Lainnnya');
-		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
-		$this->set_Close_Tab();
+	
 		// $this->addField(array('field' => 'copy', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 
 

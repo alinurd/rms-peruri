@@ -1,8 +1,10 @@
 var asal_event;
 $(document).ready(function() {
-    $("#tab-05").addClass('hide');
-    $("#tab-06").addClass('hide');
-});
+    $("#tab-00").removeClass('active');
+    $("#tab_1").removeClass('active');
+    $("#tab-04").addClass('active');
+    $("#tab_5").addClass('active');
+ });
 
 
 $(function () {
