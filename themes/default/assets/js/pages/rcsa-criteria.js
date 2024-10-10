@@ -2,8 +2,8 @@ var asal_event;
 $(document).ready(function() {
     $("#tab-00").removeClass('active');
     $("#tab_1").removeClass('active');
-    $("#tab-04").addClass('active');
-    $("#tab_5").addClass('active');
+    $("#tab-05").addClass('active');
+    $("#tab_6").addClass('active');
  });
 
 
