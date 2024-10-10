@@ -116,6 +116,7 @@ class Rcsa_Appetite extends BackendController
 		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
 		// $this->set_Where_Table($this->tbl_master, 'type', '=', $this->nil_tipe);
 		$this->_CHANGE_TABLE_MASTER(_TBL_RCSA);
+		$this->_SET_PRIVILEGE('add', false);
 
 		$this->set_Close_Setting();
 	}
