@@ -17,6 +17,7 @@ class Rcsa_Control_Matric extends BackendController
 		// Doi::dump($this->authentication->get_info_user());
 		$this->nil_tipe = 1;
 		$this->set_Tbl_Master(_TBL_VIEW_RCSA);
+		$this->cbo_ja = $this->get_combo('judul_assesment');
 		$this->cbo_periode = $this->get_combo('periode');
 		$this->cbo_parent = $this->get_combo('parent-input');
 		$this->cbo_parent_all = $this->get_combo('parent-input-all');
@@ -26,12 +27,12 @@ class Rcsa_Control_Matric extends BackendController
 		$this->set_Open_Tab('Risk Control Matric');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
 
-		$this->addField(array('field' => 'judul_assesment', 'size' => 100, 'search' => false,  'show' => false));
-		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true,  'show' => false));
+		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true,  'show' => true));
+		$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => true,  'show' => true));
+		$this->addField(array('field' => 'judul_assesment', 'input' => 'combo:search', 'combo' => $this->cbo_ja, 'size' => 100, 'required' => true, 'search' => true,  'show' => true));
+ 		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Control Matric', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		// $this->addField(array('field' => 'officer_no', 'show' => false, 'save' => true, 'default' => $this->authentication->get_info_user('identifier')));
 		// $this->addField(array('field' => 'create_user', 'search' => false, 'default' => $this->authentication->get_info_user('username')));
-		$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => false,  'show' => false));
-		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Control Matric', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 
 		// $this->addField(array('field' => 'anggaran_rkap', 'type' => 'float', 'input' => 'float', 'required' => true));
 		// $this->addField(array('field' => 'owner_pic', 'size' => 100, 'search' => false));
@@ -534,7 +535,7 @@ class Rcsa_Control_Matric extends BackendController
 	{
 		$id = $this->uri->segment(3);
 		$data['field'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCSA_SASARAN)->result_array();
-		$result = $this->load->view('sasaran', $data, true);
+		$result = $this->load->view('crm', $data, true);
 		return $result;
 	}
 

@@ -130,6 +130,13 @@ class MX_Model extends CI_Model {
 			case 'rcsa_data':
 				$query="select id, judul_assesment as name from "._TBL_RCSA." order by judul_assesment";
 				break;
+			case 'judul_assesment':
+					$query = "SELECT id, judul_assesment AS name 
+							  FROM " . _TBL_RCSA . " 
+							  WHERE judul_assesment IS NOT NULL 
+							  AND judul_assesment != ''
+							  ORDER BY judul_assesment";
+				break;
 			case 'officer':
 				$query="select id, officer_name as name from "._TBL_OFFICER."";
 				break;
