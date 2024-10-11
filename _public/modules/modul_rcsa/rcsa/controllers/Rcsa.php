@@ -836,7 +836,7 @@ if($dtkri){
 			// 	++$i;
 			// }
 		}
-		$check .= '</div>' . form_textarea("note_control", ($data['detail']) ? $data['detail']['note_control'] : '', ' class="form-control" style="width:100%;height:150px"' . $readonly) . '</div><br/>';
+		$check .= '<div>' . form_textarea("note_control", ($data['detail']) ? $data['detail']['note_control'] : '', ' class="form-control" style="width:100%;height:150px"' . $readonly) . '</div><br/>';
 
 		$data['level_resiko'][] = ['label' => lang('msg_field_inherent_risk'), 'isi' => ' Kemungkinan : ' . form_dropdown('inherent_likelihood', $cboLike, ($data['detail']) ? $data['detail']['inherent_likelihood'] : '', ' class="form-control select2" id="inherent_likelihood" style="width:35%;"' . $disabled) . ' Dampak: ' . form_dropdown('inherent_impact', $cboImpact, ($data['detail']) ? $data['detail']['inherent_impact'] : '', ' class="form-control select2" id="inherent_impact" style="width:35%;"' . $disabled)];
 		
