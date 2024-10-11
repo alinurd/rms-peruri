@@ -3,7 +3,7 @@
 //NamaTbl, NmFields, NmTitle, Type, input, required, search, help, isiedit, size, label 
 //$tbl, 'id', 'id', 'int', false, false, false, true, 0, 4, 'l_id'
 
-class Rcsa_Context extends BackendController
+class Rcsa_Criteria extends BackendController
 {
 	var $table = "";
 	var $post = array();
@@ -80,7 +80,7 @@ class Rcsa_Context extends BackendController
 		$this->set_Open_Tab('Dokumen Lainnnya');
 		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
 		$this->set_Close_Tab();
-		
+
 		$this->set_Open_Tab('Kriteria Kemungkinan Risiko ');
 		$this->addField(array('field' => 'kriteria_kemungkinan_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
@@ -116,6 +116,8 @@ class Rcsa_Context extends BackendController
 		// $this->set_Where_Table($this->tbl_master, 'type', '=', $this->nil_tipe);
 		$this->_CHANGE_TABLE_MASTER(_TBL_RCSA);
 
+		$this->_SET_PRIVILEGE('add', false);
+		// $this->_SET_PRIVILEGE('edit', false);
 		$this->set_Close_Setting();
 	}
 
