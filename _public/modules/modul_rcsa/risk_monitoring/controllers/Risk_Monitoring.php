@@ -131,6 +131,72 @@ class Risk_Monitoring extends BackendController
 		$this->set_Close_Setting();
 	}
 
+	public function index() {
+		$page = $this->input->get('page') ? $this->input->get('page') : 1;
+		$limit = 10; 
+		$data['periode'] = $this->input->get('periode');
+		$data['owner'] = $this->input->get('owner');
+		
+		$total_data = $this->data->count_all_data($data); 
+		$total_pages = ceil($total_data / $limit); 
+		$offset = ($page - 1) * $limit;
+		$x['total_data'] = $total_data;
+		$x['start_data'] = $offset + ($total_data>0)?1:0;
+		$x['end_data'] = min($offset + $limit, $total_data);
+		$x['cboPeriod'] = $this->cbo_periode;
+		$x['cboOwner'] = $this->cbo_parent;
+		$x['field'] = $this->data->getDetail($data, $limit, $offset);
+	
+	 
+
+ 		if ($total_data > 0) {
+			$x['pagination'] = $this->pagination($data, $total_pages, $page);
+		} else {
+			$x['pagination'] = '';  
+		}
+	
+		$this->template->build('home', $x);
+	}
+	
+	
+	function pagination($data, $total_pages, $page){
+		$pagination = '';
+  		$post = '';
+		if (!empty($data['periode'])) {
+			$post .= '&periode=' . $data['periode'];
+		}
+		if (!empty($data['owner'])) {
+			$post .= '&owner=' . $data['owner'];
+		}
+	
+		if ($total_pages > 1) {
+			$pagination .= '<ul class="pagination">';
+			
+ 			if ($page > 4) {
+				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=1' . $post) . '">First</a></li>';
+			}
+			
+ 			for ($i = max(1, $page - 3); $i < $page; $i++) {
+				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+			}
+			
+ 			$pagination .= '<li class="active"><span>' . $page . '</span></li>';
+			
+ 			for ($i = $page + 1; $i <= min($page + 3, $total_pages); $i++) {
+				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+			}
+			
+ 			if ($page < $total_pages - 3) {
+				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $total_pages . $post) . '">Last</a></li>';
+			}
+			
+			$pagination .= '</ul>';
+		}
+		
+		return $pagination;
+	}
+	
+
 	function listBox_INHERENT_ANALISIS($rows, $value)
 	{
 		// $nilai = ;

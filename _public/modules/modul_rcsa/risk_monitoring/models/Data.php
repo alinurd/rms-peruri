@@ -170,6 +170,144 @@ if($rows){
 
         return $result;
     }
+
+    public function getDetail($data, $limit, $offset) {
+
+        if($data['periode']){
+            $this->db->where('tahun', $data['periode']);
+        }
+
+        if($data['owner']){
+            $this->get_owner_child($data['owner']);
+            $this->owner_child[] = $data['owner'];
+            $this->db->where_in('owner_no', $this->owner_child);     
+        }
+
+        $this->db->where('sts_propose', 4);
+
+        $this->db->limit($limit, $offset);
+
+        return $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+    }
+     
+    public function count_all_data($data) {
+        if($data['periode']){
+            $this->db->where('tahun', $data['periode']);
+        }
+        if($data['owner']){
+            $this->get_owner_child($data['owner']);
+            $this->owner_child[] = $data['owner'];
+            $this->db->where_in('owner_no', $this->owner_child);     
+        }
+        $this->db->where('sts_propose', 4);
+
+        return $this->db->count_all_results(_TBL_VIEW_RCSA_DETAIL);
+    }
+    
+    function getMonthlyMonitoringGlobal($q, $month)
+	{
+ 		 
+		$act = $this->db
+			->select('id')
+			->where('rcsa_detail_no',$q['id'])
+ 			->get('bangga_rcsa_action')->row_array();
+
+
+		$data['kri'] = $this->db
+			->where('rcsa_detail',$q['id'])
+			->get(_TBL_KRI)->row_array();
+ 		$data['kri_detail'] = $this->db
+		->where('rcsa_detail', $data['kri']['rcsa_detail'])
+		->where('bulan',  $month)
+		->get(_TBL_KRI_DETAIL)->row_array();
+
+		$data['data'] = $this->db
+			->where('rcsa_action_no', $act['id'])
+			->where('bulan', $month)
+			->get('bangga_view_rcsa_action_detail')->row_array();
+
+ 
+			$detail = $this->db
+			->select('periode_name')
+			->where('id',$q['id'])
+ 			->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
+			
+		$blnnow = date('m');
+		$thnRcsa   = substr( $detail['periode_name'], 0, 4 );
+		$tgl           = 01;
+
+		$dateRcsa  = new DateTime( $thnRcsa . '-' . $month . '-' . $tgl );
+		$hariIni   = new DateTime();
+		// doi::dump($dateRcsa);
+		// doi::dump($hariIni);
+		if($hariIni >= $dateRcsa ){
+			
+		
+
+		// if ($blnnow >= $month) {
+
+
+			$data['before'] = $this->db
+				->where('rcsa_action_no', $act['id'])
+				->where('bulan', $month - 1)
+				->get('bangga_view_rcsa_action_detail')->row_array();
+		}
+
+        $realisasi = $data['kri_detail']['realisasi'];
+        $level_1 = range($data['kri']['min_rendah'], $data['kri']['max_rendah']);
+        $level_2 = range($data['kri']['min_menengah'], $data['kri']['max_menengah']);
+        $level_3 = range($data['kri']['min_tinggi'], $data['kri']['max_tinggi']);
+        if ($data['kri']) {
+            $krnm = "K R I";
+            if (in_array($realisasi, $level_1)) {
+                $bgres = 'style="background-color: #7FFF00;color: #000;"';
+            } elseif (in_array($realisasi, $level_2)) {
+                $bgres = 'style="background-color: #FFFF00;color:#000;"';
+            } elseif (in_array($realisasi, $level_3)) {
+                $bgres = 'class="bg-danger" style=" color: #000;"';
+            } else {
+                $bgres = '';
+            }
+        } else {
+            $bgres = '';
+        }
+
+        $monthly = $data['data'];
+        $like_impact = $this->data->level_action($monthly['residual_likelihood_action'], $monthly['residual_impact_action']);
+        $progress_detail_ = $like_impact['like']['code'] * $like_impact['impact']['code'];
+        $progress_detail = $like_impact['like']['code'] . ' x ' . $like_impact['impact']['code'];
+
+        $monthbefore = $data['before'];
+
+        if (!$monthbefore && $month !=1) {
+			$result = '<i class="  fa fa-times-circle text-danger"></i>';
+		} else {
+        if (!$monthly) {
+            $result = '<a style="z-index: -1;" href="' . base_url('risk_monitoring/update/' . $q['id'] . '/' . $q['rcsa_no'] . '/' . $month) . '" class=" style="z-index: -1;"propose pointer btn btn-light" data-id="' . $q['id'] . '"><i class="icon-pencil"></i></a>';
+        } else {
+            $result = '<a class="propose" href="' . base_url('risk_monitoring/update/' . $q['id'] . '/' . $q['rcsa_no'] . '/' . $month) . '"><span class="btn" style="padding:4px 8px;width:100%;background-color:' . $monthly['warna_action'] . ';color:' . $monthly['warna_text_action'] . ';">' . $monthly['inherent_analisis_action'] . ' [' . $progress_detail . ']</span></a><div title=" realisasi KRI"  > <span  ' . $bgres . '> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ' . $krnm . '  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  </div>';
+        }
+    }
+
+ 		return $result;
+	}
+
+	public function level_action($like, $impact)
+	{
+		// doi::dump($like);
+		// doi::dump($impact);
+		$result['like'] = $this->db
+			->where('id', $like)
+ 			->get('bangga_level')->row_array();
+
+		$result['impact'] = $this->db
+			->where('id', $impact)
+ 			->get('bangga_level')->row_array();
+
+		return $result;
+
+	}
+    
 }
 /* End of file app_login_model.php */
 /* Location: ./application/models/app_login_model.php */
