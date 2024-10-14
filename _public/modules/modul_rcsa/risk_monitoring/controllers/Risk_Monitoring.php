@@ -135,9 +135,13 @@ class Risk_Monitoring extends BackendController
 		$page = $this->input->get('page') ? $this->input->get('page') : 1;
 		$limit = 10; 
 		$data['periode'] = $this->input->get('periode');
-		$data['owner'] = $this->input->get('owner');
-		
-		$total_data = $this->data->count_all_data($data); 
+		$x=$this->authentication->get_info_user();
+		$own=$x['group']['owner']['owner_no'];
+ 		if($this->input->get('owner')){
+			$own= $this->input->get('owner');
+		}
+		$data['owner'] =$own;
+ 		$total_data = $this->data->count_all_data($data); 
 		$total_pages = ceil($total_data / $limit); 
 		$offset = ($page - 1) * $limit;
 		$x['total_data'] = $total_data;
