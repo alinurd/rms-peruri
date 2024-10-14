@@ -27,9 +27,9 @@ class Rcsa_Control_Matric extends BackendController
 		$this->set_Open_Tab('Risk Control Matric');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
 
-		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true,  'show' => true));
-		$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => true,  'show' => true));
-		$this->addField(array('field' => 'judul_assesment', 'input' => 'combo:search', 'combo' => $this->cbo_ja, 'size' => 100, 'required' => true, 'search' => true,  'show' => true));
+		// $this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true,  'show' => true));
+		// $this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => true,  'show' => true));
+		$this->addField(array('field' => 'judul_assesment', 'show'=>false));
  		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Control Matric', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		// $this->addField(array('field' => 'officer_no', 'show' => false, 'save' => true, 'default' => $this->authentication->get_info_user('identifier')));
 		// $this->addField(array('field' => 'create_user', 'search' => false, 'default' => $this->authentication->get_info_user('username')));
@@ -113,7 +113,7 @@ class Rcsa_Control_Matric extends BackendController
 		// $this->set_Table_List($this->tbl_master, 'sts_propose_text', 'Propose', 0, 'center');
 		// $this->set_Table_List($this->tbl_master, 'item_use', '', 8, 'center');
 		// $this->set_Table_List($this->tbl_master, 'register', 'Risk Register', 5, 'center');
-
+		$this->_SET_PRIVILEGE('add', false);
 		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
 		// $this->set_Where_Table($this->tbl_master, 'type', '=', $this->nil_tipe);
 		$this->_CHANGE_TABLE_MASTER(_TBL_RCSA);

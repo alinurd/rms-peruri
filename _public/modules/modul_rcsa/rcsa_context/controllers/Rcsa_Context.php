@@ -35,7 +35,7 @@ class Rcsa_Context extends BackendController
 		$this->addField(array('field' => 'anggota_pic', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'tugas_pic', 'input' => 'multitext:sms', 'size' => 10000));
 		$this->addField(array('field' => 'tupoksi', 'title' => 'Pekerjaan di luar Tupoksi', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Appetite', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		// $this->addField(array('field' => 'sasaran', 'title' => 'Risk Appetite', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->addField(array('field' => 'tahun_rcsa', 'show' => false));
 		$this->addField(array('field' => 'bulan_rcsa', 'show' => false));
 

@@ -23,19 +23,21 @@ class Rcsa_Criteria extends BackendController
 		$this->cbo_type = $this->get_combo('type-project');
 		$this->cbo_bulan = $this->get_combo('bulan');
 
-		$this->set_Open_Tab('General Information');
+		$this->set_Open_Tab('Kriteria Kemungkinan Risiko');
+		// $this->set_Open_Tab('General Information');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
-		$this->addField(array('field' => 'judul_assesment', 'size' => 100, 'search' => false));
-		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true));
-		$this->addField(array('field' => 'officer_no', 'show' => false, 'save' => true, 'default' => $this->authentication->get_info_user('identifier')));
-		$this->addField(array('field' => 'create_user', 'search' => false, 'default' => $this->authentication->get_info_user('username')));
-		$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => false));
-		$this->addField(array('field' => 'anggaran_rkap', 'type' => 'float', 'input' => 'float', 'required' => true));
-		$this->addField(array('field' => 'owner_pic', 'size' => 100, 'search' => false));
-		$this->addField(array('field' => 'anggota_pic', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'tugas_pic', 'input' => 'multitext:sms', 'size' => 10000));
-		$this->addField(array('field' => 'tupoksi', 'title' => 'Pekerjaan di luar Tupoksi', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Appetite', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		// $this->addField(array('field' => 'judul_assesment', 'size' => 100, 'search' => false));
+		$this->addField(array('field' => 'judul_assesment', 'show' => false));
+		// $this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true));
+		// $this->addField(array('field' => 'officer_no', 'show' => false, 'default' => $this->authentication->get_info_user('identifier')));
+		// $this->addField(array('field' => 'create_user', 'show' => false));
+		// $this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => false));
+		// $this->addField(array('field' => 'anggaran_rkap', 'type' => 'float', 'input' => 'float', 'required' => true));
+		// $this->addField(array('field' => 'owner_pic', 'size' => 100, 'search' => false));
+		// $this->addField(array('field' => 'anggota_pic', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'tugas_pic', 'input' => 'multitext:sms', 'size' => 10000));
+		// $this->addField(array('field' => 'tupoksi', 'title' => 'Pekerjaan di luar Tupoksi', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'sasaran', 'title' => 'Risk Appetite', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->addField(array('field' => 'tahun_rcsa', 'show' => false));
 		$this->addField(array('field' => 'bulan_rcsa', 'show' => false));
 
@@ -44,51 +46,51 @@ class Rcsa_Criteria extends BackendController
 		// $this->addField(array('field' => 'appetite', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		// $this->set_Close_Tab();
 
-		$this->set_Open_Tab('Rencana Implementasi MR'); // implementasi_risiko
-		$this->addField(array('field' => 'implementasi_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-		$this->set_Close_Tab();
+		// $this->set_Open_Tab('Rencana Implementasi MR'); // implementasi_risiko
+		// $this->addField(array('field' => 'implementasi_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		// $this->set_Close_Tab();
 
-		$this->addField(array('field' => 'item_use', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
-		$this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
-		$this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
+		// $this->addField(array('field' => 'item_use', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
+		// $this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
+		// $this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
 		$this->addField(array('field' => 'name', 'show' => false));
 		$this->addField(array('field' => 'periode_name', 'show' => false));
 		$this->addField(array('field' => 'sts_propose_text', 'show' => false));
 		$this->addField(array('field' => 'sts_propose', 'show' => false));
-		$this->set_Close_Tab();
+		// $this->set_Close_Tab();
 
-		$this->set_Open_Tab('Isu Internal');
-		$this->addField(array('field' => 'man', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'method', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'machine', 'input' => 'multitext',  'size' => 10000));
-		$this->addField(array('field' => 'money', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'material', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'market', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'stakeholder_internal', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-		$this->set_Close_Tab();
+		// $this->set_Open_Tab('Isu Internal');
+		// $this->addField(array('field' => 'man', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'method', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'machine', 'input' => 'multitext',  'size' => 10000));
+		// $this->addField(array('field' => 'money', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'material', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'market', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'stakeholder_internal', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		// $this->set_Close_Tab();
 
-		$this->set_Open_Tab('Isu External');
-		$this->addField(array('field' => 'politics', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'economics', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'social', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'tecnology', 'title' => 'Technology', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'environment', 'title' => 'Environment', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'legal', 'input' => 'multitext', 'size' => 10000));
-		$this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-		$this->set_Close_Tab();
+		// $this->set_Open_Tab('Isu External');
+		// $this->addField(array('field' => 'politics', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'economics', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'social', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'tecnology', 'title' => 'Technology', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'environment', 'title' => 'Environment', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'legal', 'input' => 'multitext', 'size' => 10000));
+		// $this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		// $this->set_Close_Tab();
 
-		$this->set_Open_Tab('Dokumen Lainnnya');
-		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
-		$this->set_Close_Tab();
+		// $this->set_Open_Tab('Dokumen Lainnnya');
+		// $this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
+		// $this->set_Close_Tab();
 
-		$this->set_Open_Tab('Kriteria Kemungkinan Risiko ');
-		$this->addField(array('field' => 'kriteria_kemungkinan_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		
+		$this->addField(array('field' => 'kriteria_kemungkinan_risiko','title' => 'Kriteria Kemungkinan Risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		
 		$this->set_Close_Tab();
 
 		$this->set_Open_Tab('Kriteria Dampak Risiko ');
-		$this->addField(array('field' => 'kriteria_dampak_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+		$this->addField(array('field' => 'kriteria_dampak_risiko', 'title' => 'Kriteria Dampak Risiko','type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
-
 	
 		// $this->addField(array('field' => 'copy', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 
@@ -139,42 +141,61 @@ class Rcsa_Criteria extends BackendController
 		return $result;
 	}
 
-	function updateBox_KRITERIA_KEMUNGKINAN_RISIKO($field)
-	{
-		$content = $this->get_kriteria_kemungkinan_risiko();
-		return $content;
-	}
+	public function updateBox_KRITERIA_KEMUNGKINAN_RISIKO($field)
+{
+    // Mengambil segment URI ke-3 sebagai contoh
+    $id = $this->uri->segment(3); 
+    // Lanjutkan ke fungsi utama
+    $content = $this->get_kriteria_kemungkinan_risiko($id); // Mengirimkan id ke fungsi lain jika diperlukan
+    return $content;
+}
+
 	function insertBox_KRITERIA_KEMUNGKINAN_RISIKO($field)
 	{
 		$content = $this->get_kriteria_kemungkinan_risiko();
 		return $content;
 	}
-	function get_kriteria_kemungkinan_risiko($id = 0)
-	{
-		$data['kriteria'] = [1 => [
-			'name' => 'Sangat Kecil',
-			'color' => 'green',
-		], 2 => [
-			'name' => 'Kecil',
-			'color' => 'lightgreen'
-		], 3 => [
-			'name' => 'Sedang',
-			'color' => 'yellow'
-		], 4 => [
-			'name' => 'Besar',
-			'color' => 'orange'
-		], 5 => [
-			'name' => 'Sangat Besar',
-			'color' => 'red'
-		]];
-		$data['kemungkinan'] = $this->db->where('kelompok', 'kriteria-kemungkinan')->get(_TBL_DATA_COMBO)->result_array();
 
-		$result = $this->load->view('krit_kemungkinan',  $data, true);
-		return $result;
-	}
+	public function get_kriteria_kemungkinan_risiko($id = 0)
+{
+    // Definisi data kriteria
+    $data['kriteria'] = [
+        1 => ['name' => 'Sangat Kecil', 'color' => 'green'],
+        2 => ['name' => 'Kecil', 'color' => 'lightgreen'],
+        3 => ['name' => 'Sedang', 'color' => 'yellow'],
+        4 => ['name' => 'Besar', 'color' => 'orange'],
+        5 => ['name' => 'Sangat Besar', 'color' => 'red']
+    ];
+
+    // Query untuk mengambil data kemungkinan berdasarkan kelompok dan param1
+    $data['kemungkinan'] = $this->db
+        ->where('kelompok', 'kriteria-kemungkinan')
+        ->where('param1', $id)  // Menambahkan kondisi untuk field param1
+        ->get(_TBL_DATA_COMBO)
+        ->result_array();
+
+    // Jika data `kemungkinan` kosong, ambil data dengan `param1` kosong
+    if (empty($data['kemungkinan'])) {
+        $data['kemungkinan'] = $this->db
+            ->where('kelompok', 'kriteria-kemungkinan')
+            ->where('param1', NULL)  // Menambahkan kondisi untuk field param1 kosong
+            ->or_where('param1', '') // Jika kosong bisa berupa NULL atau string kosong
+            ->get(_TBL_DATA_COMBO)
+            ->result_array();
+    }
+
+    // Menampilkan data pada view
+    $result = $this->load->view('krit_kemungkinan', $data, true);
+    return $result;
+}
+
+
+
 	function updateBox_KRITERIA_DAMPAK_RISIKO($field)
 	{
-		$content = $this->get_kriteria_dampak_risiko();
+		// Mengambil segment URI ke-3 sebagai contoh
+		$id = $this->uri->segment(3);
+		$content = $this->get_kriteria_dampak_risiko($id);
 		return $content;
 	}
 	function insertBox_KRITERIA_DAMPAK_RISIKO($field)
@@ -201,8 +222,27 @@ class Rcsa_Criteria extends BackendController
 			'name' => 'Sangat Besar',
 			'color' => 'red'
 		]];
-		$data['dampak'] = $this->db->where('kelompok', 'kriteria-dampak')->get(_TBL_DATA_COMBO)->result_array();
-		// $data['field'] = $this->db->where('risiko_no', $id)->get(_TBL_SUBRISIKO)->result_array();
+
+		// Query untuk mengambil data dampak berdasarkan kelompok dan param1
+		$data['dampak'] = $this->db
+		->where('kelompok', 'kriteria-dampak')
+		->where('param1', $id)  // Menambahkan kondisi untuk field param1
+		->get(_TBL_DATA_COMBO)
+		->result_array();
+
+		// Jika data `dampak` kosong, ambil data dengan `param1` kosong
+		if (empty($data['dampak'])) {
+		$data['dampak'] = $this->db
+			->where('kelompok', 'kriteria-dampak')
+			->group_start()               // Memulai grouping kondisi untuk NULL atau string kosong
+				->where('param1', NULL)
+				->or_where('param1', '')  // Jika kosong bisa berupa NULL atau string kosong
+			->group_end()                 // Mengakhiri grouping kondisi
+			->get(_TBL_DATA_COMBO)
+			->result_array();
+		}
+
+
 		$result = $this->load->view('krit_dampak',  $data, true);
 		return $result;
 	}
@@ -692,11 +732,15 @@ class Rcsa_Criteria extends BackendController
 		return $result;
 	}
 
+	
+
 	function POST_UPDATE_PROCESSOR($id, $new_data, $old_data)
 	{
 		$result = $this->data->save_detail($id, $new_data, 'edit', $old_data);
 		return $result;
 	}
+
+	
 
 	function list_MANIPULATE_PERSONAL_ACTION($tombol, $rows)
 	{
@@ -1329,7 +1373,6 @@ class Rcsa_Criteria extends BackendController
 
 		echo json_encode($data);
 	}
-
 
 
 
