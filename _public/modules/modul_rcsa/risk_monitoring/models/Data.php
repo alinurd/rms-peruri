@@ -173,9 +173,7 @@ if($rows){
 
     public function getDetail($data, $limit, $offset) {
 
-        if($data['periode']){
-            $this->db->where('tahun', $data['periode']);
-        }
+      
 
         if($data['owner']){
             $this->get_owner_child($data['owner']);
@@ -183,6 +181,9 @@ if($rows){
             $this->db->where_in('owner_no', $this->owner_child);     
         }
 
+        if($data['periode']){
+            $this->db->where('tahun', $data['periode']);
+        }
         $this->db->where('sts_propose', 4);
 
         $this->db->limit($limit, $offset);
@@ -191,14 +192,17 @@ if($rows){
     }
      
     public function count_all_data($data) {
-        if($data['periode']){
-            $this->db->where('tahun', $data['periode']);
-        }
+      
         if($data['owner']){
             $this->get_owner_child($data['owner']);
             $this->owner_child[] = $data['owner'];
             $this->db->where_in('owner_no', $this->owner_child);     
         }
+
+        if($data['periode']){
+            $this->db->where('tahun', $data['periode']);
+        }
+        
         $this->db->where('sts_propose', 4);
 
         return $this->db->count_all_results(_TBL_VIEW_RCSA_DETAIL);
