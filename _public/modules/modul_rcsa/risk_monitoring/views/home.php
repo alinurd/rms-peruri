@@ -66,9 +66,9 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Risk Owner</th>
-                        <th>Peristiwa Risiko</th>
+                    <th style="position: sticky; left: 0; background: white; z-index: 99;">No</th>
+                    <th style="position: sticky; left: 30px; background: white; z-index: 115px;">Risk Owner</th>
+                    <th style="position: sticky; left: 95px; background: white; z-index: 99; width: 320px;">Peristiwa Risiko</th>
                         <th>Tahun</th>
                         <th>Level Risiko Inheren</th>
                         <th>Level Risiko Target</th>
@@ -102,9 +102,11 @@
                         $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level1['color'] . ';color:' . $residual_level1['color_text'] . ';">' . $residual_level1['level_mapping'] . '</span>';
                     ?>
                         <tr>
-                            <td><?= $no++ ?></td>
-                            <td><?= $q['name'] ?></td>
-                            <td><?= $q['event_name'] ?></td>
+                           
+                        <td style="position: sticky; left: 0; background: white;"><?= $no++ ?></td>
+                        <td style="position: sticky; left: 30px; background: white;"><?= $q['name'] ?></td>
+                        <td style="position: sticky; left: 95px; background: white;"><?= $q['event_name'] ?></td>
+                       
                             <td><?= $q['tahun'] ?></td>
                             <td><?= $inherent ?></td>
                             <td><?= $target ?></td>
