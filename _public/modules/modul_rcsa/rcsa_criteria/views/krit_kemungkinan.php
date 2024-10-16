@@ -45,7 +45,11 @@ $info_owner = $this->authentication->get_info_user('group_owner');
                                                         ?>
                                                         <!-- Input hidden untuk menyimpan data kriteria -->
                                                         <input type="hidden" name="kriteria[<?= $kee ?>][name]" value="<?= $kee ?>">
+<<<<<<< HEAD
                                                         <?= form_textarea('area['.$kee.'][]', isset($kemu['area']) ? $kemu['area'] : '', "maxlength='10000' class='form-control' rows='2' style='overflow: hidden; height: 104px;'"); ?>
+=======
+                                                        <?= form_textarea('area['.$kee.'][]', isset($kemu['area']) ?  html_entity_decode($kemu['area']) : '', "maxlength='10000' class='form-control' rows='2' style='overflow: hidden; height: 104px;'"); ?>
+>>>>>>> b05f1e0750811d09f6690f9429f538a14f157db2
                                                     </td>
                                                 <?php endforeach; ?>
                                                 <td><button type="button" class="btn btn-danger removeRowBtn"><i class="fa fa-trash"></i></button></td>

@@ -131,6 +131,102 @@ class Risk_Monitoring extends BackendController
 		$this->set_Close_Setting();
 	}
 
+	public function index() {
+		$start_time = microtime(true);
+		$page = $this->input->get('page') ? $this->input->get('page') : 1;
+		$limit = 10; 
+ 		$data['periode'] = $this->input->get('periode');
+		$x=$this->authentication->get_info_user();
+		$own=$x['group']['owner']['owner_no'];
+ 		if($this->input->get('owner')){
+			$own= $this->input->get('owner');
+		}
+		$twD = date('n'); 
+
+		if ($twD >= 1 && $twD <= 3) {
+			$tw = 1; 
+		} elseif ($twD >= 4 && $twD <= 6) {
+			$tw = 2; 
+		} elseif ($twD >= 7 && $twD <= 9) {
+			$tw = 3;
+		} elseif ($twD >= 10 && $twD <= 12) {
+			$tw = 4;
+		} else {
+			$tw = 0;
+		}
+		
+		// Cek apakah ada input triwulan dari form, jika ada, gunakan triwulan dari input
+		if ($this->input->get('triwulan')) {
+			$tw = $this->input->get('triwulan');
+		}
+		$data['owner'] =$own;
+ 		$total_data = $this->data->count_all_data($data); 
+		$total_pages = ceil($total_data / $limit); 
+		$offset = ($page - 1) * $limit;
+		$x['total_data'] = $total_data;
+		$x['start_data'] = $offset + ($total_data>0)?1:0;
+		$x['end_data'] = min($offset + $limit, $total_data);
+		$x['cboPeriod'] = $this->cbo_periode;
+		$x['triwulan'] = $tw;
+		$x['cboOwner'] = $this->cbo_parent;
+		$x['field'] = $this->data->getDetail($data, $limit, $offset);
+		
+	
+		
+
+ 		if ($total_data > 0) {
+			$x['pagination'] = $this->pagination($data, $total_pages, $page);
+		} else {
+			$x['pagination'] = '';  
+		}
+		$end_time = microtime(true);
+		$execution_time = ($end_time - $start_time);
+		$x['timeLoad'] =round($execution_time,2);
+		$this->template->build('home', $x);
+	}
+	
+	
+	function pagination($data, $total_pages, $page){
+		$pagination = '';
+  		$post = '';
+		if (!empty($data['periode'])) {
+			$post .= '&periode=' . $data['periode'];
+		}
+		if (!empty($data['owner'])) {
+			$post .= '&owner=' . $data['owner'];
+		}
+		if (!empty($data['triwulan'])) {
+			$post .= '&triwulan=' . $data['triwulan'];
+		}
+	
+		if ($total_pages > 1) {
+			$pagination .= '<ul class="pagination">';
+			
+ 			if ($page > 4) {
+				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=1' . $post) . '">First</a></li>';
+			}
+			
+ 			for ($i = max(1, $page - 3); $i < $page; $i++) {
+				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+			}
+			
+ 			$pagination .= '<li class="active"><span>' . $page . '</span></li>';
+			
+ 			for ($i = $page + 1; $i <= min($page + 3, $total_pages); $i++) {
+				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+			}
+			
+ 			if ($page < $total_pages - 3) {
+				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $total_pages . $post) . '">Last</a></li>';
+			}
+			
+			$pagination .= '</ul>';
+		}
+		
+		return $pagination;
+	}
+	
+
 	function listBox_INHERENT_ANALISIS($rows, $value)
 	{
 		// $nilai = ;
