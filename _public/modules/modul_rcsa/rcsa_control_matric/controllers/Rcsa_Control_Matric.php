@@ -59,6 +59,7 @@ class Rcsa_Control_Matric extends BackendController
 		$this->addField(array('field' => 'periode_name', 'show' => false));
 		// $this->addField(array('field' => 'sts_propose_text', 'show' => false));
 		// $this->addField(array('field' => 'sts_propose', 'show' => false));
+		// $this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
 		$this->set_Close_Tab();
 
 		// $this->set_Open_Tab('Isu Internal');
@@ -90,7 +91,6 @@ class Rcsa_Control_Matric extends BackendController
 		// $this->set_Close_Tab();
 
 		// $this->set_Open_Tab('Dokumen Lainnnya');
-		// $this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
 		// $this->set_Close_Tab();
 		// $this->addField(array('field' => 'copy', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 
@@ -534,7 +534,8 @@ class Rcsa_Control_Matric extends BackendController
 	function get_sasaran($id = 0)
 	{
 		$id = $this->uri->segment(3);
-		$data['field'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCSA_SASARAN)->result_array();
+		// $data['field'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCSA_SASARAN)->result_array();
+		$data['bisnis_proses'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCM)->result_array();
 		$result = $this->load->view('crm', $data, true);
 		return $result;
 	}

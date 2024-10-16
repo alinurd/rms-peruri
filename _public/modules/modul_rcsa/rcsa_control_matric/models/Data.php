@@ -23,207 +23,391 @@ class Data extends MX_Model {
 		return $result;
 	}
 
-	function save_detail($newid, $data, $mode, $old=[]){
-		$updf['id'] = $newid;
-// doi::dump($data);
-doi::dump($mode);
-// die($newid);
-		$implementasi = $data['implementasi'];
- 		foreach ($implementasi as $index => $item) {
+	function save_detail($newid, $data, $mode, $old = []) {
 
-			$upimp['rcsa_no'] = $newid;
-			$upimp['combo_no'] = $index;
+		$rcsa_no            = $newid;
+		$bisnisProses       = $data['bisnisProses'];
+		$existingControl    = $data['exixtingControl'];
+		$metodePengujian    = $data['metodePengujian'];
+		$penilaianControl   = $data['penilaianControl'];
+		$kelemahanControl   = $data['kelemahanControl'];
+		$tindakLanjut       = $data['tindakLanjut'];
+		$bisnisProseslama   = isset($data['bisnisProseslama']) ? $data['bisnisProseslama'] : [];
+		$exixtingControllama = isset($data['exixtingControllama']) ? $data['exixtingControllama'] : [];
+		$count_bisnis_baru  = count($bisnisProses);
+		$count_exiting_baru = count($exixtingControllama);
+	
+		// Mengecek jumlah bisnis proses di database
+		$this->db->where('rcsa_no', $rcsa_no);
+		$count_bisnis_db = $this->db->count_all_results(_TBL_RCM);
+	
+		// Jika jumlah bisnis proses baru lebih kecil dari jumlah di database, hapus bisnis proses lama
+		if ($count_bisnis_baru < $count_bisnis_db) {
 
-			if (isset($item['bulan'])) {
-				$upimp['ket'] = $item['ket'];
-				$upimp['combo_no'] = $index;
-				$bulanData[$index] = $item['bulan'];
-				// save data nya impentasi
-
-				if ($mode=="edit") {
-					$wr['rcsa_no'] = $newid;
-					$wr['combo_no'] = $index;
-					$imp = $this->db
-						->select('jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec,ket')
-						->where('rcsa_no', $newid)
-						->where('combo_no', $index)
-						->get(_TBL_RCSA_IMPLEMENTASI)
-						->row_array();
-						if(!$imp){
-						$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimp, 'type' => 'add'));
-
-						}
-					$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimp, 'where' => $wr, 'type' => 'update'));
-
-				}else{	
-					$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimp, 'type' => 'add'));
-				}
-
+			if (empty($bisnisProses)) {
+				// Jika tidak ada bisnis proses baru, ambil ID dari bisnis proses lama yang ada
+				$this->db->where('rcsa_no', $rcsa_no);
+				$this->db->select('id')
+					->from(_TBL_RCM);
+				$bisnis_id_hapus = $this->db->get()->result_array();
+			} else {
+				// Jika ada bisnis proses baru, ambil ID bisnis proses yang akan dihapus
+				$this->db->where('rcsa_no', $rcsa_no);
+				$this->db->select('id')
+					->from(_TBL_RCM)
+					->where_not_in('id', $bisnisProseslama);
+				$bisnis_id_hapus = $this->db->get()->result_array();
 			}
-		}
-		foreach ($bulanData as $index => $bln) {
-			$upbln = array();
-			foreach ($bln as $resbulan) {
-				doi::dump($resbulan);
-				$splitData = explode('##', $resbulan);
-				$upbln[strtolower($splitData[0])] = $splitData[1].$index;
-			}
-
-			$wr['rcsa_no'] = $newid;
-			$wr['combo_no'] = $index;
 			
-			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upbln, 'where' => $wr, 'type' => 'update'));
-			// Proses update berdasarkan 'rcsa_no' dan 'combo_no' => $index
-		}
-
-
-		// die();
-
-
-
-
-
-		// die();
-		// $upd['type'] = $tipe;
-		if (isset($data['id_edit'])){
-			if(count($data['id_edit'])>0){
-				foreach($data['id_edit'] as $key=>$row)
-				{
-					$upd=array();
-					// doi::dump($data);
-					// die('cek');
-					$upd['rcsa_no'] = $newid;
-					$upd['sasaran'] = $data['sasaran'][$key];
-					$upd['statement'] = $data['statement'][$key];
-					$upd['appetite'] = $data['appetite'][$key];
-					$upd['appetite_max'] = $data['appetite_max'][$key];
-					$upd['tolerance'] = $data['tolerance'][$key];
-					$upd['tolerance_max'] = $data['tolerance_max'][$key];
-					$upd['limit'] = $data['limit'][$key];
-					$upd['limit_max'] = $data['limit_max'][$key];
-					// $upd['strategi'] = $data['strategi'][$key];
-					// $upd['kebijakan'] = $data['kebijakan'][$key];
-					
-					if(intval($row)>0)
-					{
-						$upd['update_user'] = $this->authentication->get_info_user('username');
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_SASARAN, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
+			if (!empty($bisnis_id_hapus)) {
+				// Mengubah hasil menjadi array dari ID yang akan dihapus
+				$id_hapus = array_column($bisnis_id_hapus, 'id');
+			
+				// Mengambil dokumen yang terkait dengan existing control sebelum penghapusan
+				$this->db->select('dokumen')
+					->from(_TBL_EXISTING_CONTROL)
+					->where_in('rcm_id', $id_hapus);
+				$dokumen_existing = $this->db->get()->result_array();
+			
+				// Menghapus dokumen dari server
+				foreach ($dokumen_existing as $dokumen) {
+					if (!empty($dokumen['dokumen']) && file_exists('./themes/upload/crm/' . $dokumen['dokumen'])) {
+						unlink('./themes/upload/crm/' . $dokumen['dokumen']); // Menghapus file lama
 					}
-					else
-					{
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_SASARAN, 'field'=>$upd,'type'=>'add'));
+				}
+			
+				// Menghapus data existing control terkait
+				$this->db->where_in('rcm_id', $id_hapus);
+				$this->db->delete(_TBL_EXISTING_CONTROL);
+			
+				// Menghapus data bisnis proses
+				$this->db->where('rcsa_no', $rcsa_no);
+				$this->db->where_in('id', $id_hapus); // Menghapus hanya yang dihapus
+				$this->db->delete(_TBL_RCM);
+			}
+			
+		}
+	
+		// Iterasi melalui bisnis proses baru
+		foreach ($bisnisProses as $i => $process) {
+			if (empty($bisnisProseslama[$i])) {
+				$data_bisnis = [
+					'bussines_process'  => $process,
+					'create_date'       => date('Y-m-d H:i:s'),
+					'create_user'       => $this->authentication->get_info_user('username'),
+					'rcsa_no'           => $rcsa_no,
+				];
+				$result = $this->crud->crud_data(['table' => _TBL_RCM, 'field' => $data_bisnis, 'type' => 'add']);
+				$bisnis_id = $this->db->insert_id();
+			} else {
+				$data_bisnis = [
+					'bussines_process'  => $process,
+					'update_date'       => date('Y-m-d H:i:s'),
+					'update_user'       => $this->authentication->get_info_user('username'),
+					'rcsa_no'           => $rcsa_no,
+				];
+				$result = $this->crud->crud_data(['table' => _TBL_RCM, 'field' => $data_bisnis, 'where' => ['id' => $bisnisProseslama[$i]], 'type' => 'update']);
+				$bisnis_id = $bisnisProseslama[$i];
+			}
+	
+			// Iterasi melalui existing control yang terkait dengan bisnis proses
+			foreach ($existingControl[$i] as $j => $control) {
+				$this->db->where('rcm_id', $bisnisProseslama[$i]);
+				$count_exiting_db = $this->db->count_all_results(_TBL_EXISTING_CONTROL);
+	
+				if ($count_exiting_baru[$i] < $count_exiting_db) {
+					// Mengambil dokumen existing control sebelum penghapusan
+					$this->db->select('dokumen')
+						->from(_TBL_EXISTING_CONTROL)
+						->where('rcm_id', $bisnisProseslama[$i])
+						->where_not_in('id', $exixtingControllama[$i]);
+					$dokumen_existing = $this->db->get()->result_array();
+	
+					// Menghapus dokumen dari server
+					foreach ($dokumen_existing as $dokumen) {
+						if (!empty($dokumen['dokumen']) && file_exists('./themes/upload/crm/' . $dokumen['dokumen'])) {
+							unlink('./themes/upload/crm/' . $dokumen['dokumen']); // Menghapus file lama
+						}
+					}
+	
+					// Menghapus existing control
+					$this->db->where('rcm_id', $bisnisProseslama[$i]);
+					$this->db->where_not_in('id', $exixtingControllama[$i]);
+					$this->db->delete(_TBL_EXISTING_CONTROL);
+				}
+	
+				// Tambah atau update existing control
+				$data_existing_cont = [
+					'component'               => $control,
+					'metode_pengujian'        => $metodePengujian[$i][$j],
+					'penilaian_intern_control' => $penilaianControl[$i][$j],
+					'kelemahan_control'       => $kelemahanControl[$i][$j],
+					'rencana_tindak_lanjut'   => $tindakLanjut[$i][$j],
+					'rcm_id'                  => $bisnis_id,
+				];
+	
+				if (empty($exixtingControllama[$i][$j])) {
+					$data_existing_cont['create_date'] = date('Y-m-d H:i:s');
+					$data_existing_cont['create_user'] = $this->authentication->get_info_user('username');
+					$result = $this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => $data_existing_cont, 'type' => 'add']);
+				} else {
+					$data_existing_cont['update_date'] = date('Y-m-d H:i:s');
+					$data_existing_cont['update_user'] = $this->authentication->get_info_user('username');
+					$result = $this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => $data_existing_cont, 'where' => ['id' => $exixtingControllama[$i][$j]], 'type' => 'update']);
+				}
+	
+				// Mengelola file upload jika ada
+				if (!empty($_FILES['fileupload']['name'][$i])) {
+					foreach ($_FILES['fileupload']['name'][$i] as $key => $file) {
+						if (!empty($file)) {
+							// Mengambil file dokumen lama dari database
+							$existing_file = $this->db->select('dokumen')
+								->from(_TBL_EXISTING_CONTROL)
+								->where('id', $exixtingControllama[$i][$j])
+								->get()
+								->row();
+	
+							// Menghapus file lama jika ada
+							if ($existing_file && file_exists('./themes/upload/crm/' . $existing_file->dokumen)) {
+								unlink('./themes/upload/crm/' . $existing_file->dokumen);
+							}
+	
+							$_FILES['userfile'] = [
+								'name' => $_FILES['fileupload']['name'][$i][$key],
+								'type' => $_FILES['fileupload']['type'][$i][$key],
+								'tmp_name' => $_FILES['fileupload']['tmp_name'][$i][$key],
+								'error' => $_FILES['fileupload']['error'][$i][$key],
+								'size' => $_FILES['fileupload']['size'][$i][$key],
+							];
+							$upload = upload_file_new([
+								'nm_file' => 'userfile',
+								'size' => 10000000,
+								'path' => 'crm',
+								'thumb' => false,
+								'type' => 'pdf|doc|docx',
+							], true, $i);
+							if ($upload) {
+								$data_existing_cont['dokumen'] = $upload['file_name'];
+								$this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => ['dokumen' => $upload['file_name']], 'where' => ['rcm_id' => $bisnis_id, 'component' => $control], 'type' => 'update']);
+							} else {
+								log_message('error', 'Upload file gagal: ' . $this->upload->display_errors());
+							}
+						}
 					}
 				}
 			}
 		}
-
-		if (isset($data['id_edit_in'])){
-			if(count($data['id_edit_in'])>0){
-				foreach($data['id_edit_in'] as $key=>$row)
-				{
-					$upd=array();
-					$upd['rcsa_no'] = $newid;
-					$upd['stakeholder_type'] = 1;
-					$upd['stakeholder'] = $data['stakeholder_in'][$key];
-					$upd['peran'] = $data['peran_in'][$key];
-					$upd['komunikasi'] = $data['komunikasi_in'][$key];
-					$upd['potensi'] = $data['potensi_in'][$key];
-					
-					if(intval($row)>0)
-					{
-						$upd['update_user'] = $this->authentication->get_info_user('username');
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_STAKEHOLDER, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
-					}
-					else
-					{
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_STAKEHOLDER, 'field'=>$upd,'type'=>'add'));
-					}
-				}
-			}
-		}
-
-		if (isset($data['id_edit_ex'])){
-			if(count($data['id_edit_ex'])>0){
-				foreach($data['id_edit_ex'] as $key=>$row)
-				{
-					$upd=array();
-					$upd['rcsa_no'] = $newid;
-					$upd['stakeholder_type'] = 2;
-					$upd['stakeholder'] = $data['stakeholder_ex'][$key];
-					$upd['peran'] = $data['peran_ex'][$key];
-					$upd['komunikasi'] = $data['komunikasi_ex'][$key];
-					$upd['potensi'] = $data['potensi_ex'][$key];
-					
-					if(intval($row)>0)
-					{
-						$upd['update_user'] = $this->authentication->get_info_user('username');
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_STAKEHOLDER, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
-					}
-					else
-					{
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_STAKEHOLDER, 'field'=>$upd,'type'=>'add'));
-					}
-				}
-			}
-		}
-		if (isset($data['id_edit_p'])){
-			if(count($data['id_edit_p'])>0){
-				foreach($data['id_edit_p'] as $key=>$row)
-				{
-					$upd=array();
-					$upd['rcsa_no'] = $newid;
-					$upd['kriteria_type'] = 1;
-					$upd['deskripsi'] = $data['deskripsi_p'][$key];
-					$upd['sangat_besar'] = $data['sangat_besar_p'][$key];
-					$upd['sangat_kecil'] = $data['sangat_kecil_p'][$key];
-					$upd['besar'] = $data['besar_p'][$key];
-					$upd['sedang'] = $data['sedang_p'][$key];
-					$upd['kecil'] = $data['kecil_p'][$key];
-					
-					if(intval($row)>0)
-					{
-
-						$upd['update_user'] = $this->authentication->get_info_user('username');
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_KRITERIA, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
-					}
-					else
-					{
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_KRITERIA, 'field'=>$upd,'type'=>'add'));
-					}
-				}
-			}
-		}
-		if (isset($data['id_edit_d'])){
-			if(count($data['id_edit_d'])>0){
-				foreach($data['id_edit_d'] as $key=>$row)
-				{
-					$upd=array();
-					$upd['rcsa_no'] = $newid;
-					$upd['kriteria_type'] = 2;
-					$upd['deskripsi'] = $data['deskripsi_d'][$key];
-					$upd['sub_kriteria_no'] = $data['sub_kriteria_no_d'][$key];
-					$upd['sangat_besar'] = $data['sangat_besar_d'][$key];
-					$upd['sangat_kecil'] = $data['sangat_kecil_d'][$key];
-					$upd['besar'] = $data['besar_d'][$key];
-					$upd['sedang'] = $data['sedang_d'][$key];
-					$upd['kecil'] = $data['kecil_d'][$key];
-					
-					if(intval($row)>0)
-					{
-		
-						$upd['update_user'] = $this->authentication->get_info_user('username');
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_KRITERIA, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
-					}
-					else
-					{
-						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_KRITERIA, 'field'=>$upd,'type'=>'add'));
-					}
-				}
-			}
-		}
-
 		return true;
 	}
+	
+	
+	
+	
+	
+	
+
+
+// 	function save_detail($newid, $data, $mode, $old=[]){
+// 		$updf['id'] = $newid;
+// // doi::dump($data);
+// doi::dump($mode);
+// // die($newid);
+// 		$implementasi = $data['implementasi'];
+//  		foreach ($implementasi as $index => $item) {
+
+// 			$upimp['rcsa_no'] = $newid;
+// 			$upimp['combo_no'] = $index;
+
+// 			if (isset($item['bulan'])) {
+// 				$upimp['ket'] = $item['ket'];
+// 				$upimp['combo_no'] = $index;
+// 				$bulanData[$index] = $item['bulan'];
+// 				// save data nya impentasi
+
+// 				if ($mode=="edit") {
+// 					$wr['rcsa_no'] = $newid;
+// 					$wr['combo_no'] = $index;
+// 					$imp = $this->db
+// 						->select('jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec,ket')
+// 						->where('rcsa_no', $newid)
+// 						->where('combo_no', $index)
+// 						->get(_TBL_RCSA_IMPLEMENTASI)
+// 						->row_array();
+// 						if(!$imp){
+// 						$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimp, 'type' => 'add'));
+
+// 						}
+// 					$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimp, 'where' => $wr, 'type' => 'update'));
+
+// 				}else{	
+// 					$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimp, 'type' => 'add'));
+// 				}
+
+// 			}
+// 		}
+// 		foreach ($bulanData as $index => $bln) {
+// 			$upbln = array();
+// 			foreach ($bln as $resbulan) {
+// 				doi::dump($resbulan);
+// 				$splitData = explode('##', $resbulan);
+// 				$upbln[strtolower($splitData[0])] = $splitData[1].$index;
+// 			}
+
+// 			$wr['rcsa_no'] = $newid;
+// 			$wr['combo_no'] = $index;
+			
+// 			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upbln, 'where' => $wr, 'type' => 'update'));
+// 			// Proses update berdasarkan 'rcsa_no' dan 'combo_no' => $index
+// 		}
+
+
+// 		// die();
+
+
+
+
+
+// 		// die();
+// 		// $upd['type'] = $tipe;
+// 		if (isset($data['id_edit'])){
+// 			if(count($data['id_edit'])>0){
+// 				foreach($data['id_edit'] as $key=>$row)
+// 				{
+// 					$upd=array();
+// 					// doi::dump($data);
+// 					// die('cek');
+// 					$upd['rcsa_no'] = $newid;
+// 					$upd['sasaran'] = $data['sasaran'][$key];
+// 					$upd['statement'] = $data['statement'][$key];
+// 					$upd['appetite'] = $data['appetite'][$key];
+// 					$upd['appetite_max'] = $data['appetite_max'][$key];
+// 					$upd['tolerance'] = $data['tolerance'][$key];
+// 					$upd['tolerance_max'] = $data['tolerance_max'][$key];
+// 					$upd['limit'] = $data['limit'][$key];
+// 					$upd['limit_max'] = $data['limit_max'][$key];
+// 					// $upd['strategi'] = $data['strategi'][$key];
+// 					// $upd['kebijakan'] = $data['kebijakan'][$key];
+					
+// 					if(intval($row)>0)
+// 					{
+// 						$upd['update_user'] = $this->authentication->get_info_user('username');
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_SASARAN, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
+// 					}
+// 					else
+// 					{
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_SASARAN, 'field'=>$upd,'type'=>'add'));
+// 					}
+// 				}
+// 			}
+// 		}
+
+// 		if (isset($data['id_edit_in'])){
+// 			if(count($data['id_edit_in'])>0){
+// 				foreach($data['id_edit_in'] as $key=>$row)
+// 				{
+// 					$upd=array();
+// 					$upd['rcsa_no'] = $newid;
+// 					$upd['stakeholder_type'] = 1;
+// 					$upd['stakeholder'] = $data['stakeholder_in'][$key];
+// 					$upd['peran'] = $data['peran_in'][$key];
+// 					$upd['komunikasi'] = $data['komunikasi_in'][$key];
+// 					$upd['potensi'] = $data['potensi_in'][$key];
+					
+// 					if(intval($row)>0)
+// 					{
+// 						$upd['update_user'] = $this->authentication->get_info_user('username');
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_STAKEHOLDER, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
+// 					}
+// 					else
+// 					{
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_STAKEHOLDER, 'field'=>$upd,'type'=>'add'));
+// 					}
+// 				}
+// 			}
+// 		}
+
+// 		if (isset($data['id_edit_ex'])){
+// 			if(count($data['id_edit_ex'])>0){
+// 				foreach($data['id_edit_ex'] as $key=>$row)
+// 				{
+// 					$upd=array();
+// 					$upd['rcsa_no'] = $newid;
+// 					$upd['stakeholder_type'] = 2;
+// 					$upd['stakeholder'] = $data['stakeholder_ex'][$key];
+// 					$upd['peran'] = $data['peran_ex'][$key];
+// 					$upd['komunikasi'] = $data['komunikasi_ex'][$key];
+// 					$upd['potensi'] = $data['potensi_ex'][$key];
+					
+// 					if(intval($row)>0)
+// 					{
+// 						$upd['update_user'] = $this->authentication->get_info_user('username');
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_STAKEHOLDER, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
+// 					}
+// 					else
+// 					{
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_STAKEHOLDER, 'field'=>$upd,'type'=>'add'));
+// 					}
+// 				}
+// 			}
+// 		}
+// 		if (isset($data['id_edit_p'])){
+// 			if(count($data['id_edit_p'])>0){
+// 				foreach($data['id_edit_p'] as $key=>$row)
+// 				{
+// 					$upd=array();
+// 					$upd['rcsa_no'] = $newid;
+// 					$upd['kriteria_type'] = 1;
+// 					$upd['deskripsi'] = $data['deskripsi_p'][$key];
+// 					$upd['sangat_besar'] = $data['sangat_besar_p'][$key];
+// 					$upd['sangat_kecil'] = $data['sangat_kecil_p'][$key];
+// 					$upd['besar'] = $data['besar_p'][$key];
+// 					$upd['sedang'] = $data['sedang_p'][$key];
+// 					$upd['kecil'] = $data['kecil_p'][$key];
+					
+// 					if(intval($row)>0)
+// 					{
+
+// 						$upd['update_user'] = $this->authentication->get_info_user('username');
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_KRITERIA, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
+// 					}
+// 					else
+// 					{
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_KRITERIA, 'field'=>$upd,'type'=>'add'));
+// 					}
+// 				}
+// 			}
+// 		}
+// 		if (isset($data['id_edit_d'])){
+// 			if(count($data['id_edit_d'])>0){
+// 				foreach($data['id_edit_d'] as $key=>$row)
+// 				{
+// 					$upd=array();
+// 					$upd['rcsa_no'] = $newid;
+// 					$upd['kriteria_type'] = 2;
+// 					$upd['deskripsi'] = $data['deskripsi_d'][$key];
+// 					$upd['sub_kriteria_no'] = $data['sub_kriteria_no_d'][$key];
+// 					$upd['sangat_besar'] = $data['sangat_besar_d'][$key];
+// 					$upd['sangat_kecil'] = $data['sangat_kecil_d'][$key];
+// 					$upd['besar'] = $data['besar_d'][$key];
+// 					$upd['sedang'] = $data['sedang_d'][$key];
+// 					$upd['kecil'] = $data['kecil_d'][$key];
+					
+// 					if(intval($row)>0)
+// 					{
+		
+// 						$upd['update_user'] = $this->authentication->get_info_user('username');
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_KRITERIA, 'field'=>$upd,'where'=>array('id'=>$row),'type'=>'update'));
+// 					}
+// 					else
+// 					{
+// 						$result=$this->crud->crud_data(array('table'=>_TBL_RCSA_KRITERIA, 'field'=>$upd,'type'=>'add'));
+// 					}
+// 				}
+// 			}
+// 		}
+
+// 		return true;
+// 	}
 	function get_data_tanggal($id_rcsa){
 
 		$rows = $this->db->where('rcsa_no', $id_rcsa)->where('keterangan', 'Approve Risk Assessment')->order_by('create_date','DESC')->get(_TBL_LOG_PROPOSE,1)->result_array();

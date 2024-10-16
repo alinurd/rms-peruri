@@ -268,6 +268,8 @@ if ( ! function_exists('save_debug'))
 		{
 			// die();
 			$nm_tbl='debug';
+			var_dump($ci->authentication->is_loggedin());
+			// log_message('debug', 'Authentication object: ' . print_r($this->authentication, true));
 			if ($ci->authentication->is_loggedin()){
 				$upd['user'] = $ci->authentication->get_Info_User('username');
 				$upd['user_no'] = $ci->authentication->get_Info_User('identifier');
@@ -422,6 +424,72 @@ if ( ! function_exists('upload_image'))
 }
 
 
+if (!function_exists('upload_file_new')) {
+	function upload_file_new($data = array(), $multi = false, $no = 0) {
+		if (!array_key_exists('path', $data)) $data['path'] = 'staft';
+		if (!array_key_exists('nm_random', $data)) $data['nm_random'] = TRUE;
+		if (!array_key_exists('type', $data)) $data['type'] = 'pdf';
+		if (!array_key_exists('thumb', $data)) $data['thumb'] = TRUE;
+		if (!array_key_exists('size', $data)) $data['size'] = 10000;
+		if (!array_key_exists('sub_path', $data)) $data['sub_path'] = '';
+		if (!array_key_exists('file_name', $data)) $data['file_name'] = $_FILES[$data['nm_file']]['name'];
+
+		switch ($data['path']) {
+			case 'crm':
+				$path = crm_path_relative();
+				break;
+			default:
+				$path = upload_path_relative();
+				break;
+		}
+
+		if (defined('_CABANG_NO_')) {
+			$fld = strtolower(_CABANG_NO_ . '-' . url_title(_CABANG_KODE_));
+			if (!is_dir($path . '/' . $fld)) {
+				mkdir($path . '/' . $fld, 0777, TRUE);
+			}
+			$path .= '/' . $fld;
+		}
+
+		$ci =& get_instance();
+		$config['upload_path'] = $path;
+		$config['allowed_types'] = $data['type'];
+		$config['max_size'] = $data['size'];
+		$config['overwrite'] = false;
+		$config['remove_space'] = true;
+		$data['file_name'] = preg_replace('/(.*)\\.[^\\.]*/', '$1', $data['file_name']);
+
+		if ($data['nm_random']) {
+			$config['file_name'] = md5($data['file_name'] . time());
+		} else {
+			$config['file_name'] = url_title(strtolower(basename($data['file_name'])));
+		}
+
+		if (!is_dir($config['upload_path'])) {
+			return false;
+		}
+
+		if (($multi && $no == 0) || !$multi) {
+			$ci->load->library('Upload', $config);
+		} else {
+			$ci->upload->initialize($config, true);
+		}
+
+		if (!$ci->upload->do_upload($data['nm_file'],$data)) {
+			$ci->session->set_userdata(array('result_proses_error' => $ci->upload->display_errors()));
+			return false;
+		} else {
+			$result = $ci->upload->data();
+		}
+
+		if ($data['thumb']) {
+			create_thumb($result['file_name'], 160, $path);
+			create_thumb($result['file_name'], 60, $path);
+		}
+
+		return $result;
+	}
+}
 if ( ! function_exists('upload_image_new'))
 {
 	function upload_image_new($data=array(), $multi=false, $no=0){
@@ -475,6 +543,9 @@ if ( ! function_exists('upload_image_new'))
 				break;
 			case 'img':
 				$path=img_path_relative();
+				break;
+			case 'crm':
+				$path=crm_path_relative();
 				break;
 			case 'upload':
 				$path=upload_path_relative();

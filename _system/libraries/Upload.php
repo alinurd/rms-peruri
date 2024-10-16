@@ -1016,6 +1016,9 @@ class CI_Upload {
 		if($p =="news"){
 			$this->upload_path= "./themes/upload/$p/";
 		}
+		if($p =="crm"){
+			$this->upload_path= "./themes/upload/$p/";
+		}
 		// doi::dump('patch=>'.$this->upload_path);
 		if ($this->upload_path === '')
 		{
