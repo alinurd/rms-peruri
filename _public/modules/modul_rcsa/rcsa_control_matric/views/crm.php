@@ -14,10 +14,9 @@
     }
     .upload-icon {
         font-size: 1.5em;
-        color: #007bff;
+        /* color: #007bff; */
         cursor: pointer;
     }
-
 </style>
 <?php
 $cboPengujian = [
@@ -117,23 +116,22 @@ $cboPenilaian = [
                                     ]); ?>
                                 </td>
                                 <td width="2.5%" style="vertical-align: middle;">
-                                    <div class="upload-icon-wrapper">
-                                        <label class="upload-icon">
-                                            <i class="fa fa-upload"></i>
-                                            <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?=$ex['dokumen']?>" multiple />
-                                            <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "" : "required"; ?> />
-                                        </label>
-                                    </div>
-                            
-
+                                <div class="upload-icon-wrapper">
+                                    <label class="upload-icon <?= !empty($ex['dokumen']) ? 'text-success' : ''; ?>">
+                                        <i class="fa fa-upload"></i>
+                                        <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?=$ex['dokumen']?>" multiple />
+                                        <input type="file" name="fileupload[<?= $i; ?>][]"  id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "" : "required"; ?> />
+                                    </label>
+                                </div>
+                                
                                 </td>
-                                <td style="vertical-align: middle;">
-                                    <a href="path/to/your/file.pdf" class="link-label" target="_blank">
+                                <!-- <td class="text-center" style="vertical-align: middle;">
+                                    <a href="<?= base_url('theme/upload/crm/').$ex['dokumen']; ?>" target="_blank">
                                         <span class="badge badge-success bg-success">PDF</span>
                                     </a>
-                                </td>
+                                </td> -->
+
                                 <td width="2.5%" class="text-center" style="vertical-align: middle;">
-                                    
                                     <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
                                         <i class="fa fa-trash"></i>
                                     </button>
@@ -224,7 +222,6 @@ $cboPenilaian = [
                     <table class="table table-border">
                         <tbody id="metode_${rcmCount}">
                             <tr>
-                            <td><input type="hidden" name="exixtingControllama[${rcmCount}][]" ><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                                 <td><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                                 <td style="vertical-align: middle;">
                                     <select name="metodePengujian[${rcmCount}][]" class="form-control select2" style="width:100%;">
