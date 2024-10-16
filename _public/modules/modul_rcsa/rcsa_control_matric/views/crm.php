@@ -17,6 +17,7 @@
         color: #007bff;
         cursor: pointer;
     }
+
 </style>
 <?php
 $cboPengujian = [
@@ -55,71 +56,90 @@ $cboPenilaian = [
     </thead>
     <tbody id="rcm_body">
         <?php $i = 0; ?>
-        <?php foreach ($field as $key => $row): $i++; ?>
+        <?php foreach ($bisnis_proses as $key => $row): $i++; 
+        
+        $exiting_control = $this->db->where('rcm_id', $row['id'])
+                                ->get(_TBL_EXISTING_CONTROL)
+                                ->result_array();
+        ?>
+        
             <tr id="rcm_<?= $i; ?>">
                 <td style="text-align:center;"><?= $i; ?></td>
                 <td>
-                    <?= form_textarea('bisnisProses[]', $row['bisnisProses'], [
+                    <input type="hidden" name="bisnisProseslama[<?=$i;?>]" value="<?= $row['id']?>">
+                    <?= form_textarea("bisnisProses[{$i}]", $row['bussines_process'], [
                         'maxlength' => '10000',
                         'class' => 'form-control',
                         'rows' => '2',
-                        'style' => 'overflow: hidden; height: 104px;'
+                        'style' => 'overflow: hidden; height: 104px;','required' => 'required'
                     ]); ?>
                 </td>
                 <td colspan="6">
                     <table class="table table-border">
                         <tbody id="metode_<?= $i; ?>">
+                        <?php foreach ($exiting_control as $key => $ex): ?>
                             <tr>
                                 <td width="19%">
-                                    <?= form_textarea("exixtingControl[{$i}][]", $row['exixtingControl'], [
+                                <input type="hidden" name="exixtingControllama[<?=$i;?>][]" value="<?= $ex['id']?>">
+                                    <?= form_textarea("exixtingControl[{$i}][]", $ex['component'], [
                                         'maxlength' => '10000',
                                         'class' => 'form-control',
                                         'rows' => '2',
-                                        'style' => 'overflow: hidden; height: 104px;'
+                                        'style' => 'overflow: hidden; height: 104px;','required' => 'required'
                                     ]); ?>
                                 </td>
                                 <td width="19%" style="vertical-align: middle;">
-                                    <?= form_dropdown("metodePengujian[{$i}][]", $cboPengujian, $row['metodePengujian'], [
+                                    <?= form_dropdown("metodePengujian[{$i}][]", $cboPengujian, $ex['metode_pengujian'], [
                                         'class' => 'form-control select2',
-                                        'style' => 'width:100%;'
+                                        'style' => 'width:100%;','required' => 'required'
                                     ]); ?>
                                 </td>
                                 <td width="19%" style="vertical-align: middle;">
-                                    <?= form_dropdown("penilaianControl[{$i}][]", $cboPenilaian, $row['penilaianControl'], [
+                                    <?= form_dropdown("penilaianControl[{$i}][]", $cboPenilaian, $ex['penilaian_intern_control'], [
                                         'class' => 'form-control select2',
-                                        'style' => 'width:100%;'
+                                        'style' => 'width:100%;','required' => 'required'
                                     ]); ?>
                                 </td>
                                 <td width="19%">
-                                    <?= form_textarea("kelemahanControl[{$i}][]", $row['kelemahanControl'], [
+                                    <?= form_textarea("kelemahanControl[{$i}][]", $ex['kelemahan_control'], [
                                         'maxlength' => '10000',
                                         'class' => 'form-control',
                                         'rows' => '2',
-                                        'style' => 'overflow: hidden; height: 104px;'
+                                        'style' => 'overflow: hidden; height: 104px;','required' => 'required'
                                     ]); ?>
                                 </td>
                                 <td width="19%">
-                                    <?= form_textarea("tindakLanjut[{$i}][]", $row['tindakLanjut'], [
+                                    <?= form_textarea("tindakLanjut[{$i}][]", $ex['rencana_tindak_lanjut'], [
                                         'maxlength' => '10000',
                                         'class' => 'form-control',
                                         'rows' => '2',
-                                        'style' => 'overflow: hidden; height: 104px;'
+                                        'style' => 'overflow: hidden; height: 104px;','required' => 'required'
                                     ]); ?>
                                 </td>
                                 <td width="2.5%" style="vertical-align: middle;">
-                                  <div class="upload-icon-wrapper">
-                                      <label class="upload-icon">
-                                          <i class="fa fa-upload"></i>
-                                          <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" required />
-                                      </label>
-                                  </div>
+                                    <div class="upload-icon-wrapper">
+                                        <label class="upload-icon">
+                                            <i class="fa fa-upload"></i>
+                                            <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?=$ex['dokumen']?>" multiple />
+                                            <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "" : "required"; ?> />
+                                        </label>
+                                    </div>
+                            
+
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <a href="path/to/your/file.pdf" class="link-label" target="_blank">
+                                        <span class="badge badge-success bg-success">PDF</span>
+                                    </a>
                                 </td>
                                 <td width="2.5%" class="text-center" style="vertical-align: middle;">
+                                    
                                     <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
                             </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                     <center>
@@ -152,7 +172,7 @@ $cboPenilaian = [
         var metodeTable = document.getElementById('metode_' + rcmIndex);
         var newRow = `
             <tr>
-                <td><textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;"></textarea></td>
+                <td><input type="hidden" name="exixtingControllama[${rcmIndex}][]" ><textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                 <td style="vertical-align: middle;">
                     <select name="metodePengujian[${rcmIndex}][]" class="form-control select2" style="width:100%;">
                         <?php foreach ($cboPengujian as $key => $value): ?>
@@ -167,12 +187,13 @@ $cboPenilaian = [
                         <?php endforeach; ?>
                     </select>
                 </td>
-                <td><textarea name="kelemahanControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;"></textarea></td>
-                <td><textarea name="tindakLanjut[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;"></textarea></td>
+                <td><textarea name="kelemahanControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
+                <td><textarea name="tindakLanjut[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                 <td style="vertical-align: middle;">
                   <div class="upload-icon-wrapper">
                       <label class="upload-icon">
                           <i class="fa fa-upload"></i>
+                          <input type="hidden" name="fileuploadlama[${rcmIndex}][]" id="userfile_${rcmIndex}" multiple />
                           <input type="file" name="fileupload[${rcmIndex}][]" id="userfile_${rcmIndex}" required />
                       </label>
                   </div>
@@ -197,12 +218,14 @@ $cboPenilaian = [
         var newRCM = `
             <tr id="rcm_${rcmCount}">
                 <td style="text-align:center;">${rcmCount}</td>
-                <td><textarea name="bisnisProses[]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;"></textarea></td>
+                
+                <td><input type="hidden" name="bisnisProseslama[${rcmCount}]"><textarea name="bisnisProses[${rcmCount}]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                 <td colspan="6">
                     <table class="table table-border">
                         <tbody id="metode_${rcmCount}">
                             <tr>
-                                <td><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;"></textarea></td>
+                            <td><input type="hidden" name="exixtingControllama[${rcmCount}][]" ><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
+                                <td><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                                 <td style="vertical-align: middle;">
                                     <select name="metodePengujian[${rcmCount}][]" class="form-control select2" style="width:100%;">
                                         <?php foreach ($cboPengujian as $key => $value): ?>
@@ -217,12 +240,13 @@ $cboPenilaian = [
                                         <?php endforeach; ?>
                                     </select>
                                 </td>
-                                <td><textarea name="kelemahanControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;"></textarea></td>
-                                <td><textarea name="tindakLanjut[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;"></textarea></td>
+                                <td><textarea name="kelemahanControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
+                                <td><textarea name="tindakLanjut[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                                <td style="vertical-align: middle;">
                                   <div class="upload-icon-wrapper">
                                       <label class="upload-icon">
                                           <i class="fa fa-upload"></i>
+                                          <input type="hidden" name="fileuploadlama[${rcmCount}][]" id="userfile_${rcmCount}" multiple />
                                           <input type="file" name="fileupload[${rcmCount}][]" id="userfile_${rcmCount}" required />
                                       </label>
                                   </div>
