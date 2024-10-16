@@ -117,10 +117,10 @@ $cboPenilaian = [
                                 </td>
                                 <td width="2.5%" style="vertical-align: middle;">
                                 <div class="upload-icon-wrapper">
-                                    <label class="upload-icon <?= !empty($ex['dokumen']) ? 'text-success' : ''; ?>">
+                                    <label class="upload-icon" style="<?= !empty($ex['dokumen']) ? 'color:green !important;' : ''; ?>">
                                         <i class="fa fa-upload"></i>
                                         <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?=$ex['dokumen']?>" multiple />
-                                        <input type="file" name="fileupload[<?= $i; ?>][]"  id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "" : "required"; ?> />
+                                        <input type="file" name="fileupload[<?= $i; ?>][]"  id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "required" : ""; ?> />
                                     </label>
                                 </div>
                                 
@@ -170,7 +170,10 @@ $cboPenilaian = [
         var metodeTable = document.getElementById('metode_' + rcmIndex);
         var newRow = `
             <tr>
-                <td><input type="hidden" name="exixtingControllama[${rcmIndex}][]" ><textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
+                <td>
+                    <input type="hidden" name="exixtingControllama[${rcmIndex}][]" >
+                    <textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
+                </td>
                 <td style="vertical-align: middle;">
                     <select name="metodePengujian[${rcmIndex}][]" class="form-control select2" style="width:100%;">
                         <?php foreach ($cboPengujian as $key => $value): ?>
@@ -222,7 +225,10 @@ $cboPenilaian = [
                     <table class="table table-border">
                         <tbody id="metode_${rcmCount}">
                             <tr>
-                                <td><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
+                            <td>
+                                <input type="hidden" name="exixtingControllama[${rcmCount}][]" >
+                                <textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
+                            </td>
                                 <td style="vertical-align: middle;">
                                     <select name="metodePengujian[${rcmCount}][]" class="form-control select2" style="width:100%;">
                                         <?php foreach ($cboPengujian as $key => $value): ?>
