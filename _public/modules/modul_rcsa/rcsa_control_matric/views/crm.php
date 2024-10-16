@@ -120,7 +120,7 @@ $cboPenilaian = [
                                     <label class="upload-icon <?= !empty($ex['dokumen']) ? 'text-success' : ''; ?>">
                                         <i class="fa fa-upload"></i>
                                         <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?=$ex['dokumen']?>" multiple />
-                                        <input type="file" name="fileupload[<?= $i; ?>][]"  id="userfile_<?= $i; ?>" multiple  />
+                                        <input type="file" name="fileupload[<?= $i; ?>][]"  id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "" : "required"; ?> />
                                     </label>
                                 </div>
                                 
@@ -222,7 +222,6 @@ $cboPenilaian = [
                     <table class="table table-border">
                         <tbody id="metode_${rcmCount}">
                             <tr>
-                            <td><input type="hidden" name="exixtingControllama[${rcmCount}][]" ><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                                 <td><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                                 <td style="vertical-align: middle;">
                                     <select name="metodePengujian[${rcmCount}][]" class="form-control select2" style="width:100%;">
