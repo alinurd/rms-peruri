@@ -170,8 +170,10 @@ $cboPenilaian = [
         var metodeTable = document.getElementById('metode_' + rcmIndex);
         var newRow = `
             <tr>
-                <td><input type="hidden" name="exixtingControllama[${rcmIndex}][]" ></td>
-                <td><textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
+                <td>
+                    <input type="hidden" name="exixtingControllama[${rcmIndex}][]" >
+                    <textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
+                </td>
                 <td style="vertical-align: middle;">
                     <select name="metodePengujian[${rcmIndex}][]" class="form-control select2" style="width:100%;">
                         <?php foreach ($cboPengujian as $key => $value): ?>
@@ -223,8 +225,10 @@ $cboPenilaian = [
                     <table class="table table-border">
                         <tbody id="metode_${rcmCount}">
                             <tr>
-                            <td><input type="hidden" name="exixtingControllama[${rcmCount}][]" ></td>
-                                <td><textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
+                            <td>
+                                <input type="hidden" name="exixtingControllama[${rcmCount}][]" >
+                                <textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
+                            </td>
                                 <td style="vertical-align: middle;">
                                     <select name="metodePengujian[${rcmCount}][]" class="form-control select2" style="width:100%;">
                                         <?php foreach ($cboPengujian as $key => $value): ?>
