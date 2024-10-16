@@ -117,13 +117,10 @@ class Data extends MX_Model {
 						// Simpan area terkait sub-kriteria dampak
 						if (isset($data['kriteria_dampak'])) {
 							foreach ($data['kriteria_dampak'] as $kriteria_key => $kriteria) {
-<<<<<<< HEAD
 								$area_value_dampak = $data['area_dampak'][$index][$dampak_index][$kriteria_key] ?? null;
-=======
 								// $area_value_dampak = $data['area_dampak'][$index][$dampak_index][$kriteria_key];
 								$area_value_dampak = $data['area_dampak'][$index][$kriteria_key][$dampak_index];
 								
->>>>>>> b05f1e0750811d09f6690f9429f538a14f157db2
 	
 								if ($area_value_dampak) {
 									$area_dampak_data = [
@@ -143,11 +140,7 @@ class Data extends MX_Model {
 				}
 			}
 		}
-<<<<<<< HEAD
-	
-=======
 		// exit;
->>>>>>> b05f1e0750811d09f6690f9429f538a14f157db2
 		return true;
 	}
 	
