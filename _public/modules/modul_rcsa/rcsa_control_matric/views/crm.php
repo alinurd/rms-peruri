@@ -120,7 +120,7 @@ $cboPenilaian = [
                                     <label class="upload-icon <?= !empty($ex['dokumen']) ? 'text-success' : ''; ?>">
                                         <i class="fa fa-upload"></i>
                                         <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?=$ex['dokumen']?>" multiple />
-                                        <input type="file" name="fileupload[<?= $i; ?>][]"  id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "" : "required"; ?> />
+                                        <input type="file" name="fileupload[<?= $i; ?>][]"  id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "required" : ""; ?> />
                                     </label>
                                 </div>
                                 
