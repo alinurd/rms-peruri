@@ -52,7 +52,7 @@
                                                                             ->row_array();
                                                                         ?>
                                                                         <input type="hidden" name="kriteria_dampak[<?= $kee ?>][name]" value="<?= $kee ?>">
-                                                                        <textarea name="area_dampak[<?=$i?>][<?=$key?>][<?=$kee;?>]" class="form-control" rows="2" style="overflow: hidden; height: 52px;"><?= $damp ? $damp['area'] : '' ?></textarea>
+                                                                        <textarea name="area_dampak[<?=$i?>][<?=$kee;?>][]" class="form-control" rows="2" style="overflow: hidden; height: 52px;"><?= $damp ? $damp['area'] : '' ?></textarea>
                                                                     </td>
                                                                 <?php endforeach; ?>
                                                                 <td class="text-center">
@@ -103,7 +103,7 @@
                 <?php foreach ($kriteria as $kee => $k): ?>
                     <td style="width: 15%; word-wrap: break-word;">
                     <input type="hidden" name="kriteria_dampak[<?= $kee ?>][name]" value="<?= $kee ?>">
-                        <textarea name="area_dampak[${rcmIndex}][${key}][<?=$kee;?>]" class="form-control" rows="2" style="overflow: hidden; height: 52px;"></textarea>
+                        <textarea name="area_dampak[${rcmIndex}][<?=$kee;?>][]" class="form-control" rows="2" style="overflow: hidden; height: 52px;"></textarea>
                     </td>
                 <?php endforeach; ?>
                 <td class="text-center">
@@ -137,7 +137,7 @@
                                 <?php foreach ($kriteria as $kee => $k): ?>
                                     <td style="width: 15%; word-wrap: break-word;">
                                     <input type="hidden" name="kriteria_dampak[<?= $kee ?>][name]" value="<?= $kee ?>">
-                                        <textarea name="area_dampak[${rcmCount}][0][<?=$kee;?>]" class="form-control" rows="2" style="overflow: hidden; height: 52px;"></textarea>
+                                        <textarea name="area_dampak[${rcmCount}][<?=$kee;?>][]" class="form-control" rows="2" style="overflow: hidden; height: 52px;"></textarea>
                                     </td>
                                 <?php endforeach; ?>
                                 <td class="text-center">
