@@ -21,6 +21,7 @@ if ($parent['sts_propose'] == 5) {
             <tr>
                 <th width="5%">No.</th>
                 <th width="5%">Key Risk</th>
+                <th width="5%">Risk Priority</th>
                 <th>Risk Identify</th>
                 <th class="text-center" width="20%">Risk Analysis Inherent </th>
                 <th width="15%">Risk Evaluasi</th>
@@ -38,7 +39,7 @@ if ($parent['sts_propose'] == 5) {
             foreach ($field as $key => $row) : ?>
 
                 <tr style="background-color:#d5edef;">
-                    <td colspan="9"><strong><?= strtoupper($row['nama']); ?></strong></td>
+                    <td colspan="10"><strong><?= strtoupper($row['nama']); ?></strong></td>
                 </tr>
                 <?php
                 $no = 0;
@@ -97,17 +98,21 @@ if ($parent['sts_propose'] == 5) {
                                 <span class="<?= $iskri ?>" style="font-weight: bold; font-size: 25px; color: <?= $cl ?>;" title="<?= $tl ?>">
                                     <i class="fa fa-key <?= $iskri ?>"></i>
                                 </span><br>
-                                <?php $sts_heatmap_value = isset($sts_heatmap['sts_heatmap']) ? $sts_heatmap['sts_heatmap'] : 0;?>
+
+                                                        </center>
+                            
+
+                        </td>
+                        <td class="text-center" style="vertical-align: middle;">
+                            <?php $sts_heatmap_value = isset($sts_heatmap['sts_heatmap']) ? $sts_heatmap['sts_heatmap'] : 0;?>
+                                <center>
                                 <input class="form-control custom-checkbox" 
                                 type="checkbox" 
                                 id="sts_heatmap_<?php echo htmlspecialchars($ros['id'], ENT_QUOTES, 'UTF-8'); ?>" 
                                 name="sts_heatmap" 
                                 value="<?php echo htmlspecialchars($ros['id'], ENT_QUOTES, 'UTF-8'); ?>" 
                                 <?php echo ($sts_heatmap['sts_heatmap'] == 1) ? 'checked' : ''; ?>>
-
-                                                        </center>
-                            
-
+                                </center>
                         </td>
                         <td class="peristiwa  pointer">
                             <?= $ros['event_name']; ?>
@@ -281,7 +286,7 @@ if ($parent['sts_propose'] == 5) {
         $("input[name='sts_heatmap']").change(function() {
             var isChecked = $(this).is(':checked') ? 1 : 0; // 1 untuk checked, 0 untuk unchecked
             var id = $(this).val(); // Ambil nilai checkbox (ID)
-            console.log(id);
+            // console.log(id);
 
             // Mengirim data ke server
             $.ajax({

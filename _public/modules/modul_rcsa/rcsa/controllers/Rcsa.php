@@ -895,7 +895,10 @@ if($dtkri){
 		$data['cbogroup1'] = $cbogroup1;
 		$data['inp_impact'] = form_input('', '', ' id="new_impact[]" name="new_impact[]" class="form-control" placeholder="Input Risk Impact Baru"');
 		$data['cbbii'] = form_dropdown('new_impact_no[]', $cbogroup1, '', 'class="form-control select2"');
-
+		
+		$data['cboLike']=$cboLike;
+		$data['cboImpact']=$cboImpact;
+		$data['analisiData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->row_array();
 
 
 		$this->template->build('fom_peristiwa', $data);
@@ -1821,6 +1824,12 @@ if($dtkri){
 			$cboTreatment1 = $this->get_combo('treatment1');
 			$cboTreatment2 = $this->get_combo('treatment2');
 
+			if(isset($post['mode'])){
+				if(isset($post['month'])){
+					$result['month'] = $post['month'];
+				}
+				$result['mode'] = $post['mode'];
+ 			}
 			if ($result['level_name'] == "Ekstrem") {
 				$result['level_resiko'] = $cboTreatment1;
 			} elseif ($result['level_name'] == "Low") {
@@ -2172,6 +2181,31 @@ if($dtkri){
 
 			// echo "Data file tidak ditemukan.";
 		}
+	}
+
+	public function simpan_analisis(){
+		$post = $this->input->post();
+		
+		$upd['analisis_like_inherent'] = $post['analisis_like_inherent'];
+		$upd['analisis_impact_inherent'] = $post['analisis_impact_inherent'];
+		$upd['analisis_like_residual'] = $post['analisis_like_residual'];
+		$upd['analisis_impact_residual'] = $post['analisis_impact_residual'];
+		$upd['target_impact'] = json_encode($post['target_impact']);
+		$upd['target_like'] = json_encode($post['target_like']);
+		$analisis = $this->db->where('id_detail', $post['id_detail'])->get('bangga_analisis_risiko')->row_array();
+		$res=false;
+		if ($analisis) {
+ 			$upd['update_by'] = $this->authentication->get_info_user('username');
+			 $res= $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $upd, 'where' => array('id_detail' => $post['id_detail']), 'type' => 'update'));
+		} else {
+			$upd['id_detail'] = $post['id_detail'];
+			$upd['create_by'] = $this->authentication->get_info_user('username');
+			$res=$this->crud->crud_data(['table' => 'bangga_analisis_risiko', 'field' => $upd, 'type' => 'add']);
+		}
+		$result['sts'] = $res;
+
+		$result['post'] = $post;
+		echo json_encode($result);
 	}
 
 }
