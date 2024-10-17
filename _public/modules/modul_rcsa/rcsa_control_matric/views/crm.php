@@ -1,141 +1,167 @@
+
 <style>
-    .upload-icon-wrapper {
-        position: relative;
-        display: inline-block;
-    }
-    .upload-icon-wrapper input[type="file"] {
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
+    .table {
+        table-layout: fixed;
         width: 100%;
-        height: 100%;
-        cursor: pointer;
+        border-collapse: collapse;
     }
-    .upload-icon {
-        font-size: 1.5em;
-        /* color: #007bff; */
-        cursor: pointer;
+
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+        /* border: 1px solid #ddd; */
     }
+
+    .form-control {
+        resize: none;
+        overflow: hidden;
+        height: 104px;
+    }
+
+    .file_upload > input{display:none;}
+   input[type=text]{width:50px;height:auto;}
+
+
 </style>
+
 <?php
-$cboPengujian = [
-    '1' => 'Inquery',
-    '2' => 'Observasi',
-    '3' => 'Inspeksi',
-    '4' => 'Rekonsiliasi',
-    '5' => 'Tracing',
-    '6' => 'Vouching',
-    '7' => 'Prosedur Analysis'
-];
-$cboPenilaian = [
-    '1' => 'Cukup & Efektif',
-    '2' => 'Sebagian',
-    '3' => 'Cukup & Tidak Efektif',
-    '4' => 'Tidak Cukup & Efektif Sebagian',
-    '5' => 'Tracing',
-    '6' => 'Vouching',
-    '7' => 'Tidak Cukup & Tidak Efektif'
-];
+
+    $cboPengujian = [
+        '1' => 'Inquery',
+        '2' => 'Observasi',
+        '3' => 'Inspeksi',
+        '4' => 'Rekonsiliasi',
+        '5' => 'Tracing',
+        '6' => 'Vouching',
+        '7' => 'Prosedur Analysis'
+    ];
+    $cboPenilaian = [
+        '1' => 'Cukup & Efektif',
+        '2' => 'Sebagian',
+        '3' => 'Cukup & Tidak Efektif',
+        '4' => 'Tidak Cukup & Efektif Sebagian',
+        '5' => 'Tracing',
+        '6' => 'Vouching',
+        '7' => 'Tidak Cukup & Tidak Efektif'
+    ];
+
 ?>
 
 <table class="table table-bordered" id="tbl_sasaran_new">
+
     <thead class="sticky-thead">
         <tr>
-            <th width="5%" style="text-align:center;">No.</th>
-            <th width="10%" style="text-align:center;">Bussines Process</th>
-            <th width="10%" style="text-align:center;">Existing Control</th>
-            <th width="10%" style="text-align:center;">Metode Pengujian</th>
-            <th width="10%" style="text-align:center;">Penilaian Internal Control</th>
-            <th width="10%" style="text-align:center;">Kelemahan Control</th>
-            <th width="10%" style="text-align:center;">Rencana Tindak Lanjut</th>
-            <th width="10%" style="text-align:center;">Upload Dokumen</th>
-            <th width="10%" style="text-align:center;">Aksi</th>
+            <th rowspan="2" width="5%">No.</th>
+            <th rowspan="2" width="15%">Bussines Process</th>
+            <th width="75%" colspan="6">Metode & Control</th>
+            <th rowspan="2" width="5%">Aksi</th>
+        </tr>
+        <tr>
+            <th width="19%">Existing Control</th>
+            <th width="19%">Metode Pengujian</th>
+            <th width="19%">Penilaian Internal Control</th>
+            <th width="19%">Kelemahan Control</th>
+            <th width="19%">Rencana Tindak Lanjut</th>
+            <th width="2%">Aksi</th>
         </tr>
     </thead>
+    
     <tbody id="rcm_body">
         <?php $i = 0; ?>
-        <?php foreach ($bisnis_proses as $key => $row): $i++; 
-        
-        $exiting_control = $this->db->where('rcm_id', $row['id'])
-                                ->get(_TBL_EXISTING_CONTROL)
-                                ->result_array();
+        <?php 
+            foreach ($bisnis_proses as $key => $row): $i++; 
+            $exiting_control = $this->db->where('rcm_id', $row['id'])->get(_TBL_EXISTING_CONTROL)->result_array();
         ?>
         
             <tr id="rcm_<?= $i; ?>">
+
                 <td style="text-align:center;"><?= $i; ?></td>
+
                 <td>
                     <input type="hidden" name="bisnisProseslama[<?=$i;?>]" value="<?= $row['id']?>">
                     <?= form_textarea("bisnisProses[{$i}]", $row['bussines_process'], [
                         'maxlength' => '10000',
-                        'class' => 'form-control',
-                        'rows' => '2',
-                        'style' => 'overflow: hidden; height: 104px;','required' => 'required'
+                        'class'     => 'form-control',
+                        'rows'      => '2',
+                        'style'     => 'overflow: hidden; height: 104px;','required' => 'required'
                     ]); ?>
                 </td>
-                <td colspan="6">
-                    <table class="table table-border">
+                
+                <td colspan="6" style="padding: 0px;">
+
+                    <table class="table table-borderless">    
                         <tbody id="metode_<?= $i; ?>">
                         <?php foreach ($exiting_control as $key => $ex): ?>
                             <tr>
-                                <td width="19%">
-                                <input type="hidden" name="exixtingControllama[<?=$i;?>][]" value="<?= $ex['id']?>">
+                                <td>
+                                    <input type="hidden" name="exixtingControllama[<?=$i;?>][]" value="<?= $ex['id']?>">
                                     <?= form_textarea("exixtingControl[{$i}][]", $ex['component'], [
                                         'maxlength' => '10000',
-                                        'class' => 'form-control',
-                                        'rows' => '2',
-                                        'style' => 'overflow: hidden; height: 104px;','required' => 'required'
+                                        'class'     => 'form-control',
+                                        'rows'      => '2',
+                                        'style'     => 'overflow: hidden; height: 104px;','required' => 'required'
                                     ]); ?>
                                 </td>
-                                <td width="19%" style="vertical-align: middle;">
+
+                                <td style="vertical-align: middle;">
                                     <?= form_dropdown("metodePengujian[{$i}][]", $cboPengujian, $ex['metode_pengujian'], [
-                                        'class' => 'form-control select2',
-                                        'style' => 'width:100%;','required' => 'required'
+                                        'class'     => 'form-control select2',
+                                        'style'     => 'width:100%;',
+                                        'required'  => 'required'
                                     ]); ?>
                                 </td>
-                                <td width="19%" style="vertical-align: middle;">
+
+                                <td style="vertical-align: middle;">
                                     <?= form_dropdown("penilaianControl[{$i}][]", $cboPenilaian, $ex['penilaian_intern_control'], [
-                                        'class' => 'form-control select2',
-                                        'style' => 'width:100%;','required' => 'required'
+                                        'class'     => 'form-control select2',
+                                        'style'     => 'width:100%;',
+                                        'required'  => 'required'
                                     ]); ?>
                                 </td>
-                                <td width="19%">
+
+                                <td>
                                     <?= form_textarea("kelemahanControl[{$i}][]", $ex['kelemahan_control'], [
                                         'maxlength' => '10000',
-                                        'class' => 'form-control',
-                                        'rows' => '2',
-                                        'style' => 'overflow: hidden; height: 104px;','required' => 'required'
+                                        'class'     => 'form-control',
+                                        'rows'      => '2',
+                                        'style'     => 'overflow: hidden; height: 104px;','required' => 'required'
                                     ]); ?>
                                 </td>
-                                <td width="19%">
+
+                                <td>
                                     <?= form_textarea("tindakLanjut[{$i}][]", $ex['rencana_tindak_lanjut'], [
                                         'maxlength' => '10000',
-                                        'class' => 'form-control',
-                                        'rows' => '2',
-                                        'style' => 'overflow: hidden; height: 104px;','required' => 'required'
+                                        'class'     => 'form-control',
+                                        'rows'      => '2',
+                                        'style'     => 'overflow: hidden; height: 104px;','required' => 'required'
                                     ]); ?>
                                 </td>
-                                <td width="2.5%" style="vertical-align: middle;">
-                                <div class="upload-icon-wrapper">
-                                    <label class="upload-icon" style="<?= !empty($ex['dokumen']) ? 'color:green !important;' : ''; ?>">
-                                        <i class="fa fa-upload"></i>
-                                        <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?=$ex['dokumen']?>" multiple />
-                                        <input type="file" name="fileupload[<?= $i; ?>][]"  id="userfile_<?= $i; ?>" multiple <?= !empty($ex['dokumen']) ? "required" : ""; ?> />
-                                    </label>
-                                </div>
-                                
-                                </td>
-                                <!-- <td class="text-center" style="vertical-align: middle;">
-                                    <a href="<?= base_url('theme/upload/crm/').$ex['dokumen']; ?>" target="_blank">
-                                        <span class="badge badge-success bg-success">PDF</span>
-                                    </a>
-                                </td> -->
 
-                                <td width="2.5%" class="text-center" style="vertical-align: middle;">
-                                    <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?= $ex['dokumen'] ?>" multiple />
+                                    
+                                    <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                                        <?php if (empty($ex['dokumen'])) : ?>
+                                            <label class="file_upload" style="margin: 0;">
+                                                <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" style="display: none;" />
+                                                <a class="btn btn-warning btn-xs" rel="nofollow" onclick="document.getElementById('userfile_<?= $i; ?>').click();">
+                                                    <i class="fa fa-upload"></i>
+                                                </a>
+                                            </label>
+                                        <?php endif; ?>
+                                        
+                                        <?php if (!empty($ex['dokumen'])) : ?>
+                                            <a href="<?= base_url('rcsa_control_matric/download/'.$ex['dokumen']) ?>" class="btn btn-success btn-xs" rel="nofollow">
+                                                <i class="fa fa-download"></i>
+                                            </a>
+                                        <?php endif; ?>
+
+                                        <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </td>
+
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -147,8 +173,8 @@ $cboPenilaian = [
                     </center>
                 </td>
                 <td class="text-center" style="vertical-align: middle;">
-                    <button class="btn btn-danger" type="button" onclick="removeRCM(<?= $i; ?>);">
-                        <i class="fa fa-trash"></i> RCM
+                    <button class="btn btn-danger btn-sm" type="button" onclick="removeRCM(<?= $i; ?>);">
+                        <i class="fa fa-trash"></i>
                     </button>
                 </td>
             </tr>
@@ -191,21 +217,22 @@ $cboPenilaian = [
                 <td><textarea name="kelemahanControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                 <td><textarea name="tindakLanjut[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                 <td style="vertical-align: middle;">
-                  <div class="upload-icon-wrapper">
-                      <label class="upload-icon">
-                          <i class="fa fa-upload"></i>
-                          <input type="hidden" name="fileuploadlama[${rcmIndex}][]" id="userfile_${rcmIndex}" multiple />
-                          <input type="file" name="fileupload[${rcmIndex}][]" id="userfile_${rcmIndex}" required />
-                      </label>
-                  </div>
-                </td>
-                <td class="text-center" style="vertical-align: middle;">
-                    <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
-                        <i class="fa fa-trash"></i>
-                    </button>
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                        <label class="file_upload" style="margin: 0;">
+                            <input type="file" name="fileupload[${rcmIndex}][]" id="userfile_${rcmIndex}" style="display: none;" />
+                            <a class="btn btn-warning btn-xs" rel="nofollow" onclick="document.getElementById('userfile_${rcmIndex}').click();">
+                                <i class="fa fa-upload"></i>
+                            </a>
+                        </label>
+
+                        <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>`;
         metodeTable.insertAdjacentHTML('beforeend', newRow);
+        $('.select2').select2();
     }
 
     // Remove specific Metode row
@@ -246,18 +273,18 @@ $cboPenilaian = [
                                 <td><textarea name="kelemahanControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                                 <td><textarea name="tindakLanjut[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
                                <td style="vertical-align: middle;">
-                                  <div class="upload-icon-wrapper">
-                                      <label class="upload-icon">
-                                          <i class="fa fa-upload"></i>
-                                          <input type="hidden" name="fileuploadlama[${rcmCount}][]" id="userfile_${rcmCount}" multiple />
-                                          <input type="file" name="fileupload[${rcmCount}][]" id="userfile_${rcmCount}" required />
-                                      </label>
-                                  </div>
-                                </td>
-                                <td class="text-center" style="vertical-align: middle;">
+                                  <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                                    <label class="file_upload" style="margin: 0;">
+                                        <input type="file" name="fileupload[${rcmCount}][]" id="userfile_${rcmCount}" style="display: none;" />
+                                        <a class="btn btn-warning btn-xs" rel="nofollow" onclick="document.getElementById('userfile_${rcmCount}').click();">
+                                            <i class="fa fa-upload"></i>
+                                        </a>
+                                    </label>
+
                                     <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
                                         <i class="fa fa-trash"></i>
                                     </button>
+                                </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -267,12 +294,13 @@ $cboPenilaian = [
                     </center>
                 </td>
                 <td class="text-center" style="vertical-align: middle;">
-                    <button class="btn btn-danger" type="button" onclick="removeRCM(${rcmCount});">
-                        <i class="fa fa-trash"></i> RCM
+                    <button class="btn btn-danger btn-sm" type="button" onclick="removeRCM(${rcmCount});">
+                        <i class="fa fa-trash"></i>
                     </button>
                 </td>
             </tr>`;
         $("#rcm_body").append(newRCM);
+        $('.select2').select2();
     });
 
     // Remove specific RCM row
