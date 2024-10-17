@@ -895,7 +895,10 @@ if($dtkri){
 		$data['cbogroup1'] = $cbogroup1;
 		$data['inp_impact'] = form_input('', '', ' id="new_impact[]" name="new_impact[]" class="form-control" placeholder="Input Risk Impact Baru"');
 		$data['cbbii'] = form_dropdown('new_impact_no[]', $cbogroup1, '', 'class="form-control select2"');
-
+		
+		$data['cboLike']=$cboLike;
+		$data['cboImpact']=$cboImpact;
+		$data['analisiData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->row_array();
 
 
 		$this->template->build('fom_peristiwa', $data);
