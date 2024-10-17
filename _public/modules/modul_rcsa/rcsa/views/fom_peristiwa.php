@@ -58,14 +58,18 @@ if ($field['iskri'] == 0) {
 }
 
 // test 
-$pb = [
-    ''=>'- Pilih Proses Bisnis -',
-    'proses bisnis 1' => 'Pembelian',
-    'penjualan' => 'Penjualan',
-    'produksi' => 'Produksi',
-    'distribusi' => 'Distribusi',
-    'logistik' => 'Logistik',
-];
+// Initialize the dropdown options array with a default option
+// $pb = [
+//     '' => '- Pilih Proses Bisnis -',
+// ];
+
+// // Populate the array dynamically from the database query result
+// if (!empty($proses_bisnis)) {
+//     foreach ($proses_bisnis as $row) {
+//         // Assuming 'id' and 'proses_bisnis_name' are the relevant columns
+//         $pb[$row['id']] = $row['bussines_process']; 
+//     }
+// }
 ?>
 
 
@@ -186,14 +190,8 @@ $pb = [
                                         
                                         <tr>
                                             <td width="20%">Proses Bisnis</td>
-                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $pb, ($detail) ? $detail['proses_bisnis'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($detail) ? $detail['proses_bisnis'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
                                         </tr>
-                                        
-                                        <tr>
-                                            <td width="20%">Tampilkan di Heatmap</td>
-                                            <td colspan="2"><?= form_checkbox('sts_heatmap', 'sts_heatmap',1, ($detail) ? $detail['sts_heatmap'] : '', 'class="select2 form-control form-check-input" style="width:100%;"' . $disable); ?></td>
-                                        </tr>
-
 
                                         <tr>
                                             <td width="20%" rowspan="3">Peristiwa (T3)</td>

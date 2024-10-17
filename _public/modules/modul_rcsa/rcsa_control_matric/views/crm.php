@@ -144,7 +144,7 @@
                                         <?php $filePath = './themes/upload/crm/' . htmlspecialchars($ex['dokumen']);?>
                                         <?php if (empty($ex['dokumen']) || !file_exists($filePath)) : ?>
                                             <label class="file_upload" style="margin: 0;">
-                                                <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" style="display: none;" />
+                                                <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" style="display: none;" accept=".pdf"/>
                                                 <a class="btn btn-warning btn-xs" rel="nofollow">
                                                     <i class="fa fa-upload"></i>
                                                 </a>
@@ -219,7 +219,7 @@
                 <td style="vertical-align: middle;">
                     <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                         <label class="file_upload" style="margin: 0;">
-                            <input type="file" name="fileupload[${rcmIndex}][]" id="userfile_${rcmIndex}" style="display: none;" />
+                            <input type="file" name="fileupload[${rcmIndex}][]" accept=".pdf" id="userfile_${rcmIndex}" style="display: none;" />
                             <a class="btn btn-warning btn-xs" rel="nofollow">
                                 <i class="fa fa-upload"></i>
                             </a>
@@ -275,7 +275,7 @@
                                <td style="vertical-align: middle;">
                                   <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                     <label class="file_upload" style="margin: 0;">
-                                        <input type="file" name="fileupload[${rcmCount}][]" id="userfile_${rcmCount}" style="display: none;" />
+                                        <input type="file" name="fileupload[${rcmCount}][]" id="userfile_${rcmCount}" style="display: none;" accept=".pdf" />
                                         <a class="btn btn-warning btn-xs" rel="nofollow">
                                             <i class="fa fa-upload"></i>
                                         </a>

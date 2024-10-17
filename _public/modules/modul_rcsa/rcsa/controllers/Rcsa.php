@@ -691,6 +691,7 @@ if($dtkri){
 		$id = intval($this->uri->segment(4));
 		$data['parent'] = $this->db->where('id', $id)->get(_TBL_VIEW_RCSA)->row_array();
 		$data['field'] = $this->data->get_peristiwa($id);
+		
 		$this->template->build('fom_peristiwa', $data);
 	}
 
@@ -720,6 +721,11 @@ if($dtkri){
 		$data['sasaran'] = ['- select -'];
 		foreach ($rows as $row) {
 			$data['sasaran'][$row['id']] = $row['sasaran'];
+		}
+		$rows_bisnis = $this->db->where('rcsa_no',$id_rcsa)->get(_TBL_RCM)->result_array();
+		$data['proses_bisnis'] = ['- select -'];
+		foreach ($rows_bisnis as $rb) {
+			$data['proses_bisnis'][$rb['id']] = $rb['bussines_process'];
 		}
 
 		$couse = [];
@@ -893,6 +899,24 @@ if($dtkri){
 
 		// echo json_encode($result);
 
+	}
+
+	function update_sts_heatmap(){
+		$id   	= $this->input->post('id');
+		$status = $this->input->post('status');
+		// Validasi ID dan status
+        if (is_numeric($id) && ($status == 0 || $status == 1)) {
+
+			$result = $this->data->save_status($id, $status);
+            // Memanggil model untuk mengupdate status
+            if ($result) {
+                echo "Data berhasil di Update!";
+            } else {
+                echo "Data gagal di Update";
+            }
+        } else {
+            echo "Data tidak valid!";
+        }
 	}
 	function add_peristiwa()
 	{
