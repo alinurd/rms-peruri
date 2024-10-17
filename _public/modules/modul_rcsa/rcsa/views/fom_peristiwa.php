@@ -190,7 +190,7 @@ if ($field['iskri'] == 0) {
                                         
                                         <tr>
                                             <td width="20%">Proses Bisnis</td>
-                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($detail) ? $detail['proses_bisnis'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
                                         </tr>
 
                                         <tr>
@@ -368,7 +368,7 @@ if ($field['iskri'] == 0) {
                                                         <td width="25%">Asumsi Perhitungan Dampak </td>
                                                         <td>
                                                             <div id="risk_asumsi_perhitungan_dampak" class="input-group">
-                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($rcsa_det) ? ($rcsa_det['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
                                                             </div>
                                                         </td>
                                                     </tr>

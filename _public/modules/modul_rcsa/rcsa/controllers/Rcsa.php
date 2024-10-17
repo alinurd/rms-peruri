@@ -733,10 +733,12 @@ if($dtkri){
 		$detail = [];
 		$sub = [];
 		$event = [];
-		// doi::dump($id_edit);
+		$rcsa_det = [];
 		if ($id_edit > 0) {
-
+			
 			$detail = $this->db->where('id', $id_edit)->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
+			$rcsa_det = $this->db->where('id', $id_edit)->get(_TBL_RCSA_DETAIL)->row_array();
+			// doi::dump($rcsa_det);
 			if ($detail["sts_propose"] == 4) {
 				$disabled = 'disabled';
 				$readonly = 'readonly="true"';
@@ -866,6 +868,7 @@ if($dtkri){
 		}
 		
 		$action = $this->db->where('rcsa_detail_no', $id_edit)->get(_TBL_RCSA_ACTION)->row_array();
+		$data["rcsa_det"] = $rcsa_det;
 		$data['field'] = $action;
 		$data['id_edit_mitigasi'] = $action['id'];
 
