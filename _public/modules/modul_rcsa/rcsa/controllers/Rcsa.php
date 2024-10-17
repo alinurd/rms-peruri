@@ -2192,15 +2192,21 @@ if($dtkri){
 		$upd['target_like'] = json_encode($post['target_like']);
 		$analisis = $this->db->where('id_detail', $post['id_detail'])->get('bangga_analisis_risiko')->row_array();
 		$res=false;
-		if ($analisis) {
+		$add=false;
+ 		if ($analisis) {
  			$upd['update_by'] = $this->authentication->get_info_user('username');
 			 $res= $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $upd, 'where' => array('id_detail' => $post['id_detail']), 'type' => 'update'));
 		} else {
+			$updPI['pi'] = 3;
+			$updPI['update_user'] = $this->authentication->get_info_user('username');
+ 			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updPI, 'where' => array('id' => $post['id_detail']), 'type' => 'update'));
 			$upd['id_detail'] = $post['id_detail'];
 			$upd['create_by'] = $this->authentication->get_info_user('username');
 			$res=$this->crud->crud_data(['table' => 'bangga_analisis_risiko', 'field' => $upd, 'type' => 'add']);
+			$add=true;
 		}
 		$result['sts'] = $res;
+		$result['add'] = $add;
 
 		$result['post'] = $post;
 		echo json_encode($result);

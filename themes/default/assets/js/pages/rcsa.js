@@ -99,8 +99,7 @@ $(function () {
 	});
 
 	$("#kategori").change(function () {
-		var selectedId = $(this).val();
-		console.log(selectedId);
+		var selectedId = $(this).val(); 
 	});
 
 
@@ -143,7 +142,6 @@ $(function () {
 		var id = $(this).data('id');
 		var owner = $(this).data('owner');
 		var data = { 'id': id, 'owner_no': owner };
-console.log(data)
 		var parent = $(this).parent();
 		var target_combo = "";
 		var url = modul_name + "/get-rivis";
@@ -301,14 +299,9 @@ $(document).on("click", ".del_mitigasi", function () {
 			var hiddenInputs = document.getElementsByName("risk_event_no[]");
 			var nilai = hiddenInputs[0].value;
 			var x = hiddenInputs;
-			// console.log(x);
-			// console.log(nilai);
 		}
 
-		// var nilai = hiddenInputs[0].value;
-		// console.log(nilai);
-
-
+ 
 		if (event_no == "0") {
 			alert("Event Wajib dipilih!");
 			return false;
@@ -332,8 +325,7 @@ $(document).on("click", ".del_mitigasi", function () {
 		var parent = $(this).closest("tr");
 		asal_event = parent;
 		var target_combo = "";
-		var url = modul_name + "/get-library";
-		console.log(kel)
+		var url = modul_name + "/get-library"; 
 		if (kel == 1) {
 			var url = modul_name + "/get-library-event";
 		} else if (kel == 4) {
@@ -350,7 +342,7 @@ $(document).on("click", ".del_mitigasi", function () {
 
 	$(document).on("click", ".pilih-event", function () {
 		var pilih = $(this).data("value");
-		console.log(pilih)
+		 
 		var data = pilih.split("#");
 		if ($(this).hasClass("pilih-event")) {
 			var arr = [];
@@ -360,7 +352,7 @@ $(document).on("click", ".del_mitigasi", function () {
 					arr.push(value);
 				}
 			});
-			// console.log(data)
+			 
 			if (arr.indexOf(data[0]) == -1) {
 				asal_event.find('textarea[name="risk_event[]"]').html(data[1]);
 				asal_event.find('input[name="risk_event_no[]"]').val(data[0]);
@@ -446,14 +438,11 @@ $(document).on("click", ".del_mitigasi", function () {
 
 		};
 
-		data = $("form#form_peristiwa").serialize();
-console.log(data);
+		data = $("form#form_peristiwa").serialize(); 
 
-		var parent = $(this).parent();
-		console.log(data)
+		var parent = $(this).parent(); 
 		var target_combo = "";
-		var url = modul_name + "/simpan-peristiwa";
-		console.log(url)
+		var url = modul_name + "/simpan-peristiwa"; 
 		//cari_ajax_singgle("post", data, url,);
 		cari_ajax_combo("post", parent, data, '', url, 'result_save_peristiwa');
 
@@ -532,8 +521,7 @@ console.log(data);
     var month = $("#likeAnalisisResidual").data('month');
     var impact = $("#impactAnalisisResidual").val();
     
-    var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
-    console.log(data)
+    var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month }; 
     var parent = $(this).parent();
     var url = modul_name + "/cek-level";
     
@@ -648,8 +636,7 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 	})
 	// $(document).on("change","#inherent_level_label",function(){
 	// 	// var parent = $(this).parent();
-	// 	var ab = $("input[name='inherent_name']").val();
-	// 	console.log(ab);
+	// 	var ab = $("input[name='inherent_name']").val(); 
 	// 	// var parent = document.getElementById("inherent_level_label").innerText;
 	// 	var nilai = document.getElementsByName('inherent_name')[0].value;
 	// 	var data={'id':nilai};	
@@ -683,8 +670,7 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 	$(document).on("click", "#add_new_cause", function () {
 		$(this).addClass('disabled');
 		var theTable = document.getElementById("instlmt_cause");
-		var rl = theTable.tBodies[0].rows.length;
-// console.log('jalan')
+		var rl = theTable.tBodies[0].rows.length; 
 		if (theTable.rows[rl].cells[1].childNodes[0].value == "0") {
 			alert("Groups Tidak boleh Kosong!");
 		} else {
@@ -766,15 +752,13 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 				// id: 'risk_couseno' + rl,
 				width: '100%',
 			});
-		}
-// console.log(rl)
+		} 
 		var parent = $(this).parent();
 		var nilai = $('#event_no').val();
 		var data = {
 			'id': nilai,
 			'type': 2,
-		};
-		// console.log(data)
+		}; 
 		var target_combo = $("#risk_couseno" + rl);
 		var url = "ajax/get_ajax_libray_couse";
 		cari_ajax_combo("post", parent, data, target_combo, url);
@@ -827,14 +811,13 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 				width: '100%',
 			});
 		}
-// console.log(rl)
+ 
 		var parent = $(this).parent();
 		var nilai = $('#event_no').val();
 		var data = {
 			'id': nilai,
 			'type': 3,
-		};
-		// console.log(data)
+		}; 
 		var target_combo = $("#impactno" + rl);
 		var url = "ajax/get_ajax_libray_impact";
 		cari_ajax_combo("post", parent, data, target_combo, url);
@@ -851,8 +834,7 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 		var hiddenElementrcsa_no = document.getElementById('rcsa_no');
 		var rcsa_no = hiddenElementrcsa_no.value;
 		
-		console.log(detail)
-		console.log(rcsa_no)
+	 
 
 
 		var kri = $("#kri").val();
@@ -965,7 +947,7 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 			'impact_no': arrImpact_nox,
 		};
 
-		console.log(data);
+		 
 
 		var parent = $(this).parent();
 		var url = modul_name + "/simpanLibrary";
@@ -1002,7 +984,7 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 			'target_like': target_like
 		};
 
-		console.log(data);
+	 
 
 		var parent = $(this).parent();
 		var url = modul_name + "/simpan-analisis"; 
@@ -1015,16 +997,21 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 
 
 function simpan_analisis(hasil) {
-	console.log(hasil)
+	 
 	if(hasil.sts){
-		pesan_toastr('Berhasil disimpan...', 'success', 'Success', 'toast-top-center', true);
+		if(hasil.add){
+			pesan_toastr('Berhasil disimpan...', 'success', 'Success', 'toast-top-center', true);
+			location.reload(true);
+		}else{
+			pesan_toastr('Berhasil disimpan...', 'success', 'Success', 'toast-top-center', true);
+		}
 	}else{
 		pesan_toastr('terjadi kesalahan!', 'err', 'Error', 'toast-top-center', true);
 
  	}
 }
 function LevelAnalisisInheren(hasil) {
-    console.log(hasil);
+    
     if (hasil.mode == 1) {
         $("#likeAnalisisInherenLabel").html(hasil.level_text);
     } else if (hasil.mode == 2) {
@@ -1142,12 +1129,10 @@ function result_level(hasil) {
 		if (key != "") {
 			bobo += '<option value="' + key + '">' + hasil.level_resiko[key] + '</option>';
 		}
-
-		// console.log(key, hasil.level_resiko[key]);
-	});
-	// console.log(hasil.level_resiko[""]);
+ 
+	}); 
 	$('#treatment_no').html(bobo).change();
-	console.log(bobo);
+	 
 }
 
 function level_result_residual(hasil) {
@@ -1160,12 +1145,10 @@ function level_result_residual(hasil) {
 		if (key != "") {
 			bobo += '<option value="' + key + '">' + hasil.level_resiko[key] + '</option>';
 		}
-
-		// console.log(key, hasil.level_resiko[key]);
-	});
-	// console.log(hasil.level_resiko[""]);
+ 
+	}); 
 	$('#treatment_no').html(bobo).change();
-	console.log(bobo);
+ 
 }
 
  
@@ -1190,8 +1173,7 @@ function show_mitigasi(hasil) {
 
 function result_delete_realisasi(hasil) {
 	if (hasil.sts == "1") {
-		asal_event.remove();
-		console.log(asal_event);
+		asal_event.remove(); 
 	}
 }
 
@@ -1225,8 +1207,7 @@ $(function () {
 
 
 	$("#add_cause").click(function () {
-		// console.log('masuk')
-		// $(this).addClass('disabled');
+ 		// $(this).addClass('disabled');
 		var theTable = document.getElementById("instlmt_cause");
 		var rl = theTable.tBodies[0].rows.length;
 
