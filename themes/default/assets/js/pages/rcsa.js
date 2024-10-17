@@ -1,9 +1,52 @@
 var asal_event;
 $(function () {
 	$(document).on("ready", function () {
+
+		//update level analisis Inherent
+		var likelihood = $("#likeAnalisisInheren").val();
+		var mode = $("#likeAnalisisInheren").data('mode'); 
+		var month = $("#likeAnalisisInheren").data('month'); 
+		var impact = $("#impactAnalisisInheren").val();
+		
+		var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
+		var parent = $(this).parent();
+		var url = modul_name + "/cek-level";
+		cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
+
+
+		//update level analisis Residual
+		var likelihood = $("#likeAnalisisResidual").val();
+			var mode = $("#likeAnalisisResidual").data('mode'); 
+			var month = $("#likeAnalisisResidual").data('month');
+			var impact = $("#impactAnalisisResidual").val();
+			var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
+ 			var parent = $(this).parent();
+			var url = modul_name + "/cek-level";
+			cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
+
+		//update level Target
+		for (var i = 1; i <= 12; i++) {
+			var mode = 3; 
+			var month = i; 
+			var likelihood = $("#likeTargetResidual" + month).val();
+			var impact = $("#impactTargetResidual" + month).val();
+		 
+			if (mode !== undefined && month !== undefined && impact !== undefined) {
+				var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
+				var parent = $(this).parent();
+				var url = modul_name + "/cek-level";
+		 
+				cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
+			} else {
+				console.error("Error: Nilai mode, month, atau impact tidak terdefinisi dengan benar.");
+			}
+		}
+		
+
+
+
 		var event_no = $("#event_no").val();
-		console.log('event_no'+event_no);
-		$('#add_cause_news').hide();
+ 		$('#add_cause_news').hide();
 		$('#add_impact_news').hide();
 
 		$('#add_cause_newsx').show();
@@ -503,10 +546,7 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
  
     var likelihood = $("#likeTargetResidual" + month).val();
     var impact = $("#impactTargetResidual" + month).val();
- 
-    if (impact == 0) {
-        impact = 1;
-    }
+  
  
     if (mode !== undefined && month !== undefined && impact !== undefined) {
         var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };

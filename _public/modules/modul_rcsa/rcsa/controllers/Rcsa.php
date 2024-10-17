@@ -899,7 +899,8 @@ if($dtkri){
 		$data['cboLike']=$cboLike;
 		$data['cboImpact']=$cboImpact;
 		$data['analisiData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->row_array();
-
+		$data['target_like']=json_decode($data['analisiData']['target_like']);
+		$data['target_impact']=json_decode($data['analisiData']['target_impact']);
 
 		$this->template->build('fom_peristiwa', $data);
 
@@ -1816,7 +1817,8 @@ if($dtkri){
 		$result['level_text'] = '-';
 		$result['level_no'] = 0;
 		$result['level_resiko'] = '-';
-
+		$result['mode'] =(isset($post['mode']))?$post['mode']:0;
+		$result['month'] =(isset($post['month']))?$post['month']:0;
 		if ($rows) {
 			$result['level_text'] = "<span style='background-color:" . $rows['warna_bg'] . ";color:" . $rows['warna_txt'] . ";'>&nbsp;" . $rows['tingkat'] . "&nbsp;</span>";
 			$result['level_no'] = $rows['id'];
@@ -1825,12 +1827,7 @@ if($dtkri){
 			$cboTreatment1 = $this->get_combo('treatment1');
 			$cboTreatment2 = $this->get_combo('treatment2');
 
-			if(isset($post['mode'])){
-				if(isset($post['month'])){
-					$result['month'] = $post['month'];
-				}
-				$result['mode'] = $post['mode'];
- 			}
+			
 			if ($result['level_name'] == "Ekstrem") {
 				$result['level_resiko'] = $cboTreatment1;
 			} elseif ($result['level_name'] == "Low") {
