@@ -660,11 +660,12 @@ $msg="risk impcat yang anda masukan sudah ada";
 	function simpan_risk_level($data)
 	{
 		$upd = array();
-		if (!($data['pi'] < 6 && $data['pi'] > 2)) {
-			$upd['pi'] = 2 + $data['pi'];
-		}
+		// if (!($data['pi'] < 6 && $data['pi'] > 3)) {
+		// 	$upd['pi'] = 3 + $data['pi'];
+		// }
 		// doi::dump($data);
 
+		$upd['pi'] =4;
 		$upd['rcsa_no'] = $data['rcsa_no'];
 		$upd['inherent_likelihood'] = $data['inherent_likelihood'];
 		$upd['inherent_impact'] = $data['inherent_impact'];
