@@ -440,7 +440,7 @@ $pb = [
                                             <!-- Kolom Analisis Risiko Inhern -->
                                             <th style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center" colspan="3">Analisis Risiko Inhern</th>
                                             <!-- Kolom Analisis Risiko Residual -->
-                                            <th style="position: sticky; left: 200px; background: white; z-index: 99;" class="text-center" colspan="3">Analisis Risiko Residual</th>
+                                            <th style="position: sticky; left: 300px; background: white; z-index: 99;" class="text-center" colspan="3">Analisis Risiko Residual</th>
                                             <?php
                                             $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                                             for ($i = 1; $i < 13; $i++) { ?>
@@ -452,13 +452,13 @@ $pb = [
                                         <tr>
                                             <!-- Kolom Detail Risiko Inhern -->
                                             <th style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">Skala Dampak</th>
-                                            <th style="position: sticky; left: 72px; background: white; z-index: 99;" class="text-center">Skala Probabilitas</th>
-                                            <th style="position: sticky; left: 150px; background: white; z-index: 99;" class="text-center">Level Risiko</th>
+                                            <th style="position: sticky; left: 140px; background: white; z-index: 99;" class="text-center">Skala Probabilitas</th>
+                                            <th style="position: sticky; left: 270px; background: white; z-index: 99;" class="text-center">Level Risiko</th>
 
                                             <!-- Kolom Detail Risiko Residual -->
-                                            <th style="position: sticky; left: 200px; background: white; z-index: 99;" class="text-center">Skala Dampak</th>
-                                            <th style="position: sticky; left: 260px; background: white; z-index: 99;" class="text-center">Skala Probabilitas</th>
-                                            <th style="position: sticky; left: 340px; background: white; z-index: 99;" class="text-center">Level Risiko</th>
+                                            <th style="position: sticky; left: 320px; background: white; z-index: 99;" class="text-center">Skala Dampak</th>
+                                            <th style="position: sticky; left: 430px; background: white; z-index: 99;" class="text-center">Skala Probabilitas</th>
+                                            <th style="position: sticky; left: 540px; background: white; z-index: 99;" class="text-center">Level Risiko</th>
 
                                             <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
                                             <?php for ($i = 1; $i < 13; $i++) { ?>
@@ -475,23 +475,23 @@ $pb = [
                                             <td style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">
                                                 <?php echo form_dropdown('inherent_likelihood', $cboLike, (empty($data['inherent_likelihood'])) ? '' : $data['inherent_likelihood'], 'class="form-control" data-mode="1" data-month="0" style="width:150px" id="likeAnalisisInheren"'); ?>
                                             </td>
-                                            <td style="position: sticky; left: 72px; background: white; z-index: 99;" class="text-center">
+                                            <td style="position: sticky; left: 140px; background: white; z-index: 99;" class="text-center">
                                                 <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['LevelAnalisisInheren'], 'class="form-control" id="impactAnalisisInheren" style="width:150px"'); ?>
                                             </td>
-                                            <td style="position: sticky; left: 150px; background: white; z-index: 99;" class="text-center">
+                                            <td style="position: sticky; left: 270px; background: white; z-index: 99;" class="text-center">
                                                 <span id="likeAnalisisInherenLabel">
                                                     <span style="background-color:<?php echo (count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </span><span id="spinner-inherent"></span>
                                             </td>
 
                                             <!-- Kolom Detail Risiko Residual -->
-                                            <td style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">
+                                            <td style="position: sticky; left: 320px; background: white; z-index: 99;" class="text-center">
                                                 <?php echo form_dropdown('residual_likelihood', $cboLike, (empty($data['residual_likelihood'])) ? '' : $data['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" style="width:150px" id="likeAnalisisResidual"'); ?>
                                             </td>
-                                            <td style="position: sticky; left: 72px; background: white; z-index: 99;" class="text-center">
+                                            <td style="position: sticky; left: 430px; background: white; z-index: 99;" class="text-center">
                                                 <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['LevelAnalisisInheren'], 'class="form-control" id="impactAnalisisResidual" style="width:150px"'); ?>
                                             </td>
-                                            <td style="position: sticky; left: 150px; background: white; z-index: 99;" class="text-center">
+                                            <td style="position: sticky; left: 540px; background: white; z-index: 99;" class="text-center">
                                                 <span id="likeAnalisisResidualLabel">
                                                     <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </span><span id="spinner-residual"></span>
