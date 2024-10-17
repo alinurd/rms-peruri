@@ -467,9 +467,58 @@ console.log(data);
 		var parent = $(this).parent();
 		var target_combo = "";
 		var url = modul_name + "/cek-level";
-console.log('masuk');
 		cari_ajax_combo("post", parent, data, '', url, 'level_result_residual');
 	});
+
+ $(document).on("change", "#likeAnalisisInheren, #impactAnalisisInheren", function () {
+    var likelihood = $("#likeAnalisisInheren").val();
+    var mode = $("#likeAnalisisInheren").data('mode'); 
+    var month = $("#likeAnalisisInheren").data('month'); /
+    var impact = $("#impactAnalisisInheren").val();
+    
+    var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
+    var parent = $(this).parent();
+    var url = modul_name + "/cek-level";
+    
+    cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
+});
+
+ $(document).on("change", "#likeAnalisisResidual, #impactAnalisisResidual", function () {
+    var likelihood = $("#likeAnalisisResidual").val();
+    var mode = $("#likeAnalisisResidual").data('mode'); 
+    var month = $("#likeAnalisisResidual").data('month'); /
+    var impact = $("#impactAnalisisResidual").val();
+    
+    var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
+    console.log(data)
+    var parent = $(this).parent();
+    var url = modul_name + "/cek-level";
+    
+    cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
+});
+
+// Penanganan untuk Target Risiko Residual (Bulan)
+$(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]", function () {
+    var likelihood = $(this).val(); 
+    var mode = $(this).data('mode'); 
+    var month = $(this).data('month');
+
+     var impact = $("#impactTargetResidual" + month).val();
+		if(impact==0){
+			impact=1;
+		}
+
+    if (mode !== undefined && month !== undefined && impact !== undefined) {
+        var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
+        var parent = $(this).parent();
+        var url = modul_name + "/cek-level";
+ 
+        cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
+    } else {
+        console.error("Error: Nilai mode, month, atau impact tidak terdefinisi dengan benar.");
+    }
+});
+
 
 	$(document).on("change", "#inherent_impact, #inherent_likelihood", function () {
 		var likelihood = $("#inherent_likelihood").val();
@@ -887,6 +936,17 @@ console.log('masuk');
 
 
 });
+ 
+function LevelAnalisisInheren(hasil) {
+    console.log(hasil);
+    if (hasil.mode == 1) {
+        $("#likeAnalisisInherenLabel").html(hasil.level_text);
+    } else if (hasil.mode == 2) {
+        $("#likeAnalisisResidualLabel").html(hasil.level_text);
+    } else {
+        $("#targetResidualLabel" + hasil.month).html(hasil.level_text);
+    }
+}
 
 function proses_simpan_library(hasil) {
 	// $("#cancel_library").trigger('click')
@@ -1020,6 +1080,8 @@ function level_result_residual(hasil) {
 	$('#treatment_no').html(bobo).change();
 	console.log(bobo);
 }
+
+ 
 
 function result_mitigasi(hasil) {
 	$("#modal_general").modal("hide");
