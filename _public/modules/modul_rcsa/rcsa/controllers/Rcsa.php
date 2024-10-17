@@ -889,6 +889,8 @@ if($dtkri){
 		
 		$data['cboLike']=$cboLike;
 		$data['cboImpact']=$cboImpact;
+		$data['analisiData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->row_array();
+
 
 		$this->template->build('fom_peristiwa', $data);
 

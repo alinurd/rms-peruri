@@ -474,27 +474,27 @@ $pb = [
                                              <input type="text" id="id_detail" value="<?=$detail['id']?>">
                                             <!-- Kolom Detail Risiko Inhern -->
                                             <td style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($data['analisis_like_inherent'])) ? '' : $data['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" style="width:150px" id="likeAnalisisInheren"'); ?>
+                                                <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['analisis_like_inherent'])) ? '' : $analisiData['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" style="width:150px" id="likeAnalisisInheren"'); ?>
                                             </td>
                                             <td style="position: sticky; left: 140px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($data['analisis_impact_inherent'])) ? '' : $data['analisis_impact_inherent'], 'class="form-control" id="impactAnalisisInheren" style="width:150px"'); ?>
+                                                <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['analisis_impact_inherent'])) ? '' : $analisiData['analisis_impact_inherent'], 'class="form-control" id="impactAnalisisInheren" style="width:150px"'); ?>
                                             </td>
                                             <td style="position: sticky; left: 270px; background: white; z-index: 99;" class="text-center">
                                                 <span id="likeAnalisisInherenLabel">
-                                                    <span style="background-color:<?php echo (count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    <span style="background-color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </span><span id="spinner-inherent"></span>
                                             </td>
 
                                             <!-- Kolom Detail Risiko Residual -->
                                             <td style="position: sticky; left: 320px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($data['analisis_like_residual'])) ? '' : $data['analisis_like_residual'], 'class="form-control" data-mode="2" data-month="0" style="width:150px" id="likeAnalisisResidual"'); ?>
+                                                <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['analisis_like_residual'])) ? '' : $analisiData['analisis_like_residual'], 'class="form-control" data-mode="2" data-month="0" style="width:150px" id="likeAnalisisResidual"'); ?>
                                             </td>
                                             <td style="position: sticky; left: 430px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($data['analisis_impact_residual'])) ? '' : $data['analisis_impact_residual'], 'class="form-control" id="impactAnalisisResidual" style="width:150px"'); ?>
+                                                <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['analisis_impact_residual'])) ? '' : $analisiData['analisis_impact_residual'], 'class="form-control" id="impactAnalisisResidual" style="width:150px"'); ?>
                                             </td>
                                             <td style="position: sticky; left: 540px; background: white; z-index: 99;" class="text-center">
                                                 <span id="likeAnalisisResidualLabel">
-                                                    <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </span><span id="spinner-residual"></span>
                                             </td>
 
