@@ -886,8 +886,9 @@ if($dtkri){
 		$data['cbogroup1'] = $cbogroup1;
 		$data['inp_impact'] = form_input('', '', ' id="new_impact[]" name="new_impact[]" class="form-control" placeholder="Input Risk Impact Baru"');
 		$data['cbbii'] = form_dropdown('new_impact_no[]', $cbogroup1, '', 'class="form-control select2"');
-
-
+		
+		$data['cboLike']=$cboLike;
+		$data['cboImpact']=$cboImpact;
 
 		$this->template->build('fom_peristiwa', $data);
 
@@ -1794,6 +1795,12 @@ if($dtkri){
 			$cboTreatment1 = $this->get_combo('treatment1');
 			$cboTreatment2 = $this->get_combo('treatment2');
 
+			if(isset($post['mode'])){
+				if(isset($post['month'])){
+					$result['month'] = $post['month'];
+				}
+				$result['mode'] = $post['mode'];
+ 			}
 			if ($result['level_name'] == "Ekstrem") {
 				$result['level_resiko'] = $cboTreatment1;
 			} elseif ($result['level_name'] == "Low") {
