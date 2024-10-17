@@ -42,8 +42,8 @@ if ($detail['pi'] == 1 || $detail['pi'] < 1) {
     $treatmentact = 'active';
 } elseif ($detail['pi'] == 5) {
     $progresact = 'active';
-} elseif ($detail['pi'] == 4) {
-    $evaluasiacthide = 'active';
+} elseif ($detail['pi'] == 3) {
+    $evaluasiact = 'active';
 } else {
     // $identifyact = 'active';
 }
@@ -368,7 +368,9 @@ if ($field['iskri'] == 0) {
                                                         <td width="25%">Asumsi Perhitungan Dampak </td>
                                                         <td>
                                                             <div id="risk_asumsi_perhitungan_dampak" class="input-group">
-                                                            <?= form_input('risk_asumsi_perhitungan_dampak', ($rcsa_det) ? ($rcsa_det['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+
+                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+
                                                             </div>
                                                         </td>
                                                     </tr>
