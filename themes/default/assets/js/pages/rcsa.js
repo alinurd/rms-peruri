@@ -25,25 +25,23 @@ $(function () {
 			cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
 
 		//update level Target
-		var mode = $(this).data('mode'); 
-		var month = $(this).data('month'); 
-	 
-		var likelihood = $("#likeTargetResidual" + month).val();
-		var impact = $("#impactTargetResidual" + month).val();
-	 
-		if (impact == 0) {
-			impact = 1;
+		for (var i = 1; i <= 12; i++) {
+			var mode = 3; 
+			var month = i; 
+			var likelihood = $("#likeTargetResidual" + month).val();
+			var impact = $("#impactTargetResidual" + month).val();
+		 
+			if (mode !== undefined && month !== undefined && impact !== undefined) {
+				var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
+				var parent = $(this).parent();
+				var url = modul_name + "/cek-level";
+		 
+				cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
+			} else {
+				console.error("Error: Nilai mode, month, atau impact tidak terdefinisi dengan benar.");
+			}
 		}
-	 
-		if (mode !== undefined && month !== undefined && impact !== undefined) {
-			var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
-			var parent = $(this).parent();
-			var url = modul_name + "/cek-level";
-	 
-			cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
-		} else {
-			console.error("Error: Nilai mode, month, atau impact tidak terdefinisi dengan benar.");
-		}
+		
 
 
 
@@ -548,10 +546,7 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
  
     var likelihood = $("#likeTargetResidual" + month).val();
     var impact = $("#impactTargetResidual" + month).val();
- 
-    if (impact == 0) {
-        impact = 1;
-    }
+  
  
     if (mode !== undefined && month !== undefined && impact !== undefined) {
         var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };

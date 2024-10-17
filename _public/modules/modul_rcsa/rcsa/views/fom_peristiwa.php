@@ -497,15 +497,14 @@ $pb = [
                                                     <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </span><span id="spinner-residual"></span>
                                             </td>
-
                                             <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
                                             <?php for ($i = 1; $i <= 12; $i++) { ?>
                                                 <input type="hidden" name="month" id="month">
                                                 <td class="text-center">
-                                                <?php echo form_dropdown('target_like', $cboLike, (empty($data['target_like'])) ? '' : $data['target_like'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
+                                                <?php echo form_dropdown('target_like', $cboLike, (empty($target_like[$i-1])) ? '' : $target_like[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
                                                 </td>
                                                 <td class="text-center">
-                                                <?php echo form_dropdown('target_impact', $cboImpact, (empty($data['target_impact'])) ? '' : $data['target_impact'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
+                                                <?php echo form_dropdown('target_impact', $cboImpact, (empty($target_impact[$i-1])) ? '' : $target_impact[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
                                                 <td class="text-center">
                                                     <span id="targetResidualLabel<?= $i ?>">
                                                         <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">
