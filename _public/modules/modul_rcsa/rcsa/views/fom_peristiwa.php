@@ -42,12 +42,9 @@ if ($detail['pi'] == 1) {
     $treatmentact = 'active';
 } elseif ($detail['pi'] == 5) {
     $progresact = 'active';
-} elseif ($detail['pi'] == 4) {
-    $evaluasiacthide = 'active';
 } else {
     $identifyact = 'active';
 }
-
 $krion = "hide";
 
 if ($field['iskri'] == 0) {
@@ -61,14 +58,18 @@ if ($field['iskri'] == 0) {
 }
 
 // test 
-$pb = [
-    '' => '- Pilih Proses Bisnis -',
-    'proses bisnis 1' => 'Pembelian',
-    'penjualan' => 'Penjualan',
-    'produksi' => 'Produksi',
-    'distribusi' => 'Distribusi',
-    'logistik' => 'Logistik',
-];
+// Initialize the dropdown options array with a default option
+// $pb = [
+//     '' => '- Pilih Proses Bisnis -',
+// ];
+
+// // Populate the array dynamically from the database query result
+// if (!empty($proses_bisnis)) {
+//     foreach ($proses_bisnis as $row) {
+//         // Assuming 'id' and 'proses_bisnis_name' are the relevant columns
+//         $pb[$row['id']] = $row['bussines_process']; 
+//     }
+// }
 ?>
 
 
@@ -140,12 +141,12 @@ $pb = [
         <section class="x_panel">
             <div class="x_content" id="list_peristiwa">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab">Risk Identification</a></li>
-                    <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab">Risk Analysis</a></li>
-                    <li role="presentation" class="<?= $evaluasiact ?> <?= $evaluasiacthide ?>"><a href="#evaluasi" data-toggle="tab">Risk Evaluation</a></li>
+                    <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab">Identifikasi Risiko</a></li>
+                    <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab">Analisis dan
+                            Evaluasi Risiko</a></li>
                     <li role="presentation" class="<?= $treatmentact ?> <?= $treatmentacthide ?>"><a href="#treatment" data-toggle="tab">Perlakuan Risiko</a></li>
-                    <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab">Risk Treatment</a></li>
                     <li role="presentation" class="<?= $kriact ?> <?= $krion  ?>"><a href="#iskri" data-toggle="tab">Key Risk Indikator</a></li>
+                    <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab">Progress Treatment</a></li>
                 </ul>
             </div>
             <div class="clearfix"> </div>
@@ -186,17 +187,11 @@ $pb = [
                                             <td colspan="2"><?= form_dropdown('subrisiko', $np, ($detail) ? $detail['subrisiko'] : '', 'class="select2 form-control" style="width:100%;" id="subrisiko"' . $disable); ?></td>
                                         </tr>
 
-
+                                        
                                         <tr>
                                             <td width="20%">Proses Bisnis</td>
-                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $pb, ($detail) ? $detail['proses_bisnis'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
                                         </tr>
-
-                                        <tr>
-                                            <td width="20%">Tampilkan di Heatmap</td>
-                                            <td colspan="2"><?= form_checkbox('sts_heatmap', 'sts_heatmap', 1, ($detail) ? $detail['sts_heatmap'] : '', 'class="select2 form-control form-check-input" style="width:100%;"' . $disable); ?></td>
-                                        </tr>
-
 
                                         <tr>
                                             <td width="20%" rowspan="3">Peristiwa (T3)</td>
@@ -373,7 +368,7 @@ $pb = [
                                                         <td width="25%">Asumsi Perhitungan Dampak </td>
                                                         <td>
                                                             <div id="risk_asumsi_perhitungan_dampak" class="input-group">
-                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($rcsa_det) ? ($rcsa_det['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -433,6 +428,7 @@ $pb = [
                     <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                         <section class="x_panel">
+
                             <div class="x_content table-responsive" style="overflow-x: auto;">
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
@@ -544,6 +540,7 @@ $pb = [
                     <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                         <section class="x_panel">
+
                             <div class="x_content">
                                 <div class="table-responsive">
                                     <?php
@@ -555,7 +552,7 @@ $pb = [
                                     <?php } ?>
                                 </div>
                             </div>
-                            <div class="x_footer <?= $evaluasiacthide ?>">
+                            <div class="x_footer <?= $analysisacthide ?>">
                                 <ul class="nav navbar-right panel_toolbox ">
                                     <li><span class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_level"> Simpan </span></li>
                                     <!-- <li><span class="btn btn-default pointer" id="cancel_level" data-dismiss="modal"> Kembali </span></li> -->
