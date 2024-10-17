@@ -141,16 +141,14 @@
                                     <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?= $ex['dokumen'] ?>" multiple />
                                     
                                     <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                        <?php if ($ex['dokumen']=== NULL) : ?>
+                                        <?php if (empty($ex['dokumen'])) : ?>
                                             <label class="file_upload" style="margin: 0;">
                                                 <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" style="display: none;" />
                                                 <a class="btn btn-warning btn-xs" rel="nofollow" onclick="document.getElementById('userfile_<?= $i; ?>').click();">
                                                     <i class="fa fa-upload"></i>
                                                 </a>
                                             </label>
-                                        <?php endif; ?>
-                                        
-                                        <?php if ($ex['dokumen'] !== NULL) : ?>
+                                        <?php else : ?>
                                             <a href="<?= base_url('rcsa_control_matric/download/'.$ex['dokumen']) ?>" class="btn btn-success btn-xs" rel="nofollow">
                                                 <i class="fa fa-download"></i>
                                             </a>
@@ -160,6 +158,7 @@
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </div>
+
                                 </td>
 
                             </tr>
