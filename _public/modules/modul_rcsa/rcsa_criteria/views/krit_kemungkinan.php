@@ -17,16 +17,19 @@ $info_owner = $this->authentication->get_info_user('group_owner');
                         <input type="hidden" name="krit_kemungkinan" value="krit_kemungkinan">
                                 <table class="table table-bordered" id="kemungkinanTable">
                                     <thead>
-                                        <tr>
-                                            <th class="text-center">Kemungkinan</th>
-                                            <?php foreach ($kriteria as $key => $k): ?>
-                                                <td width="15%" bgcolor="<?= $k['color'] ?>" class="text-center" style="color: #000;">
-                                                    <?= $k['name'] ?>
-                                                    
-                                                </td>
-                                            <?php endforeach; ?>
-                                            <th class="text-center">Aksi</th>
-                                        </tr>
+                                    <tr>
+                                        <th rowspan="2" class="text-center align-middle">Kemungkinan</th>
+                                        <th colspan="5" class="text-center">Risiko</th>
+                                        <th rowspan="2" class="text-center align-middle">Aksi</th>
+                                    </tr>
+                                    <tr>
+                                        <?php foreach ($kriteria as $key => $k): ?>
+                                            <td width="15%" bgcolor="<?= $k['color'] ?>" class="text-center" style="color: #000;">
+                                                <?= $k['name'] ?>
+                                                
+                                            </td>
+                                        <?php endforeach; ?>
+                                    </tr>
                                     </thead>
                                     <tbody id="kemungkinanBody">
                                         <?php foreach ($kemungkinan as $kem): ?>

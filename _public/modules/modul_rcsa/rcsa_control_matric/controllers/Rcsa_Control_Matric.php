@@ -121,6 +121,22 @@ class Rcsa_Control_Matric extends BackendController
 		$this->set_Close_Setting();
 	}
 
+	function download($filename){
+		
+		$filename = $this->uri->segment(3);
+		$this->load->helper('download');
+		$path = FCPATH . 'themes/upload/crm/' . $filename;
+		$data_ex = $this->db->where('dokumen', $filename)->get(_TBL_EXISTING_CONTROL)->result_array();
+		if (file_exists($path)) {
+			$data = file_get_contents($path);  
+			$new_name = $data_ex[0]['component'].'_' . $data_ex[0]['rcm_id'] . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+			force_download($new_name, $data);
+		} else {
+			show_404(); 
+		}
+		
+	}
+
 	// function update_OPTIONAL_CMD($id, $row)
 	// {
 	// 	$owner = $row['l_owner_no'];
