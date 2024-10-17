@@ -139,6 +139,13 @@ class Data extends MX_Model
 
 		return true;
 	}
+
+	function save_status($id,$status){
+		$data = array('sts_heatmap' => $status);
+        $this->db->where('id', $id);
+		$this->db->update(_TBL_RCSA_DETAIL, $data);
+        return  true;
+	}
 	function get_data_tanggal($id_rcsa)
 	{
 
@@ -562,7 +569,8 @@ $msg="risk impcat yang anda masukan sudah ada";
 			$upd['sub_kategori'] = $data['sub_kategori'];
 		}
 		// field baru
-		// $upd['risk_asumsi_perhitungan_dampak'] = $data['risk_asumsi_perhitungan_dampak'];
+		$upd['risk_asumsi_perhitungan_dampak'] = $data['risk_asumsi_perhitungan_dampak'];
+		$upd['rcm_id'] = $data['proses_bisnis'];
 		// $upd['sts_heatmap'] = $data['sts_heatmap'];
 
 		$upd['risk_impact_kuantitatif'] = str_replace(',', '', $data['risk_impact_kuantitatif']);

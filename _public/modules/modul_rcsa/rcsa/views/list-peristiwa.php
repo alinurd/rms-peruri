@@ -4,6 +4,13 @@ if ($parent['sts_propose'] == 5) {
     $revisi = "";
 }
 ?>
+<style>
+    .custom-checkbox {
+        width: 20px;  /* Atur lebar checkbox */
+        height: 20px; /* Atur tinggi checkbox */
+        cursor: pointer; /* Mengubah kursor saat hover */
+    }
+</style>
 <a href="<?= base_url(_MODULE_NAME_REAL_ . '/tambah-peristiwa/add/' . $parent['owner_no'] . '/' . $parent['id']) ?>" class="btn btn-primary <?=$revisi?>" id="add_peristiwa" data-id="0" target="_blank" data-rcsa="<?= $parent['id']; ?>"> <?= lang('msg_tombol_add'); ?> </a>
 
 <span class="<?=$revisi?>" style="background-color:#ff0000;color:#fff;"> <strong><?= strtoupper('Revisi Risk Contetx'); ?></strong> </span>
@@ -36,7 +43,8 @@ if ($parent['sts_propose'] == 5) {
                 <?php
                 $no = 0;
                 foreach ($row['detail'] as $ros) :
-                    // doi::dump($ros);
+                    $sts_heatmap = $this->db->where('id',$ros['id'])->get('bangga_rcsa_detail')->row_array();
+                    // doi::dump($sts_heatmap);
                     $act = $this->db->where('rcsa_detail_no', $ros['id'])->get('bangga_rcsa_action')->row_array();
                     $actkri = $this->db->where('rcsa_detail', $ros['id'])->get('bangga_kri')->row_array();
                     $inherent_level = $this->data->get_master_level(true, $ros['inherent_level']);
@@ -66,7 +74,7 @@ if ($parent['sts_propose'] == 5) {
                 ?>
                     <tr>
                         <td><?= ++$no; ?></td>
-                        <td>
+                        <td class="text-center" style="vertical-align: middle;">
                             <?php
                             $iskri = 'hide';
                             // #0088ff;
@@ -83,10 +91,23 @@ if ($parent['sts_propose'] == 5) {
                             } else {
                                 $iskri = 'hide';
                             } ?>
-                            <span clas="<?= $iskri ?>" style="font-weight: bold; font-size: 25px; color: <?= $cl ?>; " title="<?= $tl ?>">
-                                <!-- <span style="font-weight: bold; font-size: 25px; color: #6c757d; "> -->
-                                <i class="fa fa-key <?= $iskri ?>"></i>
-                            </span>
+                            
+                            
+                            <center>
+                                <span class="<?= $iskri ?>" style="font-weight: bold; font-size: 25px; color: <?= $cl ?>;" title="<?= $tl ?>">
+                                    <i class="fa fa-key <?= $iskri ?>"></i>
+                                </span><br>
+                                <?php $sts_heatmap_value = isset($sts_heatmap['sts_heatmap']) ? $sts_heatmap['sts_heatmap'] : 0;?>
+                                <input class="form-control custom-checkbox" 
+                                type="checkbox" 
+                                id="sts_heatmap_<?php echo htmlspecialchars($ros['id'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                name="sts_heatmap" 
+                                value="<?php echo htmlspecialchars($ros['id'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                <?php echo ($sts_heatmap['sts_heatmap'] == 1) ? 'checked' : ''; ?>>
+
+                                                        </center>
+                            
+
                         </td>
                         <td class="peristiwa  pointer">
                             <?= $ros['event_name']; ?>
@@ -257,5 +278,28 @@ if ($parent['sts_propose'] == 5) {
             $(this).find(".edit-level, .show-mitigasi, .show-realisasi").css('margin-top', '0px');
             $(this).find(".edit-level, .show-mitigasi, .show-realisasi").css('top', '40%');
         })
+        $("input[name='sts_heatmap']").change(function() {
+            var isChecked = $(this).is(':checked') ? 1 : 0; // 1 untuk checked, 0 untuk unchecked
+            var id = $(this).val(); // Ambil nilai checkbox (ID)
+            console.log(id);
+
+            // Mengirim data ke server
+            $.ajax({
+                url: "<?= base_url(_MODULE_NAME_REAL_ . '/update_sts_heatmap') ?>",
+                type: 'POST',
+                data: { id: id, status: isChecked }, // Mengirim ID dan status
+                success: function(response) {
+                    alert(response); // Menampilkan pesan dari server
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // Menangani error
+                }
+            });
+        });
     })
+
+    // $(document).ready(function() {
+    //     // Ketika checkbox diklik
+        
+    // });
 </script>

@@ -42,12 +42,9 @@ if ($detail['pi'] == 1) {
     $treatmentact = 'active';
 } elseif ($detail['pi'] == 5) {
     $progresact = 'active';
-} elseif ($detail['pi'] == 4) {
-    $evaluasiacthide = 'active';
 } else {
     $identifyact = 'active';
 }
-
 $krion = "hide";
 
 if ($field['iskri'] == 0) {
@@ -61,14 +58,18 @@ if ($field['iskri'] == 0) {
 }
 
 // test 
-$pb = [
-    '' => '- Pilih Proses Bisnis -',
-    'proses bisnis 1' => 'Pembelian',
-    'penjualan' => 'Penjualan',
-    'produksi' => 'Produksi',
-    'distribusi' => 'Distribusi',
-    'logistik' => 'Logistik',
-];
+// Initialize the dropdown options array with a default option
+// $pb = [
+//     '' => '- Pilih Proses Bisnis -',
+// ];
+
+// // Populate the array dynamically from the database query result
+// if (!empty($proses_bisnis)) {
+//     foreach ($proses_bisnis as $row) {
+//         // Assuming 'id' and 'proses_bisnis_name' are the relevant columns
+//         $pb[$row['id']] = $row['bussines_process']; 
+//     }
+// }
 ?>
 
 
@@ -140,12 +141,12 @@ $pb = [
         <section class="x_panel">
             <div class="x_content" id="list_peristiwa">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab">Risk Identification</a></li>
-                    <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab">Risk Analysis</a></li>
-                    <li role="presentation" class="<?= $evaluasiact ?> <?= $evaluasiacthide ?>"><a href="#evaluasi" data-toggle="tab">Risk Evaluation</a></li>
+                    <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab">Identifikasi Risiko</a></li>
+                    <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab">Analisis dan
+                            Evaluasi Risiko</a></li>
                     <li role="presentation" class="<?= $treatmentact ?> <?= $treatmentacthide ?>"><a href="#treatment" data-toggle="tab">Perlakuan Risiko</a></li>
-                    <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab">Risk Treatment</a></li>
                     <li role="presentation" class="<?= $kriact ?> <?= $krion  ?>"><a href="#iskri" data-toggle="tab">Key Risk Indikator</a></li>
+                    <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab">Progress Treatment</a></li>
                 </ul>
             </div>
             <div class="clearfix"> </div>
@@ -186,17 +187,11 @@ $pb = [
                                             <td colspan="2"><?= form_dropdown('subrisiko', $np, ($detail) ? $detail['subrisiko'] : '', 'class="select2 form-control" style="width:100%;" id="subrisiko"' . $disable); ?></td>
                                         </tr>
 
-
+                                        
                                         <tr>
                                             <td width="20%">Proses Bisnis</td>
-                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $pb, ($detail) ? $detail['proses_bisnis'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
                                         </tr>
-
-                                        <tr>
-                                            <td width="20%">Tampilkan di Heatmap</td>
-                                            <td colspan="2"><?= form_checkbox('sts_heatmap', 'sts_heatmap', 1, ($detail) ? $detail['sts_heatmap'] : '', 'class="select2 form-control form-check-input" style="width:100%;"' . $disable); ?></td>
-                                        </tr>
-
 
                                         <tr>
                                             <td width="20%" rowspan="3">Peristiwa (T3)</td>
@@ -373,7 +368,7 @@ $pb = [
                                                         <td width="25%">Asumsi Perhitungan Dampak </td>
                                                         <td>
                                                             <div id="risk_asumsi_perhitungan_dampak" class="input-group">
-                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($rcsa_det) ? ($rcsa_det['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -433,115 +428,6 @@ $pb = [
                     <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                         <section class="x_panel">
-                            <div class="x_content table-responsive" style="overflow-x: auto;">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <!-- Kolom Analisis Risiko Inhern -->
-                                            <th style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center" colspan="3">Analisis Risiko Inhern</th>
-                                            <!-- Kolom Analisis Risiko Residual -->
-                                            <th style="position: sticky; left: 300px; background: white; z-index: 99;" class="text-center" colspan="3">Analisis Risiko Residual</th>
-                                            <?php
-                                            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                                            for ($i = 1; $i < 13; $i++) { ?>
-                                                <!-- Kolom Target Risiko Residual untuk bulan-bulan -->
-                                                <th class="text-center" colspan="3">Target Risiko Residual <br><?= $bulan[$i - 1] ?></th>
-                                                <!-- <th class="text-center" colspan="3">Target Risiko Residual <br> Bulan <?= $i ?></th> -->
-                                            <?php } ?>
-                                        </tr>
-                                        <tr>
-                                            <!-- Kolom Detail Risiko Inhern -->
-                                            <th style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">Skala Dampak</th>
-                                            <th style="position: sticky; left: 140px; background: white; z-index: 99;" class="text-center">Skala Probabilitas</th>
-                                            <th style="position: sticky; left: 270px; background: white; z-index: 99;" class="text-center">Level Risiko</th>
-
-                                            <!-- Kolom Detail Risiko Residual -->
-                                            <th style="position: sticky; left: 320px; background: white; z-index: 99;" class="text-center">Skala Dampak</th>
-                                            <th style="position: sticky; left: 430px; background: white; z-index: 99;" class="text-center">Skala Probabilitas</th>
-                                            <th style="position: sticky; left: 540px; background: white; z-index: 99;" class="text-center">Level Risiko</th>
-
-                                            <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                            <?php for ($i = 1; $i < 13; $i++) { ?>
-                                                <th class="text-center">Skala Dampak</th>
-                                                <th class="text-center">Skala Probabilitas</th>
-                                                <th class="text-center">Level Risiko</th>
-                                            <?php } ?>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr>
-                                            <!-- Kolom Detail Risiko Inhern -->
-                                            <td style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('inherent_likelihood', $cboLike, (empty($data['inherent_likelihood'])) ? '' : $data['inherent_likelihood'], 'class="form-control" data-mode="1" data-month="0" style="width:150px" id="likeAnalisisInheren"'); ?>
-                                            </td>
-                                            <td style="position: sticky; left: 140px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['LevelAnalisisInheren'], 'class="form-control" id="impactAnalisisInheren" style="width:150px"'); ?>
-                                            </td>
-                                            <td style="position: sticky; left: 270px; background: white; z-index: 99;" class="text-center">
-                                                <span id="likeAnalisisInherenLabel">
-                                                    <span style="background-color:<?php echo (count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                </span><span id="spinner-inherent"></span>
-                                            </td>
-
-                                            <!-- Kolom Detail Risiko Residual -->
-                                            <td style="position: sticky; left: 320px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('residual_likelihood', $cboLike, (empty($data['residual_likelihood'])) ? '' : $data['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" style="width:150px" id="likeAnalisisResidual"'); ?>
-                                            </td>
-                                            <td style="position: sticky; left: 430px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['LevelAnalisisInheren'], 'class="form-control" id="impactAnalisisResidual" style="width:150px"'); ?>
-                                            </td>
-                                            <td style="position: sticky; left: 540px; background: white; z-index: 99;" class="text-center">
-                                                <span id="likeAnalisisResidualLabel">
-                                                    <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                </span><span id="spinner-residual"></span>
-                                            </td>
-
-                                            <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                            <?php for ($i = 1; $i <= 12; $i++) { ?>
-                                                <td class="text-center">
-                                                <?php echo form_dropdown('residual_likelihood', $cboLike, (empty($data['residual_likelihood'])) ? '' : $data['residual_likelihood'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
-                                                </td>
-                                                <td class="text-center">
-                                                <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['analisis_inheren'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
-                                                <td class="text-center">
-                                                    <span id="targetResidualLabel<?= $i ?>">
-                                                        <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        </span>
-                                                    </span>
-                                                    <span id="spinner-residual<?= $i ?>"></span>
-                                                </td>
-                                            <?php } ?>
-
-                                        </tr>
-                                    </tbody>
-
-
-                                </table>
-
-                            </div>
-
-                            <div class="x_footer <?= $analysisacthide ?>">
-                                <ul class="nav navbar-right panel_toolbox ">
-                                    <li><span class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_level"> Simpan </span></li>
-                                    <!-- <li><span class="btn btn-default pointer" id="cancel_level" data-dismiss="modal"> Kembali </span></li> -->
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                        </section>
-                    </div>
-                    <?= form_close(); ?>
-                </div>
-
-                <div id="evaluasi" class="tab-pane fade in <?= $evaluasiact ?> ">
-
-                    <?= form_open_multipart(base_url(_MODULE_NAME_REAL_ . '/' . _METHOD_ . '/save'), array('id' => 'form_level'), ['id_edit' => $id_edit, 'rcsa_no' => $rcsa_no]); ?>
-                    <?= form_hidden('id_edit_baru', ($id_edit) ? ($id_edit) : '0', 'class="form-control text-right" id="id_edit"'); ?>
-
-                    <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
-                    <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
-                        <section class="x_panel">
                             <div class="x_content">
                                 <div class="table-responsive">
                                     <?php
@@ -553,7 +439,7 @@ $pb = [
                                     <?php } ?>
                                 </div>
                             </div>
-                            <div class="x_footer <?= $evaluasiacthide ?>">
+                            <div class="x_footer <?= $analysisacthide ?>">
                                 <ul class="nav navbar-right panel_toolbox ">
                                     <li><span class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_level"> Simpan </span></li>
                                     <!-- <li><span class="btn btn-default pointer" id="cancel_level" data-dismiss="modal"> Kembali </span></li> -->
