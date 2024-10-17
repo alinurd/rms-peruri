@@ -143,7 +143,7 @@ $pb = [
                     <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab">Risk Identification</a></li>
                     <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab">Risk Analysis</a></li>
                     <li role="presentation" class="<?= $evaluasiact ?> <?= $evaluasiacthide ?>"><a href="#evaluasi" data-toggle="tab">Risk Evaluation</a></li>
-                    <li role="presentation" class="<?= $treatmentact ?> <?= $treatmentacthide ?>"><a href="#treatment" data-toggle="tab">Perlakuan Risiko</a></li>
+                    <li role="presentation" class="<?= $treatmentact ?> <?= $treatmentacthide ?>"><a href="#treatment" data-toggle="tab">Risk Treatment</a></li>
                     <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab">Risk Treatment</a></li>
                     <li role="presentation" class="<?= $kriact ?> <?= $krion  ?>"><a href="#iskri" data-toggle="tab">Key Risk Indikator</a></li>
                 </ul>
@@ -471,7 +471,7 @@ $pb = [
 
                                     <tbody>
                                         <tr>
-                                             <input type="text" id="id_detail" value="<?=$detail['id']?>">
+                                             <input type="hidden" id="id_detail" value="<?=$detail['id']?>">
                                             <!-- Kolom Detail Risiko Inhern -->
                                             <td style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">
                                                 <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['analisis_like_inherent'])) ? '' : $analisiData['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" style="width:150px" id="likeAnalisisInheren"'); ?>
