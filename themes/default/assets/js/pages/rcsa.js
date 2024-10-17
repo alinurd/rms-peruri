@@ -473,7 +473,7 @@ console.log(data);
  $(document).on("change", "#likeAnalisisInheren, #impactAnalisisInheren", function () {
     var likelihood = $("#likeAnalisisInheren").val();
     var mode = $("#likeAnalisisInheren").data('mode'); 
-    var month = $("#likeAnalisisInheren").data('month'); /
+    var month = $("#likeAnalisisInheren").data('month'); 
     var impact = $("#impactAnalisisInheren").val();
     
     var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
@@ -486,7 +486,7 @@ console.log(data);
  $(document).on("change", "#likeAnalisisResidual, #impactAnalisisResidual", function () {
     var likelihood = $("#likeAnalisisResidual").val();
     var mode = $("#likeAnalisisResidual").data('mode'); 
-    var month = $("#likeAnalisisResidual").data('month'); /
+    var month = $("#likeAnalisisResidual").data('month');
     var impact = $("#impactAnalisisResidual").val();
     
     var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
