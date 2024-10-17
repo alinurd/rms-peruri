@@ -468,7 +468,7 @@ $pb = [
                                             <?php } ?>
                                         </tr>
                                     </thead>
-                                    
+
                                     <tbody>
                                         <tr>
                                             <!-- Kolom Detail Risiko Inhern -->
@@ -500,10 +500,10 @@ $pb = [
                                             <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
                                             <?php for ($i = 1; $i <= 12; $i++) { ?>
                                                 <td class="text-center">
-                                                <?php echo form_dropdown('residual_likelihood', $cboLike, (empty($data['residual_likelihood'])) ? '' : $data['residual_likelihood'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual' . $i . '"'); ?>
+                                                <?php echo form_dropdown('residual_likelihood', $cboLike, (empty($data['residual_likelihood'])) ? '' : $data['residual_likelihood'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
                                                 </td>
                                                 <td class="text-center">
-                                                <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['analisis_inheren'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual' . $i . '"'); ?>                                                </td>
+                                                <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['analisis_inheren'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
                                                 <td class="text-center">
                                                     <span id="targetResidualLabel<?= $i ?>">
                                                         <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">

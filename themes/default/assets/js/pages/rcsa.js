@@ -496,18 +496,18 @@ console.log(data);
     
     cari_ajax_combo("post", parent, data, '', url, 'LevelAnalisisInheren');
 });
-
 // Penanganan untuk Target Risiko Residual (Bulan)
 $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]", function () {
-    var likelihood = $(this).val(); 
     var mode = $(this).data('mode'); 
-    var month = $(this).data('month');
-
-     var impact = $("#impactTargetResidual" + month).val();
-		if(impact==0){
-			impact=1;
-		}
-
+    var month = $(this).data('month'); 
+ 
+    var likelihood = $("#likeTargetResidual" + month).val();
+    var impact = $("#impactTargetResidual" + month).val();
+ 
+    if (impact == 0) {
+        impact = 1;
+    }
+ 
     if (mode !== undefined && month !== undefined && impact !== undefined) {
         var data = { 'likelihood': likelihood, 'impact': impact, 'mode': mode, 'month': month };
         var parent = $(this).parent();
@@ -518,6 +518,8 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
         console.error("Error: Nilai mode, month, atau impact tidak terdefinisi dengan benar.");
     }
 });
+
+
 
 
 	$(document).on("change", "#inherent_impact, #inherent_likelihood", function () {
