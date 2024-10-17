@@ -32,7 +32,7 @@ if ($detail['pi'] >= 5) {
     $progresacthide = 'hide';
 }
 
-if ($detail['pi'] == 1) {
+if ($detail['pi'] == 1 || $detail['pi'] < 1) {
     $identifyact = 'active';
 } elseif ($detail['pi'] == 2) {
     $analysisact = 'active';
@@ -45,7 +45,7 @@ if ($detail['pi'] == 1) {
 } elseif ($detail['pi'] == 4) {
     $evaluasiacthide = 'active';
 } else {
-    $identifyact = 'active';
+    // $identifyact = 'active';
 }
 
 $krion = "hide";
@@ -189,7 +189,12 @@ $pb = [
 
                                         <tr>
                                             <td width="20%">Proses Bisnis</td>
-                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $pb, ($detail) ? $detail['proses_bisnis'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td width="20%">Tampilkan di Heatmap</td>
+                                            <td colspan="2"><?= form_checkbox('sts_heatmap', 'sts_heatmap', 1, ($detail) ? $detail['sts_heatmap'] : '', 'class="select2 form-control form-check-input" style="width:100%;"' . $disable); ?></td>
                                         </tr>
 
 
@@ -368,7 +373,7 @@ $pb = [
                                                         <td width="25%">Asumsi Perhitungan Dampak </td>
                                                         <td>
                                                             <div id="risk_asumsi_perhitungan_dampak" class="input-group">
-                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($rcsa_det) ? ($rcsa_det['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -429,7 +434,7 @@ $pb = [
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                         <section class="x_panel">
                             <div class="x_content table-responsive" style="overflow-x: auto;">
-                                <table class="table table-striped table-bordered table-hover">
+                                <table class="table table-striped  table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <!-- Kolom Analisis Risiko Inhern -->
