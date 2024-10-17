@@ -471,39 +471,41 @@ $pb = [
 
                                     <tbody>
                                         <tr>
+                                             <input type="text" id="id_detail" value="<?=$detail['id']?>">
                                             <!-- Kolom Detail Risiko Inhern -->
                                             <td style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('inherent_likelihood', $cboLike, (empty($data['inherent_likelihood'])) ? '' : $data['inherent_likelihood'], 'class="form-control" data-mode="1" data-month="0" style="width:150px" id="likeAnalisisInheren"'); ?>
+                                                <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['analisis_like_inherent'])) ? '' : $analisiData['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" style="width:150px" id="likeAnalisisInheren"'); ?>
                                             </td>
                                             <td style="position: sticky; left: 140px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['LevelAnalisisInheren'], 'class="form-control" id="impactAnalisisInheren" style="width:150px"'); ?>
+                                                <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['analisis_impact_inherent'])) ? '' : $analisiData['analisis_impact_inherent'], 'class="form-control" id="impactAnalisisInheren" style="width:150px"'); ?>
                                             </td>
                                             <td style="position: sticky; left: 270px; background: white; z-index: 99;" class="text-center">
                                                 <span id="likeAnalisisInherenLabel">
-                                                    <span style="background-color:<?php echo (count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['inherent_level_text']) > 0) ? $data['inherent_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    <span style="background-color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </span><span id="spinner-inherent"></span>
                                             </td>
 
                                             <!-- Kolom Detail Risiko Residual -->
                                             <td style="position: sticky; left: 320px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('residual_likelihood', $cboLike, (empty($data['residual_likelihood'])) ? '' : $data['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" style="width:150px" id="likeAnalisisResidual"'); ?>
+                                                <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['analisis_like_residual'])) ? '' : $analisiData['analisis_like_residual'], 'class="form-control" data-mode="2" data-month="0" style="width:150px" id="likeAnalisisResidual"'); ?>
                                             </td>
                                             <td style="position: sticky; left: 430px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['LevelAnalisisInheren'], 'class="form-control" id="impactAnalisisResidual" style="width:150px"'); ?>
+                                                <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['analisis_impact_residual'])) ? '' : $analisiData['analisis_impact_residual'], 'class="form-control" id="impactAnalisisResidual" style="width:150px"'); ?>
                                             </td>
                                             <td style="position: sticky; left: 540px; background: white; z-index: 99;" class="text-center">
                                                 <span id="likeAnalisisResidualLabel">
-                                                    <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </span><span id="spinner-residual"></span>
                                             </td>
 
                                             <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
                                             <?php for ($i = 1; $i <= 12; $i++) { ?>
+                                                <input type="hidden" name="month" id="month">
                                                 <td class="text-center">
-                                                <?php echo form_dropdown('residual_likelihood', $cboLike, (empty($data['residual_likelihood'])) ? '' : $data['residual_likelihood'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
+                                                <?php echo form_dropdown('target_like', $cboLike, (empty($data['target_like'])) ? '' : $data['target_like'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
                                                 </td>
                                                 <td class="text-center">
-                                                <?php echo form_dropdown('analisis_inheren', $cboImpact, (empty($data['analisis_inheren'])) ? '' : $data['analisis_inheren'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
+                                                <?php echo form_dropdown('target_impact', $cboImpact, (empty($data['target_impact'])) ? '' : $data['target_impact'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
                                                 <td class="text-center">
                                                     <span id="targetResidualLabel<?= $i ?>">
                                                         <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">
@@ -524,7 +526,7 @@ $pb = [
 
                             <div class="x_footer <?= $analysisacthide ?>">
                                 <ul class="nav navbar-right panel_toolbox ">
-                                    <li><span class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_level"> Simpan </span></li>
+                                    <li><span class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_analisis"> Simpan </span></li>
                                     <!-- <li><span class="btn btn-default pointer" id="cancel_level" data-dismiss="modal"> Kembali </span></li> -->
                                 </ul>
                                 <div class="clearfix"></div>
