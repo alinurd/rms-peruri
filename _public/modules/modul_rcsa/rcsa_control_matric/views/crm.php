@@ -141,7 +141,7 @@
                                     <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?= $ex['dokumen'] ?>" multiple />
                                     
                                     <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                        <?php if (empty($ex['dokumen'])) : ?>
+                                        <?php if (!isset($ex['dokumen']) || empty($ex['dokumen']) || $ex['dokumen'] == "" || $ex['dokumen'] == NULL ) : ?>
                                             <label class="file_upload" style="margin: 0;">
                                                 <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" style="display: none;" />
                                                 <a class="btn btn-warning btn-xs" rel="nofollow" onclick="document.getElementById('userfile_<?= $i; ?>').click();">
