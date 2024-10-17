@@ -2154,4 +2154,29 @@ if($dtkri){
 		}
 	}
 
+	public function simpan_analisis(){
+		$post = $this->input->post();
+		
+		$upd['analisis_like_inherent'] = $post['analisis_like_inherent'];
+		$upd['analisis_impact_inherent'] = $post['analisis_impact_inherent'];
+		$upd['analisis_like_residual'] = $post['analisis_like_residual'];
+		$upd['analisis_impact_residual'] = $post['analisis_impact_residual'];
+		$upd['target_impact'] = json_encode($post['target_impact']);
+		$upd['target_like'] = json_encode($post['target_like']);
+		$analisis = $this->db->where('id_detail', $post['id_detail'])->get('bangga_analisis_risiko')->row_array();
+		$res=false;
+		if ($analisis) {
+ 			$upd['update_by'] = $this->authentication->get_info_user('username');
+			 $res= $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $upd, 'where' => array('id_detail' => $post['id_detail']), 'type' => 'update'));
+		} else {
+			$upd['id_detail'] = $post['id_detail'];
+			$upd['create_by'] = $this->authentication->get_info_user('username');
+			$res=$this->crud->crud_data(['table' => 'bangga_analisis_risiko', 'field' => $upd, 'type' => 'add']);
+		}
+		$result['sts'] = $res;
+
+		$result['post'] = $post;
+		echo json_encode($result);
+	}
+
 }
