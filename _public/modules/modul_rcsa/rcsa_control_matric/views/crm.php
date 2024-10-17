@@ -145,7 +145,7 @@
                                         <?php if (empty($ex['dokumen']) || !file_exists($filePath)) : ?>
                                             <label class="file_upload" style="margin: 0;">
                                                 <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" style="display: none;" />
-                                                <a class="btn btn-warning btn-xs" rel="nofollow" onclick="document.getElementById('userfile_<?= $i; ?>').click();">
+                                                <a class="btn btn-warning btn-xs" rel="nofollow">
                                                     <i class="fa fa-upload"></i>
                                                 </a>
                                             </label>
@@ -220,7 +220,7 @@
                     <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                         <label class="file_upload" style="margin: 0;">
                             <input type="file" name="fileupload[${rcmIndex}][]" id="userfile_${rcmIndex}" style="display: none;" />
-                            <a class="btn btn-warning btn-xs" rel="nofollow" onclick="document.getElementById('userfile_${rcmIndex}').click();">
+                            <a class="btn btn-warning btn-xs" rel="nofollow">
                                 <i class="fa fa-upload"></i>
                             </a>
                         </label>
@@ -276,7 +276,7 @@
                                   <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
                                     <label class="file_upload" style="margin: 0;">
                                         <input type="file" name="fileupload[${rcmCount}][]" id="userfile_${rcmCount}" style="display: none;" />
-                                        <a class="btn btn-warning btn-xs" rel="nofollow" onclick="document.getElementById('userfile_${rcmCount}').click();">
+                                        <a class="btn btn-warning btn-xs" rel="nofollow">
                                             <i class="fa fa-upload"></i>
                                         </a>
                                     </label>
