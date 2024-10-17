@@ -937,15 +937,60 @@ $(document).on("change", "[id^=likeTargetResidual], [id^=impactTargetResidual]",
 	})
 
 
-});
+	$(document).on("click", "#simpan_analisis", function () { 
+
+		var id_detail = $("#id_detail").val();
+		var analisis_like_inherent = $("#likeAnalisisInheren").val();
+		var analisis_impact_inherent = $("#impactAnalisisInheren").val();
+		var analisis_like_residual = $("#likeAnalisisResidual").val();
+		var analisis_impact_residual = $("#impactAnalisisResidual").val();
  
+		var target_like = [];
+		var target_impact = [];
+		for (var i = 1; i <= 12; i++) {
+			target_like.push($("#likeTargetResidual" + i).val());
+			target_impact.push($("#impactTargetResidual" + i).val());
+		}
+
+ 		var data = {
+			'id_detail': id_detail, 
+			'analisis_like_inherent': analisis_like_inherent, 
+			'analisis_impact_inherent': analisis_impact_inherent, 
+			'analisis_like_residual': analisis_like_residual, 
+			'analisis_impact_residual': analisis_impact_residual, 
+			'target_impact': target_impact,
+			'target_like': target_like
+		};
+
+		console.log(data);
+
+		var parent = $(this).parent();
+		var url = modul_name + "/simpan-analisis"; 
+
+		cari_ajax_combo("post", parent, data, parent, url, "simpan_analisis");
+	})
+
+
+});
+
+
+function simpan_analisis(hasil) {
+	console.log(hasil)
+	if(hasil.sts){
+		pesan_toastr('Berhasil disimpan...', 'success', 'Success', 'toast-top-center', true);
+	}else{
+		pesan_toastr('terjadi kesalahan!', 'err', 'Error', 'toast-top-center', true);
+
+ 	}
+}
 function LevelAnalisisInheren(hasil) {
     console.log(hasil);
     if (hasil.mode == 1) {
         $("#likeAnalisisInherenLabel").html(hasil.level_text);
     } else if (hasil.mode == 2) {
         $("#likeAnalisisResidualLabel").html(hasil.level_text);
-    } else {
+    } else { 
+		$("input[name='month']").val(hasil.month);
         $("#targetResidualLabel" + hasil.month).html(hasil.level_text);
     }
 }
