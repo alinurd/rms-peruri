@@ -722,15 +722,23 @@ if($dtkri){
 			$data['sasaran'][$row['id']] = $row['sasaran'];
 		}
 
+		$rows_bisnis = $this->db->where('rcsa_no',$id_rcsa)->get(_TBL_RCM)->result_array();
+		$data['proses_bisnis'] = ['- select -'];
+		foreach ($rows_bisnis as $rb) {
+			$data['proses_bisnis'][$rb['id']] = $rb['bussines_process'];
+		}
+
 		$couse = [];
 		$impact = [];
 		$detail = [];
 		$sub = [];
 		$event = [];
+		$rcsa_det = [];
 		// doi::dump($id_edit);
 		if ($id_edit > 0) {
 
 			$detail = $this->db->where('id', $id_edit)->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
+			$rcsa_det = $this->db->where('id', $id_edit)->get(_TBL_RCSA_DETAIL)->row_array();
 			if ($detail["sts_propose"] == 4) {
 				$disabled = 'disabled';
 				$readonly = 'readonly="true"';
@@ -860,6 +868,7 @@ if($dtkri){
 		}
 		
 		$action = $this->db->where('rcsa_detail_no', $id_edit)->get(_TBL_RCSA_ACTION)->row_array();
+		$data["rcsa_det"] = $rcsa_det;
 		$data['field'] = $action;
 		$data['id_edit_mitigasi'] = $action['id'];
 
@@ -897,6 +906,25 @@ if($dtkri){
 		// echo json_encode($result);
 
 	}
+
+	function update_sts_heatmap(){
+		$id   	= $this->input->post('id');
+		$status = $this->input->post('status');
+		// Validasi ID dan status
+        if (is_numeric($id) && ($status == 0 || $status == 1)) {
+
+			$result = $this->data->save_status($id, $status);
+            // Memanggil model untuk mengupdate status
+            if ($result) {
+                echo "Data berhasil di Update!";
+            } else {
+                echo "Data gagal di Update";
+            }
+        } else {
+            echo "Data tidak valid!";
+        }
+	}
+
 	function add_peristiwa()
 	{
 		$id_rcsa = $this->input->post('id');
