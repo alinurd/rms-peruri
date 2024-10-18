@@ -32,7 +32,7 @@ if ($detail['pi'] >= 5) {
     $progresacthide = 'hide';
 }
 
-if ($detail['pi'] == 1) {
+if ($detail['pi'] == 1 || $detail['pi'] < 1) {
     $identifyact = 'active';
 } elseif ($detail['pi'] == 2) {
     $analysisact = 'active';
@@ -42,10 +42,10 @@ if ($detail['pi'] == 1) {
     $treatmentact = 'active';
 } elseif ($detail['pi'] == 5) {
     $progresact = 'active';
-} elseif ($detail['pi'] == 4) {
-    $evaluasiacthide = 'active';
+} elseif ($detail['pi'] == 3) {
+    $evaluasiact = 'active';
 } else {
-    $identifyact = 'active';
+    // $identifyact = 'active';
 }
 
 $krion = "hide";
@@ -61,18 +61,14 @@ if ($field['iskri'] == 0) {
 }
 
 // test 
-// Initialize the dropdown options array with a default option
 // $pb = [
 //     '' => '- Pilih Proses Bisnis -',
+//     'proses bisnis 1' => 'Pembelian',
+//     'penjualan' => 'Penjualan',
+//     'produksi' => 'Produksi',
+//     'distribusi' => 'Distribusi',
+//     'logistik' => 'Logistik',
 // ];
-
-// // Populate the array dynamically from the database query result
-// if (!empty($proses_bisnis)) {
-//     foreach ($proses_bisnis as $row) {
-//         // Assuming 'id' and 'proses_bisnis_name' are the relevant columns
-//         $pb[$row['id']] = $row['bussines_process']; 
-//     }
-// }
 ?>
 
 
@@ -196,6 +192,7 @@ if ($field['iskri'] == 0) {
                                             <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
                                         </tr>
 
+                
                                         <tr>
                                             <td width="20%" rowspan="3">Peristiwa (T3)</td>
                                         </tr>
@@ -371,7 +368,9 @@ if ($field['iskri'] == 0) {
                                                         <td width="25%">Asumsi Perhitungan Dampak </td>
                                                         <td>
                                                             <div id="risk_asumsi_perhitungan_dampak" class="input-group">
-                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($rcsa_det) ? ($rcsa_det['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control text-right" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+
+                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
+
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -432,7 +431,7 @@ if ($field['iskri'] == 0) {
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                         <section class="x_panel">
                             <div class="x_content table-responsive" style="overflow-x: auto;">
-                                <table class="table table-striped table-bordered table-hover">
+                                <table class="table table-striped  table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <!-- Kolom Analisis Risiko Inhern -->
@@ -495,15 +494,14 @@ if ($field['iskri'] == 0) {
                                                     <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </span><span id="spinner-residual"></span>
                                             </td>
-
                                             <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
                                             <?php for ($i = 1; $i <= 12; $i++) { ?>
                                                 <input type="hidden" name="month" id="month">
                                                 <td class="text-center">
-                                                <?php echo form_dropdown('target_like', $cboLike, (empty($data['target_like'])) ? '' : $data['target_like'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
+                                                <?php echo form_dropdown('target_like', $cboLike, (empty($target_like[$i-1])) ? '' : $target_like[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
                                                 </td>
                                                 <td class="text-center">
-                                                <?php echo form_dropdown('target_impact', $cboImpact, (empty($data['target_impact'])) ? '' : $data['target_impact'], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
+                                                <?php echo form_dropdown('target_impact', $cboImpact, (empty($target_impact[$i-1])) ? '' : $target_impact[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
                                                 <td class="text-center">
                                                     <span id="targetResidualLabel<?= $i ?>">
                                                         <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">

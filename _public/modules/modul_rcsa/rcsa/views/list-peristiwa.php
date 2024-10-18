@@ -19,17 +19,17 @@ if ($parent['sts_propose'] == 5) {
     <table class="display table table-bordered" id="tbl_event">
         <thead>
             <tr>
-                <th width="5%">No.</th>
-                <th width="5%">Key Risk</th>
-                <th width="5%">Risk Priority</th>
-                <th>Risk Identify</th>
+                <th class="text-center" width="5%">No.</th>
+                <th class="text-center" width="5%">Key Risk</th>
+                <th class="text-center" width="5%">Risk Priority</th>
+                <th class="text-center">Risk Identify</th>
                 <th class="text-center" width="20%">Risk Analysis Inherent </th>
-                <th width="15%">Risk Evaluasi</th>
+                <th class="text-center" width="15%">Risk Evaluasi</th>
                 <th class="text-center" width="20%">Risk Analysis Residual </th>
-                <th width="15%">Risk Treatment</th>
+                <th class="text-center" width="15%">Risk Treatment</th>
                 <!-- <th width="10%">Progress Treatment</th> -->
-                <th width="10%">Created</th>
-                <th width="10%">Progress Pengisian</th>
+                <th class="text-center" width="10%">Created</th>
+                <th class="text-center" width="10%">Progress Pengisian</th>
             </tr>
         </thead>
         <tbody>
