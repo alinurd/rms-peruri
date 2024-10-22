@@ -187,7 +187,7 @@ class Risk_Monitoring extends BackendController
 	}
 	
 	
-	function pagination($data, $total_pages, $page, $triwulan){
+	function pagination($data, $total_pages, $page){
 		$pagination = '';
   		$post = '';
 		if (!empty($data['periode'])) {
