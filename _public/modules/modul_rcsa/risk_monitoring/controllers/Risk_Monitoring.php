@@ -160,6 +160,7 @@ class Risk_Monitoring extends BackendController
 			$tw = $this->input->get('triwulan');
 		}
 		$data['owner'] =$own;
+		$data['triwulan'] =$tw;
  		$total_data = $this->data->count_all_data($data); 
 		$total_pages = ceil($total_data / $limit); 
 		$offset = ($page - 1) * $limit;
