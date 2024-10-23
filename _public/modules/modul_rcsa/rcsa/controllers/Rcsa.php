@@ -691,6 +691,7 @@ if($dtkri){
 		$id = intval($this->uri->segment(4));
 		$data['parent'] = $this->db->where('id', $id)->get(_TBL_VIEW_RCSA)->row_array();
 		$data['field'] = $this->data->get_peristiwa($id);
+		
 		$this->template->build('fom_peristiwa', $data);
 	}
 
@@ -721,7 +722,6 @@ if($dtkri){
 		foreach ($rows as $row) {
 			$data['sasaran'][$row['id']] = $row['sasaran'];
 		}
-
 		$rows_bisnis = $this->db->where('rcsa_no',$id_rcsa)->get(_TBL_RCM)->result_array();
 		$data['proses_bisnis'] = ['- select -'];
 		foreach ($rows_bisnis as $rb) {
@@ -734,11 +734,11 @@ if($dtkri){
 		$sub = [];
 		$event = [];
 		$rcsa_det = [];
-		// doi::dump($id_edit);
 		if ($id_edit > 0) {
-
+			
 			$detail = $this->db->where('id', $id_edit)->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
 			$rcsa_det = $this->db->where('id', $id_edit)->get(_TBL_RCSA_DETAIL)->row_array();
+			// doi::dump($rcsa_det);
 			if ($detail["sts_propose"] == 4) {
 				$disabled = 'disabled';
 				$readonly = 'readonly="true"';
@@ -925,7 +925,6 @@ if($dtkri){
             echo "Data tidak valid!";
         }
 	}
-
 	function add_peristiwa()
 	{
 		$id_rcsa = $this->input->post('id');
