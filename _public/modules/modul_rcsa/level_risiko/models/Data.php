@@ -77,7 +77,7 @@ class Data extends MX_Model {
 		} else {
                 
             $result = '
-            <form id="form_' . $q['id'] . '_' . $month . '" class="form-monitoring" method="POST" style="width: 100%; padding: 0; margin: 0;">
+            <form id="form_' . $q['id'] . '_' . $month . '" class="form-monitoring" method="POST" style="width: 100%; padding: 0; margin: 0;" action="'.base_url('Level_Risiko/save').'">
                 <input type="hidden" name="rcsa_detail_no" value="' . $q['id'] . '">
                 <input type="hidden" name="rcsa_action_no" value="' . $act['id'] . '">
                 <input type="hidden" name="id" value="' . $q['id'] . '">
@@ -100,7 +100,7 @@ class Data extends MX_Model {
                 </div>
         
                 <div style="text-align: center; margin-top: 10px;">
-                    <button type="button" class="btn btn-primary btn-submit" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</button>
+                    <button type="submit" class="btn btn-primary btn-submit" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</button>
                 </div>
             </form>
         ';

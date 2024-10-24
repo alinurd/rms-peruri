@@ -589,17 +589,17 @@ $(function () {
 
   $(document).ready(function () {
     // Event handler untuk tombol submit
-    $(".btn-submit").on("click", function () {
-      var id = $(this).data("id");
-      var month = $(this).data("month");
-      var formId = "#form_" + id + "_" + month;
-      var form = $(formId);
-      var formData = form.serialize();
-      var url = form.attr("action");
-      var parent = $(this).parent();
-      var url = "Level_Risiko" + "/save";
-      cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
-    });
+    // $(".btn-submit").on("click", function () {
+    //   var id = $(this).data("id");
+    //   var month = $(this).data("month");
+    //   var formId = "#form_" + id + "_" + month;
+    //   var form = $(formId);
+    //   var formData = form.serialize();
+    //   var url = form.attr("action");
+    //   var parent = $(this).parent();
+    //   var url = "Level_Risiko" + "/save";
+    //   cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
+    // });
   });
 
   // Penanganan untuk Target Risiko Residual (Bulan)
