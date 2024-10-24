@@ -165,20 +165,20 @@ class Level_Risiko extends BackendController
 
 	public function save(){
 		$data 	= $this->input->post();
-		// $upd                                = [];
-		// $id 		                        = $data['rcsa_detail_no'];
-		// $rcsa_no 	                        = $data['rcsa_no'];
-		// $month 		                        = $data['month'];
-		// $likehold 	                        = $data['likehold'];
-		// $impact 	                        = $data['impact'];
-		// $upd['rcsa_detail'] 				= $id;
-		// $upd['bulan'] 						= $month;
-		// $upd['residual_likelihood_action'] 	= $likehold;
-		// $upd['residual_impact_action'] 		= $impact;
-		// $upd['create_date'] 				= date('Y-m-d H:i:s');
-		// $upd['create_user'] 				= $this->authentication->get_info_user('username');
-		// $upd['rcsa_action_no']              = $data['rcsa_action_no'];
-		// $upd['risk_level_action']           = $data['inherent_level'];
+		$upd                                = [];
+		$id 		                        = $data['rcsa_detail_no'];
+		$rcsa_no 	                        = $data['rcsa_no'];
+		$month 		                        = $data['month'];
+		$likehold 	                        = $data['likehold'];
+		$impact 	                        = $data['impact'];
+		$upd['rcsa_detail'] 				= $id;
+		$upd['bulan'] 						= $month;
+		$upd['residual_likelihood_action'] 	= $likehold;
+		$upd['residual_impact_action'] 		= $impact;
+		$upd['create_date'] 				= date('Y-m-d H:i:s');
+		$upd['create_user'] 				= $this->authentication->get_info_user('username');
+		$upd['rcsa_action_no']              = $data['rcsa_action_no'];
+		$upd['risk_level_action']           = $data['inherent_level'];
 	
 		// doi::dump($upd);
 		// die('ctr');
@@ -210,7 +210,7 @@ class Level_Risiko extends BackendController
 		// 	$where['id']                    = $id;
 		// 	$result = $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
 		// }
-		echo json_encode($data);
+		echo json_encode($upd);
 		// 	var_dump($simpan);
 		// exit;
 		// echo "<script>
