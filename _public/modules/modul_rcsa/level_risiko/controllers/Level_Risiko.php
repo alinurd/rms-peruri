@@ -164,54 +164,17 @@ class Level_Risiko extends BackendController
 	}
 
 	public function save(){
-		$data 	= $this->input->post();
-		$upd                                = [];
-		$id 		                        = $data['rcsa_detail_no'];
-		$rcsa_no 	                        = $data['rcsa_no'];
-		$month 		                        = $data['month'];
-		$likehold 	                        = $data['likehold'];
-		$impact 	                        = $data['impact'];
-		$upd['rcsa_detail'] 				= $id;
-		$upd['bulan'] 						= $month;
-		$upd['residual_likelihood_action'] 	= $likehold;
-		$upd['residual_impact_action'] 		= $impact;
-		$upd['create_date'] 				= date('Y-m-d H:i:s');
-		$upd['create_user'] 				= $this->authentication->get_info_user('username');
-		$upd['rcsa_action_no']              = $data['rcsa_action_no'];
-		$upd['risk_level_action']           = $data['inherent_level'];
-	
-		// doi::dump($upd);
-		// die('ctr');
-		// Simpan data ke dalam tabel (misalnya, 'level_risiko_data')
+		$post 	= $this->input->post();
+
+		$id = $this->data->simpan_realisasi($post);
+		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
+		$data['detail'] = $this->db->where('id', $post['detail_rcsa_no'])->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
+		$data['realisasi'] = $this->data->get_realisasi($post['detail_rcsa_no'], $post['bulan']);
+		// $result['combo'] = $this->load->view('list-realisasi', $data, true);
+		echo json_encode($data);
+
+
 		
-		if ((int)$data['id_edit'] > 0) {
-			$upd['update_user'] = $this->authentication->get_info_user('username');
-			$where['id'] = $data['id_edit'];
-			$where['bulan'] = $data['month'];
-			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-			$id = intval($data['id_edit']);
-			$type = "edit";
-		} else {
-			$upd['create_user'] = $this->authentication->get_info_user('username');
-			$id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
-			$id = $this->db->insert_id();
-			$type = "add";
-		}
-	
-		// $id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
-		// $id = $this->db->insert_id();
-		
-		$upd = [];
-		$rows = $this->db->where('rcsa_action_no', $data['rcsa_action_no'])->order_by('progress_date', 'desc')->limit(1)->get(_TBL_RCSA_ACTION_DETAIL)->row_array();
-		if ($rows) {
-			$upd['residual_likelihood']     = $rows['residual_likelihood_action'];
-			$upd['residual_impact']         = $rows['residual_impact_action'];
-			$upd['risk_level']              = $rows['risk_level_action'];
-			$upd['status_loss_parent']      = $rows['status_loss'];
-			$where['id']                    = $id;
-			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-		}
-		echo json_encode($result);
 		// 	var_dump($simpan);
 		// exit;
 		// echo "<script>
