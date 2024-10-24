@@ -3,7 +3,7 @@
 //NamaTbl, NmFields, NmTitle, Type, input, required, search, help, isiedit, size, label 
 //$tbl, 'id', 'id', 'int', false, false, false, true, 0, 4, 'l_id'
 
-class Kri extends BackendController
+class Early_Warning extends BackendController
 {
 	var $type_risk = 0;
 	var $table = "";
