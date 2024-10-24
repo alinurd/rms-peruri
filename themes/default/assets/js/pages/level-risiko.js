@@ -645,7 +645,7 @@ $(function () {
 
     cari_ajax_combo("post", parent, data, "", url, "result_realisasi");
 
-    return false; // Untuk mencegah reload halaman
+    // return false; // Untuk mencegah reload halaman
   });
   // $(document).ready(function () {
   //   // Event handler untuk tombol submit
