@@ -15,7 +15,7 @@
 </div>
 <section class="x_panel">
     <div class="x_title">
-        <form method="GET" action="<?= site_url('risk_monitoring/index'); ?>">
+        <form method="GET" action="<?= site_url(_MODULE_NAME_REAL_.'/index'); ?>">
             <div class="row">
                 <!-- Dropdown untuk filter tahun (cboPeriod) -->
                 <div class="col-md-2 col-sm-4 col-xs-6">
@@ -69,9 +69,8 @@
                     <th style="position: sticky; left: 0; background: white; z-index: 99;">No</th>
                     <th style="position: sticky; left: 30px; background: white; z-index: 115px;">Risk Owner</th>
                     <th style="position: sticky; left: 95px; background: white; z-index: 99; width: 320px;">Peristiwa Risiko</th>
-                        <th>Tahun</th>
-                        <th>Level Risiko Inheren</th>
-                        <th>Level Risiko Target</th>
+                    <th style="position: sticky; left: 95px; background: white; z-index: 99; width: 320px;">Proaktif</th>
+                        <th>Tahun</th> 
                         <?php if ($triwulan == 1): ?>
                             <th>Januari</th>
                             <th>Februari</th>
@@ -95,21 +94,16 @@
                     <?php
                     $no = 1;
                     foreach ($field as $q) {
-                        $residual_level = $this->data->get_master_level(true, $q['inherent_level']);
-                        $inherent = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">' . $residual_level['level_mapping'] . '</span>';
-
-                        $residual_level1 = $this->data->get_master_level(true, $q['residual_level']);
-                        $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level1['color'] . ';color:' . $residual_level1['color_text'] . ';">' . $residual_level1['level_mapping'] . '</span>';
-                    ?>
+                        $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
+  ?>
                         <tr>
                            
                         <td style="position: sticky; left: 0; background: white;"><?= $no++ ?></td>
                         <td style="position: sticky; left: 30px; background: white;"><?= $q['name'] ?></td>
-                        <td style="position: sticky; left: 95px; background: white;"><?= $q['event_name'] ?></td>
+                        <td style="position: sticky; left: 95px; background: white;"><?= $act['event_name'] ?></td>
+                        <td style="position: sticky; left: 95px; background: white;"><?= $act['proaktif'] ?></td>
                        
-                            <td><?= $q['tahun'] ?></td>
-                            <td><?= $inherent ?></td>
-                            <td><?= $target ?></td>
+                            <td><?= $q['tahun'] ?></td> 
                             <?php
                             switch ($triwulan) {
                                 case 1:

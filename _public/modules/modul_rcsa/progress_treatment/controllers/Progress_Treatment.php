@@ -1011,8 +1011,8 @@ $like_impact = $this->level_action($monthly['residual_likelihood_action'], $mont
 		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
 		$data['detail'] = $this->db->where('id', $post['detail_rcsa_no'])->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
 		$data['realisasi'] = $this->data->get_realisasi($post['detail_rcsa_no'], $post['bulan']);
-		$result['combo'] = $this->load->view('list-realisasi', $data, true);
-		echo json_encode($result);
+		// $result['combo'] = $this->load->view('list-realisasi', $data, true);
+		echo json_encode($data);
 	}
 	function delete_realisasi()
 	{

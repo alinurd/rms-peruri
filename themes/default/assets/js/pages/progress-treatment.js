@@ -491,20 +491,32 @@ console.log(data);
 		// location.reload(); 
 	});
 
-	$(document).on("click", "#simpan_realisasi", function () {
+	$(document).on("click", "[id^=simpan_realisasi_]", function () {
 		var id = $(this).data('id');
-		var kri = $('#kri').val();
-// 		if(kri ==""){
-// alert('realisasi KRI tidak boleh kosong');
-// return false;
-// 		}
-		var data = $("form#form_realisasi").serialize();
+		var month = $(this).data('month');
+	
+		// Ambil nilai input berdasarkan ID unik
+		var progress = $("input[name='progress" + id + month + "']").val();
+		var damp_loss = $("input[name='damp_loss" + id + month + "']").val();
+	
+		var data = { 'id_edit': id, 'month': month, 'progress': progress, 'damp_loss': damp_loss };
+	
+		console.log("ID yang diambil:", id);  // Debugging ID unik
+		console.log(data);
+	
 		var parent = $(this).parent();
 		var target_combo = "";
 		var url = modul_name + "/simpan-realisasi";
-
+	
 		cari_ajax_combo("post", parent, data, target_combo, url, 'result_realisasi');
-	})
+	
+		// return false;  // Untuk mencegah reload halaman
+	});
+	
+	
+	
+
+
 	$(document).on("click", "#simpan_realisasi_kri", function () {
 		var id = $('#realisasi').data('id');
 		var bulan = $('#realisasi').data('bulan');
@@ -967,8 +979,10 @@ function result_realisasi_kri(hasil) {
 	// $("#list_realisasi").html(hasil.combo);
 }
 function result_realisasi(hasil) {
-	alert('Pengisian Progress Treatment Berhasil')
-	location.reload(); 
+	pesan_toastr('Berhasil disimpan...', 'success', 'Success', 'toast-top-center', true);
+	console.log(hasil)
+	// alert('Pengisian Progress Treatment Berhasil')
+	// location.reload(); 
 
 	// $("#list_realisasi").removeClass("hide");
 	// $("#input_realisasi").addClass("hide");
