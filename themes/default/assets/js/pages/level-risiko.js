@@ -587,36 +587,20 @@ $(function () {
       });
   });
 
-  $(document).ready(function () {
-    // Event handler for the submit button
-    $(".btn-submit").on("click", function () {
-      var id = $(this).data("id");
-      console.log("ID:", id); // Check the ID
-
-      var month = $(this).data("month");
-      console.log("Month:", month); // Check the Month
-
-      var formId = "#form_" + id + "_" + month;
-      console.log("Form ID:", formId); // Check the constructed Form ID
-
-      var form = $(formId);
-      console.log("Form:", form); // Check if form is selected correctly
-
-      var formData = form.serialize();
-      console.log("Form Data:", formData); // Check serialized form data
-
-      var url = form.attr("action");
-      console.log("Form URL:", url); // Check the form action URL
-
-      var parent = $(this).parent();
-      console.log("Parent Element:", parent); // Check the parent element
-
-      var url = modul_name + "/save";
-      console.log("Final URL:", url); // Check the final URL
-
-      cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
-    });
-  });
+  // $(document).ready(function () {
+  //   // Event handler untuk tombol submit
+  //   $(".btn-submit").on("click", function () {
+  //     var id = $(this).data("id");
+  //     var month = $(this).data("month");
+  //     var formId = "#form_" + id + "_" + month;
+  //     var form = $(formId);
+  //     var formData = form.serialize();
+  //     var url = form.attr("action");
+  //     var parent = $(this).parent();
+  //     var url = modul_name + "/save";
+  //     cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
+  //   });
+  // });
 
   // Penanganan untuk Target Risiko Residual (Bulan)
   // $(document).on("change", "[id^=likehold], [id^=impact]", function () {
