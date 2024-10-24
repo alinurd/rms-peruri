@@ -180,8 +180,8 @@ class Level_Risiko extends BackendController
 		$upd['rcsa_action_no']              = $data['rcsa_action_no'];
 		$upd['risk_level_action']           = $data['inherent_level'];
 	
-		doi::dump($upd);
-		die('ctr');
+		// doi::dump($upd);
+		// die('ctr');
 		// Simpan data ke dalam tabel (misalnya, 'risk_monitoring_data')
 		
 		if ((int)$data['id_edit'] > 0) {
