@@ -164,8 +164,6 @@ class Level_Risiko extends BackendController
 	}
 
 	public function save(){
-		echo "save";
-		exit;
 		$data 	= $this->input->post();
 		$upd                                = [];
 		$id 		                        = $data['rcsa_detail_no'];
@@ -220,10 +218,6 @@ class Level_Risiko extends BackendController
 		// 	window.location.href = '" . base_url("level_risiko/index") . "';
 		// </script>";
 
-	}
-
-	public function test(){
-		echo "test";
 	}
 	
 	
