@@ -182,7 +182,7 @@ class Level_Risiko extends BackendController
 	
 		// doi::dump($upd);
 		// die('ctr');
-		// Simpan data ke dalam tabel (misalnya, 'risk_monitoring_data')
+		// Simpan data ke dalam tabel (misalnya, 'level_risiko_data')
 		
 		if ((int)$data['id_edit'] > 0) {
 			$upd['update_user'] = $this->authentication->get_info_user('username');
@@ -238,21 +238,21 @@ class Level_Risiko extends BackendController
 			$pagination .= '<ul class="pagination">';
 			
  			if ($page > 4) {
-				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=1' . $post) . '">First</a></li>';
+				$pagination .= '<li><a href="' . site_url('level_risiko/index?page=1' . $post) . '">First</a></li>';
 			}
 			
  			for ($i = max(1, $page - 3); $i < $page; $i++) {
-				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+				$pagination .= '<li><a href="' . site_url('level_risiko/index?page=' . $i . $post) . '">' . $i . '</a></li>';
 			}
 			
  			$pagination .= '<li class="active"><span>' . $page . '</span></li>';
 			
  			for ($i = $page + 1; $i <= min($page + 3, $total_pages); $i++) {
-				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+				$pagination .= '<li><a href="' . site_url('level_risiko/index?page=' . $i . $post) . '">' . $i . '</a></li>';
 			}
 			
  			if ($page < $total_pages - 3) {
-				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $total_pages . $post) . '">Last</a></li>';
+				$pagination .= '<li><a href="' . site_url('level_risiko/index?page=' . $total_pages . $post) . '">Last</a></li>';
 			}
 			
 			$pagination .= '</ul>';
