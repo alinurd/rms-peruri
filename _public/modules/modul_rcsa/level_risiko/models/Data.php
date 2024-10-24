@@ -77,34 +77,33 @@ class Data extends MX_Model {
 		} else {
                 
             $result = '
-    <form id="form_' . $q['id'] . '_' . $month . '" class="form-monitoring" method="POST" action="'.base_url('level_risiko/save').'" style="width: 100%; padding: 0; margin: 0;">
-        <input type="hidden" name="rcsa_detail_no" value="' . htmlspecialchars($q['id']) . '">
-        <input type="hidden" name="rcsa_action_no" value="' . htmlspecialchars($act['id']) . '">
-        <input type="hidden" name="id" value="' . htmlspecialchars($q['id']) . '">
-        <input type="hidden" name="rcsa_no" value="' . htmlspecialchars($q['rcsa_no']) . '">
-        <input type="hidden" name="month" value="' . htmlspecialchars($month) . '">
-        <input type="hidden" name="id_edit" value="' . htmlspecialchars($q['id']) . '">
-        <input type="hidden" name="inherent_level" id="inherent_level' . htmlspecialchars($q['id']) . '_' . htmlspecialchars($month) . '" value="' . htmlspecialchars($monthly['risk_level_action']) . '">
+            <form id="form_' . $q['id'] . '_' . $month . '" class="form-monitoring" method="POST" style="width: 100%; padding: 0; margin: 0;">
+                <input type="hidden" name="rcsa_detail_no" value="' . $q['id'] . '">
+                <input type="hidden" name="rcsa_action_no" value="' . $act['id'] . '">
+                <input type="hidden" name="id" value="' . $q['id'] . '">
+                <input type="hidden" name="rcsa_no" value="' . $q['rcsa_no'] . '">
+                <input type="hidden" name="month" value="' . $month . '">
+                <input type="hidden" name="id_edit" value="' . $q['id'] . '">
+                <input type="hidden" name="inherent_level" id="inherent_level' . $q['id'] . '_' . $month . '" value="' . $monthly['risk_level_action'] . '">
+                
+                <div style="display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 10px;">
+                    ' . form_dropdown('likehold', $cboLike, $monthly['residual_likelihood_action'], 'class="form-control select2" data-mode="3" id="likehold" data-id="'.$q['id'].'" data-month="' . $month . '" style="width:50%;"') . '
+                    ' . form_dropdown('impact', $cboImpact, $monthly['residual_impact_action'], 'class="form-control select2" data-mode="3" id="impact" data-id="'.$q['id'].'" data-month="' . $month . '" style="width:50%"') . '
+                </div>
         
-        <div style="display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 10px;">
-            ' . form_dropdown('likehold', $cboLike, $monthly['residual_likelihood_action'], 'class="form-control select2" data-mode="3" id="likehold" data-id="' . htmlspecialchars($q['id']) . '" data-month="' . htmlspecialchars($month) . '" style="width:50%;"') . '
-            ' . form_dropdown('impact', $cboImpact, $monthly['residual_impact_action'], 'class="form-control select2" data-mode="3" id="impact" data-id="' . htmlspecialchars($q['id']) . '" data-month="' . htmlspecialchars($month) . '" style="width:50%;"') . '
-        </div>
-    
-        <div style="text-align: center; margin-bottom: 10px;">
-            <span id="targetResidualLabel' . htmlspecialchars($q['id']) . htmlspecialchars($month) . '">
-                <span class="btn" style="display: inline-block; width: 100%; background-color: ' . htmlspecialchars($monthly['warna_action']) . '; color: ' . htmlspecialchars($monthly['warna_text_action']) . '; padding: 4px 8px;">
-                    ' . htmlspecialchars($monthly['inherent_analisis_action']) . ' [' . htmlspecialchars($progress_detail) . ']
-                </span>
-            </span>
-        </div>
-    
-        <div style="text-align: center; margin-top: 10px;">
-            <button type="submit" class="btn btn-primary" style="width: 100%; height: 40px;">Simpan</button>
-        </div>
-    </form>
-';
-
+                <div style="text-align: center; margin-bottom: 10px;">
+                    <span id="targetResidualLabel'.$q['id'].$month. '">
+                        <span class="btn" style="display: inline-block; width: 100%; background-color: ' . $monthly['warna_action'] . '; color: ' . $monthly['warna_text_action'] . '; padding: 4px 8px;">
+                            ' . $monthly['inherent_analisis_action'] . ' [' . $progress_detail . ']
+                        </span>
+                    </span>
+                </div>
+        
+                <div style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="btn btn-primary btn-submit" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</button>
+                </div>
+            </form>
+        ';
         
         }
         
