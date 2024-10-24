@@ -126,22 +126,16 @@
             <td style="background-color: #fff; position: sticky; left: 95px; z-index: 96; "><?= $act['event_name'] ?></td>
             <td style="background-color: #fff; position: sticky; left: 220px; z-index: 97;"><?= $combo['data'] ?></td>
             <td style="background-color: #fff; position: sticky; left: 330px; z-index: 98; ">
-                <center><?= $combo_stuan['data'] == "%" ? "persen [%]" : $combo_stuan['data'] ?></center>
+                <center><?= $combo_stuan['data'] == "%" ? "persentase [%]" : $combo_stuan['data'] ?></center>
             </td>
             <td style="background-color: #7FFF00; color: #000; position: sticky; left: 395px; z-index: 99;"><?= $q['min_rendah'] ?> - <?= $q['max_rendah'] ?></td>
             <td style="background-color: #FFFF00; color: #000; position: sticky; left: 445px; z-index: 99;"><?= $q['min_menengah'] ?> - <?= $q['max_menengah'] ?></td>
             <td class="bg-danger" style="color: #000; position: sticky; left: 480px; z-index: 99;"><?= $q['min_tinggi'] ?> - <?= $q['max_tinggi'] ?></td>
-
-            <!-- Data per bulan in a scrollable container -->
-            <td colspan="3">
-                <div class="scroll-container">
-                    <table class="scrollable-data">
-                        <tr>
                             <?php
                             $start = ($triwulan - 1) * 3 + 1;
                             $end = $start + 3;
                             for ($i = $start; $i < $end; $i++): ?>
-                                <td>
+                                <td class="text-center" <?=$bgres?> id="kri-<?=$q['id']?><?=$i?>">
                                     <?php
                                     $data['id'] = $q['id'];
                                     $data['rcsa_no'] = $q['rcsa_no'];
@@ -149,10 +143,7 @@
                                     ?>
                                 </td>
                             <?php endfor; ?>
-                        </tr>
-                    </table>
-                </div>
-            </td>
+       
         </tr>
         <?php
             } else { ?>

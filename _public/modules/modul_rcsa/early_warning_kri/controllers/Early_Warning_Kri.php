@@ -986,18 +986,13 @@ $like_impact = $this->level_action($monthly['residual_likelihood_action'], $mont
 		// doi::dump($post);
 		// die('ctr');
 
-		$id = $this->data->simpan_realisasi_kri($post);
-		if ($id) {
-
-		$tab = 'Berhasil mengisi Key Risk Indikator ';
-		$this->session->set_flashdata('tab', $tab);
-		// $this->session->set_flashdata('id', $id);
-		// $this->session->set_flashdata('rcsa_no', $post['rcsa_no']);
-		// header('location:' . base_url($this->modul_name . '/tes/'));
+		$data = $this->data->simpan_realisasi_kri($post);
+		if ($data) { 
+		$data['id'] = $post['id'];
+		$data['bulan'] = $post['bulan'];
  
-		$data['id'] = $id;
-
-		echo json_encode($data);		} 
+		echo json_encode($data);		
+	} 
 	}
 
 

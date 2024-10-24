@@ -16,22 +16,18 @@ class Data extends MX_Model {
     function simpan_realisasi_kri($data)
     {
         $rows = $this->db->where('rcsa_detail', $data['id'])->where('bulan', $data['bulan'])->get(_TBL_KRI_DETAIL)->row_array();
-        // doi::dump($data);
-        // doi::dump($rows);
-        // die('cek');
 
-if($rows){
 
-    // doi::dump('edit');
-    $updkri['rcsa_detail'] = $data['id'];
-    $updkri['realisasi'] = $data['realisasi'];
+        if ($rows) {
+
+            $updkri['rcsa_detail'] = $data['id'];
+            $updkri['realisasi'] = $data['realisasi'];
 
             $where['rcsa_detail'] = $data['id'];
             $where['bulan'] = $data['bulan'];
             $updkri['update_user'] = $this->authentication->get_info_user('username');
-            $result = $this->crud->crud_data(array('table' => _TBL_KRI_DETAIL, 'field' => $updkri, 'where' => $where, 'type' => 'update'));
-        }else{
-    // doi::dump('add');
+            $res = $this->crud->crud_data(array('table' => _TBL_KRI_DETAIL, 'field' => $updkri, 'where' => $where, 'type' => 'update'));
+        } else {
 
             $kridet['realisasi'] = $data['realisasi'];
             $kridet['rcsa_detail'] = $data['id'];
@@ -39,10 +35,36 @@ if($rows){
             // $kridet['action_detail'] = $id;
 
             $kridet['create_user'] = $this->authentication->get_info_user('username');
-            $result = $this->crud->crud_data(array('table' => _TBL_KRI_DETAIL, 'field' => $kridet, 'type' => 'add'));
+            $res = $this->crud->crud_data(array('table' => _TBL_KRI_DETAIL, 'field' => $kridet, 'type' => 'add'));
             $id = $this->db->insert_id();
-}
-// die();
+        }
+        $result['bg'] = '';
+        if($res){
+            $kri = $this->db
+            ->where('rcsa_detail',$data['id'])
+            ->get(_TBL_KRI)->row_array();
+         $data['kri_detail'] = $this->db
+        ->where('rcsa_detail', $kri['rcsa_detail'])
+        ->where('bulan',  $data['bulan'])
+        ->get(_TBL_KRI_DETAIL)->row_array();
+        $realisasi = $data['kri_detail']['realisasi'];
+       $level_1 = range($kri['min_rendah'], $kri['max_rendah']);
+       $level_2 = range($kri['min_menengah'], $kri['max_menengah']);
+       $level_3 = range($kri['min_tinggi'], $kri['max_tinggi']);
+       if (in_array($realisasi, $level_1)) {
+        $result['bg'] = '#7FFF00'; // Warna Aman (hijau)
+    } elseif (in_array($realisasi, $level_2)) {
+        $result['bg'] = '#FFFF00'; // Warna Hati-Hati (kuning)
+    } elseif (in_array($realisasi, $level_3)) {
+        $result['bg'] = '#FF0000'; // Warna Bahaya (merah)
+    } else {
+        $result['bg'] = ''; // Tidak ada warna
+    }
+     
+        }
+        
+
+
         return $result;
 
         // Doi::dump($data);
@@ -183,6 +205,16 @@ if($rows){
 			->where('rcsa_detail_no',$q['id'])
  			->get('bangga_rcsa_action')->row_array();
 
+             $data['kri'] = $this->db
+             ->where('rcsa_detail',$q['id'])
+             ->get(_TBL_KRI)->row_array();
+          $data['kri_detail'] = $this->db
+         ->where('rcsa_detail', $data['kri']['rcsa_detail'])
+         ->where('bulan',  $month)
+         ->get(_TBL_KRI_DETAIL)->row_array();
+
+
+
 		$data['data'] = $this->db
 			->where('rcsa_action_no', $act['id'])
 			->where('bulan', $month)
@@ -214,7 +246,26 @@ if($rows){
 				->get('bangga_view_rcsa_action_detail')->row_array();
 		}
  
+        $realisasi = $data['kri_detail']['realisasi'];
+        $level_1 = range($data['kri']['min_rendah'], $data['kri']['max_rendah']);
+        $level_2 = range($data['kri']['min_menengah'], $data['kri']['max_menengah']);
+        $level_3 = range($data['kri']['min_tinggi'], $data['kri']['max_tinggi']);
+        if ($data['kri'] && $realisasi >0) {
+            $krnm = $realisasi;
+            if (in_array($realisasi, $level_1)) {
+                $bgres = 'style="background-color: #7FFF00;color: #000;"';
+            } elseif (in_array($realisasi, $level_2)) {
+                $bgres = 'style="background-color: #FFFF00;color:#000;"';
+            } elseif (in_array($realisasi, $level_3)) {
+                $bgres = 'class="bg-danger" style=" color: #000;"';
+            } else {
+                $bgres = '';
+            }
+        } else {
+            $bgres = '';
+        }
 
+        
         $monthly = $data['data']; 
 
         $monthbefore = $data['before'];
@@ -243,18 +294,11 @@ if($rows){
                 // ';
             } else {
                 $result = '
-                <div class="input-group" width="10px">
-                    <input type="number" name="progress'.$data['data']['id'].$month.'" id="progress'.$data['data']['id'].$month.'" class="form-control" placeholder="" value="'.$data['data']['progress_detail'].'" aria-describedby="basic-addon2">
-                    <span class="input-group-addon" id="basic-addon2">%</span>
+                <div  ' . $bgres . ' width="10px">
+                    <input type="number"  name="realisasi'.$q['id'].$month.'" id="realisasi'.$q['id'].$month.'" class="form-control" placeholder="" value="'.$realisasi.'" aria-describedby="basic-addon2"> 
                 </div>
                 <br>
-                <div class="input-group" width="10px">
-                    <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                    <input type="number" name="damp_loss'.$data['data']['id'].$month.'" id="damp_loss'.$data['data']['id'].$month.'" 
-                    value="'.$data['data']['damp_loss'].'" class="form-control" placeholder="" aria-describedby="basic-addon1">
-                </div>
-                <br>
-                  <center><span class="btn btn-primary" id="simpan_realisasi_'.$data['data']['id'].'" data-month="'.$month.'" data-id="'.$data['data']['id'].'">
+                  <center><span class="btn btn-primary" id="simpan_realisasi_'.$q['id'].'" data-month="'.$month.'" data-id="'.$q['id'].'">
                   <i class="fa fa-floppy-o" aria-hidden="true"></i> simpan</span></center>
                 ';
             }
