@@ -94,7 +94,7 @@
         <tr class="text-center">
             <td style="background-color: #7FFF00; color: #000; position: sticky; left: 395px; z-index: 99; " width="20px">Aman</td>
             <td style="background-color: #FFFF00; color: #000; position: sticky; left: 445px; z-index: 99; " width="20px">Hati-Hati</td>
-            <td class="bg-danger" style="color: #000; position: sticky; left: 480px; z-index: 99;" width="20px">Bahaya</td>
+            <td style="background-color: #FF0000; color: #000; position: sticky; left: 480px; z-index: 99;" width="20px">Bahaya</td>
         </tr>
     </thead>
     <tbody>
@@ -115,7 +115,7 @@
                 } elseif (in_array($data, $level_2)) {
                     $bgres = 'style="background-color: #FFFF00; color: #000;"';
                 } elseif (in_array($data, $level_3)) {
-                    $bgres = 'class="bg-danger" style="color: #000;"';
+                    $bgres = ' style="background-color: #FF0000; color: #000;"';
                 } else {
                     $bgres = '';
                 }
@@ -130,17 +130,17 @@
             </td>
             <td style="background-color: #7FFF00; color: #000; position: sticky; left: 395px; z-index: 99;"><?= $q['min_rendah'] ?> - <?= $q['max_rendah'] ?></td>
             <td style="background-color: #FFFF00; color: #000; position: sticky; left: 445px; z-index: 99;"><?= $q['min_menengah'] ?> - <?= $q['max_menengah'] ?></td>
-            <td class="bg-danger" style="color: #000; position: sticky; left: 480px; z-index: 99;"><?= $q['min_tinggi'] ?> - <?= $q['max_tinggi'] ?></td>
+            <td style="background-color: #FF0000; color: #000; position: sticky; left: 480px; z-index: 99;"><?= $q['min_tinggi'] ?> - <?= $q['max_tinggi'] ?></td>
                             <?php
                             $start = ($triwulan - 1) * 3 + 1;
                             $end = $start + 3;
-                            for ($i = $start; $i < $end; $i++): ?>
-                                <td class="text-center" <?=$bgres?> id="kri-<?=$q['id']?><?=$i?>">
-                                    <?php
-                                    $data['id'] = $q['id'];
-                                    $data['rcsa_no'] = $q['rcsa_no'];
-                                    echo $this->data->getMonthlyMonitoringGlobal($data, $i);
-                                    ?>
+                            for ($i = $start; $i < $end; $i++): 
+                                $data['id'] = $q['id'];
+                                $data['rcsa_no'] = $q['rcsa_no'];
+                                $res= $this->data->getMonthlyMonitoringGlobal($data, $i);
+                                 ?>
+                                <td  <?=$res['bgres']?> id="kri-<?=$q['id']?><?=$i?>">
+                                    <center><?=$res['data']?></center>
                                 </td>
                             <?php endfor; ?>
        

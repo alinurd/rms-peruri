@@ -253,16 +253,16 @@ class Data extends MX_Model {
         if ($data['kri'] && $realisasi >0) {
             $krnm = $realisasi;
             if (in_array($realisasi, $level_1)) {
-                $bgres = 'style="background-color: #7FFF00;color: #000;"';
+                $result['bgres'] = 'style="background-color: #7FFF00;color: #000;"';
             } elseif (in_array($realisasi, $level_2)) {
-                $bgres = 'style="background-color: #FFFF00;color:#000;"';
+                $result['bgres'] = 'style="background-color: #FFFF00;color:#000;"';
             } elseif (in_array($realisasi, $level_3)) {
-                $bgres = 'class="bg-danger" style=" color: #000;"';
+                $result['bgres'] = 'style="background-color: #FF0000; color: #000;"';
             } else {
-                $bgres = '';
+                $result['bgres'] = '';
             }
         } else {
-            $bgres = '';
+            $result['bgres'] = '';
         }
 
         
@@ -273,10 +273,10 @@ class Data extends MX_Model {
 
         
         if (!$monthbefore && $month !=1) {
-			$result = '<center><i class="  fa fa-times-circle text-danger"></i></center>';
+			$result['data'] = '<center><i class="  fa fa-times-circle text-danger"></i></center>';
 		} else {
             if (!$monthly) {
-                $result = '<center><i class="  fa fa-times-circle text-warning" title="Level Risiko belum lengkap"></i></center>';
+                $result['data'] = '<center><i class="  fa fa-times-circle text-warning" title="Level Risiko belum lengkap"></i></center>';
 
                 // $result = '
                 // <div class="input-group" width="10px">
@@ -293,8 +293,8 @@ class Data extends MX_Model {
                 //   <i class="fa fa-floppy-o" aria-hidden="true"></i> simpan</span></center>
                 // ';
             } else {
-                $result = '
-                <div  ' . $bgres . ' width="10px">
+                $result['data'] = '
+                <div width="10px">
                     <input type="number"  name="realisasi'.$q['id'].$month.'" id="realisasi'.$q['id'].$month.'" class="form-control" placeholder="" value="'.$realisasi.'" aria-describedby="basic-addon2"> 
                 </div>
                 <br>
