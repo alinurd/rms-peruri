@@ -222,23 +222,25 @@ if($rows){
 
         
         if (!$monthbefore && $month !=1) {
-			$result = '<i class="  fa fa-times-circle text-danger"></i>';
+			$result = '<center><i class="  fa fa-times-circle text-danger"></i></center>';
 		} else {
             if (!$monthly) {
-                $result = '
-                <div class="input-group" width="10px">
-                     <input type="number" name="progress'.$act['id'].$month.'" id="progress'.$act['id'].$month.'" class="form-control" placeholder="" aria-describedby="basic-addon2">
-                     <span class="input-group-addon" id="basic-addon2">%</span>
-                 </div>
-                 <br>
-                 <div class="input-group" width="10px">
-                     <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                     <input type="number" name="damp_loss'.$act['id'].$month.'" id="damp_loss'.$act['id'].$month.'" class="form-control" placeholder="" aria-describedby="basic-addon1">
-                 </div>
-                 <br>
-                  <center><span class="btn btn-primary" id="simpan_realisasi_'.$act['id'].'" data-month="'.$month.'" data-id="'.($act['id'] ?? '').'">
-                  <i class="fa fa-floppy-o" aria-hidden="true"></i> simpan</span></center>
-                ';
+                $result = '<center><i class="  fa fa-times-circle text-warning" title="Level Risiko belum lengkap"></i></center>';
+
+                // $result = '
+                // <div class="input-group" width="10px">
+                //      <input type="number" name="progress'.$act['id'].$month.'" id="progress'.$act['id'].$month.'" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                //      <span class="input-group-addon" id="basic-addon2">%</span>
+                //  </div>
+                //  <br>
+                //  <div class="input-group" width="10px">
+                //      <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                //      <input type="number" name="damp_loss'.$act['id'].$month.'" id="damp_loss'.$act['id'].$month.'" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                //  </div>
+                //  <br>
+                //   <center><span class="btn btn-primary" id="simpan_realisasi_'.$act['id'].'" data-month="'.$month.'" data-id="'.($act['id'] ?? '').'">
+                //   <i class="fa fa-floppy-o" aria-hidden="true"></i> simpan</span></center>
+                // ';
             } else {
                 $result = '
                 <div class="input-group" width="10px">

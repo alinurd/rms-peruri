@@ -151,3 +151,39 @@
     </div>
    
 </section>
+
+
+<script>
+	// Fungsi untuk menampilkan popup
+	function showPopup() {
+		var popup = document.getElementById('infoPopup');
+		popup.style.display = 'block';
+	}
+
+	// Fungsi untuk menyembunyikan popup
+	function hidePopup() {
+		var popup = document.getElementById('infoPopup');
+		popup.style.display = 'none';
+	}
+</script>
+
+<style>
+	/* Gaya untuk popup */
+	.popup {
+		display: none;
+		position: absolute;
+		/* Gunakan absolute agar popup tumpang tindih dengan elemen lain */
+		padding: 10px;
+		background-color: #f9f9f9;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		z-index: 9999;
+	}
+
+	#realisasi {
+		position: relative;
+		z-index: 1;
+		/* Atur nilai z-index elemen realisasi agar lebih rendah daripada popup */
+	}
+</style>
