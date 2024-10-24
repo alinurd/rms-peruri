@@ -200,16 +200,16 @@ class Level_Risiko extends BackendController
 		// $id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
 		// $id = $this->db->insert_id();
 		
-		// $upd = [];
-		// $rows = $this->db->where('rcsa_action_no', $data['rcsa_action_no'])->order_by('progress_date', 'desc')->limit(1)->get(_TBL_RCSA_ACTION_DETAIL)->row_array();
-		// if ($rows) {
-		// 	$upd['residual_likelihood']     = $rows['residual_likelihood_action'];
-		// 	$upd['residual_impact']         = $rows['residual_impact_action'];
-		// 	$upd['risk_level']              = $rows['risk_level_action'];
-		// 	$upd['status_loss_parent']      = $rows['status_loss'];
-		// 	$where['id']                    = $id;
-		// 	$result = $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-		// }
+		$upd = [];
+		$rows = $this->db->where('rcsa_action_no', $data['rcsa_action_no'])->order_by('progress_date', 'desc')->limit(1)->get(_TBL_RCSA_ACTION_DETAIL)->row_array();
+		if ($rows) {
+			$upd['residual_likelihood']     = $rows['residual_likelihood_action'];
+			$upd['residual_impact']         = $rows['residual_impact_action'];
+			$upd['risk_level']              = $rows['risk_level_action'];
+			$upd['status_loss_parent']      = $rows['status_loss'];
+			$where['id']                    = $id;
+			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
+		}
 		echo json_encode($id);
 		// 	var_dump($simpan);
 		// exit;
