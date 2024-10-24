@@ -76,19 +76,19 @@ class Data extends MX_Model {
 			$result         = '<i class="  fa fa-times-circle text-danger"></i>';
 		} else {
                 
+            // <form id="form_' . $q['id'] . '_' . $month . '" class="form-monitoring" method="POST" style="width: 100%; padding: 0; margin: 0;">
             $result = '
-            <form id="form_' . $q['id'] . '_' . $month . '" class="form-monitoring" method="POST" style="width: 100%; padding: 0; margin: 0;">
-                <input type="hidden" name="rcsa_detail_no" value="' . $q['id'] . '">
-                <input type="hidden" name="rcsa_action_no" value="' . $act['id'] . '">
-                <input type="hidden" name="id" value="' . $q['id'] . '">
-                <input type="hidden" name="rcsa_no" value="' . $q['rcsa_no'] . '">
-                <input type="hidden" name="month" value="' . $month . '">
-                <input type="hidden" name="id_edit" value="' . $q['id'] . '">
+                <input type="hidden" id="rcsa_detail_no_'. $q['id'] . '_' . $month .'" name="rcsa_detail_no" value="' . $q['id'] . '">
+                <input type="hidden" id="rcsa_action_no_'. $q['id'] . '_' . $month .'" name="rcsa_action_no" value="' . $act['id'] . '">
+                <input type="hidden" id="id_'. $q['id'] . '_' . $month .'" name="id" value="' . $q['id'] . '">
+                <input type="hidden" id="rcsa_no_'. $q['id'] . '_' . $month .'" name="rcsa_no" value="' . $q['rcsa_no'] . '">
+                <input type="hidden" id="month_'. $q['id'] . '_' . $month .'" name="month" value="' . $month . '">
+                <input type="hidden" id="id_edit_'. $q['id'] . '_' . $month .'" name="id_edit" value="' . $q['id'] . '">
                 <input type="hidden" name="inherent_level" id="inherent_level' . $q['id'] . '_' . $month . '" value="' . $monthly['risk_level_action'] . '">
                 
                 <div style="display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 10px;">
-                    ' . form_dropdown('likehold', $cboLike, $monthly['residual_likelihood_action'], 'class="form-control select2" data-mode="3" id="likehold" data-id="'.$q['id'].'" data-month="' . $month . '" style="width:50%;"') . '
-                    ' . form_dropdown('impact', $cboImpact, $monthly['residual_impact_action'], 'class="form-control select2" data-mode="3" id="impact" data-id="'.$q['id'].'" data-month="' . $month . '" style="width:50%"') . '
+                    ' . form_dropdown('likehold', $cboLike, $monthly['residual_likelihood_action'], 'class="form-control select2" data-mode="3" id="likehold'. $q['id'] . '_' . $month .'" data-id="'.$q['id'].'" data-month="' . $month . '" style="width:50%;"') . '
+                    ' . form_dropdown('impact', $cboImpact, $monthly['residual_impact_action'], 'class="form-control select2" data-mode="3" id="impact'. $q['id'] . '_' . $month .'" data-id="'.$q['id'].'" data-month="' . $month . '" style="width:50%"') . '
                 </div>
         
                 <div style="text-align: center; margin-bottom: 10px;">
@@ -102,8 +102,8 @@ class Data extends MX_Model {
                 <div style="text-align: center; margin-top: 10px;">
                     <span class="btn btn-primary" id="simpan_level_risiko_'.$q['id'].'" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</span>
                 </div>
-            </form>
-        ';
+                ';
+                // </form>
         
         }
         

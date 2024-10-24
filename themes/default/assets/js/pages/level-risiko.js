@@ -555,49 +555,97 @@ $(function () {
     }
   );
 
-  $("form.form-monitoring").each(function () {
-    var form = $(this);
+  $(document).ready(function () {
+    // Event listener for changes on likehold and impact dropdowns
+    $(document).on("change", ".select2", function () {
+      var id = $(this).data("id");
+      var month = $(this).data("month");
+      var likeholdValue = $("#likehold" + id + "_" + month).val();
+      var impactValue = $("#impact" + id + "_" + month).val();
+      // Memastikan month dan impactValue terdefinisi
+      if (month !== undefined && impactValue !== undefined) {
+        var data = {
+          likelihood: likeholdValue,
+          impact: impactValue,
+          month: month,
+          id: id,
+        };
+        var parent = $(this).parent();
+        var url = modul_name + "/cek-level";
 
-    // Ketika dropdown 'impact' atau 'likehold' berubah dalam form tertentu
-    form
-      .find('select[name="impact"], select[name="likehold"]')
-      .on("change", function () {
-        var impactValue = form.find('select[name="impact"]').val();
-        var likeholdValue = form.find('select[name="likehold"]').val();
-        var month = $(this).data("month");
-        var id = $(this).data("id");
-
-        // Memastikan month dan impactValue terdefinisi
-        if (month !== undefined && impactValue !== undefined) {
-          var data = {
-            likelihood: likeholdValue,
-            impact: impactValue,
-            month: month,
-            id: id,
-          };
-          var parent = $(this).parent();
-          var url = modul_name + "/cek-level";
-
-          cari_ajax_combo("post", parent, data, "", url, "Level_risiko_result");
-        } else {
-          console.error(
-            "Error: month atau impact tidak terdefinisi dengan benar."
-          );
-        }
-      });
+        cari_ajax_combo("post", parent, data, "", url, "Level_risiko_result");
+      } else {
+        console.error(
+          "Error: month atau impact tidak terdefinisi dengan benar."
+        );
+      }
+    });
   });
+
+  // $("form.form-monitoring").each(function () {
+  //   var form = $(this);
+
+  //   // Ketika dropdown 'impact' atau 'likehold' berubah dalam form tertentu
+  //   form
+  //     .find('select[name="impact"], select[name="likehold"]')
+  //     .on("change", function () {
+  //       var impactValue = form.find('select[name="impact"]').val();
+  //       var likeholdValue = form.find('select[name="likehold"]').val();
+  //       var month = $(this).data("month");
+  //       var id = $(this).data("id");
+
+  //       // Memastikan month dan impactValue terdefinisi
+  //       if (month !== undefined && impactValue !== undefined) {
+  //         var data = {
+  //           likelihood: likeholdValue,
+  //           impact: impactValue,
+  //           month: month,
+  //           id: id,
+  //         };
+  //         var parent = $(this).parent();
+  //         var url = modul_name + "/cek-level";
+
+  //         cari_ajax_combo("post", parent, data, "", url, "Level_risiko_result");
+  //       } else {
+  //         console.error(
+  //           "Error: month atau impact tidak terdefinisi dengan benar."
+  //         );
+  //       }
+  //     });
+  // });
+
   $(document).on("click", "[id^=simpan_level_risiko_]", function () {
     var id = $(this).data("id");
     var month = $(this).data("month");
-    var formId = "#form_" + id + "_" + month;
-    var form = $(formId);
-    var formData = form.serialize();
     var parent = $(this).parent();
     var target_combo = "";
     var url = modul_name + "/save";
-    cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
 
-    // return false;  // Untuk mencegah reload halaman
+    var rcsa_detail_no = $("#rcsa_detail_no_" + id + "_" + month).val();
+    var rcsa_action_no = $("#rcsa_action_no_" + id + "_" + month).val();
+    var id = $("#id_" + id + "_" + month).val();
+    var rcsa_no = $("#rcsa_no_" + id + "_" + month).val();
+    var month = $("#month_" + id + "_" + month).val();
+    var id_edit = $("#id_edit_" + id + "_" + month).val();
+    var inherent_level = $("#inherent_level" + id + "_" + month).val();
+    var likehold = $("#likehold" + id + "_" + month).val();
+    var impact = $("#impact" + id + "_" + month).val();
+
+    var data = {
+      month: month,
+      id_edit: id_edit,
+      rcsa_detail_no: rcsa_detail_no,
+      rcsa_action_no: rcsa_action_no,
+      rcsa_no: rcsa_no,
+      inherent_level: inherent_level,
+      likehold: likehold,
+      impact: impact,
+    };
+    // console.log(data);
+
+    cari_ajax_combo("post", parent, data, "", url, "result_realisasi");
+
+    return false; // Untuk mencegah reload halaman
   });
   // $(document).ready(function () {
   //   // Event handler untuk tombol submit
@@ -1324,23 +1372,31 @@ function remove_install_cause(t, iddel) {
 //     $("#targetResidualLabel" + hasil.id + hasil.month).html(hasil.level_text);
 //   }
 // }
-
 function Level_risiko_result(hasil) {
-  // Temukan form berdasarkan ID dinamis
-  const form = $(`#form_${hasil.id}_${hasil.month}`);
-
-  if (hasil.mode === 1) {
-    form.find("#likeAnalisisInherenLabel").html(hasil.level_text);
-  } else if (hasil.mode === 2) {
-    form.find("#likeAnalisisResidualLabel").html(hasil.level_text);
+  if (hasil.mode === 1 || hasil.mode === 2) {
+    $(`#targetResidualLabel${hasil.id}${hasil.month}`).html(hasil.level_text);
   } else {
     console.log(hasil.level_no);
-    form.find(`#inherent_level${hasil.id}_${hasil.month}`).val(hasil.level_no); // Mengisi field inherent_level
-    form
-      .find(`#targetResidualLabel${hasil.id}${hasil.month}`)
-      .html(hasil.level_text);
+    // Mengisi field inherent_level
+    $(`#inherent_level${hasil.id}_${hasil.month}`).val(hasil.level_no);
+
+    // Updating the label text
+    $(`#targetResidualLabel${hasil.id}${hasil.month}`).html(hasil.level_text);
   }
 }
+// function Level_risiko_result(hasil) {
+//   if (hasil.mode === 1) {
+//     form.find("#likeAnalisisInherenLabel").html(hasil.level_text);
+//   } else if (hasil.mode === 2) {
+//     form.find("#likeAnalisisResidualLabel").html(hasil.level_text);
+//   } else {
+//     console.log(hasil.level_no);
+//     form.find(`#inherent_level${hasil.id}_${hasil.month}`).val(hasil.level_no); // Mengisi field inherent_level
+//     form
+//       .find(`#targetResidualLabel${hasil.id}${hasil.month}`)
+//       .html(hasil.level_text);
+//   }
+// }
 
 function add_install_impact() {
   $("#add_impact").removeClass("disabled").addClass("disabled");
