@@ -272,7 +272,7 @@ class Data extends MX_Model {
  
 
         
-        if (!$monthbefore && $month !=1 && $realisasi>0) {
+        if (!$monthbefore && $month !=1 && $realisasi !==null) {
 			$result['data'] = '<center><i class="  fa fa-times-circle text-danger"></i></center>';
 		} else {
             if (!$monthly) {
