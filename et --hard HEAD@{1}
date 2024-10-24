@@ -1,0 +1,577 @@
+[33mcommit 788cf23740c1b6413e54e2b792d10a278816df87[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 4e61a5c 24b737d
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Thu Oct 17 18:20:40 2024 +0700
+
+    Merge pull request #22 from alinurd/ali
+    
+    risk evaluasi "view"
+
+[33mcommit 24b737d905f6b67f89d4ddecc341e277ebb5c246[m[33m ([m[1;31morigin/ali[m[33m)[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Oct 17 18:19:55 2024 +0700
+
+    risk evaluasi "view"
+
+[33mcommit 4e61a5c978732da9480b340be10aa1c1890ab456[m
+Merge: 73b5cdd 1de7cc3
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Thu Oct 17 13:25:26 2024 +0700
+
+    Merge pull request #21 from alinurd/dev-teguh
+    
+    Dev teguh
+
+[33mcommit 1de7cc34d9751a03f89bb32527522c96a1983286[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 17 13:24:01 2024 +0700
+
+    test
+
+[33mcommit fb4d134f8072691eaf34f6c5ff47e1c6d88eca3e[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 17 13:22:36 2024 +0700
+
+    test
+
+[33mcommit d4f288143782275915505dbd68c5c5c0e699820c[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 17 13:21:02 2024 +0700
+
+    test
+
+[33mcommit 73b5cdd9afa2f23f1911713f0cd5410ed5e27c60[m
+Merge: a4991e2 b715594
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Thu Oct 17 12:57:11 2024 +0700
+
+    Merge pull request #20 from alinurd/dev-teguh
+    
+    update interface crm
+
+[33mcommit b7155944fb9748053eadb7e81764a0dd78a4d2c2[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 17 12:56:20 2024 +0700
+
+    update interface crm
+
+[33mcommit a4991e22389a378ad23f593f266ac403055ae4fc[m
+Merge: e18f5e3 991b17b
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Thu Oct 17 12:50:43 2024 +0700
+
+    Merge pull request #19 from alinurd/dev-teguh
+    
+    update interface crms
+
+[33mcommit 991b17b8d81a1bb8410b7d5c20b76a6fc0621a16[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 17 12:49:40 2024 +0700
+
+    update interface crms
+
+[33mcommit e18f5e3073e7f5de546ca905ca26bf789a2bce67[m
+Merge: da862f8 1716b31
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Thu Oct 17 12:42:44 2024 +0700
+
+    Merge pull request #18 from alinurd/dev-teguh
+    
+    update interface crm
+
+[33mcommit 1716b31160f2fde7f0bc4e2886e0e6298753dd19[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 17 12:41:17 2024 +0700
+
+    update interface crm
+
+[33mcommit da862f8fed0a38034822d4a97fcec3e40f70a1b6[m
+Merge: 5826bdb a4c1e1a
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Thu Oct 17 12:37:18 2024 +0700
+
+    Merge pull request #17 from alinurd/dev-teguh
+    
+    update interface crm
+
+[33mcommit a4c1e1aae7f0e2fb2acbcb14432936e4047477d3[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 17 12:35:42 2024 +0700
+
+    update interface crm
+
+[33mcommit 5826bdbe70c1a0312470cf68ba70963fe5420b3e[m
+Merge: 980195a 24359e6
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Thu Oct 17 12:29:00 2024 +0700
+
+    Merge pull request #16 from alinurd/dev-teguh
+    
+    Dev teguh
+
+[33mcommit 24359e61658ff7e0d8c05166c3439d4bc656d5a8[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 17 12:27:09 2024 +0700
+
+    update interface crm dan criteria
+
+[33mcommit 5b9efb1f3b04d8019bc97544581556265ff2a226[m
+Merge: 320aac7 980195a
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 19:08:09 2024 +0700
+
+    Merge branch 'main' of https://github.com/alinurd/rms-peruri into dev-teguh
+
+[33mcommit 980195ab7c47060a9e60e3fd8b9d5598c096d778[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 19:04:05 2024 +0700
+
+    update crm
+
+[33mcommit e34ace0ee40e2e7b4638fad3b19d6cd980db22d4[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 19:01:28 2024 +0700
+
+    update crm
+
+[33mcommit ac4b0f42f9191de750cd6e3f0a4a619c098231ef[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 18:59:13 2024 +0700
+
+    update crm
+
+[33mcommit 92136211f3ff73a4cf23329f7d750fddb6b281a6[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 18:54:11 2024 +0700
+
+    update crm
+
+[33mcommit 3f3d4b88de2843067f066d10614373dad9db2a6e[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 18:52:02 2024 +0700
+
+    update crm
+
+[33mcommit e79bf4cd12b851ea2ca87a76c185fa71f78d4d91[m
+Merge: b41d30e ca8bd9b
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 16:51:18 2024 +0700
+
+    Merge branch 'main' of https://github.com/alinurd/rms-peruri
+
+[33mcommit b41d30e44f1095b6324cad76a3098576057677c1[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 16:51:12 2024 +0700
+
+    update bug crm
+
+[33mcommit 320aac74ea779431cc33f987ee0f6fa69d0ecee7[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 16:50:07 2024 +0700
+
+    update bug crm
+
+[33mcommit ca8bd9bb3d2965c524fb8375fec8873dac392335[m
+Merge: b05f1e0 4633831
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Wed Oct 16 16:46:57 2024 +0700
+
+    Merge pull request #15 from alinurd/dev-teguh
+    
+    Dev teguh
+
+[33mcommit 46338318103bc7e77f26cbb8fe11b2a3ec6e1144[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 16:46:02 2024 +0700
+
+    memperbaiki bug
+
+[33mcommit e3b4f8a0350287a4c0b50d03b81e6ceb370d4a4e[m
+Merge: 24777ba b05f1e0
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 16:28:18 2024 +0700
+
+    Merge branch 'main' of https://github.com/alinurd/rms-peruri into dev-teguh
+
+[33mcommit b05f1e0750811d09f6690f9429f538a14f157db2[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 15:08:06 2024 +0700
+
+    update kriteria dampak
+
+[33mcommit 75a402fd51d7f345970b2772acaab23f23ffa75b[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 13:58:35 2024 +0700
+
+    update rcm
+
+[33mcommit 14606537c5f2c03051016f1fee8539d8e3d21119[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 13:51:04 2024 +0700
+
+    update crm
+
+[33mcommit 8d70615872a516fe824354d8773e7f81a5e9790a[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 13:10:38 2024 +0700
+
+    update rcm
+
+[33mcommit 24777baa8c1f56010cefac0f7066a381808f66a7[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Wed Oct 16 13:04:08 2024 +0700
+
+    update rcm rcsa
+
+[33mcommit efd756decfc019b4449de6501c62a087421c31f3[m
+Merge: 8a23ee9 914e106
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Wed Oct 16 03:29:27 2024 +0700
+
+    Merge pull request #12 from alinurd/ali
+    
+    ok
+
+[33mcommit 914e106eb37372951fcbbbdabab9023e9e31cad9[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Wed Oct 16 03:28:54 2024 +0700
+
+    ok
+
+[33mcommit 8a23ee968aaea0b1019228951ff5940a0f5ccbb3[m
+Merge: 2f9ec2a 2a87c8b
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Wed Oct 16 03:26:15 2024 +0700
+
+    Merge pull request #11 from alinurd/ali
+    
+    ad home monitoring
+
+[33mcommit 2a87c8b1453eb775e9505195fc30d297664a7836[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Wed Oct 16 03:25:39 2024 +0700
+
+    ad home monitoring
+
+[33mcommit 2f9ec2aac2d74c86cc0a86168f15093b3bdb2e2c[m
+Author: Ilmanmr <ali.nrdn14005@gmail.com>
+Date:   Tue Oct 15 20:14:50 2024 +0000
+
+    Remove database.php from tracking
+
+[33mcommit 1b75a7b7219bdb03428702c5ed08563bc3b4b679[m
+Author: Ilmanmr <ali.nrdn14005@gmail.com>
+Date:   Tue Oct 15 20:14:34 2024 +0000
+
+    Update .gitignore and database.php
+
+[33mcommit cfb0d283f183ae76a79e485ad741ad897487d46f[m
+Merge: 434fe6f f6a1437
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Wed Oct 16 03:07:40 2024 +0700
+
+    Merge pull request #10 from alinurd/ali
+    
+    monitoring get by bulan
+
+[33mcommit f6a14377bca9060ce565b5ee2569dcade640dc82[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Wed Oct 16 03:03:35 2024 +0700
+
+    monitoring get by bulan
+
+[33mcommit 434fe6f2b45d5190c1f0a6c57fa88f3a5e969822[m
+Merge: cebde6b 7b4f692
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Tue Oct 15 10:13:10 2024 +0700
+
+    Merge pull request #9 from alinurd/ali
+    
+    view by triwulan
+
+[33mcommit 7b4f692481ac8bfaf15bbd6adde8cc5d8e3b4046[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Tue Oct 15 10:12:21 2024 +0700
+
+    view by triwulan
+
+[33mcommit cebde6b9fbd46db61b2558e997612a54d9a201cc[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Mon Oct 14 23:28:45 2024 +0700
+
+    update rcsa context, rcsa kriteria, rcsa apetite, rcsa control matric
+
+[33mcommit 45fdf8a3ba54e2fcf2dbf7d0943ddb58eeaa5cba[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Mon Oct 14 23:15:18 2024 +0700
+
+    update rcsa context, rcsa kriteria, rcsa apetite, rcsa control matric
+
+[33mcommit 32bfd0a34ec45f1ad17e86d5ffc5c0fc9deb2106[m
+Merge: 81663c2 162c0b4
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Mon Oct 14 12:29:49 2024 +0700
+
+    Merge pull request #7 from alinurd/ali
+    
+    ok
+
+[33mcommit 162c0b4ee60a7ee08fe5bf544e4e44208937ef1b[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Mon Oct 14 12:29:28 2024 +0700
+
+    ok
+
+[33mcommit 81663c2e8ba858d49f2652dfbd9c4ab6b13e6de0[m
+Merge: 8f9181f 91e782f
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Mon Oct 14 12:12:15 2024 +0700
+
+    Merge pull request #6 from alinurd/ali
+    
+    bug monitoring
+
+[33mcommit 91e782fa517179416d7176b48919e78378075a86[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Mon Oct 14 12:09:20 2024 +0700
+
+    bug monitoring
+
+[33mcommit 8f9181fd2a04fef63b79baaefffeb21d5c5c934a[m
+Merge: 1dcaa58 1ba76a1
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Fri Oct 11 09:28:53 2024 +0700
+
+    Merge pull request #5 from alinurd/dev-teguh
+    
+    Dev teguh fix bug layout draft registrasi
+
+[33mcommit 1ba76a14a0346c3158fe8409860601d4cd4ca601[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Fri Oct 11 09:27:33 2024 +0700
+
+    update fix bug rsca draft registrasi
+
+[33mcommit 1dcaa58a460661bec0e43671804db2cc4617ea35[m
+Merge: 9c497af 2d24da8
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Fri Oct 11 09:24:43 2024 +0700
+
+    Merge branch 'main' of https://github.com/alinurd/rms-peruri
+
+[33mcommit 9c497af2cd9bd3fdc7a202a2622614b0680746e3[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Fri Oct 11 09:24:32 2024 +0700
+
+    fix bug layout rsca draft registrasi
+
+[33mcommit 2d24da8e906ce2ae6583e174bb8db673cbf7d07b[m
+Merge: 53c02bb 376e46a
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Fri Oct 11 03:05:49 2024 +0700
+
+    Merge pull request #4 from alinurd/ali
+    
+    add lang
+
+[33mcommit 376e46a44827645867e7af15347470f5ee1f5990[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Fri Oct 11 03:05:07 2024 +0700
+
+    add lang
+
+[33mcommit 53c02bb892985631f8e93120adf6ac5ce877305a[m
+Merge: 2a85c23 5eb8dfe
+Author: anfDev14 <86151004+alinurd@users.noreply.github.com>
+Date:   Fri Oct 11 02:48:48 2024 +0700
+
+    Merge pull request #3 from alinurd/ali
+    
+    Update
+
+[33mcommit 5eb8dfec6208b938af548df9d3fa0ad740ebabca[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Fri Oct 11 02:44:34 2024 +0700
+
+    RCM viewnya ok
+
+[33mcommit 148a478801be59b7df95509cf5ac8fb2d32ba5a8[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Fri Oct 11 00:15:47 2024 +0700
+
+    add rcm
+
+[33mcommit 24b9ab9da940ee5d0db46c094e1c3ce186f74e56[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Fri Oct 11 00:10:45 2024 +0700
+
+    ok
+
+[33mcommit f43178664733e1bd7c091173766cdc501835c543[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Fri Oct 11 00:07:16 2024 +0700
+
+    ok
+
+[33mcommit 89a581caea9643e3cf6d7d94e6f4e3ae40cacb30[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Oct 10 22:36:25 2024 +0700
+
+    add js
+
+[33mcommit 02f2f29d7ece11d4f43d1f6df066f38016a39fbf[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Oct 10 22:13:12 2024 +0700
+
+    add rcsa appetite
+
+[33mcommit b64f3ef0b3c1629ff4aed88daefc7257471c81f1[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Oct 10 22:03:32 2024 +0700
+
+    started risk strategy
+
+[33mcommit fba6167d7442a0e5ad5c5779e65bd694c57eae43[m
+Merge: c2e799e 2a85c23
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Thu Oct 10 15:54:48 2024 +0700
+
+    Merge pull request #2 from alinurd/main
+    
+    update config
+
+[33mcommit 2a85c231609c51e6abee1319e835076073beb2e6[m
+Merge: 3b116da 8431430
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 10 15:46:13 2024 +0700
+
+    Merge branch 'main' of https://github.com/alinurd/rms-peruri
+
+[33mcommit 3b116daf3ba4a1dfd80e5f622d4e35860ccce83e[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 10 15:46:06 2024 +0700
+
+    update config database
+
+[33mcommit c2e799ea3654e08e673cf616814b00ae17d860a5[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 10 15:40:28 2024 +0700
+
+    update config database
+
+[33mcommit 843143032c434603cde27fe903d7a8d62dfc04fd[m
+Merge: 7331cad 9dd3909
+Author: teguh triatmojo <49945200+T36UHTR14TM0J0@users.noreply.github.com>
+Date:   Thu Oct 10 15:38:40 2024 +0700
+
+    Merge pull request #1 from alinurd/dev-teguh
+    
+    update risk registrasi  ubah field
+
+[33mcommit 9dd3909dcb2b46c126dec927146488fdbb281b80[m
+Author: teguh triatmojo <teguhtriatmojo23@gmail.com>
+Date:   Thu Oct 10 14:30:02 2024 +0700
+
+    update risk registrasi  ubah field
+
+[33mcommit 7331cad1bc870ffa6ca3102d3a4aaf2efbad6090[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Tue Sep 17 09:14:27 2024 +0700
+
+    bug search
+
+[33mcommit a5c37c43ed43353e9f9aee2a1d55582d9c719740[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Aug 29 13:04:54 2024 +0700
+
+    risk register export pdf
+
+[33mcommit 40efdb29f725912f4425890328a7a615eb3e9876[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Mon Aug 26 07:16:36 2024 +0700
+
+    bug monitoring bulan berjalan
+
+[33mcommit 90ff028e2e3a567330e354bfa40d8786888aa1f2[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Wed Aug 7 12:47:23 2024 +0700
+
+    fixed approval div
+
+[33mcommit 37452065ab57b42828cf7279f9a3dc4f07cf562c[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Mon Aug 5 12:24:30 2024 +0700
+
+    global filter
+
+[33mcommit 78108609315cc02c1eca2b46a72d5af36057f873[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Mon Aug 5 10:10:23 2024 +0700
+
+    filter monitoring
+
+[33mcommit 241955fec042dd999a4f891a074684fac8fc7de1[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Mon Aug 5 09:51:32 2024 +0700
+
+    bug modul appr div
+
+[33mcommit 00cce69aec23472c6c7cfd628d326328ee9d7cfd[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Jul 11 15:30:55 2024 +0700
+
+    done
+
+[33mcommit 63629d468b7ca3548b8716d372a9490396bcde35[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Jul 11 13:21:54 2024 +0700
+
+    ok
+
+[33mcommit 4aca6000d1053c4359cbeccd12f65e883e3a2cb8[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Jul 11 05:14:17 2024 +0700
+
+    ok
+
+[33mcommit cd7a34857a923cf6dcbdae09673f5159b98bff9a[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Jul 11 05:07:15 2024 +0700
+
+    copi ok
+
+[33mcommit a37329b0356c8befbdab2934615113566fa1f9f7[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Jul 11 03:46:53 2024 +0700
+
+    ok
+
+[33mcommit b61314ec503b60068db86ce5502e6661b3c7b48b[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Thu Jul 11 03:06:49 2024 +0700
+
+    ok
+
+[33mcommit a4ea699efa86e195fb45efa934b81d803c049f5e[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Wed Jul 10 12:13:16 2024 +0700
+
+    bug apprv admin
+
+[33mcommit c966c027e0992041bfc416ea3ccfc94a0dffd7b2[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Fri Jun 28 14:11:15 2024 +0700
+
+    ok
+
+[33mcommit 01b071e44c5f8bc332bc8c792325249e13431b9a[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Tue Jun 25 10:44:55 2024 +0700
+
+    logo
+
+[33mcommit 8e49d7cb21835394d9e33f0e07e3a5fbc205ea52[m
+Author: ali dev14 <ali.nrdn14005@gmail.com>
+Date:   Fri Jun 21 12:34:19 2024 +0700
+
+    stated
