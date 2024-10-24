@@ -100,7 +100,7 @@ class Data extends MX_Model {
                 </div>
         
                 <div style="text-align: center; margin-top: 10px;">
-                    <button type="button" class="btn btn-primary btn-submit" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</button>
+                    <button type="button" class="btn btn-primary" id="simpan_level_risiko_'.$q['id'].'" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</button>
                 </div>
             </form>
         ';
