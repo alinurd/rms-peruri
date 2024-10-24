@@ -187,6 +187,7 @@ class Level_Risiko extends BackendController
 		if ((int)$data['id_edit'] > 0) {
 			$upd['update_user'] = $this->authentication->get_info_user('username');
 			$where['id'] = $data['id_edit'];
+			$where['bulan'] = $data['month'];
 			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
 			$id = intval($data['id_edit']);
 			$type = "edit";
