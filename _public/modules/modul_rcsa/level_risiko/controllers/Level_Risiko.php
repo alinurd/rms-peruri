@@ -184,18 +184,18 @@ class Level_Risiko extends BackendController
 		// die('ctr');
 		// Simpan data ke dalam tabel (misalnya, 'level_risiko_data')
 		
-		// if ((int)$data['id_edit'] > 0) {
-		// 	$upd['update_user'] = $this->authentication->get_info_user('username');
-		// 	$where['id'] = $data['id_edit'];
-		// 	$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-		// 	$id = intval($data['id_edit']);
-		// 	$type = "edit";
-		// } else {
-		// 	$upd['create_user'] = $this->authentication->get_info_user('username');
-		// 	$id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
-		// 	$id = $this->db->insert_id();
-		// 	$type = "add";
-		// }
+		if ((int)$data['id_edit'] > 0) {
+			$upd['update_user'] = $this->authentication->get_info_user('username');
+			$where['id'] = $data['id_edit'];
+			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
+			$id = intval($data['id_edit']);
+			$type = "edit";
+		} else {
+			$upd['create_user'] = $this->authentication->get_info_user('username');
+			$id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
+			$id = $this->db->insert_id();
+			$type = "add";
+		}
 	
 		// $id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
 		// $id = $this->db->insert_id();
@@ -210,7 +210,7 @@ class Level_Risiko extends BackendController
 		// 	$where['id']                    = $id;
 		// 	$result = $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
 		// }
-		echo json_encode($upd);
+		echo json_encode($id);
 		// 	var_dump($simpan);
 		// exit;
 		// echo "<script>
