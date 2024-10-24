@@ -210,7 +210,7 @@ class Level_Risiko extends BackendController
 			$where['id']                    = $id;
 			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
 		}
-		echo json_encode($id);
+		echo json_encode($result);
 		// 	var_dump($simpan);
 		// exit;
 		// echo "<script>
