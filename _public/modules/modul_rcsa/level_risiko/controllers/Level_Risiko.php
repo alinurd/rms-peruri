@@ -164,7 +164,7 @@ class Level_Risiko extends BackendController
 	}
 
 	public function save(){
-		// $data 	= $this->input->post();
+		$data 	= $this->input->post();
 		// $upd                                = [];
 		// $id 		                        = $data['rcsa_detail_no'];
 		// $rcsa_no 	                        = $data['rcsa_no'];
