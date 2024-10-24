@@ -598,8 +598,7 @@ $(function () {
       var url = form.attr("action");
       var parent = $(this).parent();
       var url = modul_name + "/save";
-      console.log(url);
-      // cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
+      cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
     });
   });
 
