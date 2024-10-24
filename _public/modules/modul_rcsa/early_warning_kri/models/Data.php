@@ -152,10 +152,10 @@ if($rows){
             $this->db->where('tahun', $data['periode']);
         }
         $this->db->where('sts_propose', 4);
-
+ 
         $this->db->limit($limit, $offset);
 
-        return $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+        return $this->db->where('kri !=', null)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
     }
      
     public function count_all_data($data) {
@@ -172,7 +172,7 @@ if($rows){
         
         $this->db->where('sts_propose', 4);
 
-        return $this->db->count_all_results(_TBL_VIEW_RCSA_DETAIL);
+        return $this->db->where('kri !=', null)->count_all_results(_TBL_VIEW_RCSA_DETAIL);
     }
     
     function getMonthlyMonitoringGlobal($q, $month)

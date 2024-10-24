@@ -15,7 +15,7 @@
 </div>
 <section class="x_panel">
     <div class="x_title">
-        <form method="GET" action="<?= site_url(_MODULE_NAME_REAL_.'/index'); ?>">
+        <form method="GET" action="<?= site_url(_MODULE_NAME_REAL_ . '/index'); ?>">
             <div class="row">
                 <!-- Dropdown untuk filter tahun (cboPeriod) -->
                 <div class="col-md-2 col-sm-4 col-xs-6">
@@ -63,67 +63,83 @@
 
     <div class="x_panel">
         <div class="x_content table-responsive" style="overflow-x: auto;">
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr>
-                    <th style="position: sticky; left: 0; background: white; z-index: 99;">No</th>
-                    <th style="position: sticky; left: 30px; background: white; z-index: 115px;">Risk Owner</th>
-                    <th style="position: sticky; left: 95px; background: white; z-index: 99; width: 320px;">Peristiwa Risiko</th>
-                    <th style="position: sticky; left: 95px; background: white; z-index: 99; width: 320px;">Proaktif</th>
-                        <th>Tahun</th> 
-                        <?php if ($triwulan == 1): ?>
-                            <th>Januari</th>
-                            <th>Februari</th>
-                            <th>Maret</th>
-                        <?php elseif ($triwulan == 2): ?>
-                            <th>April</th>
-                            <th>Mei</th>
-                            <th>Juni</th>
-                        <?php elseif ($triwulan == 3): ?>
-                            <th>Juli</th>
-                            <th>Agustus</th>
-                            <th>September</th>
-                        <?php elseif ($triwulan == 4): ?>
-                            <th>Oktober</th>
-                            <th>November</th>
-                            <th>Desember</th>
-                        <?php endif; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $no = 1;
-                    foreach ($field as $q) {
-                        $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
-  ?>
-                        <tr>
-                           
-                        <td style="position: sticky; left: 0; background: white;"><?= $no++ ?></td>
-                        <td style="position: sticky; left: 30px; background: white;"><?= $q['name'] ?></td>
-                        <td style="position: sticky; left: 95px; background: white;"><?= $act['event_name'] ?></td>
-                        <td style="position: sticky; left: 95px; background: white;"><?= $act['proaktif'] ?></td>
-                       
-                            <td><?= $q['tahun'] ?></td> 
-                            <?php
-                            switch ($triwulan) {
-                                case 1:
-                                    $start = 1;
-                                    $end = 4;
-                                    break;
-                                case 2:
-                                    $start = 4;
-                                    $end = 7;
-                                    break;
-                                case 3:
-                                    $start = 7;
-                                    $end = 10;
-                                    break;
-                                case 4:
-                                    $start = 10;
-                                    $end = 13;
-                                    break;
-                            }
+         
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th rowspan="2" style="position: sticky; left: 0; z-index: 94;">No</th>
+            <th rowspan="2" style="position: sticky; left: 30px; z-index: 95;">Risk Owner</th>
+            <th rowspan="2" style="position: sticky; left: 95px; z-index: 96; ">Peristiwa Risiko</th>
+            <th rowspan="2" style="position: sticky; left: 220px; z-index: 97;">Indikator</th>
+            <th rowspan="2" style="position: sticky; left: 330px; z-index: 98; ">Satuan</th>
+            <th colspan="3" class="text-center" style="position: sticky; left: 370px; z-index: 99;">Threshold</th>
+            <?php if ($triwulan == 1): ?>
+                <th rowspan="2">Januari</th>
+                <th rowspan="2">Februari</th>
+                <th rowspan="2">Maret</th>
+            <?php elseif ($triwulan == 2): ?>
+                <th rowspan="2">April</th>
+                <th rowspan="2">Mei</th>
+                <th rowspan="2">Juni</th>
+            <?php elseif ($triwulan == 3): ?>
+                <th rowspan="2">Juli</th>
+                <th rowspan="2">Agustus</th>
+                <th rowspan="2">September</th>
+            <?php elseif ($triwulan == 4): ?>
+                <th rowspan="2">Oktober</th>
+                <th rowspan="2">November</th>
+                <th rowspan="2">Desember</th>
+            <?php endif; ?>
+        </tr>
+        <tr class="text-center">
+            <td style="background-color: #7FFF00; color: #000; position: sticky; left: 395px; z-index: 99; " width="20px">Aman</td>
+            <td style="background-color: #FFFF00; color: #000; position: sticky; left: 445px; z-index: 99; " width="20px">Hati-Hati</td>
+            <td class="bg-danger" style="color: #000; position: sticky; left: 480px; z-index: 99;" width="20px">Bahaya</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $no = 1;
+        foreach ($field as $q) {
+            if ($q['kri']) {
+                $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
+                $combo = $this->db->where('id', $q['kri'])->get('bangga_data_combo')->row_array();
+                $combo_stuan = $this->db->where('id', $q['satuan'])->get('bangga_data_combo')->row_array();
 
+                $level_1 = range($q['min_rendah'], $q['max_rendah']);
+                $level_2 = range($q['min_menengah'], $q['max_menengah']);
+                $level_3 = range($q['min_tinggi'], $q['max_tinggi']);
+
+                if (in_array($data, $level_1)) {
+                    $bgres = 'style="background-color: #7FFF00; color: #000;"';
+                } elseif (in_array($data, $level_2)) {
+                    $bgres = 'style="background-color: #FFFF00; color: #000;"';
+                } elseif (in_array($data, $level_3)) {
+                    $bgres = 'class="bg-danger" style="color: #000;"';
+                } else {
+                    $bgres = '';
+                }
+        ?>
+        <tr>
+            <td style="background-color: #fff; position: sticky; left: 0; z-index: 94;"><?= $no++ ?></td>
+            <td style="background-color: #fff; position: sticky; left: 30px; z-index: 5;"><?= $q['name'] ?></td>
+            <td style="background-color: #fff; position: sticky; left: 95px; z-index: 96; "><?= $act['event_name'] ?></td>
+            <td style="background-color: #fff; position: sticky; left: 220px; z-index: 97;"><?= $combo['data'] ?></td>
+            <td style="background-color: #fff; position: sticky; left: 330px; z-index: 98; ">
+                <center><?= $combo_stuan['data'] == "%" ? "persen [%]" : $combo_stuan['data'] ?></center>
+            </td>
+            <td style="background-color: #7FFF00; color: #000; position: sticky; left: 395px; z-index: 99;"><?= $q['min_rendah'] ?> - <?= $q['max_rendah'] ?></td>
+            <td style="background-color: #FFFF00; color: #000; position: sticky; left: 445px; z-index: 99;"><?= $q['min_menengah'] ?> - <?= $q['max_menengah'] ?></td>
+            <td class="bg-danger" style="color: #000; position: sticky; left: 480px; z-index: 99;"><?= $q['min_tinggi'] ?> - <?= $q['max_tinggi'] ?></td>
+
+            <!-- Data per bulan in a scrollable container -->
+            <td colspan="3">
+                <div class="scroll-container">
+                    <table class="scrollable-data">
+                        <tr>
+                            <?php
+                            $start = ($triwulan - 1) * 3 + 1;
+                            $end = $start + 3;
                             for ($i = $start; $i < $end; $i++): ?>
                                 <td>
                                     <?php
@@ -134,56 +150,67 @@
                                 </td>
                             <?php endfor; ?>
                         </tr>
-                    <?php } ?>
-                </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <?php
+            } else { ?>
+        <tr>
+            <td class="text-center" colspan="8">Tidak ada data Key Risk Indikator</td>
+        </tr>
+        <?php } ?>
+        <?php } ?>
+    </tbody>
+</table>
 
-            </table>
+
 
         </div>
         <div class="row">
-        <div class="col-md-12 text-center">
-            <div class="clearfix"></div>
-            <?= $pagination; ?>
-            <p>Menampilkan <?= $start_data; ?> - <?= $end_data; ?> dari total <?= $total_data; ?> data</p>
-            <i><?= $timeLoad ?> second</i>
+            <div class="col-md-12 text-center">
+                <div class="clearfix"></div>
+                <?= $pagination; ?>
+                <p>Menampilkan <?= $start_data; ?> - <?= $end_data; ?> dari total <?= $total_data; ?> data</p>
+                <i><?= $timeLoad ?> second</i>
+            </div>
         </div>
     </div>
-    </div>
-   
+
 </section>
 
 
 <script>
-	// Fungsi untuk menampilkan popup
-	function showPopup() {
-		var popup = document.getElementById('infoPopup');
-		popup.style.display = 'block';
-	}
+    // Fungsi untuk menampilkan popup
+    function showPopup() {
+        var popup = document.getElementById('infoPopup');
+        popup.style.display = 'block';
+    }
 
-	// Fungsi untuk menyembunyikan popup
-	function hidePopup() {
-		var popup = document.getElementById('infoPopup');
-		popup.style.display = 'none';
-	}
+    // Fungsi untuk menyembunyikan popup
+    function hidePopup() {
+        var popup = document.getElementById('infoPopup');
+        popup.style.display = 'none';
+    }
 </script>
 
 <style>
-	/* Gaya untuk popup */
-	.popup {
-		display: none;
-		position: absolute;
-		/* Gunakan absolute agar popup tumpang tindih dengan elemen lain */
-		padding: 10px;
-		background-color: #f9f9f9;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-		z-index: 9999;
-	}
+    /* Gaya untuk popup */
+    .popup {
+        display: none;
+        position: absolute;
+        /* Gunakan absolute agar popup tumpang tindih dengan elemen lain */
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+    }
 
-	#realisasi {
-		position: relative;
-		z-index: 1;
-		/* Atur nilai z-index elemen realisasi agar lebih rendah daripada popup */
-	}
+    #realisasi {
+        position: relative;
+        z-index: 1;
+        /* Atur nilai z-index elemen realisasi agar lebih rendah daripada popup */
+    }
 </style>

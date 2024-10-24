@@ -204,21 +204,21 @@ class Early_Warning_Kri extends BackendController
 			$pagination .= '<ul class="pagination">';
 			
  			if ($page > 4) {
-				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=1' . $post) . '">First</a></li>';
+				$pagination .= '<li><a href="' . site_url($this->modul_name.'/index?page=1' . $post) . '">First</a></li>';
 			}
 			
  			for ($i = max(1, $page - 3); $i < $page; $i++) {
-				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+				$pagination .= '<li><a href="' . site_url($this->modul_name.'/index?page=' . $i . $post) . '">' . $i . '</a></li>';
 			}
 			
  			$pagination .= '<li class="active"><span>' . $page . '</span></li>';
 			
  			for ($i = $page + 1; $i <= min($page + 3, $total_pages); $i++) {
-				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+				$pagination .= '<li><a href="' . site_url($this->modul_name.'/index?page=' . $i . $post) . '">' . $i . '</a></li>';
 			}
 			
  			if ($page < $total_pages - 3) {
-				$pagination .= '<li><a href="' . site_url('risk_monitoring/index?page=' . $total_pages . $post) . '">Last</a></li>';
+				$pagination .= '<li><a href="' . site_url($this->modul_name.'/index?page=' . $total_pages . $post) . '">Last</a></li>';
 			}
 			
 			$pagination .= '</ul>';
