@@ -147,7 +147,7 @@ $(function () {
     var data = { id: id, owner_no: owner };
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/get-register";
+    var url = "Level_Risiko" + "/get-register";
 
     cari_ajax_combo("post", parent, data, "", url, "show_register");
   });
@@ -158,7 +158,7 @@ $(function () {
     console.log(data);
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/get-rivis";
+    var url = "Level_Risiko" + "/get-rivis";
 
     cari_ajax_combo("post", parent, data, "", url, "show_revisi");
   });
@@ -170,8 +170,8 @@ $(function () {
 
     var data = { id: id, edit: edit_no };
     var target_combo = "";
-    // var url = modul_name + "/add-peristiwa";
-    var url = modul_name + "/tambah-peristiwa";
+    // var url = "Level_Risiko" + "/add-peristiwa";
+    var url = "Level_Risiko" + "/tambah-peristiwa";
 
     cari_ajax_combo("post", parent, data, "", url, "show_peristiwa");
   });
@@ -182,7 +182,7 @@ $(function () {
     var data = { id: id, edit: edit_no };
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/edit-level";
+    var url = "Level_Risiko" + "/edit-level";
 
     cari_ajax_combo("post", parent, data, "", url, "show_peristiwa");
   });
@@ -193,7 +193,7 @@ $(function () {
     var data = { id: id, edit: edit_no };
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/input-mitigasi";
+    var url = "Level_Risiko" + "/input-mitigasi";
 
     cari_ajax_combo("post", parent, data, "", url, "show_peristiwa");
   });
@@ -204,7 +204,7 @@ $(function () {
     var data = { id: id, edit: edit_no };
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/list-realisasi";
+    var url = "Level_Risiko" + "/list-realisasi";
 
     cari_ajax_combo("post", parent, data, "", url, "show_peristiwa");
   });
@@ -216,7 +216,7 @@ $(function () {
       var data = { rcsa_no: id, edit: edit_no };
       var parent = $(this).parent();
       var target_combo = "";
-      var url = modul_name + "/delete-peristiwa";
+      var url = "Level_Risiko" + "/delete-peristiwa";
       cari_ajax_combo("post", parent, data, "", url, "result_save_peristiwa");
     }
   });
@@ -228,7 +228,7 @@ $(function () {
       var data = { rcsa_no: id, edit: edit_no };
       var parent = $(this).parent();
       var target_combo = "";
-      var url = modul_name + "/delete-realisasi";
+      var url = "Level_Risiko" + "/delete-realisasi";
       asal_event = $(this).closest("tr");
 
       cari_ajax_combo("post", parent, data, "", url, "result_delete_realisasi");
@@ -242,7 +242,7 @@ $(function () {
       var data = { couseno: couseno, edit: edit_no };
       var parent = $(this).parent();
       var target_combo = "";
-      var url = modul_name + "/delete-couse";
+      var url = "Level_Risiko" + "/delete-couse";
       asal_event = $(this).closest("tr");
       cari_ajax_singgle_del("post", data, url);
       //pesan_toastr('Mohon Tunggu', 'info', 'Prosess', 'toast-top-center', true);
@@ -257,7 +257,7 @@ $(function () {
       var data = { impactno: impactno, edit: edit_no };
       var parent = $(this).parent();
       var target_combo = "";
-      var url = modul_name + "/delete-impact";
+      var url = "Level_Risiko" + "/delete-impact";
       asal_event = $(this).closest("tr");
       cari_ajax_singgle_del("post", data, url);
       cari_ajax_singgle_del("post", data, url);
@@ -271,7 +271,7 @@ $(function () {
       var data = { rcsa_no: id, edit: edit_no };
       var parent = $(this).parent();
       var target_combo = "";
-      var url = modul_name + "/delete-mitigasi";
+      var url = "Level_Risiko" + "/delete-mitigasi";
       asal_event = $(this).closest("tr");
       cari_ajax_combo("post", parent, data, "", url, "result_delete_mitigasi");
     }
@@ -358,12 +358,12 @@ $(function () {
       var parent = $(this).closest("tr");
       asal_event = parent;
       var target_combo = "";
-      var url = modul_name + "/get-library";
+      var url = "Level_Risiko" + "/get-library";
       console.log(kel);
       if (kel == 1) {
-        var url = modul_name + "/get-library-event";
+        var url = "Level_Risiko" + "/get-library-event";
       } else if (kel == 4) {
-        var url = modul_name + "/get-kri";
+        var url = "Level_Risiko" + "/get-kri";
       }
 
       cari_ajax_combo("post", parent, data, "", url, "show_event");
@@ -475,7 +475,7 @@ $(function () {
     var parent = $(this).parent();
     console.log(data);
     var target_combo = "";
-    var url = modul_name + "/simpan-peristiwa";
+    var url = "Level_Risiko" + "/simpan-peristiwa";
     console.log(url);
     //cari_ajax_singgle("post", data, url,);
     cari_ajax_combo("post", parent, data, "", url, "result_save_peristiwa");
@@ -486,7 +486,7 @@ $(function () {
     var data = $("form#form_level").serialize();
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/simpan-level";
+    var url = "Level_Risiko" + "/simpan-level";
 
     cari_ajax_combo("post", parent, data, "", url, "result_save_peristiwa");
   });
@@ -499,7 +499,7 @@ $(function () {
     // var data = $("form#form_mitigasi").serialize();
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/simpan-mitigasi";
+    var url = "Level_Risiko" + "/simpan-mitigasi";
     cari_ajax_combo_file("post", "#form_mitigasi", data, "", url, "sukses");
     // cari_ajax_combo_file("post", '#mitigasi_form', data, "", url, 'sukses');
 
@@ -510,7 +510,7 @@ $(function () {
   // 	var data = $("form#form_mitigasi").serialize();
   // 	var parent = $(this).parent();
   // 	var target_combo = "";
-  // 	var url = modul_name + "/simpan-mitigasi";
+  // 	var url = "Level_Risiko" + "/simpan-mitigasi";
 
   // 	cari_ajax_combo("post", parent, data, '', url, 'result_save_peristiwa');
   // })
@@ -521,7 +521,7 @@ $(function () {
   // 	var data = { 'likelihood': likelihood, 'impact': impact };
   // 	var parent = $(this).parent();
   // 	var target_combo = "";
-  // 	var url = modul_name + "/cek-level";
+  // 	var url = "Level_Risiko" + "/cek-level";
 
   // 	cari_ajax_combo("post", parent, data, '', url, 'result_level');
   // });
@@ -534,7 +534,7 @@ $(function () {
       var data = { likelihood: likelihood, impact: impact };
       var parent = $(this).parent();
       var target_combo = "";
-      var url = modul_name + "/cek-level";
+      var url = "Level_Risiko" + "/cek-level";
       console.log("masuk");
       cari_ajax_combo("post", parent, data, "", url, "level_result_residual");
     }
@@ -549,7 +549,7 @@ $(function () {
       var data = { likelihood: likelihood, impact: impact };
       var parent = $(this).parent();
       var target_combo = "";
-      var url = modul_name + "/cek-level";
+      var url = "Level_Risiko" + "/cek-level";
 
       cari_ajax_combo("post", parent, data, "", url, "result_level");
     }
@@ -576,7 +576,7 @@ $(function () {
             id: id,
           };
           var parent = $(this).parent();
-          var url = modul_name + "/cek-level";
+          var url = "Level_Risiko" + "/cek-level";
 
           cari_ajax_combo("post", parent, data, "", url, "Level_risiko_result");
         } else {
@@ -597,7 +597,7 @@ $(function () {
       var formData = form.serialize();
       var url = form.attr("action");
       var parent = $(this).parent();
-      var url = modul_name + "/save";
+      var url = "Level_Risiko" + "/save";
       cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
     });
   });
@@ -616,7 +616,7 @@ $(function () {
   //     month: month,
   //   };
   //   var parent = $(this).parent();
-  //   var url = modul_name + "/cek-level";
+  //   var url = "Level_Risiko" + "/cek-level";
 
   //   cari_ajax_combo("post", parent, data, "", url, "level_result");
   // } else {
@@ -633,7 +633,7 @@ $(function () {
     var data = { id: id, rcsa_detail_no: rcsa_detail_no, rcsa_no: rcsa_no };
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/input-realisasi";
+    var url = "Level_Risiko" + "/input-realisasi";
 
     cari_ajax_combo("post", parent, data, "", url, "show_realisasi");
   });
@@ -645,7 +645,7 @@ $(function () {
     var data = { id: id, rcsa_detail_no: rcsa_detail_no, rcsa_no: rcsa_no };
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/input-mitigasi";
+    var url = "Level_Risiko" + "/input-mitigasi";
 
     cari_ajax_combo("post", parent, data, "", url, "show_mitigasi");
   });
@@ -660,7 +660,7 @@ $(function () {
     var data = $("form#form_realisasi").serialize();
     var parent = $(this).parent();
     var target_combo = "";
-    var url = modul_name + "/simpan-realisasi";
+    var url = "Level_Risiko" + "/simpan-realisasi";
 
     cari_ajax_combo(
       "post",
@@ -683,7 +683,7 @@ $(function () {
     var data = { id: id, rcsa_detail_no: rcsa_detail_no, rcsa_no: rcsa_no };
     var parent = $("#list_peristiwa").parent();
     var target_combo = $("#list_peristiwa");
-    var url = modul_name + "/close-mitigasi";
+    var url = "Level_Risiko" + "/close-mitigasi";
 
     cari_ajax_combo("post", parent, data, target_combo, url);
     $("#modal_general").modal("hide");
@@ -696,7 +696,7 @@ $(function () {
     var data = { id: id, rcsa_detail_no: rcsa_detail_no, rcsa_no: rcsa_no };
     var parent = $("#list_peristiwa").parent();
     var target_combo = $("#list_peristiwa");
-    var url = modul_name + "/close-realisasi";
+    var url = "Level_Risiko" + "/close-realisasi";
 
     cari_ajax_combo("post", parent, data, target_combo, url);
     $("#modal_general").modal("hide");
@@ -933,7 +933,7 @@ $(function () {
     };
 
     var parent = $(this).parent();
-    var url = modul_name + "/simpan_kri";
+    var url = "Level_Risiko" + "/simpan_kri";
     cari_ajax_singgle("post", data, url);
 
     // cari_ajax_combo("post", parent, data, '', url, "proses_simpan_library");
@@ -1014,7 +1014,7 @@ $(function () {
     console.log(data);
 
     var parent = $(this).parent();
-    var url = modul_name + "/simpanLibrary";
+    var url = "Level_Risiko" + "/simpanLibrary";
 
     // alert("Tambahkan sebagai library peristiwa ? ");
     $(".close-library").trigger("click");
@@ -1031,7 +1031,7 @@ function proses_simpan_library(hasil) {
   // var parent = $("#simpan_library").parent();
   // // asal_event = parent;
   // var target_combo = "";
-  // var url = modul_name + "/get-library";
+  // var url = "Level_Risiko" + "/get-library";
 
   // cari_ajax_combo("post", parent, data, '', url, 'show_event');
 }
