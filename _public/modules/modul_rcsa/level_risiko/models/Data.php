@@ -77,7 +77,7 @@ class Data extends MX_Model {
 		} else {
                 
             $result = '
-    <form id="form_' . $q['id'] . '_' . $month . '" class="form-monitoring" method="POST" action="'.base_url('level_risiko/save').'" style="width: 100%; padding: 0; margin: 0;">
+    <form id="form_' . $q['id'] . '_' . $month . '" class="form-monitoring" method="POST" action="'.base_url('level_risiko/test').'" style="width: 100%; padding: 0; margin: 0;">
         <input type="hidden" name="rcsa_detail_no" value="' . htmlspecialchars($q['id']) . '">
         <input type="hidden" name="rcsa_action_no" value="' . htmlspecialchars($act['id']) . '">
         <input type="hidden" name="id" value="' . htmlspecialchars($q['id']) . '">

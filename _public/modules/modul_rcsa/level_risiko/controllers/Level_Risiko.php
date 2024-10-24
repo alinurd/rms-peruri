@@ -221,6 +221,10 @@ class Level_Risiko extends BackendController
 		// </script>";
 
 	}
+
+	public function test(){
+		echo "test";
+	}
 	
 	
 	function pagination($data, $total_pages, $page){
