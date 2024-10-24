@@ -586,25 +586,37 @@ $(function () {
         }
       });
   });
+  $(document).on("click", "[id^=simpan_level_risiko_]", function () {
+    var id = $(this).data("id");
+    var month = $(this).data("month");
+    var formId = "#form_" + id + "_" + month;
+    var form = $(formId);
+    var formData = form.serialize();
+    var parent = $(this).parent();
+    var target_combo = "";
+    var url = modul_name + "/save";
+    cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
 
-  $(document).ready(function () {
-    // Event handler untuk tombol submit
-    $(".btn-submit").on("click", function () {
-      var id = $(this).data("id");
-      var month = $(this).data("month");
-      var formId = "#form_" + id + "_" + month;
-      var form = $(formId);
-      var formData = form.serialize();
-      var url = form.attr("action");
-      var parent = $(this).parent();
-      var url = modul_name + "/save";
-
-      console.log("Submitting form:", formData);
-      console.log("Request URL:", url);
-
-      cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
-    });
+    // return false;  // Untuk mencegah reload halaman
   });
+  // $(document).ready(function () {
+  //   // Event handler untuk tombol submit
+  //   $(".btn-submit").on("click", function () {
+  //     var id = $(this).data("id");
+  //     var month = $(this).data("month");
+  //     var formId = "#form_" + id + "_" + month;
+  //     var form = $(formId);
+  //     var formData = form.serialize();
+  //     var url = form.attr("action");
+  //     var parent = $(this).parent();
+  //     var url = modul_name + "/save";
+
+  //     console.log("Submitting form:", formData);
+  //     console.log("Request URL:", url);
+
+  //     cari_ajax_combo("post", parent, formData, "", url, "result_realisasi");
+  //   });
+  // });
 
   // Penanganan untuk Target Risiko Residual (Bulan)
   // $(document).on("change", "[id^=likehold], [id^=impact]", function () {
@@ -1201,8 +1213,16 @@ function result_delete_mitigasi(hasil) {
 }
 
 function result_realisasi(hasil) {
-  alert("Pengisian Progress Treatment Berhasil");
-  location.reload();
+  pesan_toastr(
+    "Berhasil disimpan...",
+    "success",
+    "Success",
+    "toast-top-center",
+    true
+  );
+  console.log(hasil);
+  // alert('Pengisian Progress Treatment Berhasil')
+  // location.reload();
 
   // $("#list_realisasi").removeClass("hide");
   // $("#input_realisasi").addClass("hide");
