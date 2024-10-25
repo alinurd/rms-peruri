@@ -5,4 +5,5 @@
 	echo script_tag(plugin_url("Chart.js/dist/Chart.min.js"));
 	echo script_tag(plugin_url("select2/js/select2.full.min.js"));
 	echo script_tag(js_url("jquery.doubleScroll.js"));
+	echo script_tag(plugin_url("bootstrap-select/js/bootstrap-select.min.js"));
 ?>
