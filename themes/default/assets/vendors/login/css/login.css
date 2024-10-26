@@ -1,4 +1,3 @@
-
 /*------------------------------------------------------------------
 [Table of contents]
 
@@ -24,14 +23,73 @@ a:hover {
 }
 /*=== 3. Text Outside the Box ===*/
 .etc-logo-login {
-  background-image: url('../img/logo-white.png');
+  background-image: url("../img/logo-white.png");
   background-size: 100%;
   background-position: center;
   background-repeat: no-repeat;
   max-width: 100%;
   height: 100px;
-  border: 2px solid black; /* Contoh: border hitam dengan ketebalan 2px */
+  background-color: white !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px; /* For smooth corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
+
+/* Light animation with smooth easing */
+.etc-logo-login::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: lightAnimation 4s ease-in-out infinite; /* Added easing for smoother transitions */
+}
+
+@keyframes lightAnimation {
+  0% {
+    left: -150%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+.full-screen {
+  position: relative;
+  width: 100vw;
+  height: 100vh; /* Full screen */
+  background-size: cover; /* Ensures the image covers the entire background */
+  overflow: hidden;
+}
+
+/* Dark overlay */
+.full-screen::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.4
+  ); /* Semi-transparent black to darken the background */
+  z-index: 1; /* Overlay on top of the background */
+}
+
 .etc-login-form {
   color: #919191;
   /*color: #919191;*/
@@ -57,7 +115,7 @@ a:hover {
   color: #555555;
   padding: 7px 0;
   font-weight: bold;
-  height:auto;
+  height: auto;
 }
 .login-form-1 .form-control::-webkit-input-placeholder {
   color: #999999;
@@ -194,7 +252,7 @@ label.form-invalid:after {
 [type="checkbox"]:checked + label:before,
 [type="radio"]:not(:checked) + label:before,
 [type="radio"]:checked + label:before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 2px;
@@ -212,7 +270,7 @@ label.form-invalid:after {
 [type="radio"]:checked + label:after {
   position: absolute;
   color: #555555;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 /* checked mark aspect changes */
 [type="checkbox"]:not(:checked) + label:after,
@@ -266,14 +324,14 @@ label:hover:before {
 /* selected mark aspect */
 [type="checkbox"]:not(:checked) + label:after,
 [type="checkbox"]:checked + label:after {
-  content: '✔';
+  content: "✔";
   top: 0;
   left: 2px;
   font-size: 14px;
 }
 [type="radio"]:not(:checked) + label:after,
 [type="radio"]:checked + label:after {
-  content: '\2022';
+  content: "\2022";
   top: 0;
   left: 3px;
   font-size: 30px;
@@ -288,13 +346,13 @@ label:hover:before {
 }
 
 .button-evnt {
-  width: 50px; 
+  width: 50px;
   height: 50px;
   float: right;
   border: 5px solid #005398;
   background: white;
   border-radius: 50%;
-  transition: font-size .3s, color .3s;
+  transition: font-size 0.3s, color 0.3s;
   margin-left: 10px;
 }
 .button-evnt:hover {
@@ -302,29 +360,27 @@ label:hover:before {
   color: #005398;
 }
 
-textarea:focus, input:focus{
-    outline: none;
+textarea:focus,
+input:focus {
+  outline: none;
 }
-
 .box-login {
-    max-width: 320px;
-    height: 400px;
-    margin-left: -160PX;
-    position: absolute;
-    z-index: 500; 
-    top: 50%;
-    margin-top: -200px;
-    left: 50%;
-    background-color: #0D4DA1;  
-    /*background-color: linear-gradient(-90deg, #0D4DA1, white);;  */
-    border-radius: 10px;
-    padding:50px;
-    opacity: .9;
-
+  max-width: 320px;
+  height: 400px;
+  margin-left: -160px;
+  position: absolute;
+  z-index: 500;
+  top: 50%;
+  margin-top: -200px;
+  left: 50%;
+  background-color: #0d4da1;
+  /*background-color: linear-gradient(270deg, #0D4DA1ff, #0D5AADff, #0C67B8ff, #0C75C4ff, #0B82D0ff, #0B8FDBff, #0A9CE7ff);  */
+  border-radius: 10px;
+  padding: 50px;
+  opacity: 0.9;
 }
-
 .item {
-  background-size:cover;
+  background-size: cover;
 }
 input:-webkit-autofill,
 /*input:-webkit-autofill:hover, */
@@ -345,20 +401,20 @@ select:-webkit-autofill:focus {
 #knowledge-password,
 #risk-news {
   left: -17px;
-  width: calc(100% + 34px)
+  width: calc(100% + 34px);
 }
 
 .error {
   border-radius: 5px;
   width: 320px;
-  padding: 10px; 
+  padding: 10px;
   overflow: hidden;
   left: 50%;
-  margin-left: -160px; 
+  margin-left: -160px;
   top: 10px;
-  position: absolute; 
-  z-index: 9000; 
-  transition: top .5s;
+  position: absolute;
+  z-index: 9000;
+  transition: top 0.5s;
   background-color: pink;
 }
 .top {

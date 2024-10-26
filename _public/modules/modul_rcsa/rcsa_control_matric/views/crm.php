@@ -1,4 +1,5 @@
 
+<!-- START CSS -->
 <style>
     .table {
         table-layout: fixed;
@@ -22,10 +23,23 @@
    input[type=text]{width:50px;height:auto;}
 
 
+   
+    .bs-container dropdown bootstrap-select open {
+        margin-top: -50px;
+    }
+        
+
+    .bootstrap-select{
+        height: 40px !important;
+    }
+
+    .bootstrap-select .popover {
+        display: none !important;
+    }
 </style>
+<!-- END STYLE CSS -->
 
 <?php
-
     $cboPengujian = [
         '1' => 'Inquery',
         '2' => 'Observasi',
@@ -35,25 +49,31 @@
         '6' => 'Vouching',
         '7' => 'Prosedur Analysis'
     ];
+    
     $cboPenilaian = [
         '1' => 'Cukup & Efektif',
-        '2' => 'Sebagian',
+        '2' => 'Cukup & Efektif Sebagian',
         '3' => 'Cukup & Tidak Efektif',
         '4' => 'Tidak Cukup & Efektif Sebagian',
-        '5' => 'Tracing',
-        '6' => 'Vouching',
-        '7' => 'Tidak Cukup & Tidak Efektif'
+        '5' => 'Tidak Cukup & Tidak Efektif'
+    ];
+    
+    $comboColor = [
+        '1' => '#00712D',    // Cukup & Efektif
+        '2' => '#06D001',    // Sebagian
+        '3' => '#FEEC37',    // Cukup & Tidak Efektif
+        '4' => '#9BEC00',    // Tidak Cukup & Efektif Sebagian
+        '5' => '#B8001F'   // Tidak Cukup & Tidak Efektif
     ];
 
 ?>
 
 <table class="table table-bordered" id="tbl_sasaran_new">
-
     <thead class="sticky-thead">
         <tr>
-            <th rowspan="2" width="5%">No.</th>
-            <th rowspan="2" width="15%">Bussines Process</th>
-            <th width="75%" colspan="6">Metode & Control</th>
+            <th rowspan="2" width="3%">No.</th>
+            <th rowspan="2" width="20%">Bussines Process</th>
+            <th colspan="6" width="75%" >Metode & Control</th>
             <th rowspan="2" width="5%">Aksi</th>
         </tr>
         <tr>
@@ -105,18 +125,26 @@
 
                                 <td style="vertical-align: middle;">
                                     <?= form_dropdown("metodePengujian[{$i}][]", $cboPengujian, $ex['metode_pengujian'], [
-                                        'class'     => 'form-control select2',
+                                        'class'     => 'form-control selectpicker ',
+                                        'data-style' => 'btn btn-light', // Menjaga tampilan sederhana tanpa warna
+                                        'data-size' => '7',
+                                        'data-container' => 'body',
                                         'style'     => 'width:100%;',
                                         'required'  => 'required'
                                     ]); ?>
                                 </td>
 
+                                    
                                 <td style="vertical-align: middle;">
-                                    <?= form_dropdown("penilaianControl[{$i}][]", $cboPenilaian, $ex['penilaian_intern_control'], [
-                                        'class'     => 'form-control select2',
-                                        'style'     => 'width:100%;',
-                                        'required'  => 'required'
-                                    ]); ?>
+                                    <select name="penilaianControl[<?= $i; ?>][]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
+                                        <?php foreach ($cboPenilaian as $key => $value): ?>
+                                            <option value="<?= $key; ?>" 
+                                                    data-content="<span class='badge' style='background-color: <?= htmlspecialchars($comboColor[$key], ENT_QUOTES); ?>; color: <?= ($comboColor[$key] == '#00712D' || $comboColor[$key] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;'><?= htmlspecialchars($value, ENT_QUOTES); ?></span>"
+                                                    <?= ($ex['penilaian_intern_control'] == $key) ? 'selected' : ''; ?>>
+                                                <?= $value; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </td>
 
                                 <td>
@@ -201,16 +229,18 @@
                     <textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
                 </td>
                 <td style="vertical-align: middle;">
-                    <select name="metodePengujian[${rcmIndex}][]" class="form-control select2" style="width:100%;">
+                    <select name="metodePengujian[${rcmIndex}][]" class="form-control selectpicker" style="width:100%;" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
                         <?php foreach ($cboPengujian as $key => $value): ?>
                             <option value="<?= $key; ?>"><?= $value; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </td>
                 <td style="vertical-align: middle;">
-                    <select name="penilaianControl[${rcmIndex}][]" class="form-control select2" style="width:100%;">
+                    <select name="penilaianControl[${rcmIndex}][]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
                         <?php foreach ($cboPenilaian as $key => $value): ?>
-                            <option value="<?= $key; ?>"><?= $value; ?></option>
+                            <option value="<?= $key; ?>" data-content="<span class='badge' style='background-color: <?= htmlspecialchars($comboColor[$key], ENT_QUOTES); ?>; color: <?= ($comboColor[$key] == '#00712D' || $comboColor[$key] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;'><?= $value; ?></span>">
+                                <?= $value; ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </td>
@@ -232,7 +262,7 @@
                 </td>
             </tr>`;
         metodeTable.insertAdjacentHTML('beforeend', newRow);
-        $('.select2').select2();
+        $('.selectpicker').selectpicker();
     }
 
     // Remove specific Metode row
@@ -257,16 +287,18 @@
                                 <textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
                             </td>
                                 <td style="vertical-align: middle;">
-                                    <select name="metodePengujian[${rcmCount}][]" class="form-control select2" style="width:100%;">
+                                    <select name="metodePengujian[${rcmCount}][]" class="form-control selectpicker" style="width:100%;" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
                                         <?php foreach ($cboPengujian as $key => $value): ?>
                                             <option value="<?= $key; ?>"><?= $value; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </td>
                                 <td style="vertical-align: middle;">
-                                    <select name="penilaianControl[${rcmCount}][]" class="form-control select2" style="width:100%;">
+                                    <select name="penilaianControl[${rcmCount}][]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
                                         <?php foreach ($cboPenilaian as $key => $value): ?>
-                                            <option value="<?= $key; ?>"><?= $value; ?></option>
+                                            <option value="<?= $key; ?>" data-content="<span class='badge' style='background-color: <?= htmlspecialchars($comboColor[$key], ENT_QUOTES); ?>; color: <?= ($comboColor[$key] == '#00712D' || $comboColor[$key] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;'><?= $value; ?></span>">
+                                                <?= $value; ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </td>
@@ -300,11 +332,18 @@
                 </td>
             </tr>`;
         $("#rcm_body").append(newRCM);
-        $('.select2').select2();
+        $('.selectpicker').selectpicker();
     });
 
     // Remove specific RCM row
     function removeRCM(rcmIndex) {
         $("#rcm_" + rcmIndex).remove();
     }
+
+    $(document).ready(function() {
+        $('.selectpicker').selectpicker(); // Mengaktifkan Bootstrap Select
+       // Menonaktifkan semua popover
+        $('[data-toggle="popover"]').popover('dispose'); 
+    });
+
 </script>

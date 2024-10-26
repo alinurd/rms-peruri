@@ -18,3 +18,4 @@
 <?=link_tag(css_url('custom.css'));?>
 <?=link_tag(css_url('skins/skin-blue.css'));?>
 <?=link_tag(css_url('color-skin.css'));?>
+<?=link_tag(plugin_url('bootstrap-select/css/bootstrap-select.min.css'));?>
