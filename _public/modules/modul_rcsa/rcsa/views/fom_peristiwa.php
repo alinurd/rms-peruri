@@ -431,92 +431,145 @@ if ($field['iskri'] == 0) {
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                         <section class="x_panel">
                             <div class="x_content table-responsive" style="overflow-x: auto;">
-                                <table class="table table-striped  table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <!-- Kolom Analisis Risiko Inhern -->
-                                            <th style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center" colspan="3">Analisis Risiko Inhern</th>
-                                            <!-- Kolom Analisis Risiko Residual -->
-                                            <th style="position: sticky; left: 300px; background: white; z-index: 99;" class="text-center" colspan="3">Analisis Risiko Residual</th>
-                                            <?php
-                                            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                                            for ($i = 1; $i < 13; $i++) { ?>
-                                                <!-- Kolom Target Risiko Residual untuk bulan-bulan -->
-                                                <th class="text-center" colspan="3">Target Risiko Residual <br><?= $bulan[$i - 1] ?></th>
-                                                <!-- <th class="text-center" colspan="3">Target Risiko Residual <br> Bulan <?= $i ?></th> -->
-                                            <?php } ?>
-                                        </tr>
-                                        <tr>
-                                            <!-- Kolom Detail Risiko Inhern -->
-                                            <th style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">Skala Dampak</th>
-                                            <th style="position: sticky; left: 140px; background: white; z-index: 99;" class="text-center">Skala Probabilitas</th>
-                                            <th style="position: sticky; left: 270px; background: white; z-index: 99;" class="text-center">Level Risiko</th>
+                            <style>
+                                .table td, .table th {
+                                    padding: 2px 4px; /* Padding kecil agar lebih rapat */
+                                    font-size: 11px; /* Ukuran font kecil untuk muat lebih banyak */
+                                    width: 50px; /* Default width untuk kolom */
+                                    min-width: 50px !important; /* Ukuran minimum */
+                                    text-align: center;
+                                }
 
-                                            <!-- Kolom Detail Risiko Residual -->
-                                            <th style="position: sticky; left: 320px; background: white; z-index: 99;" class="text-center">Skala Dampak</th>
-                                            <th style="position: sticky; left: 430px; background: white; z-index: 99;" class="text-center">Skala Probabilitas</th>
-                                            <th style="position: sticky; left: 540px; background: white; z-index: 99;" class="text-center">Level Risiko</th>
+                                .form-control {
+                                    font-size: 11px; /* Ukuran font kecil di dropdown */
+                                    padding: 1px 2px;
+                                    width: 50px; /* Ukuran dropdown yang lebih kecil */
+                                }
 
-                                            <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                            <?php for ($i = 1; $i < 13; $i++) { ?>
-                                                <th class="text-center">Skala Dampak</th>
-                                                <th class="text-center">Skala Probabilitas</th>
-                                                <th class="text-center">Level Risiko</th>
-                                            <?php } ?>
-                                        </tr>
-                                    </thead>
+                                .label-level {
+                                    display: inline-block;
+                                    padding: 2px 4px;
+                                    font-size: 10px;
+                                    min-width: 50px;
+                                    text-align: center;
+                                }
 
-                                    <tbody>
-                                        <tr>
-                                             <input type="hidden" id="id_detail" value="<?=$detail['id']?>">
-                                            <!-- Kolom Detail Risiko Inhern -->
-                                            <td style="position: sticky; left: 0; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['analisis_like_inherent'])) ? '' : $analisiData['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" style="width:150px" id="likeAnalisisInheren"'); ?>
-                                            </td>
-                                            <td style="position: sticky; left: 140px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['analisis_impact_inherent'])) ? '' : $analisiData['analisis_impact_inherent'], 'class="form-control" id="impactAnalisisInheren" style="width:150px"'); ?>
-                                            </td>
-                                            <td style="position: sticky; left: 270px; background: white; z-index: 99;" class="text-center">
-                                                <span id="likeAnalisisInherenLabel">
-                                                    <span style="background-color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                </span><span id="spinner-inherent"></span>
-                                            </td>
+                                /* Styling untuk elemen yang bisa sticky */
+                                .table th.sticky {
+                                    position: sticky;
+                                    background: white;
+                                    z-index: 99;
+                                }
+                                
+                                /* CSS untuk Sticky Header dan Cell */
+                                .table thead th.sticky,
+                                .table tbody td.sticky {
+                                    position: sticky;
+                                    background-color: #ffffff; /* Warna latar belakang agar sticky terlihat */
+                                    z-index: 1;
+                                }
 
-                                            <!-- Kolom Detail Risiko Residual -->
-                                            <td style="position: sticky; left: 320px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['analisis_like_residual'])) ? '' : $analisiData['analisis_like_residual'], 'class="form-control" data-mode="2" data-month="0" style="width:150px" id="likeAnalisisResidual"'); ?>
-                                            </td>
-                                            <td style="position: sticky; left: 430px; background: white; z-index: 99;" class="text-center">
-                                                <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['analisis_impact_residual'])) ? '' : $analisiData['analisis_impact_residual'], 'class="form-control" id="impactAnalisisResidual" style="width:150px"'); ?>
-                                            </td>
-                                            <td style="position: sticky; left: 540px; background: white; z-index: 99;" class="text-center">
-                                                <span id="likeAnalisisResidualLabel">
-                                                    <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                </span><span id="spinner-residual"></span>
-                                            </td>
-                                            <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                            <?php for ($i = 1; $i <= 12; $i++) { ?>
-                                                <input type="hidden" name="month" id="month">
-                                                <td class="text-center">
-                                                <?php echo form_dropdown('target_like', $cboLike, (empty($target_like[$i-1])) ? '' : $target_like[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="likeTargetResidual'.$i.'"'); ?>
-                                                </td>
-                                                <td class="text-center">
-                                                <?php echo form_dropdown('target_impact', $cboImpact, (empty($target_impact[$i-1])) ? '' : $target_impact[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" style="width:150px" id="impactTargetResidual'.$i.'"'); ?>                                                </td>
-                                                <td class="text-center">
-                                                    <span id="targetResidualLabel<?= $i ?>">
-                                                        <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;">
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo strtoupper((count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['level_mapping'] : ''); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        </span>
-                                                    </span>
-                                                    <span id="spinner-residual<?= $i ?>"></span>
-                                                </td>
-                                            <?php } ?>
+                                .table thead th.sticky {
+                                    top: 0;
+                                    z-index: 2; /* Tingkat z-index lebih tinggi pada header */
+                                }
+                                </style>
 
-                                        </tr>
-                                    </tbody>
+                                <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                    <!-- Kolom Analisis Risiko Inhern -->
+                                    <th class="sticky text-center" style="left: 0;" colspan="3">Analisis Risiko Inhern</th>
+                                    <!-- Kolom Analisis Risiko Residual -->
+                                    <th class="sticky text-center" style="left: 180px;" colspan="3">Analisis Risiko Residual</th>
+                                    <?php
+                                    $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                                    for ($i = 1; $i < 13; $i++) { ?>
+                                        <th class="text-center" colspan="3">Target Risiko Residual <br><?= $bulan[$i - 1] ?></th>
+                                    <?php } ?>
+                                    </tr>
+                                    <tr>
+                                    <!-- Kolom Detail Risiko Inhern -->
+                                    <th class="sticky text-center" style="left: 0;">Skala Dampak</th>
+                                    <th class="sticky text-center" style="left: 50px;">Skala Probabilitas</th>
+                                    <th class="sticky text-center" style="left: 110px;">Level Risiko</th>
 
+                                    <!-- Kolom Detail Risiko Residual -->
+                                    <th class="sticky text-center" style="left: 180px;">Skala Dampak</th>
+                                    <th class="sticky text-center" style="left: 250px;">Skala Probabilitas</th>
+                                    <th class="sticky text-center" style="left: 320px;">Level Risiko</th>
 
+                                    <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
+                                    <?php for ($i = 1; $i < 13; $i++) { ?>
+                                        <th class="text-center">Skala Dampak</th>
+                                        <th class="text-center">Skala Probabilitas</th>
+                                        <th class="text-center">Level Risiko</th>
+                                    <?php } ?>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                    <input type="hidden" id="id_detail" value="<?=$detail['id']?>">
+                                    <!-- Kolom Detail Risiko Inhern -->
+                                    <td class="sticky text-center" style="left: 0;">
+                                        <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['analisis_like_inherent'])) ? '' : $analisiData['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
+                                    </td>
+                                    <td class="sticky text-center" style="left: 50px;">
+                                        <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['analisis_impact_inherent'])) ? '' : $analisiData['analisis_impact_inherent'], 'class="form-control" id="impactAnalisisInheren"'); ?>
+                                    </td>
+                                    <td class="sticky text-center" style="left: 110px;">
+                                        <span id="likeAnalisisInherenLabel">
+                                            <span style="background-color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color'] : '#fff'; ?>;
+                                                        color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color_text'] : '#000'; ?>;
+                                                        padding: 1px 3px;">
+                                                <?php echo strtoupper((count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['level_mapping'] : ''); ?>
+                                            </span>
+                                        </span><span id="spinner-inherent" class="spinner"></span>
+                                    </td>
+
+                                    <!-- Kolom Detail Risiko Residual -->
+                                    <td class="sticky text-center" style="left: 180px;">
+                                        <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['analisis_like_residual'])) ? '' : $analisiData['analisis_like_residual'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
+                                    </td>
+                                    <td class="sticky text-center" style="left: 250px;">
+                                        <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['analisis_impact_residual'])) ? '' : $analisiData['analisis_impact_residual'], 'class="form-control" id="impactAnalisisResidual"'); ?>
+                                    </td>
+                                    <td class="sticky text-center" style="left: 320px;">
+                                        <span id="likeAnalisisResidualLabel">
+                                            <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;
+                                                        color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;
+                                                        padding: 1px 3px;">
+                                                <?php echo strtoupper((count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['level_mapping'] : ''); ?>
+                                            </span>
+                                        </span><span id="spinner-residual" class="spinner"></span>
+                                    </td>
+
+                                    <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
+                                    <?php for ($i = 1; $i <= 12; $i++) { ?>
+                                        <input type="hidden" name="month" id="month">
+                                        <td class="text-center">
+                                            <?php echo form_dropdown('target_like', $cboLike, (empty($target_like[$i-1])) ? '' : $target_like[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo form_dropdown('target_impact', $cboImpact, (empty($target_impact[$i-1])) ? '' : $target_impact[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <span id="targetResidualLabel<?= $i ?>">
+                                                <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;
+                                                            color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;
+                                                            padding: 1px 3px;">
+                                                    <?php echo strtoupper((count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['level_mapping'] : ''); ?>
+                                                </span>
+                                            </span>
+                                            <span id="spinner-residual<?= $i ?>" class="spinner"></span>
+                                        </td>
+                                    <?php } ?>
+                                    </tr>
+                                </tbody>
                                 </table>
+
+
 
                             </div>
 
