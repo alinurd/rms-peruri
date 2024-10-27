@@ -61,14 +61,15 @@ class Index_Komposit extends BackendController {
 
 	function param($id = 0)
 	{
-		$data=[];
+		$rows = $this->db->where('id_combo', $id)->order_by('urut')->get("bangga_index_komposit")->result_array();
+ 		$data['data']=$rows;
 		$result = $this->load->view('param', $data, true);
 		return $result;
 	
 	}
 
 	function POST_INSERT_PROCESSOR($id , $new_data){
-		$result = $this->data->save_privilege($id , $new_data);
+ 		$result = $this->data->save_privilege($id , $new_data);
 		if (!$result)
 			return $result;
 		

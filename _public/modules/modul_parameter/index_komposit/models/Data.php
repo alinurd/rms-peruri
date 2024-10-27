@@ -7,64 +7,37 @@ class Data extends MX_Model {
         parent::__construct();
 	}
 	
-	function get_used_data($id){
-		$rows = $this->db->select('jabatan, jabatan_no, count(jabatan) as jml')->from(_TBL_KARYAWAN)->join(_TBL_JABATAN, _TBL_KARYAWAN.'.jabatan_no='._TBL_JABATAN.'.id')->group_by('jabatan')->get()->result_array();
-		
-		
-		$hasil=array();
-		foreach($rows as $row){
-			$hasil[$row['jabatan_no']] = $row['jml'];
-		}
-		return $hasil;
-	}
-	
-	function data_history($id, $limit=10){
-		$page = intval($this->uri->segment(4));
-		$rows = $this->db->where('jabatan_no', $id);
-		$query = $this->db->get(_TBL_KARYAWAN);
-		$this->total=$query->num_rows();
-		
-		$rows = $this->db->where('jabatan_no', $id)->order_by('nama_karyawan')->limit($limit, $page)->get(_TBL_KARYAWAN)->result_array();
-		return $rows;
-	}
-	
-	function get_total(){
-		return $this->total;
-	}
-
+	 
 	function save_privilege($newid=0,$data=array(), $old_data=array())
 	{
-		if (isset($data['risk_couse_no'])){
-			if(count($data['risk_couse_no'])>0){
-				$no=0;
-				foreach($data['risk_couse_no'] as $key=>$row){
-					if (!empty($data['area'][$key])){
-						$upd['sub_dampak_id'] = $newid;
-						$upd['area'] = $data['area'][$key];
-						$upd['criteria_risiko'] = $data['criteria_risiko'][$key];
-					
-						
-						if(intval($data['risk_couse_no'][$key])>0)
-						{
-						
-							$upd['update_user'] = $this->authentication->get_Info_User('username');
-							$where['id'] = $row;
-							$this->crud->crud_data(array('table'=>_TBL_AREA, 'field'=>$upd, 'where'=>$where,'type'=>'update'));
+		if (isset($data['urut'])){
+ 				$no=0;
+				 foreach ($data['urut'] as $index => $urut) {
+					$upd = [
+						'id_combo' => $newid,
+						'urut' => $urut,
+						'parameter' => $data['param'][$index],
+						'skala' => $data['skala'][$index],
+						'penilaian' => $data['penilaian'][$index]
+					];
 
+					$x = $this->db->where('id_combo', $newid)->where('urut', $urut)->get("bangga_index_komposit")->row_array();
+
+						if(intval($x['id']))
+						{
+							$upd['update_user'] = $this->authentication->get_Info_User('username');
+							$where['id'] = $x['id'];
+ 							$this->crud->crud_data(array('table'=>"bangga_index_komposit", 'field'=>$upd, 'where'=>$where,'type'=>'update'));
 						}
 						else
 						{
 							$upd['create_user'] = $this->authentication->get_Info_User('username');
-							
-							$this->crud->crud_data(array('table'=>_TBL_AREA, 'field'=>$upd,'type'=>'add'));
-
+							$this->crud->crud_data(array('table'=>"bangga_index_komposit", 'field'=>$upd,'type'=>'add'));
 						}
-
-		
 					}
-				}
-			}
-		}
+
+		 
+			} 
 		return true;
 	}
 }
