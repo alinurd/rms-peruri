@@ -1268,9 +1268,9 @@ function result_realisasi(hasil) {
     "toast-top-center",
     true
   );
-  console.log(hasil);
+  // console.log(hasil);
   // alert('Pengisian Progress Treatment Berhasil')
-  // location.reload();
+  location.reload();
 
   // $("#list_realisasi").removeClass("hide");
   // $("#input_realisasi").addClass("hide");

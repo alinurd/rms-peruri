@@ -148,12 +148,13 @@ class Data extends MX_Model {
                             ' . $monthly['inherent_analisis_action'] . ' [' . $progress_detail . ']
                         </span>
                     </span>
-                </div>
+                </div>';
 
-                <div style="text-align: center; margin-top: 10px;">
+                if(!$monthly){
+                    $result .= '<div style="text-align: center; margin-top: 10px;">
                     <span class="btn btn-primary" id="simpan_level_risiko_' . $q['id'] . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</span>
-                </div>
-            ';
+                </div>';
+                }
 
                 // </form>
         
