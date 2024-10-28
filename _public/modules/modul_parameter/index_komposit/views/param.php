@@ -189,6 +189,18 @@ document.getElementById("addParam").addEventListener("click", function() {
     addDeleteEventListeners(); // Tambah event listener untuk semua delete
 });
 
+function findLastDetailRow(mainRow) {
+    let nextRow = mainRow.nextElementSibling;
+
+    while (nextRow && nextRow.classList.contains("detail-row")) {
+        if (!nextRow.nextElementSibling || !nextRow.nextElementSibling.classList.contains("detail-row")) {
+            return nextRow;
+        }
+        nextRow = nextRow.nextElementSibling;
+    }
+    return null;
+}
+
 // Menambahkan event listener delete ketika halaman dimuat
 addDeleteEventListeners();
 
