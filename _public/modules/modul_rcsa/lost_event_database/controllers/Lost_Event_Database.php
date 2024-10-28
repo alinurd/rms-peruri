@@ -198,55 +198,64 @@ class Lost_Event_Database extends BackendController
 	}
 
 	public function get_detail_modal() {
-		// Mengambil input dari POST request
-		$id = $this->input->post("id_detail");
-		$month = $this->input->post("month");
-		$type = $this->input->post("type");
-	
 		// Inisialisasi array untuk hasil
 		$result = [
 			'action_detail' => null,
 			'lost_event' => null,
-			'type' => null
+			'type' => null,
+			'error' => false,
+			'message' => ''
 		];
 	
-		// Ambil id berdasarkan rcsa_detail_no
-		$act = $this->db
-			->select('id')
-			->where('rcsa_detail_no', $id)
-			->get('bangga_rcsa_action')
-			->row_array();
+		try {
+			// Mengambil input dari POST request
+			$id = $this->input->post("id_detail");
+			$month = $this->input->post("month");
+			$type = $this->input->post("type");
 	
-		// Cek apakah ID ditemukan
-		if ($act) {
-			// Ambil detail berdasarkan rcsa_action_no
-			$detail = $this->db
-				->where('rcsa_action_no', $act['id'])
-				->where('bulan', $month)
-				->get('bangga_view_rcsa_action_detail')
+			// Ambil id berdasarkan rcsa_detail_no
+			$act = $this->db
+				->select('id')
+				->where('rcsa_detail_no', $id)
+				->get('bangga_rcsa_action')
 				->row_array();
 	
-			// Simpan detail ke dalam hasil
-			$result['action_detail'] = $detail ?: null; // Jika tidak ada detail, set null
-			$result['type'] = 'add';
-		}
+			// Cek apakah ID ditemukan
+			if ($act) {
+				// Ambil detail berdasarkan rcsa_action_no
+				$detail = $this->db
+					->where('rcsa_action_no', $act['id'])
+					->where('bulan', $month)
+					->get('bangga_view_rcsa_action_detail')
+					->row_array();
 	
-		// Jika tipe adalah "edit", ambil data tambahan dari rcsa_lost_event
-		if ($type === "edit") {
-			$detailedit = $this->db
-				->where('rcsa_detail_id', $id)
-				->where('bulan', $month)
-				->get(_TBL_RCSA_LOST_EVENT)
-				->row_array();
+				// Simpan detail ke dalam hasil
+				$result['action_detail'] = $detail ?: null; // Jika tidak ada detail, set null
+				$result['type'] = 'add';
+			}
 	
-			// Tambahkan data edit ke hasil
-			$result['lost_event'] = $detailedit ?: null; // Jika tidak ada, set null
-			$result['type'] = 'edit';
+			// Jika tipe adalah "edit", ambil data tambahan dari rcsa_lost_event
+			if ($type === "edit") {
+				$detailedit = $this->db
+					->where('rcsa_detail_id', $id)
+					->where('bulan', $month)
+					->get(_TBL_RCSA_LOST_EVENT)
+					->row_array();
+	
+				// Tambahkan data edit ke hasil
+				$result['lost_event'] = $detailedit ?: null; // Jika tidak ada, set null
+				$result['type'] = 'edit';
+			}
+		} catch (Exception $e) {
+			// Menangkap kesalahan dan menambahkannya ke hasil
+			$result['error'] = true;
+			$result['message'] = 'Terjadi kesalahan: ' . $e->getMessage();
 		}
 	
 		// Kode untuk mengembalikan hasil dalam format JSON
 		echo json_encode($result);
 	}
+	
 	
 	
 	
