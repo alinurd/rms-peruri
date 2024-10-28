@@ -33,7 +33,7 @@
                 <td><input class="form-control" type="number" name="detail_skala[<?= $p['urut'] ?>][]" value="<?= $detail['skala'] ?>" placeholder="Detail Skala"></td>
                 <td><input class="form-control" type="number" name="detail_penilaian[<?= $p['urut'] ?>][]" value="<?= $detail['penilaian'] ?>" placeholder="Detail Penilaian"></td>
                 <td>
-                    <button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button>
+                    <button type="button" class="btn btn-warning delet><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -48,7 +48,8 @@
 </center>
 
 <script>
-// Fungsi untuk memperbarui urutan dan rowspan kolom utama
+    
+    // Fungsi untuk memperbarui urutan dan rowspan kolom utama
 function updateUrutAbjad() {
     const tbody = document.querySelector("#tbl_sasaran_new tbody");
     const rows = tbody.querySelectorAll(".main-row");
@@ -73,18 +74,33 @@ function updateRowspan(mainRow) {
     urutCell.rowSpan = detailCount + 1; // Mengatur rowspan
 }
 
-// Fungsi untuk memperbarui urutan nomor detail
-function updateDetailUrut(mainRow) {
-    let detailRows = [];
-    let nextRow = mainRow.nextElementSibling;
+// Event listener untuk tombol delete pada baris utama dan detail
+function addDeleteEventListeners() {
+    document.querySelectorAll(".delete-row").forEach(button => {
+        button.addEventListener("click", function() {
+            const mainRow = button.closest("tr");
 
-    while (nextRow && nextRow.classList.contains("detail-row")) {
-        detailRows.push(nextRow);
-        nextRow = nextRow.nextElementSibling;
-    }
+            // Menghapus semua baris detail yang terkait dengan baris utama
+            let nextRow = mainRow.nextElementSibling;
+            while (nextRow && nextRow.classList.contains("detail-row")) {
+                nextRow.remove();
+                nextRow = mainRow.nextElementSibling;
+            }
+            
+            mainRow.remove(); // Hapus baris utama
+            updateUrutAbjad(); // Memperbarui urutan setelah menghapus
+        });
+    });
 
-    detailRows.forEach((row, index) => {
-        // Mengatur urutan detail jika diperlukan
+    document.querySelectorAll(".delete-detail-row").forEach(button => {
+        button.addEventListener("click", function() {
+            const detailRow = button.closest("tr");
+            const mainRow = detailRow.previousElementSibling.classList.contains("main-row")
+                ? detailRow.previousElementSibling
+                : detailRow.previousElementSibling.previousElementSibling;
+            detailRow.remove(); // Hapus baris detail
+            updateRowspan(mainRow); // Memperbarui rowspan setelah menghapus
+        });
     });
 }
 
@@ -105,14 +121,15 @@ document.querySelectorAll(".add-Detail").forEach(button => {
         mainRow.insertAdjacentElement('afterend', newRow);
         updateRowspan(mainRow); // Memperbarui rowspan
 
+        // Menambah event listener delete setelah membuat detail baru
         newRow.querySelector(".delete-detail-row").addEventListener("click", function() {
             newRow.remove();
             updateRowspan(mainRow); // Memperbarui rowspan setelah menghapus
         });
     });
-});
-
-// Event listener untuk menambah parameter baru
+}
+)
+ 
 document.getElementById("addParam").addEventListener("click", function() {
     const tbody = document.querySelector("#tbl_sasaran_new tbody");
     const rowCount = tbody.querySelectorAll(".main-row").length;
@@ -134,25 +151,16 @@ document.getElementById("addParam").addEventListener("click", function() {
 
     tbody.appendChild(newRow);
 
-  // Event listener untuk menghapus parameter
-document.querySelectorAll(".delete-row").forEach(button => {
-    button.addEventListener("click", function() {
-        const mainRow = button.closest("tr"); // Dapatkan baris utama
-        let nextRow = mainRow.nextElementSibling;
-
-        // Hapus semua detail yang terkait
+    // Tambahkan event listener delete untuk baris utama yang baru dibuat
+    newRow.querySelector(".delete-row").addEventListener("click", function() {
+        let nextRow = newRow.nextElementSibling;
         while (nextRow && nextRow.classList.contains("detail-row")) {
-            const rowToRemove = nextRow; // Simpan baris yang akan dihapus
-            nextRow = nextRow.nextElementSibling; // Lanjutkan ke baris berikutnya
-            rowToRemove.remove(); // Hapus baris detail
+            nextRow.remove();
+            nextRow = newRow.nextElementSibling;
         }
-
-        mainRow.remove(); // Hapus baris utama
+        newRow.remove();
         updateUrutAbjad(); // Memperbarui urutan setelah menghapus
     });
-});
-
-
 
     newRow.querySelector(".add-Detail").addEventListener("click", function() {
         const lastDetailRow = findLastDetailRow(newRow) || newRow; // Dapatkan baris detail terakhir
@@ -170,6 +178,7 @@ document.querySelectorAll(".delete-row").forEach(button => {
         lastDetailRow.insertAdjacentElement('afterend', detailRow);
         updateRowspan(newRow); // Memperbarui rowspan
 
+        // Event listener delete untuk baris detail baru
         detailRow.querySelector(".delete-detail-row").addEventListener("click", function() {
             detailRow.remove();
             updateRowspan(newRow); // Memperbarui rowspan setelah menghapus
@@ -177,18 +186,11 @@ document.querySelectorAll(".delete-row").forEach(button => {
     });
 
     updateUrutAbjad(); // Memperbarui urutan abjad
+    addDeleteEventListeners(); // Tambah event listener untuk semua delete
 });
- 
-function findLastDetailRow(mainRow) {
-    let nextRow = mainRow.nextElementSibling;
 
-    while (nextRow && nextRow.classList.contains("detail-row")) {
-        if (!nextRow.nextElementSibling || !nextRow.nextElementSibling.classList.contains("detail-row")) {
-            return nextRow;
-        }
-        nextRow = nextRow.nextElementSibling;
-    }
-    return null;
-}
+// Menambahkan event listener delete ketika halaman dimuat
+addDeleteEventListeners();
+
 
 </script>
