@@ -134,10 +134,25 @@ document.getElementById("addParam").addEventListener("click", function() {
 
     tbody.appendChild(newRow);
 
-    newRow.querySelector(".delete-row").addEventListener("click", function() {
-        newRow.remove();
+  // Event listener untuk menghapus parameter
+document.querySelectorAll(".delete-row").forEach(button => {
+    button.addEventListener("click", function() {
+        const mainRow = button.closest("tr"); // Dapatkan baris utama
+        let nextRow = mainRow.nextElementSibling;
+
+        // Hapus semua detail yang terkait
+        while (nextRow && nextRow.classList.contains("detail-row")) {
+            const rowToRemove = nextRow; // Simpan baris yang akan dihapus
+            nextRow = nextRow.nextElementSibling; // Lanjutkan ke baris berikutnya
+            rowToRemove.remove(); // Hapus baris detail
+        }
+
+        mainRow.remove(); // Hapus baris utama
         updateUrutAbjad(); // Memperbarui urutan setelah menghapus
     });
+});
+
+
 
     newRow.querySelector(".add-Detail").addEventListener("click", function() {
         const lastDetailRow = findLastDetailRow(newRow) || newRow; // Dapatkan baris detail terakhir
