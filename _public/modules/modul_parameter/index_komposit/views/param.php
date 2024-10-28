@@ -105,6 +105,7 @@ function addDeleteEventListeners() {
 }
 
 // Event listener untuk menambah detail baru
+ // Event listener untuk menambah detail baru
 document.querySelectorAll(".add-Detail").forEach(button => {
     button.addEventListener("click", function() {
         const mainRow = button.closest("tr");
@@ -118,17 +119,28 @@ document.querySelectorAll(".add-Detail").forEach(button => {
             <td><button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button></td>
         `;
 
-        mainRow.insertAdjacentElement('afterend', newRow);
+        // Menambahkan baris detail baru di bawah semua baris detail yang ada
+        let nextRow = mainRow.nextElementSibling;
+        while (nextRow && nextRow.classList.contains("detail-row")) {
+            nextRow = nextRow.nextElementSibling;
+        }
+        if (nextRow) {
+            // Jika ada baris setelah detail, masukkan di atas baris itu
+            nextRow.insertAdjacentElement('beforebegin', newRow);
+        } else {
+            // Jika tidak ada baris detail, masukkan di bawah baris utama
+            mainRow.insertAdjacentElement('afterend', newRow);
+        }
+
         updateRowspan(mainRow); // Memperbarui rowspan
 
-        // Menambah event listener delete setelah membuat detail baru
         newRow.querySelector(".delete-detail-row").addEventListener("click", function() {
             newRow.remove();
             updateRowspan(mainRow); // Memperbarui rowspan setelah menghapus
         });
     });
-}
-)
+});
+
  
 document.getElementById("addParam").addEventListener("click", function() {
     const tbody = document.querySelector("#tbl_sasaran_new tbody");
