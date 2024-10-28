@@ -33,7 +33,7 @@
                 <td><input class="form-control" type="number" name="detail_skala[<?= $p['urut'] ?>][]" value="<?= $detail['skala'] ?>" placeholder="Detail Skala"></td>
                 <td><input class="form-control" type="number" name="detail_penilaian[<?= $p['urut'] ?>][]" value="<?= $detail['penilaian'] ?>" placeholder="Detail Penilaian"></td>
                 <td>
-                    <button type="button" class="btn btn-warning delet><i class="fa fa-trash"></i></button>
+                    <button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
         <?php endforeach; ?>
