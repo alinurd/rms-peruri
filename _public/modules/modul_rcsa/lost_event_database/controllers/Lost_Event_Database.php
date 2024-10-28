@@ -198,8 +198,6 @@ class Lost_Event_Database extends BackendController
 	}
 
 	public function get_detail_modal() {
-		 // Set header for JSON response
-		 header('Content-Type: application/json');
 		// Mengambil input dari POST request
 		$id = $this->input->post("id_detail");
 		$month = $this->input->post("month");
