@@ -158,7 +158,7 @@ class Data extends MX_Model {
             return '<center><i class="fa fa-times-circle text-warning" title="Progress Tretmen belum lengkap"></i></center>';
         }
 
-        if ($cek_ && $cek_['bulan'] <= $currentMonth) {
+        if ($cek_ && $cek_['bulan'] != $currentMonth) {
             return '<center><i class="fa fa-check-circle text-success" title="Lost Event Sudah Diisi"></i></center>';
         }
 
