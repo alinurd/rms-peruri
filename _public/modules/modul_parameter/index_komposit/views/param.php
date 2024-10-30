@@ -17,7 +17,11 @@
                 ->result_array(); ?>
 
         <tr class="main-row">
-            <td rowspan="<?=count($details) + 1?>"><input type="text" class="form-control" name="urut[]" value="<?= $p['urut'] ?>" readonly></td>
+            <td rowspan="<?=count($details) + 1?>">
+                <input type="text" class="form-control" name="idParam" value="<?= $p['id'] ?>" readonly>
+                <input type="text" class="form-control" name="edit[]" value="<?= $p['id'] ?>" readonly>
+                <input type="text" class="form-control" name="urut[]" value="<?= $p['urut'] ?>" readonly>
+            </td>
             <td><input class="form-control" type="text" name="param[]" value="<?= $p['parameter'] ?>" placeholder="Parameter"></td>
             <td><input class="form-control" type="number" name="skala[]" value="<?= $p['skala'] ?>" placeholder="Skala"></td>
             <td><input class="form-control" type="number" name="penilaian[]" value="<?= $p['penilaian'] ?>" placeholder="Hasil Penilaian"></td>
@@ -29,7 +33,9 @@
 
         <?php foreach ($details as $detail): ?>
             <tr class="detail-row">
-                <td><input class="form-control" type="text" name="detail_param[<?= $p['urut'] ?>][]" value="<?= $detail['parameter'] ?>" placeholder="Detail Parameter"></td>
+                <td>
+                <input type="text" class="form-control" name="detail_edit[<?= $p['urut'] ?>][]" value="<?= $detail['id'] ?>" readonly>
+                <input class="form-control" type="text" name="detail_param[<?= $p['urut'] ?>][]" value="<?= $detail['parameter'] ?>" placeholder="Detail Parameter"></td>
                 <td><input class="form-control" type="number" name="detail_skala[<?= $p['urut'] ?>][]" value="<?= $detail['skala'] ?>" placeholder="Detail Skala"></td>
                 <td><input class="form-control" type="number" name="detail_penilaian[<?= $p['urut'] ?>][]" value="<?= $detail['penilaian'] ?>" placeholder="Detail Penilaian"></td>
                 <td>
@@ -106,46 +112,13 @@ function addDeleteEventListeners() {
 
 // Event listener untuk menambah detail baru
  // Event listener untuk menambah detail baru
-document.querySelectorAll(".add-Detail").forEach(button => {
-    button.addEventListener("click", function() {
-        const mainRow = button.closest("tr");
-        const newRow = document.createElement("tr");
-        newRow.classList.add("detail-row");
-
-        newRow.innerHTML = `
-            <td><input type="text" class="form-control" name="detail_param[]" placeholder="Detail Parameter"></td>
-            <td><input class="form-control" type="number" name="detail_skala[]" placeholder="Skala"></td>
-            <td><input class="form-control" type="number" name="detail_penilaian[]" placeholder="Hasil Penilaian"></td>
-            <td><button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button></td>
-        `;
-
-        // Menambahkan baris detail baru di bawah semua baris detail yang ada
-        let nextRow = mainRow.nextElementSibling;
-        while (nextRow && nextRow.classList.contains("detail-row")) {
-            nextRow = nextRow.nextElementSibling;
-        }
-        if (nextRow) {
-            // Jika ada baris setelah detail, masukkan di atas baris itu
-            nextRow.insertAdjacentElement('beforebegin', newRow);
-        } else {
-            // Jika tidak ada baris detail, masukkan di bawah baris utama
-            mainRow.insertAdjacentElement('afterend', newRow);
-        }
-
-        updateRowspan(mainRow); // Memperbarui rowspan
-
-        newRow.querySelector(".delete-detail-row").addEventListener("click", function() {
-            newRow.remove();
-            updateRowspan(mainRow); // Memperbarui rowspan setelah menghapus
-        });
-    });
-});
+ 
 
  
 document.getElementById("addParam").addEventListener("click", function() {
     const tbody = document.querySelector("#tbl_sasaran_new tbody");
     const rowCount = tbody.querySelectorAll(".main-row").length;
-    const urutan = String.fromCharCode(65 + rowCount); // Menghitung urutan baru
+    const urutan = String.fromCharCode(65 + rowCount); 
 
     const newRow = document.createElement("tr");
     newRow.classList.add("main-row");
@@ -176,14 +149,17 @@ document.getElementById("addParam").addEventListener("click", function() {
 
     newRow.querySelector(".add-Detail").addEventListener("click", function() {
         const lastDetailRow = findLastDetailRow(newRow) || newRow; // Dapatkan baris detail terakhir
+        const tbody = document.querySelector("#tbl_sasaran_new tbody");
+    const rowCount = tbody.querySelectorAll(".main-row").length;
+    const urutan = String.fromCharCode(65 + rowCount-1); 
 
         const detailRow = document.createElement("tr");
         detailRow.classList.add("detail-row");
 
         detailRow.innerHTML = `
-            <td><input type="text" class="form-control" name="detail_param[]" placeholder="Detail Parameter"></td>
-            <td><input class="form-control" type="number" name="detail_skala[]" placeholder="Skala"></td>
-            <td><input class="form-control" type="number" name="detail_penilaian[]" placeholder="Hasil Penilaian"></td>
+            <td><input type="text" class="form-control" name="detail_param[${urutan}][]" placeholder="${urutan} Parameter"></td>
+            <td><input class="form-control" type="number" name="detail_skala[${urutan}][]" placeholder="Skala"></td>
+            <td><input class="form-control" type="number" name="detail_penilaian[${urutan}][]" placeholder="Hasil Penilaian"></td>
             <td><button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button></td>
         `;
 

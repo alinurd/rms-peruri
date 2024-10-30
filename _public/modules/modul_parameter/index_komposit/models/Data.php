@@ -11,11 +11,12 @@ class Data extends MX_Model {
 		
 	function save_privilege($newid=0, $data=array(), $old_data=array())
 {
-     if (isset($data['urut'])) {
+    // doi::dump($data);
+   
+      if (isset($data['urut'])) {
         $no = 0;
         foreach ($data['urut'] as $index => $urut) {
-            // Data utama yang akan disimpan
-            $upd = [
+             $upd = [
                 'id_combo' => $newid,
                 'urut' => $urut,
                 'parameter' => $data['param'][$index],
@@ -23,8 +24,7 @@ class Data extends MX_Model {
                 'penilaian' => $data['penilaian'][$index]
             ];
             
-            // Cek apakah data utama sudah ada
-            $x = $this->db->where('id_combo', $newid)->where('urut', $urut)->get("bangga_index_komposit")->row_array();
+             $x = $this->db->where('id_combo', $newid)->where('urut', $urut)->get("bangga_index_komposit")->row_array();
 
             if (intval($x['id'])) {
                 $upd['update_user'] = $this->authentication->get_Info_User('username');
@@ -33,27 +33,24 @@ class Data extends MX_Model {
             } else {
                 $upd['create_user'] = $this->authentication->get_Info_User('username');
                 $this->crud->crud_data(array('table' => "bangga_index_komposit", 'field' => $upd, 'type' => 'add'));
-                $id = $this->db->insert_id(); // Mengambil ID terakhir yang disimpan
+                $id = $this->db->insert_id(); 
             }
 
-             // Menyimpan data detail
-            if (isset($data['detail_urut'][$urut])) {
-                foreach ($data['detail_urut'][$urut] as $detailIndex => $detailUrut) {
+             if (isset($data['detail_param'][$urut])) {
+                foreach ($data['detail_param'][$urut] as $detailIndex => $detailUrut) {
                     $updDetail = [
-                        'id_param' => $id,
-                        'urut' => $detailUrut,
+                         'urut' => $urut,
                         'parameter' => $data['detail_param'][$urut][$detailIndex],
                         'skala' => $data['detail_skala'][$urut][$detailIndex],
                         'penilaian' => $data['detail_penilaian'][$urut][$detailIndex]
                     ];
-
-                    // Cek apakah data detail sudah ada
-                    $xDetail = $this->db->where('id_param', $id)->where('urut', $detailUrut)->get("bangga_index_komposit_detail")->row_array();
-                    if (intval($xDetail['id'])) {
+                     $xDetail = $this->db->where('id_param', $id)->where('urut', $urut)->get("bangga_index_komposit_detail")->row_array();
+                     if ($data['detail_edit'][$urut][$detailIndex]) {
                         $updDetail['update_user'] = $this->authentication->get_Info_User('username');
-                        $whereDetail = ['id' => $xDetail['id']];
+                        $whereDetail = ['id' => $data['detail_edit'][$urut][$detailIndex]];
                         $this->crud->crud_data(array('table' => "bangga_index_komposit_detail", 'field' => $updDetail, 'where' => $whereDetail, 'type' => 'update'));
                     } else {
+                        $updDetail['id_param'] = $id;
                         $updDetail['create_user'] = $this->authentication->get_Info_User('username');
                         $this->crud->crud_data(array('table' => "bangga_index_komposit_detail", 'field' => $updDetail, 'type' => 'add'));
                     }
@@ -61,7 +58,7 @@ class Data extends MX_Model {
             }
         }
      }
-    return true;
+      return true;
 }
 
 }
