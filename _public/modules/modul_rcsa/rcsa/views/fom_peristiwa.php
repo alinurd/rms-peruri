@@ -432,7 +432,7 @@ if ($field['iskri'] == 0) {
                         <section class="x_panel">
                             <div class="x_content table-responsive" style="overflow-x: auto;">
                             <style>
-                                .table td, .table th {
+                                .table-risk-analisis td, .table-risk-analisis th {
                                     padding: 2px 4px; /* Padding kecil agar lebih rapat */
                                     font-size: 11px; /* Ukuran font kecil untuk muat lebih banyak */
                                     width: 50px; /* Default width untuk kolom */
@@ -440,13 +440,13 @@ if ($field['iskri'] == 0) {
                                     text-align: center;
                                 }
 
-                                .form-control {
+                                .table-risk-analisis .form-control {
                                     font-size: 11px; /* Ukuran font kecil di dropdown */
                                     padding: 1px 2px;
                                     width: 50px; /* Ukuran dropdown yang lebih kecil */
                                 }
 
-                                .label-level {
+                                .table-risk-analisis .label-level {
                                     display: inline-block;
                                     padding: 2px 4px;
                                     font-size: 10px;
@@ -455,27 +455,27 @@ if ($field['iskri'] == 0) {
                                 }
 
                                 /* Styling untuk elemen yang bisa sticky */
-                                .table th.sticky {
+                                .table-risk-analisis th.sticky {
                                     position: sticky;
                                     background: white;
                                     z-index: 99;
                                 }
                                 
                                 /* CSS untuk Sticky Header dan Cell */
-                                .table thead th.sticky,
-                                .table tbody td.sticky {
+                                .table-risk-analisis .table thead th.sticky,
+                                .table-risk-analisis .table tbody td.sticky {
                                     position: sticky;
                                     background-color: #ffffff; /* Warna latar belakang agar sticky terlihat */
                                     z-index: 1;
                                 }
 
-                                .table thead th.sticky {
+                                .table-risk-analisis .table thead th.sticky {
                                     top: 0;
                                     z-index: 2; /* Tingkat z-index lebih tinggi pada header */
                                 }
                                 </style>
 
-                                <table class="table table-striped table-bordered table-hover">
+                                <table class="table table-striped table-bordered table-hover table-risk-analisis">
                                 <thead>
                                     <tr>
                                     <!-- Kolom Analisis Risiko Inhern -->
