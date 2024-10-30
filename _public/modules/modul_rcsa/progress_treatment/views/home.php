@@ -122,6 +122,7 @@
                 <?php
                 $no = 1;
                 foreach ($field as $q) {
+                    // doi::dump($field);
                     $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
                 ?>
                     <tr>

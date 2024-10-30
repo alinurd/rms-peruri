@@ -710,111 +710,89 @@ $msg="risk impcat yang anda masukan sudah ada";
 		return $id;
 	}
 
-	function simpan_mitigasi($data)
-	{
-		$files = $_FILES;
-		// die($files);
-		if ($files) {
-			$arra_upload = [];
+	function simpan_mitigasi($data) {
 
-			$i = 0;
-			// for ($i = 0; $i < $cpt; $i++) {
-			if (!empty($files['lampiran']['name'])) {
-				$nmFile = $files['userfile']['name'];
-				$_FILES['userfile']['name'] = $files['lampiran']['name'];
-				$_FILES['userfile']['type'] = $files['lampiran']['type'];
-				$_FILES['userfile']['tmp_name'] = $files['lampiran']['tmp_name'];
-				$_FILES['userfile']['error'] = $files['lampiran']['error'];
-				$_FILES['userfile']['size'] = $files['lampiran']['size'];
-				$upload = upload_image_new(array(
-					'nm_file' => 'lampiran',
-					'size' => 10000000,
-					'path' => 'rcsa',
-					'thumb' => false,
-					'type' => '*'
-				), true, $i);
-				// die($upload);
-				if ($upload) {
-					$arra_upload[] = array('name' => $upload['file_name'], 'real_name' => $nmFile);
-				}
-			}
-		}
-		// Doi::dump($arra_upload);
-		// Doi::dump($nmFile);
-		// die('model');
-		// Doi::dump($_FILES);
-		$upd = array();
-		if ($arra_upload) {
-			$upd['lampiran'] = json_encode($arra_upload);
-		}
-
-		if ($data['iskri'] == 0) {
-			if (!($data['pi'] < 6 && $data['pi'] > 4)) {
-				$updx['pi'] = 5;
-			}
-		} else {
-			$updx['pi'] = 6;
-		}
-		// doi::dump($updx['pi']);
-		// die();
+		$upd = [];
+		$updx['pi'] = 6;
+		$upd['iskri'] = 1;
 		$upd['rcsa_detail_no'] = $data['id_detail'];
-		$upd['iskri'] = $data['iskri'];
 		$upd['proaktif'] = $data['proaktif'];
-		$upd['reaktif'] = $data['reaktif'];
-		$upd['amount'] = str_replace(',', '', $data['amount']);
-		$upd['sumber_daya'] = $data['sumber_daya'];
-
-
-
-
-		if (!empty($data['target_waktu']))
-			$upd['target_waktu'] = date('Y-m-d', strtotime($data['target_waktu']));
-
-		$accountable_no = array();
-		foreach ($data['owner_no_action_accountable'] as $key => $row) {
-			$accountable_no[] = $row;
-		}
-		$upd['accountable_unit'] = json_encode($accountable_no);
-
-		$accountable_no = array();
-		foreach ($data['owner_no_action'] as $key => $row) {
-			$accountable_no[] = $row;
-		}
-		$upd['owner_no'] = json_encode($accountable_no);
-
+	
+		// Cek kondisi edit atau add
 		if ((int)$data['id_edit_mitigasi'] > 0) {
+			// Jika edit, tambahkan informasi pengguna yang melakukan update
 			$upd['update_user'] = $this->authentication->get_info_user('username');
 			$upd['update_date'] = Doi::now();
-
-			$where['id'] = $data['id_edit_mitigasi'];
-			$kri['aktif'] = $data['iskri'];
-			// doi::dump($upd['iskri']);
-			// die();
-			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-			$id = intval($data['id_edit_mitigasi']);
-
+			$where = ['id' => $data['id_edit_mitigasi']];
+			$kri['aktif'] = 1;
 			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updx, 'where' => array('id' => $data['id_detail']), 'type' => 'update'));
 			$this->crud->crud_data(array('table' => _TBL_KRI, 'field' => $kri, 'where' => array('rcsa_detail' => $data['id_detail']), 'type' => 'update'));
-
-			// $this->crud->crud_data(array('table' => , 'field' => $kri, 'type' => 'update'));
-
+			
+			// Update data utama mitigasi
+			$result = $this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upd, 'where' => $where, 'type' => 'update']);
+			$id = intval($data['id_edit_mitigasi']);
 			$type = "edit";
 		} else {
+			// Jika add, tambahkan informasi pengguna yang membuat data baru
 			$upd['create_user'] = $this->authentication->get_info_user('username');
-			// if($data['iskri']!="0"){
-			// 	$kri['aktif'] = $data['iskri'];
-			// 	$kri['rcsa_detail'] = $data['id_detail'];
-			// 	$id =  $this->crud->crud_data(array('table' => _TBL_KRI, 'field' => $kri, 'type' => 'add'));
-			// }
-
-			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updx, 'where' => array('id' => $data['id_detail']), 'type' => 'update'));
-			$id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION, 'field' => $upd, 'type' => 'add'));
-
+			
+			// Insert data utama mitigasi
+			$id = $this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upd, 'type' => 'add']);
 			$id = $this->db->insert_id();
 			$type = "add";
 		}
+	
+		// Insert atau update data bulanan satu per satu
+		$bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+		foreach ($bulan as $key => $nama_bulan) {
+			$index = $key + 1;
+	
+			// Mengambil nilai progress dan damp loss atau memberikan nilai default
+			$target_progress = isset($data["target_progress{$index}"]) ? (int) $data["target_progress{$index}"] : 0;
+			$target_damp_loss = isset($data["target_damp_loss{$index}"]) ? str_replace(',', '', $data["target_damp_loss{$index}"]) : 0;
+	
+			// Hanya insert atau update jika salah satu nilai diisi
+			if ($target_progress || $target_damp_loss) {
+				$data_bulanan = [
+					'bulan'                => $index,
+					'target_progress_detail' => $target_progress,
+					'target_damp_loss'     => $target_damp_loss,
+					'rcsa_detail_no'       => $data['id_detail'],
+					'rcsa_no'              => $data['rcsa_no'],
+					'update_user'          => $this->authentication->get_info_user('username')
+				];
+	
+				// Cek apakah data bulanan untuk bulan ini sudah ada
+				$existing_data = $this->db->get_where('bangga_rcsa_treatment', [
+					'rcsa_detail_no' => $data['id_detail'],
+					'bulan' => $index
+				])->row();
+	
+				if ($existing_data) {
+					// Jika data bulan sudah ada, lakukan update
+					$this->crud->crud_data([
+						'table' => 'bangga_rcsa_treatment',
+						'field' => $data_bulanan,
+						'where' => ['id' => $existing_data->id],
+						'type' => 'update'
+					]);
+				} else {
+					// Jika data bulan belum ada, lakukan insert
+					$data_bulanan['create_user'] = $this->authentication->get_info_user('username');
+					$this->crud->crud_data([
+						'table' => 'bangga_rcsa_treatment',
+						'field' => $data_bulanan,
+						'type' => 'add'
+					]);
+				}
+			}
+		}
+		
+		// Doi::dump($id)
 		return $id;
 	}
+	
+	
 
 	function simpan_realisasi($data)
 	{

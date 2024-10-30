@@ -110,8 +110,8 @@ if($rows){
     {
         $upd = array();
  
-        $upd['target_progress_detail'] = $data['target_progress']; 
-        $upd['target_damp_loss']       = $data['target_damp_loss']; 
+        // $upd['target_progress_detail'] = $data['target_progress']; 
+        // $upd['target_damp_loss']       = $data['target_damp_loss']; 
         $upd['progress_detail']        = $data['progress']; 
         $upd['damp_loss']              = $data['damp_loss']; 
 
@@ -190,6 +190,11 @@ if($rows){
 			->where('bulan', $month)
 			->get('bangga_view_rcsa_action_detail')->row_array();
 
+		$data['risk_treatment'] = $this->db
+			->where('rcsa_detail_no', $q['id'])
+			->where('bulan', $month)
+			->get('bangga_rcsa_treatment')->row_array();
+
 		$detail = $this->db
 			->select('periode_name')
 			->where('id',$q['id'])
@@ -226,9 +231,11 @@ if($rows){
  
 
         $monthly = $data['data']; 
-
+        $data_risk_treatment = $data['risk_treatment'];
         $monthbefore = $data['before'];
         $currentMonth = date('n');
+
+        // doi::dump($data_risk_treatment);
  
 
         
@@ -245,7 +252,7 @@ if($rows){
                             <tr>
                                 <td style="padding: 10px; vertical-align: top;">
                                     <div class="input-group">
-                                        <input type="number" name="target_progress'.$data['data']['id'].$month.'" id="target_progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data['data']['target_progress_detail'].'" aria-describedby="basic-addon2">
+                                        <input readonly type="number" name="target_progress'.$data['data']['id'].$month.'" id="target_progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data_risk_treatment['target_progress_detail'].'" aria-describedby="basic-addon2">
                                         <span class="input-group-addon" id="basic-addon2">%</span>
                                     </div>
                                 </td>
@@ -260,8 +267,8 @@ if($rows){
                                 <td style="padding: 10px; vertical-align: top;">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                        <input type="text" name="target_damp_loss'.$data['data']['id'].$month.'" id="target_damp_loss'.$data['data']['id'].$month.'" 
-                                        value="'.$data['data']['target_damp_loss'].'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                        <input readonly type="text" name="target_damp_loss'.$data['data']['id'].$month.'" id="target_damp_loss'.$data['data']['id'].$month.'" 
+                                        value="'.$data_risk_treatment['target_damp_loss'].'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
                                     </div>
                                 </td>
                                 <td style="padding: 10px; vertical-align: top;">
