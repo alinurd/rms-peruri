@@ -143,7 +143,7 @@ $(function () {
       month: month,
     };
     var parent = $(this).parent();
-    var url = modul_name + "/cek-level";
+    var url = modul_name + "/cek_level";
 
     cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
   });
@@ -159,7 +159,7 @@ $(function () {
       month: month,
     };
     var parent = $(this).parent();
-    var url = modul_name + "/cek-level";
+    var url = modul_name + "/cek_level";
 
     cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisIResidual");
   });
