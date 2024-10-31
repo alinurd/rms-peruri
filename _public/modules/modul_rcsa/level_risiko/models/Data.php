@@ -123,7 +123,6 @@ class Data extends MX_Model {
         $cboImpact          = $q['cb_impact'];
         $monthbefore        = $data['before'];
         $currentMonth       = date('n');
-        doi::dump($monthbefore);
         if (!$monthbefore && $month !=1) {
 			$result         = '<i class="  fa fa-times-circle text-danger"></i>';
 		} else {
