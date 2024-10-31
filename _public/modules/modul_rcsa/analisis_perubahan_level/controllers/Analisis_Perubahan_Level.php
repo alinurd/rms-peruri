@@ -264,40 +264,21 @@ class Analisis_Perubahan_Level extends BackendController
 		return $result;
 	}
 
+	public function save(){
+		$x['post'] 	= $this->input->post();
+
+		$x['res'] = $this->data->simpan_realisasi($x['post']); 
+		echo json_encode($x);
 
 
-	function cek_level()
-	{
-		$post = $this->input->post();
-		$rows = $this->db->where('impact_no', $post['impact'])->where('like_no', $post['likelihood'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+		
+		// 	var_dump($simpan);
+		// exit;
+		// echo "<script>
+		// 	alert('Berhasil proses data!');
+		// 	window.location.href = '" . base_url("level_risiko/index") . "';
+		// </script>";
 
-		$result['level_text'] = '-';
-		$result['level_no'] = 0;
-		$result['level_resiko'] = '-';
-		$result['id'] = (isset($post))?$post['id']:'';
-		$result['mode'] =(isset($post['mode']))?$post['mode']:0;
-		$result['month'] =(isset($post['month']))?$post['month']:0;
-		// $result['cek'] = $rows;
-		if ($rows) {
-			$progress_detail    = $rows['code_likelihood'] . ' x ' . $rows['code_impact'];
-			$result['level_text'] = "<span class='btn' style='padding:4px 8px;width:100%; background-color:" . $rows['warna_bg'] . ";color:" . $rows['warna_txt'] . ";'>&nbsp;" . $rows['tingkat'] ." [" . $progress_detail . "] &nbsp;</span>";
-			$result['level_no'] = $rows['id'];
-			$result['level_name'] = $rows['tingkat'];
-			$cboTreatment = $this->get_combo('treatment');
-			$cboTreatment1 = $this->get_combo('treatment1');
-			$cboTreatment2 = $this->get_combo('treatment2');
-
-			
-			if ($result['level_name'] == "Ekstrem") {
-				$result['level_resiko'] = $cboTreatment1;
-			} elseif ($result['level_name'] == "Low") {
-				$result['level_resiko'] = $cboTreatment2;
-			} else {
-				$result['level_resiko'] = $cboTreatment;
-			}
-		}
-
-		echo json_encode($result);
 	}
 
 	

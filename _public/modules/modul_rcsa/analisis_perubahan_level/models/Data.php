@@ -61,7 +61,7 @@ class Data extends MX_Model
         $monitoring       = $this->db->where('rcsa_action_no', $act['id'])->where('bulan', $month)->get('bangga_view_rcsa_action_detail')->row_array();
         $l        = $this->data->level_action($monitoring['residual_likelihood_action'], $monitoring['residual_impact_action']);
         $resLv    = $l['like']['code'] . ' x ' . $l['impact']['code'];
-
+        $keterangan_pl=$monitoring['keterangan_pl'];
         $lv = '
         <a class="btn" data-toggle="popover" data-content="
         <center>
@@ -127,9 +127,8 @@ class Data extends MX_Model
             $result['ket'] = '
                 <div style="text-align: center; margin-bottom: 10px;">
 
-                 <textarea name="" id="" rows="4" cols="2" style="width: 100%;"></textarea>
+                 <textarea name="keterangan_' . $id . '' . $month . '"   rows="4" cols="2" style="width: 100%;">'.$keterangan_pl.'</textarea>
                 </div>
-         
                 <br>
                   <center><span class="btn btn-primary text-white" id="simpan_realisasi_' . $id . '" data-month="' . $month . '" data-id="' . $id . '">
                   <i class="fa fa-floppy-o" aria-hidden="true"></i> </span></center>
@@ -139,13 +138,8 @@ class Data extends MX_Model
         return $result;
     }
 
-
-
-
     public function level_action($like, $impact)
     {
-        // doi::dump($like);
-        // doi::dump($impact);
         $result['like'] = $this->db
             ->where('id', $like)
             ->get('bangga_level')->row_array();
@@ -156,6 +150,31 @@ class Data extends MX_Model
 
         return $result;
     }
+
+    function simpan_realisasi($data){
+        $upd                                = [];
+		$id 		                        = $data['id'];  
+		$month 		                        = $data['month'];  
+		$upd['keterangan_pl'] 				= $data['keterangan']; 
+	 
+        $monitoring       = $this->db->where('rcsa_detail', $id)->where('bulan', $month)->get('bangga_rcsa_action_detail')->row_array();
+
+		if ((int)$monitoring > 0) {
+			$upd['update_user'] = $this->authentication->get_info_user('username');
+			$where['rcsa_detail'] = $id;
+			$where['bulan'] = $month;
+			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
+			$id = $id; 
+		} else {
+		    $upd['create_date'] = date('Y-m-d H:i:s');
+ 			$upd['create_user'] = $this->authentication->get_info_user('username');
+			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
+			$id = $this->db->insert_id();
+			$type = "add";
+		}
+		return $result;
+    }
+
 }
 /* End of file app_login_model.php */
 /* Location: ./application/models/app_login_model.php */
