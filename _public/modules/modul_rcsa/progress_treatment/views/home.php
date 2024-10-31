@@ -83,67 +83,69 @@
     <div class="clearfix"></div>
 
     <div class="x_content table-responsive" style="overflow-x: auto;">
-        <table class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th class="no-col" rowspan="2" style="position: sticky; left: 0; background: white;">No</th>
-                    <th class="risk-owner-col text-center" rowspan="2" style="position: sticky; left: 30px; background: white;">Risk Owner</th>
-                    <th class="text-center peristiwa-risiko-col" rowspan="2" style="position: sticky; left: 100px; background: white;">Peristiwa Risiko</th>
-                    <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 240px; background: white;">Treatment</th>
-                    <th class="text-center tahun-col" rowspan="2">Tahun</th>
-                    <?php if ($triwulan == 1): ?>
-                        <th class="text-center month-col" colspan="2">Januari</th>
-                        <th class="text-center month-col" colspan="2">Februari</th>
-                        <th class="text-center month-col" colspan="2">Maret</th>
-                    <?php elseif ($triwulan == 2): ?>
-                        <th class="text-center month-col" colspan="2">April</th>
-                        <th class="text-center month-col" colspan="2">Mei</th>
-                        <th class="text-center month-col" colspan="2">Juni</th>
-                    <?php elseif ($triwulan == 3): ?>
-                        <th class="text-center month-col" colspan="2">Juli</th>
-                        <th class="text-center month-col" colspan="2">Agustus</th>
-                        <th class="text-center month-col" colspan="2">September</th>
-                    <?php elseif ($triwulan == 4): ?>
-                        <th class="text-center month-col" colspan="2">Oktober</th>
-                        <th class="text-center month-col" colspan="2">November</th>
-                        <th class="text-center month-col" colspan="2">Desember</th>
-                    <?php endif; ?>
-                </tr>
-                <tr>
-                    <th class="text-center target-col">Target</th>
-                    <th class="text-center realisasi-col">Realisasi</th>
-                    <th class="text-center target-col">Target</th>
-                    <th class="text-center realisasi-col">Realisasi</th>
-                    <th class="text-center target-col">Target</th>
-                    <th class="text-center realisasi-col">Realisasi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $no = 1;
-                foreach ($field as $q) {
-                    // doi::dump($field);
-                    $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
-                ?>
+        <div style="overflow-x: auto;">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
                     <tr>
-                        <td style="position: sticky; left: 0; background: white;"><?= $no++ ?></td>
-                        <td style="position: sticky; left: 35px; background: white; z-index:1000;"><?= $q['name'] ?></td>
-                        <td style="position: sticky; left: 100px; background: white; z-index:1000;"><?= $act['event_name'] ?></td>
-                        <td style="position: sticky; left: 240px; background: white; z-index:1000;"><?= $act['proaktif'] ?></td>
-                        <td><?= $q['tahun'] ?></td>
-                        <?php
-                        $start = ($triwulan - 1) * 3 + 1;
-                        $end = $start + 3;
-                        for ($i = $start; $i < $end; $i++):
-                            $data['id'] = $q['id'];
-                            $data['rcsa_no'] = $q['rcsa_no'];
-                            echo $this->data->getMonthlyMonitoringGlobal($data, $i);
-                        endfor;
-                        ?>
+                        <th class="no-col" rowspan="2" style="position: sticky; left: 0; background: white; min-width: 50px; z-index: 100;">No</th>
+                        <th class="risk-owner-col text-center" rowspan="2" style="position: sticky; left: 50px; background: white; min-width: 150px; z-index: 100;">Risk Owner</th>
+                        <th class="text-center peristiwa-risiko-col" rowspan="2" style="position: sticky; left: 200px; background: white; min-width: 200px; z-index: 100;">Peristiwa Risiko</th>
+                        <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 400px; background: white; min-width: 200px; z-index: 100;">Treatment</th>
+                        <th class="text-center tahun-col" rowspan="2" style="min-width: 100px;">Tahun</th>
+                        <?php if ($triwulan == 1): ?>
+                            <th class="text-center month-col" colspan="2">Januari</th>
+                            <th class="text-center month-col" colspan="2">Februari</th>
+                            <th class="text-center month-col" colspan="2">Maret</th>
+                        <?php elseif ($triwulan == 2): ?>
+                            <th class="text-center month-col" colspan="2">April</th>
+                            <th class="text-center month-col" colspan="2">Mei</th>
+                            <th class="text-center month-col" colspan="2">Juni</th>
+                        <?php elseif ($triwulan == 3): ?>
+                            <th class="text-center month-col" colspan="2">Juli</th>
+                            <th class="text-center month-col" colspan="2">Agustus</th>
+                            <th class="text-center month-col" colspan="2">September</th>
+                        <?php elseif ($triwulan == 4): ?>
+                            <th class="text-center month-col" colspan="2">Oktober</th>
+                            <th class="text-center month-col" colspan="2">November</th>
+                            <th class="text-center month-col" colspan="2">Desember</th>
+                        <?php endif; ?>
                     </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+                    <tr>
+                        <th class="text-center target-col">Target</th>
+                        <th class="text-center realisasi-col">Realisasi</th>
+                        <th class="text-center target-col">Target</th>
+                        <th class="text-center realisasi-col">Realisasi</th>
+                        <th class="text-center target-col">Target</th>
+                        <th class="text-center realisasi-col">Realisasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $no = 1;
+                    foreach ($field as $q) {
+                        $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
+                    ?>
+                        <tr>
+                            <td style="position: sticky; left: 0; background: white; min-width: 50px;"><?= $no++ ?></td>
+                            <td style="position: sticky; left: 50px; background: white; min-width: 150px; z-index: 1000;"><?= $q['name'] ?></td>
+                            <td style="position: sticky; left: 200px; background: white; min-width: 200px; z-index: 1000;"><?= $act['event_name'] ?></td>
+                            <td style="position: sticky; left: 400px; background: white; min-width: 200px; z-index: 1000;"><?= $act['proaktif'] ?></td>
+                            <td style="min-width: 100px;"><?= $q['tahun'] ?></td>
+                            <?php
+                            $start = ($triwulan - 1) * 3 + 1;
+                            $end = $start + 3;
+                            for ($i = $start; $i < $end; $i++):
+                                $data['id'] = $q['id'];
+                                $data['rcsa_no'] = $q['rcsa_no'];
+                                echo $this->data->getMonthlyMonitoringGlobal($data, $i);
+                            endfor;
+                            ?>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
     </div>
     <div class="row">
         <div class="col-md-12 text-center">
