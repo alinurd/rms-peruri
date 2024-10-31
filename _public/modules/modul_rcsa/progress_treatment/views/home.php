@@ -87,9 +87,9 @@
             <thead>
                 <tr>
                     <th class="no-col" rowspan="2" style="position: sticky; left: 0; background: white;">No</th>
-                    <th class="risk-owner-col text-center" rowspan="2" style="position: sticky; left: 35px; background: white;">Risk Owner</th>
-                    <th class="text-center peristiwa-risiko-col" rowspan="2" style="position: sticky; left: 155px; background: white;">Peristiwa Risiko</th>
-                    <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 260px; background: white;">Treatment</th>
+                    <th class="risk-owner-col text-center" rowspan="2" style="position: sticky; left: 30px; background: white;">Risk Owner</th>
+                    <th class="text-center peristiwa-risiko-col" rowspan="2" style="position: sticky; left: 100px; background: white;">Peristiwa Risiko</th>
+                    <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 240px; background: white;">Treatment</th>
                     <th class="text-center tahun-col" rowspan="2">Tahun</th>
                     <?php if ($triwulan == 1): ?>
                         <th class="text-center month-col" colspan="2">Januari</th>
@@ -128,8 +128,8 @@
                     <tr>
                         <td style="position: sticky; left: 0; background: white;"><?= $no++ ?></td>
                         <td style="position: sticky; left: 35px; background: white; z-index:1000;"><?= $q['name'] ?></td>
-                        <td style="position: sticky; left: 155px; background: white; z-index:1000;"><?= $act['event_name'] ?></td>
-                        <td style="position: sticky; left: 260px; background: white; z-index:1000;"><?= $act['proaktif'] ?></td>
+                        <td style="position: sticky; left: 100px; background: white; z-index:1000;"><?= $act['event_name'] ?></td>
+                        <td style="position: sticky; left: 240px; background: white; z-index:1000;"><?= $act['proaktif'] ?></td>
                         <td><?= $q['tahun'] ?></td>
                         <?php
                         $start = ($triwulan - 1) * 3 + 1;
