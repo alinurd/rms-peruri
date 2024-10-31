@@ -117,9 +117,11 @@ class Analisis_Perubahan_Level extends BackendController
  		if($this->input->get('owner')){
 			$own= $this->input->get('owner');
 		}
-		$twD = date('n'); 
-
-		if ($twD >= 1 && $twD <= 3) {
+		$twD= $this->input->get('bulan');
+		if(!$twD){
+			$twD = date('n'); 
+		}
+ 		if ($twD >= 1 && $twD <= 3) {
 			$tw = 1; 
 		} elseif ($twD >= 4 && $twD <= 6) {
 			$tw = 2; 
@@ -135,6 +137,8 @@ class Analisis_Perubahan_Level extends BackendController
 		if ($this->input->get('triwulan')) {
 			$tw = $this->input->get('triwulan');
 		}
+		$data['triwulan'] = $tw;
+		$data['bulan'] = $twD;
 		$data['owner'] =$own;
  		$total_data = $this->data->count_all_data($data); 
 		$total_pages = ceil($total_data / $limit); 
@@ -143,7 +147,6 @@ class Analisis_Perubahan_Level extends BackendController
 		$x['start_data'] = $offset + ($total_data>0)?1:0;
 		$x['end_data'] = min($offset + $limit, $total_data);
 		$x['cboPeriod'] = $this->cbo_periode;
-		$x['triwulan'] = $tw;
 		$x['cboOwner'] = $this->cbo_parent;
 		$x['field'] = $this->data->getDetail($data, $limit, $offset);
 		$x['cb_like'] = $this->get_combo('likelihood');
@@ -163,64 +166,6 @@ class Analisis_Perubahan_Level extends BackendController
 		$this->template->build('home', $x);
 	}
 
-	public function save(){
-		$data 	= $this->input->post();
-		$upd                                = [];
-		$id 		                        = $data['rcsa_detail_no'];
-		$rcsa_no 	                        = $data['rcsa_no'];
-		$month 		                        = $data['month'];
-		$likehold 	                        = $data['likehold'];
-		$impact 	                        = $data['impact'];
-		$upd['rcsa_detail'] 				= $id;
-		$upd['bulan'] 						= $month;
-		$upd['residual_likelihood_action'] 	= $likehold;
-		$upd['residual_impact_action'] 		= $impact;
-		$upd['create_date'] 				= date('Y-m-d H:i:s');
-		$upd['create_user'] 				= $this->authentication->get_info_user('username');
-		$upd['rcsa_action_no']              = $data['rcsa_action_no'];
-		$upd['risk_level_action']           = $data['inherent_level'];
-	
-		// doi::dump($upd);
-		// die('ctr');
-		// Simpan data ke dalam tabel (misalnya, 'risk_monitoring_data')
-		
-		if ((int)$data['id_edit'] > 0) {
-			$upd['update_user'] = $this->authentication->get_info_user('username');
-			$where['id'] = $data['id_edit'];
-			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-			$id = intval($data['id_edit']);
-			$type = "edit";
-		} else {
-			$upd['create_user'] = $this->authentication->get_info_user('username');
-			$id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
-			$id = $this->db->insert_id();
-			$type = "add";
-		}
-	
-		// $id = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'type' => 'add'));
-		// $id = $this->db->insert_id();
-		
-		$upd = [];
-		$rows = $this->db->where('rcsa_action_no', $data['rcsa_action_no'])->order_by('progress_date', 'desc')->limit(1)->get(_TBL_RCSA_ACTION_DETAIL)->row_array();
-		if ($rows) {
-			$upd['residual_likelihood']     = $rows['residual_likelihood_action'];
-			$upd['residual_impact']         = $rows['residual_impact_action'];
-			$upd['risk_level']              = $rows['risk_level_action'];
-			$upd['status_loss_parent']      = $rows['status_loss'];
-			$where['id']                    = $id;
-			$result = $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-		}
-		return $result;
-		// 	var_dump($simpan);
-		// exit;
-		// echo "<script>
-		// 	alert('Berhasil proses data!');
-		// 	window.location.href = '" . base_url("level_risiko/index") . "';
-		// </script>";
-
-	}
-	
-	
 	function pagination($data, $total_pages, $page){
 		$pagination = '';
   		$post = '';
@@ -233,26 +178,29 @@ class Analisis_Perubahan_Level extends BackendController
 		if (!empty($data['triwulan'])) {
 			$post .= '&triwulan=' . $data['triwulan'];
 		}
+		if (!empty($data['bulan'])) {
+			$post .= '&bulan=' . $data['bulan'];
+		}
 	
 		if ($total_pages > 1) {
 			$pagination .= '<ul class="pagination">';
 			
  			if ($page > 4) {
-				$pagination .= '<li><a href="' . site_url($this->modul_name.'/index?page=1' . $post) . '">First</a></li>';
+				$pagination .= '<li><a href="' . site_url('analisis-perubahan-level/index?page=1' . $post) . '">First</a></li>';
 			}
 			
  			for ($i = max(1, $page - 3); $i < $page; $i++) {
-				$pagination .= '<li><a href="' . site_url($this->modul_name.'/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+				$pagination .= '<li><a href="' . site_url('analisis-perubahan-level/index?page=' . $i . $post) . '">' . $i . '</a></li>';
 			}
 			
  			$pagination .= '<li class="active"><span>' . $page . '</span></li>';
 			
  			for ($i = $page + 1; $i <= min($page + 3, $total_pages); $i++) {
-				$pagination .= '<li><a href="' . site_url($this->modul_name.'/index?page=' . $i . $post) . '">' . $i . '</a></li>';
+				$pagination .= '<li><a href="' . site_url('analisis-perubahan-level/index?page=' . $i . $post) . '">' . $i . '</a></li>';
 			}
 			
  			if ($page < $total_pages - 3) {
-				$pagination .= '<li><a href="' . site_url($this->modul_name.'/index?page=' . $total_pages . $post) . '">Last</a></li>';
+				$pagination .= '<li><a href="' . site_url('analisis-perubahan-level/index?page=' . $total_pages . $post) . '">Last</a></li>';
 			}
 			
 			$pagination .= '</ul>';
