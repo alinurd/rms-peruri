@@ -19,7 +19,7 @@ $(function () {
   });
 
   $(document).ready(function () {
-    $("#modalUpdate").on("hidden.bs.modal", function () {
+    $("#modal_general").on("hidden.bs.modal", function () {
       console.log("Modal closed"); // Debugging
 
       // Kosongkan nilai input ketika modal ditutup
@@ -132,38 +132,38 @@ $(function () {
     }
   });
 
-  $(document).on("change", "#skal_dampak_in, #skal_prob_in", function () {
-    var likelihood = $("#skal_dampak_in").val();
-    var month = $("#skal_dampak_in").data("month");
-    var impact = $("#skal_prob_in").val();
+//   $(document).on("change", "#skal_dampak_in, #skal_prob_in", function () {
+//     var likelihood = $("#skal_dampak_in").val();
+//     var month = $("#skal_dampak_in").data("month");
+//     var impact = $("#skal_prob_in").val();
 
-    var data = {
-      likelihood: likelihood,
-      impact: impact,
-      month: month,
-    };
-    var parent = $(this).parent();
-    var url = modul_name + "/cek-level";
+//     var data = {
+//       likelihood: likelihood,
+//       impact: impact,
+//       month: month,
+//     };
+//     var parent = $(this).parent();
+//     var url = modul_name + "/cek-level";
 
-    cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
-  });
+//     cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
+//   });
 
-  $(document).on("change", "#Target_Res_dampak, #Target_Res_prob", function () {
-    var likelihood = $("#Target_Res_dampak").val();
-    var month = $("#skal_dampak_in").data("month");
-    var impact = $("#Target_Res_prob").val();
+//   $(document).on("change", "#Target_Res_dampak, #Target_Res_prob", function () {
+//     var likelihood = $("#Target_Res_dampak").val();
+//     var month = $("#skal_dampak_in").data("month");
+//     var impact = $("#Target_Res_prob").val();
 
-    var data = {
-      likelihood: likelihood,
-      impact: impact,
-      month: month,
-    };
-    var parent = $(this).parent();
-    var url = modul_name + "/cek-level";
+//     var data = {
+//       likelihood: likelihood,
+//       impact: impact,
+//       month: month,
+//     };
+//     var parent = $(this).parent();
+//     var url = modul_name + "/cek-level";
 
-    cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisIResidual");
-  });
-});
+//     cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisIResidual");
+//   });
+// });
 
 function LevelAnalisisInheren(hasil) {
   $("#level_risiko_inher_label").html(hasil.level_text);
