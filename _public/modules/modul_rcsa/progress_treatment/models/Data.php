@@ -240,7 +240,7 @@ if($rows){
 
         
         if (!$monthbefore && $month !=1) {
-			$result = '<td colspan="2"><center><i class="  fa fa-times-circle text-danger"></i></center></td>';
+			$result = '<td colspan="2" style="vertical-align:middle;"><center><i class="  fa fa-times-circle text-danger"></i></center></td>';
 		} else {
             if (!$monthly) {
                 $result = '<td colspan="2" style="vertical-align:middle;"><center><i class="  fa fa-times-circle text-warning" title="Level Risiko belum lengkap"></i></center></td>';
