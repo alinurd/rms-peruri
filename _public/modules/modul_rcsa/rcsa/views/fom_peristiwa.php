@@ -633,7 +633,7 @@ if ($field['iskri'] == 0) {
                             $isi_owner_no_action_accountable[] = $owner['rcsa_owner_no'];
                         }
 
-
+                            doi::dump($field);
                         ?>
 
                         <?= form_open_multipart(base_url('rcsa/simpan_mitigasi'), array('id' => 'form_mitigasi'), ['id_detail' => $id_edit, 'id_edit_mitigasi' => $id_edit_mitigasi, 'rcsa_no' => $rcsa_no, 'rcsa_no_1' => $rcsa_no_1]); ?>
