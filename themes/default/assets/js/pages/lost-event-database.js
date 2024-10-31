@@ -316,9 +316,9 @@ function result_show_model(hasil) {
   $("#modal_general").find(".modal-body").html(hasil.register);
   $("#modal_general").find(".modal-title").html("LOST EVENT DATABASE");
   $("#modal_general").modal("show");
-  // $(
-  //   "#skal_dampak_in, #skal_prob_in, #Target_Res_dampak, #Target_Res_prob"
-  // ).change();
+  $(
+    "#skal_dampak_in, #skal_prob_in, #Target_Res_dampak, #Target_Res_prob"
+  ).change();
 }
 
 $(document).ready(function () {

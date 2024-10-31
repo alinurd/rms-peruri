@@ -240,5 +240,5 @@
     </div>
 </div>
 <div class="row text-center">
-    <a href="#" id="btn-simpan" class="btn btn-primary" data-edit="<?= ($type != 'add') ? $lost_event['id'] : '';?>" data-id="<?= $action_detail['rcsa_detail_no'];?>" data-month="<?= ($type != 'add') ? $lost_event['id'] : $action_detail['bulan'];?>" data-type = "<?= $type;?>" >Simpan</a>
+    <a href="#" id="btn-simpan" class="btn btn-primary" data-edit="<?= ($type != 'add') ? $lost_event['id'] : '';?>" data-id="<?= $action_detail['rcsa_detail_no'];?>" data-month="<?= ($type != 'add') ? $lost_event['bulan'] : $action_detail['bulan'];?>" data-type = "<?= $type;?>" >Simpan</a>
 </div>
