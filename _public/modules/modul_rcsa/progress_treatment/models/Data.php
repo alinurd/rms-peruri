@@ -214,7 +214,7 @@ if($rows){
 
 		$dateRcsa  = new DateTime( $thnRcsa . '-' . $month . '-' . $tgl );
 		$hariIni   = new DateTime();
-		// doi::dump($dateRcsa);
+		doi::dump($q['id']);
 		// doi::dump($hariIni);
 		if($hariIni >= $dateRcsa ){
 			
