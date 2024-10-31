@@ -235,7 +235,7 @@ if($rows){
         $monthbefore = $data['before'];
         $currentMonth = date('n');
 
-        doi::dump($q['id']);
+        doi::dump($monthly);
  
 
         
