@@ -235,7 +235,7 @@ if($rows){
         $monthbefore = $data['before'];
         $currentMonth = date('n');
 
-        doi::dump($data_risk_treatment);
+        doi::dump($q['id']);
  
 
         
