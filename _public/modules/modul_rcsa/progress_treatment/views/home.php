@@ -137,6 +137,7 @@
                             <?php
                             $start = ($triwulan - 1) * 3 + 1;
                             $end = $start + 3;
+                            doi::dump($field);
                             for ($i = $start; $i < $end; $i++):
                                 $data['id'] = $q['id'];
                                 $data['rcsa_no'] = $q['rcsa_no'];
