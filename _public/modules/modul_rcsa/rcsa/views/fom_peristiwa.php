@@ -632,7 +632,7 @@ if ($field['iskri'] == 0) {
                         if (!$isi_owner_no_action_accountable) {
                             $isi_owner_no_action_accountable[] = $owner['rcsa_owner_no'];
                         }
-
+                        doi::dump($field);
 
                         ?>
 
