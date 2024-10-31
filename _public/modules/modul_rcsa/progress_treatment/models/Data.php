@@ -110,8 +110,10 @@ if($rows){
     {
         $upd = array();
  
-        $upd['progress_detail'] = $data['progress']; 
-        $upd['damp_loss']       = $data['damp_loss']; 
+        // $upd['target_progress_detail'] = $data['target_progress']; 
+        // $upd['target_damp_loss']       = $data['target_damp_loss']; 
+        $upd['progress_detail']        = $data['progress']; 
+        $upd['damp_loss']              = $data['damp_loss']; 
 
         $sts = $data['progress'];
         if (floatval($data['progress']) >= 100)
@@ -188,10 +190,23 @@ if($rows){
 			->where('bulan', $month)
 			->get('bangga_view_rcsa_action_detail')->row_array();
 
+		$data['risk_treatment'] = $this->db
+			->where('rcsa_detail_no', $q['id'])
+			->where('bulan', $month)
+			->get('bangga_rcsa_treatment')->row_array();
+
 		$detail = $this->db
 			->select('periode_name')
 			->where('id',$q['id'])
  			->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
+
+        // Cek apakah bulan ada dalam lost event
+        $cek_ = $this->db
+            ->select('damp_loss')
+            ->where('rcsa_action_no', $act['id'])
+            ->where('bulan', $month)
+            ->get(_TBL_RCSA_ACTION_DETAIL)
+            ->row_array();
 			
 		$blnnow = date('m');
 		$thnRcsa   = substr( $detail['periode_name'], 0, 4 );
@@ -216,47 +231,66 @@ if($rows){
  
 
         $monthly = $data['data']; 
-
+        $data_risk_treatment = $data['risk_treatment'];
         $monthbefore = $data['before'];
+        $currentMonth = date('n');
+
+        // doi::dump($data_risk_treatment);
  
 
         
         if (!$monthbefore && $month !=1) {
-			$result = '<center><i class="  fa fa-times-circle text-danger"></i></center>';
+			$result = '<td colspan="2"><center><i class="  fa fa-times-circle text-danger"></i></center></td>';
 		} else {
             if (!$monthly) {
-                $result = '<center><i class="  fa fa-times-circle text-warning" title="Level Risiko belum lengkap"></i></center>';
+                $result = '<td colspan="2" style="vertical-align:middle;"><center><i class="  fa fa-times-circle text-warning" title="Level Risiko belum lengkap"></i></center></td>';
 
-                // $result = '
-                // <div class="input-group" width="10px">
-                //      <input type="number" name="progress'.$act['id'].$month.'" id="progress'.$act['id'].$month.'" class="form-control" placeholder="" aria-describedby="basic-addon2">
-                //      <span class="input-group-addon" id="basic-addon2">%</span>
-                //  </div>
-                //  <br>
-                //  <div class="input-group" width="10px">
-                //      <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                //      <input type="number" name="damp_loss'.$act['id'].$month.'" id="damp_loss'.$act['id'].$month.'" class="form-control" placeholder="" aria-describedby="basic-addon1">
-                //  </div>
-                //  <br>
-                //   <center><span class="btn btn-primary" id="simpan_realisasi_'.$act['id'].'" data-month="'.$month.'" data-id="'.($act['id'] ?? '').'">
-                //   <i class="fa fa-floppy-o" aria-hidden="true"></i> simpan</span></center>
-                // ';
             } else {
                 $result = '
-                <div class="input-group" width="10px">
-                    <input type="number" name="progress'.$data['data']['id'].$month.'" id="progress'.$data['data']['id'].$month.'" class="form-control" placeholder="" value="'.$data['data']['progress_detail'].'" aria-describedby="basic-addon2">
-                    <span class="input-group-addon" id="basic-addon2">%</span>
-                </div>
-                <br>
-                <div class="input-group" width="10px">
-                    <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                    <input type="number" name="damp_loss'.$data['data']['id'].$month.'" id="damp_loss'.$data['data']['id'].$month.'" 
-                    value="'.$data['data']['damp_loss'].'" class="form-control" placeholder="" aria-describedby="basic-addon1">
-                </div>
-                <br>
-                  <center><span class="btn btn-primary" id="simpan_realisasi_'.$data['data']['id'].'" data-month="'.$month.'" data-id="'.$data['data']['id'].'">
-                  <i class="fa fa-floppy-o" aria-hidden="true"></i> simpan</span></center>
+                    <td colspan="2">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 10px; vertical-align: top;">
+                                    <div class="input-group">
+                                        <input readonly type="number" name="target_progress'.$data['data']['id'].$month.'" id="target_progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data_risk_treatment['target_progress_detail'].'" aria-describedby="basic-addon2">
+                                        <span class="input-group-addon" id="basic-addon2">%</span>
+                                    </div>
+                                </td>
+                                <td style="padding: 10px; vertical-align: top;">
+                                    <div class="input-group">
+                                        <input type="number" name="progress'.$data['data']['id'].$month.'" id="progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data['data']['progress_detail'].'" aria-describedby="basic-addon2">
+                                        <span class="input-group-addon" id="basic-addon2">%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; vertical-align: top;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                        <input readonly type="text" name="target_damp_loss'.$data['data']['id'].$month.'" id="target_damp_loss'.$data['data']['id'].$month.'" 
+                                        value="'.$data_risk_treatment['target_damp_loss'].'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                    </div>
+                                </td>
+                                <td style="padding: 10px; vertical-align: top;">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                        <input type="text" name="damp_loss'.$data['data']['id'].$month.'" id="damp_loss'.$data['data']['id'].$month.'" 
+                                        value="'.$data['data']['damp_loss'].'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div style="text-align: center; margin-top: 15px;">
+                            <button type="button" class="btn btn-primary" id="simpan_realisasi_'.$data['data']['id'].'" data-month="'.$month.'" data-id="'.$data['data']['id'].'">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
+                            </button>
+                        </div>
+                    </td>
                 ';
+
+
+
             }
             
             

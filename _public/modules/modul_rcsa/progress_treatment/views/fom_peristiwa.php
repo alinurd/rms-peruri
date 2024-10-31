@@ -1,19 +1,11 @@
 <?php
 $hide_edit = '';
 $sts_risk = intval($parent['sts_propose']);
-if ($detail['sts_propose'] == 5) {
-    $hide_edit = '';
-    $disable = ' ';
-    $readonly = '';
-} else {
-    if ($detail['sts_propose'] > 0) {
-        $hide_edit = ' hide ';
-        $disable = 'disabled';
-        $readonly = 'readonly="true"';
-    }
+if ($detail['sts_propose'] >= 4) {
+    $hide_edit = ' hide ';
+    $disable = 'disabled';
+    $readonly = 'readonly="true"';
 }
-
-
 $analysisacthide = 'hide';
 $evaluasiacthide = 'hide';
 $treatmentacthide = 'hide';
@@ -29,50 +21,26 @@ if ($detail['pi'] >= 4) {
     $treatmentacthide = '';
 }
 if ($detail['pi'] >= 5) {
-    $progresacthide = 'hide';
+    $progresacthide = '';
 }
 
-if ($detail['pi'] == 1 || $detail['pi'] < 1) {
+// Default value jika tidak ada kondisi yang cocok
+
+if ($detail['pi'] == 1) {
     $identifyact = 'active';
 } elseif ($detail['pi'] == 2) {
     $analysisact = 'active';
-} elseif ($detail['pi'] == 6) {
-    $kriact = 'active';
+} elseif ($detail['pi'] == 3) {
+    $evaluasiact = 'active';
 } elseif ($detail['pi'] == 4) {
     $treatmentact = 'active';
 } elseif ($detail['pi'] == 5) {
     $progresact = 'active';
-} elseif ($detail['pi'] == 3) {
-    $evaluasiact = 'active';
 } else {
-    // $identifyact = 'active';
+    $identifyact = 'active';
 }
 
-$krion = "hide";
-
-if ($field['iskri'] == 0) {
-    $chekya = "checked";
-    $treatmentact = 'active';
-} else {
-    $chekya = "checked";
-    $krion = "";
-    $treatmentacthide = '';
-    $kriact = 'active';
-}
-
-// test 
-// $pb = [
-//     '' => '- Pilih Proses Bisnis -',
-//     'proses bisnis 1' => 'Pembelian',
-//     'penjualan' => 'Penjualan',
-//     'produksi' => 'Produksi',
-//     'distribusi' => 'Distribusi',
-//     'logistik' => 'Logistik',
-// ];
 ?>
-
-
-
 
 <div class="row">
     <div class="col-md-12">
@@ -130,8 +98,8 @@ if ($field['iskri'] == 0) {
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <section class="x_panel">
-            <a href="<?= base_url(_MODULE_NAME_REAL_ . '/tambah-peristiwa/add/' . $parent['owner_no'] . '/' . $parent['id']) ?>" class="btn btn-primary <?= $hide_edit ?>"> <?= lang('msg_tombol_add'); ?> </a>
-            <a href="<?= base_url(_MODULE_NAME_REAL_ . '/risk_event/' . $parent['owner_no'] . '/' . $parent['id']); ?>" class="btn btn-default"> Kembali ke List </a>
+            <a href="<?= base_url(_MODULE_NAME_REAL_ . '/tambah-peristiwa/add/' . $parent['owner_no'] . '/' . $parent['id']) ?>" class="btn btn-primary hide"> <?= lang('msg_tombol_add'); ?> </a>
+            <a href="<?= base_url(_MODULE_NAME_REAL_); ?>" class="btn btn-default"> Kembali ke List </a>
             <div class="clearfix"></div>
         </section>
         <h4><?= lang('msg_sub_title'); ?></h4>
@@ -140,20 +108,16 @@ if ($field['iskri'] == 0) {
         <section class="x_panel">
             <div class="x_content" id="list_peristiwa">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab">Risk Identification</a></li>
-                    <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab">Risk Analysis</a></li>
-                    <li role="presentation" class="<?= $evaluasiact ?> <?= $evaluasiacthide ?>"><a href="#evaluasi" data-toggle="tab">Risk Evaluation</a></li>
-                    <li role="presentation" class="<?= $treatmentact ?> <?= $treatmentacthide ?>"><a href="#treatment" data-toggle="tab">Risk Treatment</a></li>
-                    <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab">Risk Treatment</a></li>
-                    <li role="presentation" class="<?= $kriact ?> <?= $krion  ?>"><a href="#iskri" data-toggle="tab">Key Risk Indikator</a></li>
+                    <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab">Identifikasi Risiko</a></li>
+                    <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab">Analisis dan Evaluasi Risiko</a></li>
+                    <li role="presentation" class="<?= $treatmentact ?> <?= $treatmentacthide ?>"><a href="#treatment" data-toggle="tab">Perlakuan Risiko</a></li>
+                    <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab">Progress Treatment</a></li>
                 </ul>
             </div>
             <div class="clearfix"> </div>
             <div class="tab-content">
                 <div id="identify" class="tab-pane fade in  <?= $identifyact ?>">
-                    <!-- <?php doi::dump($detail['pi']); ?>     -->
                     <div class="clearfix"> </div>
-
                     <?= form_open_multipart(base_url(_MODULE_NAME_REAL_ . '/' . _METHOD_ . '/save'), array('id' => 'form_peristiwa'), ['id_edit' => $id_edit, 'rcsa_no' => $rcsa_no]); ?>
                     <?= form_hidden('tab', 'identify', 'class="form-control text-right" id="tab"'); ?>
                     <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
@@ -166,7 +130,7 @@ if ($field['iskri'] == 0) {
                                     <tbody>
                                         <tr>
                                             <td width="20%">Sasaran</td>
-                                            <td colspan="2"><?= form_dropdown('sasaran', $sasaran, ($detail) ? $detail['sasaran_no'] : '', 'class="select2 form-control" style="width:100%;" id="sasaran"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_dropdown('sasaran', $sasaran, ($detail) ? $detail['sasaran_no'] : '', 'class="select2 form-control" style="width:100%;" id="sasaran" readonly="true" '  . $disable); ?></td>
                                         </tr>
                                         <tr>
                                             <td width="20%">Tema Risiko (T1)</td>
@@ -188,23 +152,13 @@ if ($field['iskri'] == 0) {
 
 
                                         <tr>
-                                            <td width="20%">Proses Bisnis</td>
-                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
-                                        </tr>
-
-                
-                                        <tr>
-                                            <td width="20%" rowspan="3">Peristiwa (T3)</td>
+                                            <td width="20%" rowspan="3">Peristiwa</td>
                                         </tr>
                                         <tr class="peristiwa_lib">
                                             <td>
-                                                <?= form_dropdown('event_no', $cboper, ($detail) ? $detail['event_no'] : '', 'class="eventcombo select2 form-control" style="width:100%;" id="event_no"' . $disable); ?>
-                                                <?php if ($detail) {
-                                                    // echo form_hidden('event_no', $detail['event_no']);
-                                                } ?>
+                                                <?= form_dropdown('event_no', $cboper, ($detail) ? $detail['event_no'] : '', 'class="select2 form-control" style="width:100%;" id="event_no"' . $disable); ?>
                                             </td>
                                             <td>
-
                                                 <span class="btn btn-info <?= $hide_edit ?>" id="peristiwa_baru">New</span>
                                             </td>
                                         </tr>
@@ -218,7 +172,7 @@ if ($field['iskri'] == 0) {
                                         </tr>
 
                                         <tr>
-                                            <table class="table instlmt_cause" id="instlmt_cause">
+                                            <table class="table" id="instlmt_cause">
                                                 <thead>
                                                     <tr>
                                                         <td colspan="3">Penyebab</td>
@@ -241,24 +195,22 @@ if ($field['iskri'] == 0) {
 
                                                     $edit = form_hidden('id_edit[]', '0');
                                                     $cbn = $inp_couse;
-                                                    $cbbo = form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="select2 form-control" style="width:100%;" id="risk_couseno' . $no++ . '"');
+
                                                     foreach ($risk_couseno_array as $couseno) {
                                                         // doi::dump($couseno);
-
+                                                        $cbbo = form_dropdown('risk_couse_no[]', $cbogroup, ($couseno) ? $couseno : '', 'class="select2 form-control" style="width:100%;" id="risk_couseno"' . $disable);
 
                                                     ?>
 
                                                         <tr class="couse_lib">
                                                             <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
                                                             <td>
-                                                                <?= form_dropdown('risk_couse_no[]', $cbogroup, ($couseno) ? $couseno : '', 'class="select2 form-control" style="width:100%;" id="risk_cousenox"' . $disable); ?>
+                                                                <?= form_dropdown('risk_couse_no[]', $cbogroup, ($couseno) ? $couseno : '', 'class="select2 form-control" style="width:100%;" id="risk_couseno"' . $disable); ?>
                                                             </td>
                                                             <td style="text-align:center;width:10%;">
-                                                                <span data-edit="<?php echo $id_edit; ?>" data-couseno="<?php echo $couseno; ?>" class="btn" id="couse_delete">
-                                                                    <i class="fa fa-cut <?= $hide_edit ?>" title="menghapus data"></i>
-
-                                                                </span>
-
+                                                                <a class="<?= $hide_edit ?>" nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" onclick="remove_install(this,<?php echo $edit_no; ?>)">
+                                                                    <i class="fa fa-cut" title="menghapus data"></i>
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                         <tr class="couse_text">
@@ -267,7 +219,7 @@ if ($field['iskri'] == 0) {
                                                                 <?= $inp_couse ?>
                                                             </td>
                                                             <td style="text-align:center;width:10%;">
-                                                                <a data-nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" id="couse_delete">
+                                                                <a class="<?= $hide_edit ?>" nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" onclick="remove_install(this,<?php echo $edit_no; ?>)">
                                                                     <i class="fa fa-cut" title="menghapus data"></i>
                                                                 </a>
                                                             </td>
@@ -281,9 +233,8 @@ if ($field['iskri'] == 0) {
                                                 </tbody>
                                             </table>
                                             <center>
-                                                <span class="btn btn-warning  " id="add_cause_newsx"> Library Cause </span>
-                                                <span class="btn btn-info <?= $hide_edit ?>" id="add_cause_news"> Library Cause </span>
-                                                <span class="btn btn-info <?= $hide_edit ?>" id="add_new_cause"> New Cause </span>
+                                                <span class="btn btn-info <?= $hide_edit ?>" id="add_cause_news"> Library Couse </span>
+                                                <span class="btn btn-info <?= $hide_edit ?>" id="add_new_cause"> Couse New </span>
                                             </center>
 
                                         </tr>
@@ -313,7 +264,7 @@ if ($field['iskri'] == 0) {
 
                                                     $no = 1;
 
-                                                    $cbbi = form_dropdown('risk_impact_no[]', $cbogroup1,  '', 'class="select2 form-control" style="width:100%;" id="impactno"');
+                                                    $cbbi = form_dropdown('risk_impact_no[]', $cbogroup1, ($impactnox) ? $impactno : '', 'class="select2 form-control" style="width:100%;" id="impactno"' . $disable);
 
                                                     $edit = form_hidden('id_edit[]', '0');
                                                     $cbni = $inp_impact;
@@ -324,13 +275,12 @@ if ($field['iskri'] == 0) {
 
                                                         <tr class="impect_lib">
                                                             <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
-                                                            <td><?= form_dropdown('risk_impact_no[]', $cbogroup1, ($impactno) ? $impactno : '', 'class="select2 form-control" style="width:100%;" id="impactnox"' . $disable); ?>
+                                                            <td><?= form_dropdown('risk_impact_no[]', $cbogroup1, ($impactno) ? $impactno : '', 'class="select2 form-control" style="width:100%;" id="impactno"' . $disable); ?>
                                                             </td>
                                                             <td style="text-align:center;width:10%;">
-                                                                <span data-edit="<?php echo $id_edit; ?>" data-impactno="<?php echo $impactno; ?>" class="btn" id="impct_delete">
-                                                                    <i class="fa fa-cut <?= $hide_edit ?>" title="menghapus data"></i>
-
-                                                                </span>
+                                                                <a class="<?= $hide_edit ?>" nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" onclick="remove_install(this,<?php echo $edit_no; ?>)">
+                                                                    <i class="fa fa-cut" title="menghapus data"></i>
+                                                                </a>
                                                             </td>
                                                         </tr>
 
@@ -339,8 +289,8 @@ if ($field['iskri'] == 0) {
                                                             <td><?= $inp_impact ?>
                                                             </td>
                                                             <td style="text-align:center;width:10%;">
-                                                                <a nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" onclick="remove_install_impact(this,<?php echo $edit_no; ?>)">
-                                                                    <i class="fa fa-cut " title="menghapus data"></i>
+                                                                <a class="<?= $hide_edit ?>" nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" onclick="remove_install(this,<?php echo $edit_no; ?>)">
+                                                                    <i class="fa fa-cut  " title="menghapus data"></i>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -351,11 +301,8 @@ if ($field['iskri'] == 0) {
                                                 </tbody>
                                             </table>
                                             <center>
-                                                <input id="add_impactx" class="btn btn-warning" type="button" value="Library Impact " name="add_impact">
-                                                <!-- <input id="add_impact" class="btn btn-info <?= $hide_edit ?>" type="button" onclick="add_install_impact()" value="Library Impact " name="add_impact"> -->
-                                                <span class="btn btn-info <?= $hide_edit ?>" id="add_impact_news"> Library Impact </span>
-
-                                                <button id="add_new_impact" class="btn btn-info <?= $hide_edit ?>" type="button" onclick="add_new_install_impact()" value="Impact New" name="add_new_impact"> New Impact </button>
+                                                <input id="add_impact" class="btn btn-info  <?= $hide_edit ?>" type="button" onclick="add_install_impact()" value="Library Impact " name="add_impact">
+                                                <button id="add_new_impact" class="btn btn-info  <?= $hide_edit ?>" type="button" onclick="add_new_install_impact()" value="Impact New" name="add_new_impact"> Impact New </button>
                                             </center>
                                         </tr>
                                         <tr>
@@ -365,27 +312,11 @@ if ($field['iskri'] == 0) {
                                             <table class="table table-borderless" id="">
                                                 <thead>
                                                     <tr>
-                                                        <td width="25%">Asumsi Perhitungan Dampak </td>
-                                                        <td>
-                                                            <div id="risk_asumsi_perhitungan_dampak" class="input-group">
-
-                                                                <?= form_input('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control" style="width:100%; id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
-
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </tr>
-                                        <tr>
-                                            <table class="table table-borderless" id="">
-                                                <thead>
-                                                    <tr>
-                                                        <td width="25%">Dampak Kuantitatif </td>
+                                                        <td width="20%">Dampak Kuantitatif </td>
                                                         <td>
                                                             <div id="l_risk_impact_kuantitatif_parent" class="input-group">
                                                                 <span id="span_l_amoun" class="input-group-addon"> Rp </span>
-                                                                <?= form_input('risk_impact_kuantitatif', ($detail) ? ($detail['risk_impact_kuantitatif']) : '', 'class="form-control text-right" id="risk_impact_kuantitatif"' . $disable); ?>
+                                                                <?= form_input('risk_impact_kuantitatif', ($detail) ? ($detail['risk_impact_kuantitatif']) : '', 'class="form-control text-right" id="risk_impact_kuantitatif"' . $readonly); ?>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -396,24 +327,19 @@ if ($field['iskri'] == 0) {
                                             <table class="table table-borderless" id="">
                                                 <thead>
                                                     <tr>
-                                                        <td width="25%">PIC </td>
+                                                        <td width="20%">PIC </td>
                                                         <td><?= form_dropdown('pic', $area, ($detail) ? $detail['pic'] : '', 'class="select2 form-control" style="width:100%;" id="pic"' . $disable); ?></td>
 
                                                 </thead>
                                             </table>
                                         </tr>
-
-
-
-
                             </div>
                             </tbody>
                             </table>
                             <div class="x_footer">
                                 <ul class="nav navbar-right panel_toolbox">
-
                                     <li><span class="btn btn-primary pointer <?= $hide_edit ?>" data-tab="identify" id="simpan_peristiwa"> Simpan </span></li>
-                                    <!-- <li><span class="btn btn-default pointer " id="cancel_peristiwa" data-dismiss="modal"> Kembali </span></li> -->
+                                    <!-- <li><span class="btn btn-default pointer" id="cancel_peristiwa" data-dismiss="modal"> Kembali </span></li> -->
                                 </ul>
                                 <div class="clearfix"></div>
                             </div>
@@ -423,170 +349,6 @@ if ($field['iskri'] == 0) {
                 </div>
 
                 <div id="analysis" class="tab-pane fade in <?= $analysisact ?> ">
-
-                    <?= form_open_multipart(base_url(_MODULE_NAME_REAL_ . '/' . _METHOD_ . '/save'), array('id' => 'form_level'), ['id_edit' => $id_edit, 'rcsa_no' => $rcsa_no]); ?>
-                    <?= form_hidden('id_edit_baru', ($id_edit) ? ($id_edit) : '0', 'class="form-control text-right" id="id_edit"'); ?>
-
-                    <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
-                    <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
-                        <section class="x_panel">
-                            <div class="x_content table-responsive" style="overflow-x: auto;">
-                            <style>
-                                .table-risk-analisis td, .table-risk-analisis th {
-                                    padding: 2px 4px; /* Padding kecil agar lebih rapat */
-                                    font-size: 11px; /* Ukuran font kecil untuk muat lebih banyak */
-                                    width: 50px; /* Default width untuk kolom */
-                                    min-width: 50px !important; /* Ukuran minimum */
-                                    text-align: center;
-                                }
-
-                                .table-risk-analisis .form-control {
-                                    font-size: 11px; /* Ukuran font kecil di dropdown */
-                                    padding: 1px 2px;
-                                    width: 50px; /* Ukuran dropdown yang lebih kecil */
-                                }
-
-                                .table-risk-analisis .label-level {
-                                    display: inline-block;
-                                    padding: 2px 4px;
-                                    font-size: 10px;
-                                    min-width: 50px;
-                                    text-align: center;
-                                }
-
-                                /* Styling untuk elemen yang bisa sticky */
-                                .table-risk-analisis th.sticky,
-                                .table-risk-analisis td.sticky {
-                                    position: sticky;
-                                    background: white;
-                                    z-index: 99;
-                                }
-                                
-                                /* CSS untuk Sticky Header dan Cell */
-                                .table-risk-analisis .table thead th.sticky,
-                                .table-risk-analisis .table tbody td.sticky {
-                                    position: sticky;
-                                    background-color: #ffffff; /* Warna latar belakang agar sticky terlihat */
-                                    z-index: 1;
-                                }
-
-                                .table-risk-analisis .table thead th.sticky {
-                                    top: 0;
-                                    z-index: 2; /* Tingkat z-index lebih tinggi pada header */
-                                }
-                                </style>
-
-                                <table class="table table-striped table-bordered table-hover table-risk-analisis">
-                                <thead>
-                                    <tr>
-                                    <!-- Kolom Analisis Risiko Inhern -->
-                                    <th class="sticky text-center" style="left: 0;" colspan="3">Analisis Risiko Inhern</th>
-                                    <!-- Kolom Analisis Risiko Residual -->
-                                    <th class="sticky text-center" style="left: 198px;" colspan="3">Analisis Risiko Residual</th>
-                                    <?php
-                                    $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                                    for ($i = 1; $i < 13; $i++) { ?>
-                                        <th class="text-center" colspan="3">Target Risiko Residual <br><?= $bulan[$i - 1] ?></th>
-                                    <?php } ?>
-                                    </tr>
-                                    <tr>
-                                    <!-- Kolom Detail Risiko Inhern -->
-                                    <th class="sticky text-center" style="left: 0;">Skala Dampak</th>
-                                    <th class="sticky text-center" style="left: 67px;">Skala Probabilitas</th>
-                                    <th class="sticky text-center" style="left: 148px;">Level Risiko</th>
-
-                                    <!-- Kolom Detail Risiko Residual -->
-                                    <th class="sticky text-center" style="left: 198px;">Skala Dampak</th>
-                                    <th class="sticky text-center" style="left: 265px;">Skala Probabilitas</th>
-                                    <th class="sticky text-center" style="left: 346px;">Level Risiko</th>
-
-                                    <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                    <?php for ($i = 1; $i < 13; $i++) { ?>
-                                        <th class="text-center">Skala Dampak</th>
-                                        <th class="text-center">Skala Probabilitas</th>
-                                        <th class="text-center">Level Risiko</th>
-                                    <?php } ?>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr>
-                                    <input type="hidden" id="id_detail" value="<?=$detail['id']?>">
-                                    <!-- Kolom Detail Risiko Inhern -->
-                                    <td class="sticky text-center" style="left: 0;">
-                                        <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['analisis_like_inherent'])) ? '' : $analisiData['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
-                                    </td>
-                                    <td class="sticky text-center" style="left: 67px;">
-                                        <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['analisis_impact_inherent'])) ? '' : $analisiData['analisis_impact_inherent'], 'class="form-control" id="impactAnalisisInheren"'); ?>
-                                    </td>
-                                    <td class="sticky text-center" style="left: 148px;">
-                                        <span id="likeAnalisisInherenLabel">
-                                            <span style="background-color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color'] : '#fff'; ?>;
-                                                        color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color_text'] : '#000'; ?>;
-                                                        padding: 1px 3px;">
-                                                <?php echo strtoupper((count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['level_mapping'] : ''); ?>
-                                            </span>
-                                        </span><span id="spinner-inherent" class="spinner"></span>
-                                    </td>
-
-                                    <!-- Kolom Detail Risiko Residual -->
-                                    <td class="sticky text-center" style="left: 200px;">
-                                        <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['analisis_like_residual'])) ? '' : $analisiData['analisis_like_residual'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
-                                    </td>
-                                    <td class="sticky text-center" style="left: 268px;">
-                                        <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['analisis_impact_residual'])) ? '' : $analisiData['analisis_impact_residual'], 'class="form-control" id="impactAnalisisResidual"'); ?>
-                                    </td>
-                                    <td class="sticky text-center" style="left: 349px;">
-                                        <span id="likeAnalisisResidualLabel">
-                                            <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;
-                                                        color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;
-                                                        padding: 1px 3px;">
-                                                <?php echo strtoupper((count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['level_mapping'] : ''); ?>
-                                            </span>
-                                        </span><span id="spinner-residual" class="spinner"></span>
-                                    </td>
-
-                                    <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                    <?php for ($i = 1; $i <= 12; $i++) { ?>
-                                        <input type="hidden" name="month" id="month">
-                                        <td class="text-center">
-                                            <?php echo form_dropdown('target_like', $cboLike, (empty($target_like[$i-1])) ? '' : $target_like[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
-                                        </td>
-                                        <td class="text-center">
-                                            <?php echo form_dropdown('target_impact', $cboImpact, (empty($target_impact[$i-1])) ? '' : $target_impact[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
-                                        </td>
-                                        <td class="text-center">
-                                            <span id="targetResidualLabel<?= $i ?>">
-                                                <span style="background-color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color'] : '#fff'; ?>;
-                                                            color:<?php echo (count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['color_text'] : '#000'; ?>;
-                                                            padding: 1px 3px;">
-                                                    <?php echo strtoupper((count($data['residual_level_text']) > 0) ? $data['residual_level_text'][0]['level_mapping'] : ''); ?>
-                                                </span>
-                                            </span>
-                                            <span id="spinner-residual<?= $i ?>" class="spinner"></span>
-                                        </td>
-                                    <?php } ?>
-                                    </tr>
-                                </tbody>
-                                </table>
-
-
-
-                            </div>
-
-                            <div class="x_footer <?= $analysisacthide ?>">
-                                <ul class="nav navbar-right panel_toolbox ">
-                                    <li><span class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_analisis"> Simpan </span></li>
-                                    <!-- <li><span class="btn btn-default pointer" id="cancel_level" data-dismiss="modal"> Kembali </span></li> -->
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                        </section>
-                    </div>
-                    <?= form_close(); ?>
-                </div>
-
-                <div id="evaluasi" class="tab-pane fade in <?= $evaluasiact ?> ">
 
                     <?= form_open_multipart(base_url(_MODULE_NAME_REAL_ . '/' . _METHOD_ . '/save'), array('id' => 'form_level'), ['id_edit' => $id_edit, 'rcsa_no' => $rcsa_no]); ?>
                     <?= form_hidden('id_edit_baru', ($id_edit) ? ($id_edit) : '0', 'class="form-control text-right" id="id_edit"'); ?>
@@ -605,7 +367,7 @@ if ($field['iskri'] == 0) {
                                     <?php } ?>
                                 </div>
                             </div>
-                            <div class="x_footer <?= $evaluasiacthide ?>">
+                            <div class="x_footer <?= $analysisacthide ?>">
                                 <ul class="nav navbar-right panel_toolbox ">
                                     <li><span class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_level"> Simpan </span></li>
                                     <!-- <li><span class="btn btn-default pointer" id="cancel_level" data-dismiss="modal"> Kembali </span></li> -->
@@ -616,8 +378,7 @@ if ($field['iskri'] == 0) {
                     </div>
                     <?= form_close(); ?>
                 </div>
-
-                <div id="treatment" class="tab-pane fade in <?= $treatmentact ?> <?= $treatmentacthide ?> ">
+                <div id="treatment" class="tab-pane fade in <?= $treatmentact ?> <?= $treatmentacthide ?>">
 
                     <div id="list_mitigasi">
                         <?php
@@ -633,87 +394,71 @@ if ($field['iskri'] == 0) {
                             $isi_owner_no_action_accountable[] = $owner['rcsa_owner_no'];
                         }
 
-
                         ?>
-
-                        <?= form_open_multipart(base_url('rcsa/simpan_mitigasi'), array('id' => 'form_mitigasi'), ['id_detail' => $id_edit, 'id_edit_mitigasi' => $id_edit_mitigasi, 'rcsa_no' => $rcsa_no, 'rcsa_no_1' => $rcsa_no_1]); ?>
+                        <?= form_open_multipart(base_url(_MODULE_NAME_REAL_ . '/' . _METHOD_ . '/save'), array('id' => 'form_mitigasi'), ['id_detail' => $id_edit, 'id_edit_mitigasi' => $id_edit_mitigasi, 'rcsa_no' => $rcsa_no, 'rcsa_no_1' => $rcsa_no_1]); ?>
                         <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
                         <section class="x_panel">
                             <div class="row">
-                                <div class="x_content table-responsive" style="overflow-x: auto;">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <!-- Kolom Treatment dengan posisi sticky di sebelah kiri -->
-                                                <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 0; background: white; width: 100px; z-index: 2;">
-                                                    Treatment
-                                                </th>
-                                                <?php
-                                                    $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                                                    foreach ($bulan as $bulanItem) { ?>
-                                                        <!-- Kolom Bulan (satu kolom per bulan) -->
-                                                        <th class="text-center"><?= $bulanItem ?></th>
-                                                    <?php } ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <!-- Konten Kolom Treatment -->
-                                                <td style="position: sticky; left: 0; background: white; width: 100px; z-index: 1000;">
-                                                    <?= form_textarea('proaktif', ($field) ? $field['proaktif'] : '', " id='proaktif' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 100px; height: 104px;'" . $readonly); ?>
-                                                </td>
-                                                <?php
-                                                    // Loop untuk setiap bulan, menambahkan satu kolom <td> per bulan
-                                                    for ($i = 1; $i <= 12; $i++):
-                                                         // Cek apakah data bulan tertentu ada dalam array $rcsa_treatment
-                                                        $target_progress = isset($rcsa_treatment[$i - 1]['target_progress_detail']) ? $rcsa_treatment[$i - 1]['target_progress_detail'] : '';
-                                                        $target_damp_loss = isset($rcsa_treatment[$i - 1]['target_damp_loss']) ? $rcsa_treatment[$i - 1]['target_damp_loss'] : '';
-                                                        $data['id']      = $field['rcsa_detail_no'];
-                                                        $data['rcsa_no'] = $rcsa_no;
-                                                        echo '<td>      
-                                                            <div class="input-group">
-                                                                <input type="number" name="target_progress'.$i.'" id="target_progress'.$i.'" class="form-control" placeholder="Progress %" value="'.$target_progress.'" aria-describedby="basic-addon2">
-                                                                <span class="input-group-addon" id="basic-addon2">%</span>
-                                                            </div>
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                                <input type="text" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
-                                                                value="'.$target_damp_loss.'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
-                                                            </div>
-                                                        </td>';
-                                                    endfor;
-                                                ?>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-
+                                <div class="form-group clearfix">
+                                    <label class="col-sm-3 control-label text-left"><?= lang('msg_field_proaktif'); ?></label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9"><?= form_textarea('proaktif', ($field) ? $field['proaktif'] : '', " id='proaktif' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 500 !important; height: 104px;'" . $readonly); ?></div>
                                 </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="x_footer mt-5">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <input class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_mitigasi" value="Simpan" />
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                        </section>
-                        <?= form_close(); ?>
-                    </div>
-                </div>
 
-                <div id="iskri" class="tab-pane fade in <?= $kriact ?><?= $krion ?> ">
-                    <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
-                        <section class="x_panel">
-                            <div class="x_content">
-                                <div class="table-responsive">
+                                <div class="form-group clearfix ">
+                                    <label class="col-sm-3 control-label text-left"><?= lang('msg_field_reaktif'); ?></label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9"><?= form_textarea('reaktif', ($field) ? $field['reaktif'] : '', " id='reaktif' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 500 !important; height: 104px;'" . $readonly);
 
-                                    <?= $inptkri; ?>
+                                                                            ?></div>
                                 </div>
+
+                                <div class="form-group clearfix ">
+                                    <label class="col-sm-3 control-label text-left"><?= lang('msg_field_owner_perlakuan'); ?></label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9"><?= form_dropdown('owner_no_action[]', $cbo_owner, $isi_owner_no_action, 'multiple="multiple" class="select2 form-control" style="width:100%;" id="owner_no_action"' . $disable); ?></div>
+                                </div>
+
+                                <div class="form-group clearfix hide ">
+                                    <label class="col-sm-3 control-label text-left"><?= lang('msg_field_responsible_unit'); ?></label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9"><?= form_dropdown('owner_no_action_accountable[]', $cbo_owner, $isi_owner_no_action_accountable, 'multiple="multiple" class="select2 form-control" style="width:100%;" id="owner_no_action_accountable"' . $disable); ?></div>
+                                </div>
+
+                                <div class="form-group clearfix ">
+                                    <label class="col-sm-3 control-label text-left"><?= lang('msg_field_schedule'); ?></label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9"><?= form_input('sumber_daya', ($field) ? $field['sumber_daya'] : '', 'class="form-control" style="width:100%;" id="sumber_daya"' . $readonly); ?></div>
+                                </div>
+
+                                <div class="form-group clearfix ">
+                                    <label class="col-sm-3 control-label text-left"><?= lang('msg_field_biaya_penangan'); ?></label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div id="l_amount_parent" class="input-group">
+                                            <span id="span_l_amoun" class="input-group-addon"> Rp </span>
+                                            <?= form_input('amount', ($field) ? number_format($field['amount']) : '', 'class="form-control text-right rupiah" id="amount"' . $readonly); ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group clearfix ">
+                                    <label class="col-sm-3 control-label text-left"><?= lang('msg_field_target_waktu'); ?><sup><span class="required">*)</span></sup></label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9"><?= form_input('target_waktu', ($field) ? $field['target_waktu'] : date('d-m-Y'), " id='target_waktu' size='20' class='form-control datepicker' style='width:130px;'" . $readonly); ?></div>
+                                </div>
+
+                                <div class="form-group clearfix ">
+                                    <label class="col-sm-3 control-label text-left"><?= lang('msg_field_risk_attacment'); ?></label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9"><?= form_upload("attac_mitigasi", ""); ?></div>
+                                </div>
+                                <div class="x_footer">
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><span class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_mitigasi"> Simpan </span></li>
+                                        <!-- <li><span class="btn btn-default pointer" id="back_tab" data-dismiss="modal"> Kembali </span></li> -->
+                                    </ul>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <?= form_close(); ?>
                             </div>
                         </section>
                     </div>
-                    <?= form_close(); ?>
+
+                    <div class="clearfix"></div>
                 </div>
 
                 <div id="progres" class="tab-pane fade in <?= $progresact ?> <?= $progresacthide ?> ">
@@ -737,15 +482,19 @@ if ($field['iskri'] == 0) {
                                             </tr>
                                             <tr>
                                                 <td width="20%"><em>Tema Risiko (T1)</em></td>
-                                                <td><?= $detail['kategori']; ?></td>
+                                                <?php
+                                                $tema = $this->db->where('id', $detail['tema'])->get(_TBL_LIBRARY)->row_array();
+                                                ?>
+
+                                                <td><?= $tema['description']; ?></td>
                                             </tr>
                                             <tr>
                                                 <td><em>Kategori Risiko (T2)</em></td>
-                                                <?php $combo = $this->db->where('id', $detail['sub_kategori'])->get('bangga_data_combo')->row_array(); ?>
-                                                <td><?= $combo['data']; ?></td>
+                                                <td><?= $detail['kategori']; ?></td>
+
                                             </tr>
                                             <tr>
-                                                <td><em>Peristiwa</em></td>
+                                                <td><em>Peristiwa(T3)</em></td>
                                                 <td><?= $detail['event_name']; ?></td>
                                             </tr>
                                             <tr>
@@ -786,7 +535,6 @@ if ($field['iskri'] == 0) {
                             </section>
                         </div>
                     </div>
-
                     <?= form_open_multipart(base_url(_MODULE_NAME_REAL_ . '/' . _METHOD_ . '/save'), array('id' => 'form_realisasi'), ['id_edit' => $edit_no, 'rcsa_no' => $rcsa_no, 'detail_rcsa_no' => $rcsa_detail_no]); ?>
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_realisasi">
 
@@ -795,9 +543,17 @@ if ($field['iskri'] == 0) {
 
                     <div id="list_realisasi">
                         <?= $list_realisasi; ?>
+                        <div class="clearfix"></div>
+                        <br>
+                        
+                         <?php
+//doi::dump($detail["iskri"]);
+
+                         if($detail["iskri"]!=0){
+                           echo  $list_kri;} ?>
+
                     </div>
                 </div>
-
             </div>
         </section>
     </aside>
@@ -832,15 +588,40 @@ if ($field['iskri'] == 0) {
         $("#kategori").change(function() {
             var parent = $(this).parent();
             var nilai = $(this).val();
+            var kelompok = 'subkel-library';
+            var kel_targt = 'subkel-library';
             var data = {
                 'id': nilai,
+                'kelompok': kel_targt
             };
-            var target_combo = $(".eventcombo");
-            var url = "ajax/get_ajax_kelevent";
+            var target_combo = $("#sub_kategori");
+            var url = "ajax/get_ajax_combo";
             cari_ajax_combo("post", parent, data, target_combo, url);
         })
-
     });
+    $("#event_no").change(function() {
+        var parent = $(this).parent();
+        var nilai = $(this).val();
+        var data = {
+            'id': nilai,
+            'type': 2,
+        };
+        console.log(data)
+        var target_combo = $("#risk_couseno");
+        var url = "ajax/get_ajax_libray_couse";
+        cari_ajax_combo("post", parent, data, target_combo, url);
+    })
+    $("#event_no").change(function() {
+        var parent = $(this).parent();
+        var nilai = $(this).val();
+        var data = {
+            'id': nilai,
+            'type': 3,
+        };
+        var target_combo = $("#impactno");
+        var url = "ajax/get_ajax_libray_impact";
+        cari_ajax_combo("post", parent, data, target_combo, url);
+    })
 </script>
 <script type="text/javascript">
     var no_urut = 1;

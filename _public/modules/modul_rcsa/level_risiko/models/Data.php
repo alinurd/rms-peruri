@@ -122,7 +122,7 @@ class Data extends MX_Model {
         $cboLike            = $q['cb_like'];
         $cboImpact          = $q['cb_impact'];
         $monthbefore        = $data['before'];
-        // var_dump($cek_id_detail);?
+        $currentMonth       = date('n');
         if (!$monthbefore && $month !=1) {
 			$result         = '<i class="  fa fa-times-circle text-danger"></i>';
 		} else {
@@ -148,12 +148,13 @@ class Data extends MX_Model {
                             ' . $monthly['inherent_analisis_action'] . ' [' . $progress_detail . ']
                         </span>
                     </span>
-                </div>
+                </div>';
 
-                <div style="text-align: center; margin-top: 10px;">
+                if(!$monthly || $currentMonth == $monthly['bulan'] ){
+                    $result .= '<div style="text-align: center; margin-top: 10px;">
                     <span class="btn btn-primary" id="simpan_level_risiko_' . $q['id'] . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</span>
-                </div>
-            ';
+                </div>';
+                }
 
                 // </form>
         

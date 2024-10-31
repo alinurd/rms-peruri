@@ -68,28 +68,28 @@
                         <table class="table table-striped table-bordered table-hover" style="table-layout: fixed;">
                             <thead>
                                 <tr>
-                                    <th class="text-center" style="position: sticky; left: 0; background: white; z-index: 99; width: 50px;">No</th>
-                                    <th class="text-center" style="position: sticky; left: 50px; background: white; z-index: 99; width: 150px;">Risk Owner</th>
-                                    <th class="text-center" style="position: sticky; left: 200px; background: white; z-index: 99; width: 200px;">Peristiwa Risiko</th>
+                                    <th class="text-center" style="position: sticky; left: 0; background: white; z-index: 99; width: 30px;">No</th>
+                                    <th class="text-center" style="position: sticky; left: 30px; background: white; z-index: 99; width: 150px;">Risk Owner</th>
+                                    <th class="text-center" style="position: sticky; left: 150px; background: white; z-index: 99; width: 150px;">Peristiwa Risiko</th>
                                     <th class="text-center" style="width: 100px;">Tahun</th>
                                     <th class="text-center" style="width: 200px;">Level Risiko Inheren</th>
                                     <th class="text-center" style="width: 200px;">Level Risiko Target</th>
                                     <?php if ($triwulan == 1): ?>
-                                        <th class="text-center" style="width: 350px;">Januari</th>
-                                        <th class="text-center" style="width: 350px;">Februari</th>
-                                        <th class="text-center" style="width: 350px;">Maret</th>
+                                        <th class="text-center" style="width: 200px;">Januari</th>
+                                        <th class="text-center" style="width: 200px;">Februari</th>
+                                        <th class="text-center" style="width: 200px;">Maret</th>
                                     <?php elseif ($triwulan == 2): ?>
-                                        <th class="text-center" style="width: 350px;">April</th>
-                                        <th class="text-center" style="width: 350px;">Mei</th>
-                                        <th class="text-center" style="width: 350px;">Juni</th>
+                                        <th class="text-center" style="width: 200px;">April</th>
+                                        <th class="text-center" style="width: 200px;">Mei</th>
+                                        <th class="text-center" style="width: 200px;">Juni</th>
                                     <?php elseif ($triwulan == 3): ?>
-                                        <th class="text-center" style="width: 350px;">Juli</th>
-                                        <th class="text-center" style="width: 350px;">Agustus</th>
-                                        <th class="text-center" style="width: 350px;">September</th>
+                                        <th class="text-center" style="width: 200px;">Juli</th>
+                                        <th class="text-center" style="width: 200px;">Agustus</th>
+                                        <th class="text-center" style="width: 200px;">September</th>
                                     <?php elseif ($triwulan == 4): ?>
-                                        <th class="text-center" style="width: 350px;">Oktober</th>
-                                        <th class="text-center" style="width: 350px;">November</th>
-                                        <th class="text-center" style="width: 350px;">Desember</th>
+                                        <th class="text-center" style="width: 200px;">Oktober</th>
+                                        <th class="text-center" style="width: 200px;">November</th>
+                                        <th class="text-center" style="width: 200px;">Desember</th>
                                     <?php endif; ?>
                                 </tr>
                             </thead>
@@ -104,10 +104,10 @@
                                     $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level1['color'] . ';color:' . $residual_level1['color_text'] . ';">' . $residual_level1['level_mapping'] . '</span>';
                                 ?>
                                     <tr>
-                                        <td style="position: sticky; left: 0; background: white;z-index: 99;"><?= $no++ ?></td>
-                                        <td style="position: sticky; left: 50px; background: white;z-index: 99;"><?= $q['name'] ?></td>
-                                        <td style="position: sticky; left: 200px; background: white;z-index: 99;"><?= $q['event_name'] ?></td>
-                                        <td><?= $q['tahun'] ?></td>
+                                        <td class="text-center" style="position: sticky; left: 0; background: white;z-index: 99;"><?= $no++ ?></td>
+                                        <td style="position: sticky; left: 30px; background: white;z-index: 99;"><?= $q['name'] ?></td>
+                                        <td style="position: sticky; left: 150px; background: white;z-index: 99;"><?= $q['event_name'] ?></td>
+                                        <td  class="text-center"><?= $q['tahun'] ?></td>
                                         <td><?= $inherent ?></td>
                                         <td><?= $target ?></td>
                                         <?php

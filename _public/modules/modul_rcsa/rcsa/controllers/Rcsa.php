@@ -901,6 +901,8 @@ if($dtkri){
 		$data['analisiData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->row_array();
 		$data['target_like']=json_decode($data['analisiData']['target_like']);
 		$data['target_impact']=json_decode($data['analisiData']['target_impact']);
+		$data['rcsa_treatment'] = $this->db->where('rcsa_detail_no', $id_edit)->get("bangga_rcsa_treatment")->result_array();
+
 
 		$this->template->build('fom_peristiwa', $data);
 
@@ -1750,17 +1752,19 @@ if($dtkri){
 		header('location:' . base_url($this->modul_name . '/tes/'));
 	}
 
+	
+
 	function simpan_mitigasi()
 	{
 		$post = $this->input->post();
-		$id = $this->data->simpan_mitigasi($post);
+		$id 	= $this->data->simpan_mitigasi($post);
 		// doi::dump($post);
 		// doi::dump($_FILES);
 		// die('control');
 		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
 		$data['field'] = $this->data->get_peristiwa($post['rcsa_no']);
 
-		if($post['iskri']==1){
+		if($id > 0){
 			$tab = 'Berhasil mengisi risk treatment, data ini dijadikan sebagai Key Risk Indikator lanjutkan ke pengisian Key Risk ?';
 		}else{
 			$tab = 'Pengisian identifikasi Risiko udah selesai, kembali ke list ?';
@@ -2207,6 +2211,31 @@ if($dtkri){
 		$result['sts'] = $res;
 		$result['add'] = $add;
 
+		$result['post'] = $post;
+		echo json_encode($result);
+	}
+	public function simpan_treatment(){
+		$post = $this->input->post();
+		
+		$upd['rcsa_detail_no'] 			= $post['id_detail'];
+		$upd['rcsa_no'] 				= $post['rcsa_no'];
+		$upd['target_progress_detail'] 	= $post['target_progress'];
+		$upd['target_damp_loss'] 		= $post['target_damp_loss'];
+		$treatment = $this->db->where('rcsa_detail_no', $post['id_detail'])->get('bangga_rcsa_treatment')->row_array();
+		$res=false;
+		$add=false;
+ 		if ($treatment) {
+ 			$upd['update_user'] = $this->authentication->get_info_user('username');
+			 $res= $this->crud->crud_data(array('table' => 'bangga_rcsa_treatment', 'field' => $upd, 'where' => array('rcsa_detail_no' => $post['id_detail']), 'type' => 'update'));
+		} else {
+
+			$upd['id_detail'] = $post['id_detail'];
+			$upd['create_user'] = $this->authentication->get_info_user('username');
+			$res=$this->crud->crud_data(['table' => 'bangga_rcsa_treatment', 'field' => $upd, 'type' => 'add']);
+			$add=true;
+		}
+		$result['sts'] = $res;
+		$result['add'] = $add;
 		$result['post'] = $post;
 		echo json_encode($result);
 	}
