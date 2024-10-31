@@ -7,7 +7,7 @@ if ($detail['sts_propose'] == 5) {
     $readonly = '';
 } else {
     if ($detail['sts_propose'] > 0) {
-        $hide_edit = ' hide ';
+        // $hide_edit = ' hide ';
         $disable = 'disabled';
         $readonly = 'readonly="true"';
     }

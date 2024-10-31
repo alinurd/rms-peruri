@@ -106,7 +106,7 @@
                                     <tr>
                                         <td class="text-center" style="position: sticky; left: 0; background: white;z-index: 99;"><?= $no++ ?></td>
                                         <td style="position: sticky; left: 30px; background: white;z-index: 99;"><?= $q['name'] ?></td>
-                                        <td style="position: sticky; left: 150px; background: white;z-index: 99;"><?= $q['event_name'] ?></td>
+                                        <td style="position: sticky; left: 180px; background: white;z-index: 99;"><?= $q['event_name'] ?></td>
                                         <td  class="text-center"><?= $q['tahun'] ?></td>
                                         <td><?= $inherent ?></td>
                                         <td><?= $target ?></td>

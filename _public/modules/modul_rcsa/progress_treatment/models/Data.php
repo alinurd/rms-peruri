@@ -283,7 +283,7 @@ if($rows){
                         <br>
                         <div style="text-align: center; margin-top: 15px;">
                             <button type="button" class="btn btn-primary" id="simpan_realisasi_'.$data['data']['id'].'" data-month="'.$month.'" data-id="'.$data['data']['id'].'">
-                                <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i>
                             </button>
                         </div>
                     </td>

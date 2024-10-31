@@ -139,8 +139,7 @@ class Lost_Event_Database extends BackendController
 		$x['triwulan'] 		= $tw;
 		$x['cboOwner'] 		= $this->cbo_parent;
 		$x['field'] 		= $this->data->getDetail($data, $limit, $offset);
-		$x['cboLike']		= $this->cboLike;
-		$x['cboImpact']		= $this->cboImpact;
+		
 		
 	
 		
@@ -202,13 +201,16 @@ class Lost_Event_Database extends BackendController
 		$id = $this->input->post("id_detail");
 		$month = $this->input->post("month");
 		$type = $this->input->post("type");
+
+		$data['cboLike']		= $this->cboLike;
+		$data['cboImpact']		= $this->cboImpact;
 	
 		// Inisialisasi array untuk hasil
-		$result = [
-			'action_detail' => null,
-			'lost_event' => null,
-			'type' => null
-		];
+		// $result = [
+		// 	'action_detail' => null,
+		// 	'lost_event' => null,
+		// 	'type' => null
+		// ];
 	
 		// Ambil id berdasarkan rcsa_detail_no
 		$act = $this->db
@@ -227,8 +229,8 @@ class Lost_Event_Database extends BackendController
 				->row_array();
 	
 			// Simpan detail ke dalam hasil
-			$result['action_detail'] = $detail ?: null; // Jika tidak ada detail, set null
-			$result['type'] = 'add';
+			$data['action_detail'] = $detail ?: null; // Jika tidak ada detail, set null
+			$data['type'] = 'add';
 		}
 	
 		// Jika tipe adalah "edit", ambil data tambahan dari rcsa_lost_event
@@ -239,11 +241,15 @@ class Lost_Event_Database extends BackendController
 				->get(_TBL_RCSA_LOST_EVENT)
 				->row_array();
 	
+			// $result['label_dampak'] = $this->level_action($detailedit['skal_dampak_in'],$detailedit['skal_prob_in']);
 			// Tambahkan data edit ke hasil
-			$result['lost_event'] = $detailedit ?: null; // Jika tidak ada, set null
-			$result['type'] = 'edit';
+			$data['lost_event'] = $detailedit ?: null; // Jika tidak ada, set null
+			$data['type'] = 'edit';
 		}
-	
+
+		
+		
+		$result['register'] = $this->load->view('form_modal', $data, true);
 		// Kode untuk mengembalikan hasil dalam format JSON
 		echo json_encode($result);
 	}
@@ -268,6 +274,7 @@ class Lost_Event_Database extends BackendController
 		return $result;
 
 	}
+
 	public function getMonthlyMonitoring($id, $month)
 	{
 		$act = $this->db

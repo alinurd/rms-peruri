@@ -143,7 +143,7 @@ $(function () {
       month: month,
     };
     var parent = $(this).parent();
-    var url = modul_name + "/cek_level";
+    var url = modul_name + "/cek-level";
 
     cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
   });
@@ -159,7 +159,7 @@ $(function () {
       month: month,
     };
     var parent = $(this).parent();
-    var url = modul_name + "/cek_level";
+    var url = modul_name + "/cek-level";
 
     cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisIResidual");
   });
@@ -313,47 +313,12 @@ function result_simpan_lost_event(hasil) {
   // $("#list_realisasi").html(hasil.combo);
 }
 function result_show_model(hasil) {
-  // Cek tipe dari data yang diterima
-  if (hasil.type === "edit") {
-    // Jika tipe edit, tampilkan data lost_event
-    $("#nm_event").val(hasil.action_detail.event_name); // Contoh mengambil nama event dari lost_event
-    $("#identifikasi_kejadian").val(hasil.lost_event.identifikasi_kejadian);
-    $("#kategori").val(hasil.lost_event.kategori);
-    $("#sumber_penyebab").val(hasil.lost_event.sumber_penyebab);
-    $("#penyebab_kejadian").val(hasil.lost_event.penyebab_kejadian);
-    $("#penanganan").val(hasil.lost_event.penanganan);
-
-    // Tambahkan input lainnya sesuai data lost_event
-    $("#kat_risiko").val(hasil.lost_event.kat_risiko);
-    $("#hub_kejadian_risk_event").val(hasil.lost_event.hub_kejadian_risk_event);
-    $("#status_asuransi").val(hasil.lost_event.status_asuransi);
-    $("#nilai_premi").val(hasil.lost_event.nilai_premi);
-    $("#nilai_klaim").val(hasil.lost_event.nilai_klaim);
-    $("#mitigasi_rencana").val(hasil.lost_event.mitigasi_rencana);
-    $("#mitigasi_realisasi").val(hasil.lost_event.mitigasi_realisasi);
-    $("#rencana_perbaikan_mendatang").val(
-      hasil.lost_event.rencana_perbaikan_mendatang
-    );
-    $("#pihak_terkait").val(hasil.lost_event.pihak_terkait);
-    $("#penjelasan_kerugian").val(hasil.lost_event.penjelasan_kerugian);
-    $("#nilai_kerugian").val(hasil.lost_event.nilai_kerugian);
-    $("#kejadian_berulang").val(hasil.lost_event.kejadian_berulang);
-    $("#frekuensi_kejadian").val(hasil.lost_event.frekuensi_kejadian);
-    $("#skal_dampak_in").val(hasil.lost_event.skal_dampak_in).change(); // Memicu event change
-    $("#skal_prob_in").val(hasil.lost_event.skal_prob_in).change(); // Memicu event change
-    $("#Target_Res_dampak").val(hasil.lost_event.target_res_dampak).change(); // Memicu event change
-    $("#Target_Res_prob").val(hasil.lost_event.target_res_prob).change(); // Memicu event change
-    $("#btn-simpan").attr("data-id", hasil.action_detail.rcsa_detail_no);
-    $("#btn-simpan").attr("data-edit", hasil.lost_event.id);
-    $("#btn-simpan").attr("data-month", hasil.lost_event.bulan);
-    $("#btn-simpan").attr("data-type", hasil.type);
-  } else {
-    $("#nm_event").val(hasil.action_detail.event_name);
-    $("#btn-simpan").attr("data-id", hasil.action_detail.rcsa_detail_no);
-    $("#btn-simpan").attr("data-month", hasil.action_detail.bulan);
-    $("#btn-simpan").attr("data-type", hasil.type);
-  }
-  $("#modalUpdate").modal("show");
+  $("#modal_general").find(".modal-body").html(hasil.register);
+  $("#modal_general").find(".modal-title").html("LOST EVENT DATABASE");
+  $("#modal_general").modal("show");
+  $(
+    "#skal_dampak_in, #skal_prob_in, #Target_Res_dampak, #Target_Res_prob"
+  ).change();
 }
 
 $(document).ready(function () {

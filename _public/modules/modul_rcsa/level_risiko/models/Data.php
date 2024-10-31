@@ -152,7 +152,7 @@ class Data extends MX_Model {
 
                 if(!$monthly || $currentMonth == $monthly['bulan'] ){
                     $result .= '<div style="text-align: center; margin-top: 10px;">
-                    <span class="btn btn-primary" id="simpan_level_risiko_' . $q['id'] . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;">Simpan</span>
+                    <span class="btn btn-primary" id="simpan_level_risiko_' . $q['id'] . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 100%; height: 40px;"><i class="fa fa-floppy-o" aria-hidden="true"></i></span>
                 </div>';
                 }
 
