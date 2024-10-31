@@ -1,7 +1,9 @@
-
+<?php
+// doi::dump($label_res);
+?>
 <div class="row">
     <div class="col-md-6">
-        <div class="mb-4" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Kejadian Risiko</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -48,7 +50,7 @@
             </table>
         </div>
         <br>
-        <div class="mb-4" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Hubungan Kejadian Risiko Dengan Risk Event</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -84,7 +86,9 @@
                         </td>
                         <td align="center">
                             <span id="level_risiko_inher_label" class="text-center">
-                                
+                                <?php
+                                    echo $label_in;
+                                ?>
                             </span>
                             <span id="spinner-inherent" class="spinner"></span>
                         </td>
@@ -101,7 +105,9 @@
                         </td>
                         <td align="center">
                             <span id="level_risiko_res_label" class="text-center">
-                                
+                            <?php
+                                    echo $label_res;
+                                ?>
                             </span>
                             <span id="spinner-inherent" class="spinner"></span>
                         </td>
@@ -112,7 +118,7 @@
         <br>
 
         <!-- Asuransi -->
-        <div class="mb-4" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Asuransi</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -148,7 +154,7 @@
 
     <!-- Rencana dan Realisasi Perlakuan Risiko -->
     <div class="col-md-6">
-        <div class="mb-4" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Rencana dan Realisasi Perlakuan Risiko</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -174,7 +180,7 @@
         <br>
 
         <!-- Perbaikan Mendatang -->
-        <div class="mb-4" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Perbaikan Mendatang</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -199,7 +205,7 @@
         </div>
         <br>
         <!-- Kerugian -->
-        <div class="mb-4" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Kerugian</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -240,5 +246,6 @@
     </div>
 </div>
 <div class="row text-center">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     <a href="#" id="btn-simpan" class="btn btn-primary" data-edit="<?= ($type != 'add') ? $lost_event['id'] : '';?>" data-id="<?= $action_detail['rcsa_detail_no'];?>" data-month="<?= ($type != 'add') ? $lost_event['bulan'] : $action_detail['bulan'];?>" data-type = "<?= $type;?>" >Simpan</a>
 </div>

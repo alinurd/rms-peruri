@@ -241,10 +241,15 @@ class Lost_Event_Database extends BackendController
 				->get(_TBL_RCSA_LOST_EVENT)
 				->row_array();
 	
-			// $result['label_dampak'] = $this->level_action($detailedit['skal_dampak_in'],$detailedit['skal_prob_in']);
 			// Tambahkan data edit ke hasil
 			$data['lost_event'] = $detailedit ?: null; // Jika tidak ada, set null
 			$data['type'] = 'edit';
+			//  = ;
+			$row_in 	= $this->db->where('impact_no',$detailedit['skal_prob_in'] )->where('like_no', $detailedit['skal_dampak_in'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+			$row_res 	= $this->db->where('impact_no',$detailedit['target_res_prob'] )->where('like_no',$detailedit['target_res_dampak'] )->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+
+			 $data['label_in'] = "<span style='background-color:" . $row_in['warna_bg'] . ";color:" . $row_in['warna_txt'] . ";'>&nbsp;" . $row_in['tingkat'] . "&nbsp;</span>";
+			 $data['label_res'] = "<span style='background-color:" . $row_res['warna_bg'] . ";color:" . $row_res['warna_txt'] . ";'>&nbsp;" . $row_res['tingkat'] . "&nbsp;</span>";
 		}
 
 		
