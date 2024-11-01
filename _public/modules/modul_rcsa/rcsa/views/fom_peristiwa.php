@@ -645,7 +645,7 @@ if ($field['iskri'] == 0) {
                                         <thead>
                                             <tr>
                                                 <!-- Kolom Treatment dengan posisi sticky di sebelah kiri -->
-                                                <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 0; background: white; width: 100px; z-index: 2;">
+                                                <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 0; background: white; width: 15%; z-index: 2;">
                                                     Treatment
                                                 </th>
                                                 <?php
@@ -656,11 +656,10 @@ if ($field['iskri'] == 0) {
                                                     <?php } ?>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
+                                        <tbody><tr>
                                                 <!-- Konten Kolom Treatment -->
-                                                <td style="position: sticky; left: 0; background: white; width: 100px; z-index: 1000;">
-                                                    <?= form_textarea('proaktif', ($field) ? $field['proaktif'] : '', " id='proaktif' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 100px; height: 104px;'" . $readonly); ?>
+                                                <td style="position: sticky; left: 0; background: white; width: 15%; z-index: 1000;">
+                                                    <?= form_textarea('proaktif', ($field) ? $field['proaktif'] : '', " id='proaktif' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 250px; height: 104px;'" . $readonly); ?>
                                                 </td>
                                                 <?php
                                                     // Loop untuk setiap bulan, menambahkan satu kolom <td> per bulan
@@ -672,18 +671,19 @@ if ($field['iskri'] == 0) {
                                                         $data['rcsa_no'] = $rcsa_no;
                                                         echo '<td>      
                                                             <div class="input-group">
-                                                                <input type="number" name="target_progress'.$i.'" id="target_progress'.$i.'" class="form-control" placeholder="Progress %" value="'.$target_progress.'" aria-describedby="basic-addon2">
+                                                                <input style="width:100px !important;" type="number" name="target_progress'.$i.'" id="target_progress'.$i.'" class="form-control" placeholder="Progress %" value="'.$target_progress.'" aria-describedby="basic-addon2">
                                                                 <span class="input-group-addon" id="basic-addon2">%</span>
                                                             </div>
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                                <input type="text" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
+                                                                <input style="width:100px !important;" type="number" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
                                                                 value="'.number_format($target_damp_loss, 0, ',', '.').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
                                                             </div>
                                                         </td>';
                                                     endfor;
                                                 ?>
                                             </tr>
+                                            
                                         </tbody>
                                     </table>
 
