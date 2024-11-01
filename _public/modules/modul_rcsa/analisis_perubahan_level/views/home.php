@@ -45,7 +45,8 @@
                         <?php
                         $bln=$this->input->get('bulan');
                         $bulanName = [
-                            1 => 'Januari',
+                            0 => '-Pilih bulan-',
+                            'Januari',
                             'Februari',
                             'Maret',
                             'April',
