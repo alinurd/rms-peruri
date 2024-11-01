@@ -385,7 +385,7 @@ if ($field['iskri'] == 0) {
                                                         <td>
                                                             <div id="l_risk_impact_kuantitatif_parent" class="input-group">
                                                                 <span id="span_l_amoun" class="input-group-addon"> Rp </span>
-                                                                <?= form_input('risk_impact_kuantitatif', ($detail) ? ($detail['risk_impact_kuantitatif']) : '', 'class="form-control text-right" id="risk_impact_kuantitatif"' . $disable); ?>
+                                                                <?= form_input('risk_impact_kuantitatif', ($detail) ? ( number_format($detail['risk_impact_kuantitatif'], 0, ',', ',')) : '', 'class="form-control text-right rupiah" id="risk_impact_kuantitatif"' . $disable); ?>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -676,8 +676,8 @@ if ($field['iskri'] == 0) {
                                                             </div>
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                                <input style="width:100px !important;" type="text" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
-                                                                value="'.number_format($target_damp_loss, 0, ',', '.').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                                                <input style="width:100px !important;" type="number" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
+                                                                value="'.number_format($target_damp_loss, 0, ',', ',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
                                                             </div>
                                                         </td>';
                                                     endfor;
