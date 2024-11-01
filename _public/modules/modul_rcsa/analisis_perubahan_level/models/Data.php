@@ -96,7 +96,7 @@ class Data extends MX_Model
 
         if ($r == $Inh) {
             $pl = ' 
-                                      <span class="btn " data-toggle="popover" data-content="level risiko stabil" style="padding:4px; height:4px 8px;width:100%;">
+                                      <span class="btn " data-toggle="popover" data-content="residual anda tidak penurunan dan kenaikan dari risiko inherent &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
                 <i style=" font-size: 30px;" class="glyphicon glyphicon-resize-horizontal text-primary" aria-hidden="true"></i> 
             </span>
 
@@ -104,14 +104,15 @@ class Data extends MX_Model
         } elseif ($r > $Inh) {
             $pl = ' 
 
-                      <span class="btn " data-toggle="popover" data-content="terjadi kenaikan level risiko" style="padding:4px; height:4px 8px;width:100%;">
+                      <span class="btn " data-toggle="popover" data-content="risiko anda lebih tinggi dari risiko inherent risk &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
                 <i style=" font-size: 30px;" class="fa fa-arrow-up text-danger" aria-hidden="true"></i> 
             </span>
 
          ';
         } elseif ($r<$Inh) {
             $pl = '
-                    <span class="btn " data-toggle="popover" data-content="terjadi penurunan level risiko" style="padding:4px; height:4px 8px;width:100%;">
+                    <span class="btn " data-toggle="popover" data-content="residual anda turun dari  risiko inherent &#x1F603;
+" style="padding:4px; height:4px 8px;width:100%;">
                 <i style=" font-size: 30px;" class="fa fa-arrow-down text-success" aria-hidden="true"></i> 
             </span>';
         } else {
