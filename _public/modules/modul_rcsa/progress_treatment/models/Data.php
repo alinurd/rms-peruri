@@ -268,14 +268,14 @@ if($rows){
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Rp.</span>
                                         <input readonly type="text" name="target_damp_loss'.$data['data']['id'].$month.'" id="target_damp_loss'.$data['data']['id'].$month.'" 
-                                        value="'.$data_risk_treatment['target_damp_loss'].'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                        value="'.number_format($data_risk_treatment['target_damp_loss'],0,',',',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
                                     </div>
                                 </td>
                                 <td style="padding: 10px; vertical-align: top;">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Rp.</span>
                                         <input type="text" name="damp_loss'.$data['data']['id'].$month.'" id="damp_loss'.$data['data']['id'].$month.'" 
-                                        value="'.$data['data']['damp_loss'].'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                        value="'.number_format($data['data']['damp_loss'],0,',',',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
                                     </div>
                                 </td>
                             </tr>
