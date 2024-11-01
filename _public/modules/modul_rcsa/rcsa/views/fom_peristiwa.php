@@ -676,7 +676,7 @@ if ($field['iskri'] == 0) {
                                                             </div>
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                                <input style="width:100px !important;" type="number" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
+                                                                <input style="width:100px !important;" type="text" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
                                                                 value="'.number_format($target_damp_loss, 0, ',', ',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
                                                             </div>
                                                         </td>';
