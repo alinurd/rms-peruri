@@ -64,96 +64,95 @@
     <div class="x_panel">
         <div class="x_content table-responsive" style="overflow-x: auto;">
          
-<table class="table table-striped table-bordered table-hover">
-    <thead>
-        <tr>
-            <th rowspan="2" style="position: sticky; left: 0; z-index: 94;">No</th>
-            <th rowspan="2" style="position: sticky; left: 30px; z-index: 95;">Risk Owner</th>
-            <th rowspan="2" style="position: sticky; left: 95px; z-index: 96; ">Peristiwa Risiko</th>
-            <th rowspan="2" style="position: sticky; left: 220px; z-index: 97;">Indikator</th>
-            <th rowspan="2" style="position: sticky; left: 330px; z-index: 98; ">Satuan</th>
-            <th colspan="3" class="text-center" style="position: sticky; left: 370px; z-index: 99;">Threshold</th>
-            <?php if ($triwulan == 1): ?>
-                <th rowspan="2">Januari</th>
-                <th rowspan="2">Februari</th>
-                <th rowspan="2">Maret</th>
-            <?php elseif ($triwulan == 2): ?>
-                <th rowspan="2">April</th>
-                <th rowspan="2">Mei</th>
-                <th rowspan="2">Juni</th>
-            <?php elseif ($triwulan == 3): ?>
-                <th rowspan="2">Juli</th>
-                <th rowspan="2">Agustus</th>
-                <th rowspan="2">September</th>
-            <?php elseif ($triwulan == 4): ?>
-                <th rowspan="2">Oktober</th>
-                <th rowspan="2">November</th>
-                <th rowspan="2">Desember</th>
-            <?php endif; ?>
-        </tr>
-        <tr class="text-center">
-            <td style="background-color: #7FFF00; color: #000; position: sticky; left: 395px; z-index: 99; " width="20px">Aman</td>
-            <td style="background-color: #FFFF00; color: #000; position: sticky; left: 445px; z-index: 99; " width="20px">Hati-Hati</td>
-            <td style="background-color: #FF0000; color: #000; position: sticky; left: 480px; z-index: 99;" width="20px">Bahaya</td>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        $no = 1;
-        foreach ($field as $q) {
-            if ($q['kri']) {
-                $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
-                $combo = $this->db->where('id', $q['kri'])->get('bangga_data_combo')->row_array();
-                $combo_stuan = $this->db->where('id', $q['satuan'])->get('bangga_data_combo')->row_array();
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 0; z-index: 94;" width="5%">No</th>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 30px; z-index: 95;" width="10%">Risk Owner</th>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 120px; z-index: 96;" width="15%">Peristiwa Risiko</th>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 250px; z-index: 97;" width="10%">Indikator</th>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 360px; z-index: 98;" width="10%">Satuan</th>
+                    <th colspan="3" class="text-center" style="position: sticky; left: 475px; z-index: 99;" width="28%">Threshold</th>
+                    <?php if ($triwulan == 1): ?>
+                        <th class="text-center" rowspan="2" width="5%">Januari</th>
+                        <th class="text-center" rowspan="2" width="5%">Februari</th>
+                        <th class="text-center" rowspan="2" width="5%">Maret</th>
+                    <?php elseif ($triwulan == 2): ?>
+                        <th class="text-center" rowspan="2" width="5%">April</th>
+                        <th class="text-center" rowspan="2" width="5%">Mei</th>
+                        <th class="text-center" rowspan="2" width="5%">Juni</th>
+                    <?php elseif ($triwulan == 3): ?>
+                        <th class="text-center" rowspan="2" width="5%">Juli</th>
+                        <th class="text-center" rowspan="2" width="5%">Agustus</th>
+                        <th class="text-center" rowspan="2" width="5%">September</th>
+                    <?php elseif ($triwulan == 4): ?>
+                        <th class="text-center" rowspan="2" width="5%">Oktober</th>
+                        <th class="text-center" rowspan="2" width="5%">November</th>
+                        <th class="text-center" rowspan="2" width="5%">Desember</th>
+                    <?php endif; ?>
+                </tr>
+                <tr class="text-center">
+                    <td class="text-center" style="background-color: #7FFF00; color: #000; position: sticky; left: 475px; z-index: 99;" width="9%">Aman</td>
+                    <td class="text-center" style="background-color: #FFFF00; color: #000; position: sticky; left: 530px; z-index: 99;" width="9%">Hati-Hati</td>
+                    <td class="text-center" style="background-color: #FF0000; color: #000; position: sticky; left: 490px; z-index: 99;" width="9%">Bahaya</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $no = 1;
+                foreach ($field as $q) {
+                    if ($q['kri']) {
+                        $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
+                        $combo = $this->db->where('id', $q['kri'])->get('bangga_data_combo')->row_array();
+                        $combo_stuan = $this->db->where('id', $q['satuan'])->get('bangga_data_combo')->row_array();
 
-                $level_1 = range($q['min_rendah'], $q['max_rendah']);
-                $level_2 = range($q['min_menengah'], $q['max_menengah']);
-                $level_3 = range($q['min_tinggi'], $q['max_tinggi']);
+                        $level_1 = range($q['min_rendah'], $q['max_rendah']);
+                        $level_2 = range($q['min_menengah'], $q['max_menengah']);
+                        $level_3 = range($q['min_tinggi'], $q['max_tinggi']);
 
-                if (in_array($data, $level_1)) {
-                    $bgres = 'style="background-color: #7FFF00; color: #000;"';
-                } elseif (in_array($data, $level_2)) {
-                    $bgres = 'style="background-color: #FFFF00; color: #000;"';
-                } elseif (in_array($data, $level_3)) {
-                    $bgres = ' style="background-color: #FF0000; color: #000;"';
-                } else {
-                    $bgres = '';
-                }
-        ?>
-        <tr>
-            <td style="background-color: #fff; position: sticky; left: 0; z-index: 94;"><?= $no++ ?></td>
-            <td style="background-color: #fff; position: sticky; left: 30px; z-index: 5;"><?= $q['name'] ?></td>
-            <td style="background-color: #fff; position: sticky; left: 95px; z-index: 96; "><?= $act['event_name'] ?></td>
-            <td style="background-color: #fff; position: sticky; left: 220px; z-index: 97;"><?= $combo['data'] ?></td>
-            <td style="background-color: #fff; position: sticky; left: 330px; z-index: 98; ">
-                <center><?= $combo_stuan['data'] == "%" ? "persentase [%]" : $combo_stuan['data'] ?></center>
-            </td>
-            <td style="background-color: #7FFF00; color: #000; position: sticky; left: 395px; z-index: 99;"><?= $q['min_rendah'] ?> - <?= $q['max_rendah'] ?></td>
-            <td style="background-color: #FFFF00; color: #000; position: sticky; left: 445px; z-index: 99;"><?= $q['min_menengah'] ?> - <?= $q['max_menengah'] ?></td>
-            <td style="background-color: #FF0000; color: #000; position: sticky; left: 480px; z-index: 99;"><?= $q['min_tinggi'] ?> - <?= $q['max_tinggi'] ?></td>
-                            <?php
-                            $start = ($triwulan - 1) * 3 + 1;
-                            $end = $start + 3;
-                            for ($i = $start; $i < $end; $i++): 
-                                $data['id'] = $q['id'];
-                                $data['rcsa_no'] = $q['rcsa_no'];
-                                $res= $this->data->getMonthlyMonitoringGlobal($data, $i);
-                                 ?>
-                                <td  <?=$res['bgres']?> id="kri-<?=$q['id']?><?=$i?>">
-                                    <center><?=$res['data']?></center>
-                                </td>
-                            <?php endfor; ?>
-       
-        </tr>
-        <?php
-            } else { ?>
-        <tr>
-            <td class="text-center" colspan="8">Tidak ada data Key Risk Indikator</td>
-        </tr>
-        <?php } ?>
-        <?php } ?>
-    </tbody>
-</table>
+                        if (in_array($data, $level_1)) {
+                            $bgres = 'style="background-color: #7FFF00; color: #000;"';
+                        } elseif (in_array($data, $level_2)) {
+                            $bgres = 'style="background-color: #FFFF00; color: #000;"';
+                        } elseif (in_array($data, $level_3)) {
+                            $bgres = 'style="background-color: #FF0000; color: #000;"';
+                        } else {
+                            $bgres = '';
+                        }
+                ?>
+                <tr>
+                    <td class="text-center" style="background-color: #fff; position: sticky; left: 0; z-index: 94;"><?= $no++ ?></td>
+                    <td style="background-color: #fff; position: sticky; left: 30px; z-index: 95;"><?= $q['name'] ?></td>
+                    <td style="background-color: #fff; position: sticky; left: 120px; z-index: 96;"><?= $act['event_name'] ?></td>
+                    <td style="background-color: #fff; position: sticky; left: 250px; z-index: 97;"><?= $combo['data'] ?></td>
+                    <td style="background-color: #fff; position: sticky; left: 360px; z-index: 98;">
+                        <center><?= $combo_stuan['data'] == "%" ? "persentase [%]" : $combo_stuan['data'] ?></center>
+                    </td>
+                    <td class="text-center" style="background-color: #7FFF00; color: #000; position: sticky; left: 475px; z-index: 99;"><?= $q['min_rendah'] ?> - <?= $q['max_rendah'] ?></td>
+                    <td class="text-center" style="background-color: #FFFF00; color: #000; position: sticky; left: 530px; z-index: 99;"><?= $q['min_menengah'] ?> - <?= $q['max_menengah'] ?></td>
+                    <td class="text-center" style="background-color: #FF0000; color: #000; position: sticky; left: 490px; z-index: 99;"><?= $q['min_tinggi'] ?> - <?= $q['max_tinggi'] ?></td>
+                    <?php
+                    $start = ($triwulan - 1) * 3 + 1;
+                    $end = $start + 3;
+                    for ($i = $start; $i < $end; $i++): 
+                        $data['id'] = $q['id'];
+                        $data['rcsa_no'] = $q['rcsa_no'];
+                        $res = $this->data->getMonthlyMonitoringGlobal($data, $i);
+                    ?>
+                    <td <?= $res['bgres'] ?> id="kri-<?= $q['id'] ?><?= $i ?>">
+                        <center><?= $res['data'] ?></center>
+                    </td>
+                    <?php endfor; ?>
+                </tr>
+                <?php } else { ?>
+                <tr>
+                    <td class="text-center" colspan="11">Tidak ada data Key Risk Indikator</td>
+                </tr>
+                <?php } ?>
+                <?php } ?>
+            </tbody>
+        </table>
+
 
 
 
