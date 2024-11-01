@@ -43,35 +43,38 @@
 <section class="x_panel">
     <div class="x_title">
         <form method="GET" action="<?= site_url(_MODULE_NAME_REAL_.'/index'); ?>">
-            <div class="row">
+        <div class="row">
                 <div class="col-md-2 col-sm-4 col-xs-6">
                     <label for="filter_periode">Tahun</label>
-                    <select name="periode" id="filter_periode" class="form-control select2">
+                    <select name="periode" id="filter_periode" class="form-control select2" style="width: 100%;">
                         <?php foreach ($cboPeriod as $key => $value): ?>
                             <option value="<?= ($key == 0) ? '0' : $value; ?>" <?= ($this->input->get('periode') == $value) ? 'selected' : ''; ?>><?= $value; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-6 col-sm-8 col-xs-6">
                     <label for="filter_owner">Risk Owner</label>
-                    <select name="owner" id="filter_owner" class="form-control select2">
+                    <select name="owner" id="filter_owner" class="form-control select2" style="width: 100%;">
                         <?php foreach ($cboOwner as $key => $value): ?>
                             <option value="<?= $key; ?>" <?= ($this->input->get('owner') == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-2 col-sm-4 col-xs-4">
+
+                <div class="col-md-2 col-sm-2 col-xs-2">
                     <label for="filter_triwulan">Triwulan</label>
-                    <select name="triwulan" id="filter_triwulan" class="form-control select2">
+                    <select name="triwulan" id="filter_triwulan" class="form-control select2" style="width: 80%;">
                         <option value="1" <?= ($triwulan == 1) ? 'selected' : ''; ?>>Triwulan 1</option>
                         <option value="2" <?= ($triwulan == 2) ? 'selected' : ''; ?>>Triwulan 2</option>
                         <option value="3" <?= ($triwulan == 3) ? 'selected' : ''; ?>>Triwulan 3</option>
                         <option value="4" <?= ($triwulan == 4) ? 'selected' : ''; ?>>Triwulan 4</option>
                     </select>
                 </div>
-                <div class="col-md-2 col-sm-4 col-xs-4 mt-3">
+
+                <div class="col-md-2 col-sm-2 col-xs-2 mt-3">
                     <button type="submit" class="btn btn-success text-white" style="margin-top: 25px;">
-                        <span class="glyphicon glyphicon-search"></span> Filter
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;Filter
                     </button>
                 </div>
             </div>
