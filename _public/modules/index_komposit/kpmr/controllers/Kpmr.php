@@ -3,7 +3,7 @@
 //NamaTbl, NmFields, NmTitle, Type, input, required, search, help, isiedit, size, label 
 //$tbl, 'id', 'id', 'int', false, false, false, true, 0, 4, 'l_id'
 
-class Kmpr extends BackendController
+class Kpmr extends BackendController
 {
 	var $type_risk = 0;
 	var $table = "";
@@ -20,64 +20,12 @@ class Kmpr extends BackendController
 		$this->cbo_owner 			= $this->get_combo('owner');
 		$this->cbo_loss 			= [1 => 'Ya', 0 => 'Tidak'];
 		$this->cbo_periode 			= $this->get_combo('periode');
-		$this->cbo_periode 			= $this->get_combo('periode');
-		
+ 
 	}
 
-	public function index() {
-		$start_time = microtime(true);
-		$page = $this->input->get('page') ? $this->input->get('page') : 1;
-		$limit = 10; 
- 		$data['periode'] = $this->input->get('periode');
-		$x=$this->authentication->get_info_user();
-		$own=$x['group']['owner']['owner_no'];
- 		if($this->input->get('owner')){
-			$own= $this->input->get('owner');
-		}
-		$twD = date('n'); 
-
-		if ($twD >= 1 && $twD <= 3) {
-			$tw = 1; 
-		} elseif ($twD >= 4 && $twD <= 6) {
-			$tw = 2; 
-		} elseif ($twD >= 7 && $twD <= 9) {
-			$tw = 3;
-		} elseif ($twD >= 10 && $twD <= 12) {
-			$tw = 4;
-		} else {
-			$tw = 0;
-		}
-		
-		// Cek apakah ada input triwulan dari form, jika ada, gunakan triwulan dari input
-		if ($this->input->get('triwulan')) {
-			$tw = $this->input->get('triwulan');
-		}
-		$data['owner'] =$own;
- 		$total_data = $this->data->count_all_data($data); 
-		$total_pages = ceil($total_data / $limit); 
-		$offset = ($page - 1) * $limit;
-		$x['total_data'] = $total_data;
-		$x['start_data'] = $offset + ($total_data>0)?1:0;
-		$x['end_data'] = min($offset + $limit, $total_data);
-		$x['cboPeriod'] = $this->cbo_periode;
-		$x['triwulan'] = $tw;
-		$x['cboOwner'] = $this->cbo_parent;
-		$x['field'] = $this->data->getDetail($data, $limit, $offset);
-		$x['cb_like'] = $this->get_combo('likelihood');
-		$x['cb_impact'] = $this->get_combo('impact');
-		
-	
-		
-
- 		if ($total_data > 0) {
-			$x['pagination'] = $this->pagination($data, $total_pages, $page);
-		} else {
-			$x['pagination'] = '';  
-		}
-		$end_time = microtime(true);
-		$execution_time = ($end_time - $start_time);
-		$x['timeLoad'] =round($execution_time,2);
-		$this->template->build('home', $x);
+	public function index() { 
+ 		$data['kompositData'] = $this->data->getKompositData();
+		 		$this->template->build('home', $data);
 	}
 
 	public function save(){
