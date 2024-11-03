@@ -1,7 +1,7 @@
     <div>
         <span class="btn btn-primary btn-sm" style="bottom: 30px; right: 15px; cursor:pointer; position: fixed; padding: 5px 15px; z-index: 1000;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan     </span>
     </div>
-    
+    <h3>Parameter Penentuan Hasil Penilaian Pencapaian Kinerja</h3>
  <table class="display table table-bordered" id="tbl_event">
     <thead>
         <tr>

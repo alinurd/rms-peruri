@@ -1,7 +1,7 @@
     <div>
         <span class="btn btn-primary btn-sm" style="bottom: 30px; right: 15px; cursor:pointer; position: fixed; padding: 5px 15px; z-index: 1000;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan     </span>
     </div>
-    
+    <h3>Parameter Kualitas Penerapan Manajemen Risiko (KPMR)</h3>
  <table class="display table table-bordered" id="tbl_event">
     <thead>
         <tr>
@@ -9,11 +9,11 @@
             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="15%" colspan="2">Parameter</th>
             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Skala</th>
             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Hasil Penilaian</th>
-            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Target RKAP 2023</th>
-            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Realisasi Tw 1 2024</th>
-            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">%</th>
-            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Skala</th>
-            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Hasil</th>
+            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Realisasi</th>
+            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Perhitungan</th>
+            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Hasil Penilaian</th>
+            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Penjelasan</th>
+            <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Evidence</th>
         </tr>
     </thead>
     <tbody>
@@ -49,10 +49,10 @@
                         <td width="5%"><?= $pk['skala']; ?></td>
                         <td width="5%"><?= $pk['penilaian']; ?></td>
                         <td width="5%"><input type="text" style="width: 110px;"></td>
-                        <td width="5%"><input type="text" style="width: 110px;"></td>
-                        <td class="text-center" width="10%">%</td>
-                        <td width="5%"><input type="text" style="width: 110px;"></td>
-                        <td width="5%">hasil</td>
+                        <td width="5%">Perhitungan</td>
+                        <td class="text-center" width="10%">Hasil Penilaian</td>
+                        <td width="5%"><textarea name="penjelasan" id="penjelasan"></textarea></td>
+                        <td width="5%"><textarea name="evidence" id="evidence"></textarea></td>
                     <?php endif; ?>
                 </tr>
 
@@ -68,11 +68,11 @@
                         <td width="5%"><?= $d['skala']; ?></td>
                         <td width="5%"><?= $d['penilaian']; ?></td>
                         <td width="5%"><input type="text" style="width: 110px;"></td>
-                        <td width="5%"><input type="text" style="width: 110px;"></td>
-                        <td class="text-center" width="10%">%</td>
-                        <td width="5%"><input type="text" style="width: 110px;"></td>
-                        <td width="5%">hasil</td>
-                    </tr>
+                        <td width="5%">Perhitungan</td>
+                        <td class="text-center" width="10%">Hasil Penilaian</td>
+                        <td width="5%"><textarea name="penjelasan" id="penjelasan"></textarea></td>
+                        <td width="5%"><textarea name="evidence" id="evidence"></textarea></td>
+                     </tr>
                 <?php endforeach; ?>
             <?php endforeach; ?>
             <?php if (count($countDetail) > 0) : ?>
