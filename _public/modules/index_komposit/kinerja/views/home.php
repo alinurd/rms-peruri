@@ -1,16 +1,16 @@
-<div class="table-responsive">
+<!-- <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> -->
     <table class="display table table-bordered" id="tbl_event">
         <thead>
             <tr>
-                <th class="text-center" width="5%">No.</th>
-                <th class="text-center" width="15%" colspan="2">Parameter</th>
-                <th class="text-center" width="5%">Skala</th>
-                <th class="text-center" width="5%">Hasil Penilaian</th>
-                <th class="text-center" width="5%">Target RKAP 2023 </th>
-                <th class="text-center" width="5%">Realisasi Tw 1 2024</th>
-                <th class="text-center" width="10%">%</th>
-                <th class="text-center" width="5%">Skala</th>
-                <th class="text-center" width="10%">Hasil</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">No.</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="15%" colspan="2">Parameter</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Skala</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Hasil Penilaian</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Target RKAP 2023</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Realisasi Tw 1 2024</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">%</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Skala</th>
+                <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Hasil</th>
             </tr>
         </thead>
         <tbody>
@@ -63,5 +63,12 @@
                 <?php endforeach; ?>
             <?php endforeach; ?>
         </tbody>
+        
+        <tfoot style="position: sticky; bottom: 0; background: #fff; z-index: 1;" >
+            <tr>
+                <th class="text-center" colspan="9">Hasil Perhitungan Indikator Kinerja (30%*100)+(30%*82,5)+(40%*65)</th>
+                <th class="text-center" >Hasil</th>
+            </tr>
+        </tfoot>
     </table>
-</div>
+<!-- </div> -->
