@@ -40,6 +40,7 @@ $config['modules_locations'] = array(
 	APPPATH.'modules/modul_hiradc/' => '../modules/modul_hiradc/',
 	APPPATH.'modules/modul_irp/' => '../modules/modul_irp/',
 	APPPATH.'modules/top_risk/' => '../modules/top_risk/',
+	APPPATH.'modules/index_komposit/' => '../modules/index_komposit/',
 	);
 	
 $config['file_path']='./themes/file/';
