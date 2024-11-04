@@ -51,9 +51,11 @@
                                 <td width="5%" rowspan="<?= count($c['parent']) ?>">
                                     <select class="form-control skala-dropdown" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>"  style="width: 110px;"
                                         data-bobot="<?= $pk['bobot']; ?>"
+                                        data-id-parent="<?= $pk['id']; ?>"
                                          data-input-id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" 
                                         data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $pk['id']; ?>"
                                         >
+                                        <option  selected  value="0" data-bobot="0" data-penilaian="0"> -Skala- </option>
                                         <?php foreach ($c['parent'] as $option) : ?>
                                             <option value="<?= $option['skala']; ?>"
                                                 data-bobot="<?= $pk['bobot']; ?>"
@@ -70,7 +72,7 @@
                                 </td>
                                 <td  rowspan="<?= count($c['parent']) ?>">
                                     <center>
-                                        <input class="form-control" style="width: 100px; text-align: center;" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
+                                        <input class="form-control perhitungan-<?= $pk['id']; ?>" style="width: 100px; text-align: center;" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
                                     </center>
                                 </td>
                             <?php endif; ?>
@@ -100,7 +102,8 @@
                                         data-urut="<?= $d['urut']; ?>"
                                         data-id-parent="<?= $d['parent']; ?>"
                                         data-input-id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>"
-                                         data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $d['id']; ?>">>
+                                         data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $d['id']; ?>">
+                                         <option  selected  value="0" data-bobot="0" data-penilaian="0"> -Skala- </option>
                                         <?php foreach ($countDetail as $option) : ?>
                                             <option value="<?= $option['skala']; ?>"
                                                 data-bobot="<?= $pk['bobot']; ?>"
@@ -136,18 +139,21 @@
                     <tr>
                         <td class="text-center text-right" style="text-align: right;" colspan="6"><strong>Total Point <?=$nc?>:  </strong></td>
                         <td class="text-center">
-                            <input class="form-control" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $pk['id']; ?>" name="totalDetail-<?= $pk['id']; ?>" readonly>
+                            <input class="form-control perhitungan-<?= $pk['id']; ?>" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $pk['id']; ?>" name="totalDetail-<?= $pk['id']; ?>" readonly>
                         </td>
                     </tr>
                 <?php endif; ?>
-
             <?php
         $nc++; endforeach; ?>
         </tbody>
 
         <tr style="position: sticky; bottom: 0; background: #367FA9; color:#fff; z-index: 1;">
             <th class="text-center" style="font-weight:bold; color:#fff;" colspan="9">Hasil Perhitungan Indikator: </th>
-            <th class="text-center" style="background:yellow; color:#000;"><?= $totalPenilaianCombo; ?></th>
+            <th class="text-center" style="background:yellow; color:#000;">
+            <input class="form-control " style="width: 100px; text-align: center" type="hidden" id="totalPerhitungan" name="totalPerhitungan" readonly>
+
+                <span id="totalPerhitunganText"></span>
+            </th>
         </tr>
     </table>
     </div>

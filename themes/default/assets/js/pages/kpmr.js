@@ -15,9 +15,19 @@ $(document).ready(function() {
 
 		   var total = 0;
 		   $('.subTotalDetail-'+ idParent).each(function() {
-			   total += parseFloat($(this).val()) || 0; // Jika nilai kosong, set 0
+			   total += parseFloat($(this).val()) || 0;
 		   });
- // total=urut+idParent;
-        $('#totalDetail-' + idParent).val(total); // Mengatur 2 angka desimal jika diperlukan
+		   $('#totalDetail-' + idParent).val(total)
+
+
+		   var totalPerhitungan = 0;
+		   $('.perhitungan-'+ idParent).each(function() {
+			   totalPerhitungan += parseFloat($(this).val()) || 0; 
 		   });
+	
+         $('#totalPerhitungan').val(totalPerhitungan); 
+         $('#totalPerhitunganText').html(totalPerhitungan); 
+		   
+		
+		});
 });
