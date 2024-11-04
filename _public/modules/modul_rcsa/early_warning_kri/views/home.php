@@ -2,12 +2,12 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-sm-8 panel-heading">
-                <h3 style="padding-left:10px;">Risk Monitoring</h3>
+                <h3 style="padding-left:10px;">Early Warning Kri</h3>
             </div>
             <div class="col-sm-4" style="text-align:right">
                 <ul class="breadcrumb">
                     <li> <a href="#"> <i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="#">Risk-Monitoring</a></li>
+                    <li><a href="#">Early-Warning-Kri</a></li>
                 </ul>
             </div>
         </div>
