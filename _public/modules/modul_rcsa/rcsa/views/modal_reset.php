@@ -49,7 +49,7 @@
     <?php 
         for ($i=0; $i < $jml_id_rcsa; $i++) { ?>
 
-            <input type="text" name="id_rcsa[]" id="id_rcsa[]" value="<?=$id_rcsa[$i];?>">
+            <input type="hidden" name="id_rcsa[]" id="id_rcsa[]" value="<?=$id_rcsa[$i];?>">
     <?php
         }
     ?>
