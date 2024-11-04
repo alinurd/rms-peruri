@@ -11,7 +11,7 @@ $(document).ready(function() {
  
 	   	$('#' + inputId).val(hasil);
 	  	var rumus = $(this).data('input-rumus-id');
-	   	$('#' + rumus).val(bobot > 0 ?   + bobot + ' X ' + penilaian : penilaian);
+	   	$('#' + rumus).val(bobot > 0 ?   + bobot + '% X ' + penilaian : penilaian);
 
 		   var total = 0;
 		   $('.subTotalDetail-'+ idParent).each(function() {
