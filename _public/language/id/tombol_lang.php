@@ -18,6 +18,7 @@ $lang['msg_tombol_next']			= "Lanjut";
 $lang['msg_tombol_back']			= "Kembali";
 $lang['msg_tombol_send']			= "Kirim";
 $lang['msg_tombol_change_pass']		= "Ganti Pass";
+$lang['msg_tombol_reset']			= "Reset";
 
 $lang['msg_prop_tombol_add']		= "Buat Data Baru";
 $lang['msg_prop_tombol_del']		= "Hapus Data yang Terpilih";

@@ -97,6 +97,10 @@ function cetak_lap(tipe)
 				echo $tombol;
 			elseif ($key=='print' && $privilege['cetak']=='1')
 				echo $tombol;
+			elseif ($key=='res')
+				if ($this->uri->segment(1) == 'rcsa') {
+					echo $tombol;
+				}
 			elseif ($key=='other'){
 				if (is_array($tombol)){
 					if (array_key_exists('right', $tombol)){
@@ -340,6 +344,7 @@ function cetak_lap(tipe)
   </div>
 </div>
 
+
 <script>
 	
 	$(function() {
@@ -355,6 +360,7 @@ function cetak_lap(tipe)
     });
 	$(this).css('width', '100%');
   });
+
 });
 	 
 
@@ -368,6 +374,32 @@ function cetak_lap(tipe)
 
     // Penyesuaian margin
     $("#datatables_filter").css('margin-right', '5px');
+
+	// $("#resetBtn").click(function () {
+	// 	// Array untuk menyimpan nilai checkbox yang dipilih
+	// 	let selectedValues = [];
+
+	// 	// Loop setiap checkbox yang dipilih dan ambil nilainya
+	// 	$('input[name="check_item[]"]:checked').each(function () {
+	// 	selectedValues.push($(this).val());
+	// 	});
+
+	// 	console.log(selectedValues);
+
+	// 	// Tampilkan nilai checkbox yang dipilih di dalam modal
+	// 	// $(".modal-body").html(selectedValues.join("<br>"));
+	// 	// $("#modalUpdate").modal('show');
+	// 	$("#modal_general").find(".modal-body").html(selectedValues.join("<br>"));
+	// 	$("#modal_general").find(".modal-title").html("Reset Drafting Register");
+	// 	$("#modal_general").modal("show");
+	// });
+	//  // / Event listener untuk elemen <li> dengan kelas "reset pointer"
+	//  $("li.reset.pointer").click(function () {
+
+	// 	// $("#modal_general").find(".modal-body").html(selectedValues.join("<br>"));
+	// 	$("#modal_general").find(".modal-title").html("Reset Drafting Register");
+	// 	$("#modal_general").modal("show");
+	// });
 });
 
 
