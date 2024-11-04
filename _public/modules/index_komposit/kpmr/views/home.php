@@ -50,9 +50,11 @@
                             <td width="5%"><?= $pk['penilaian']; ?></td>
                             <?php if ($pKey === 0) : ?>
                                 <td width="5%" rowspan="<?= count($c['parent']) ?>">
-                                    <select class="form-control skala-dropdown" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>"
-                                        data-bobot="<?= $pk['bobot']; ?>" style="width: 110px;"
-                                        data-input-id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $pk['id']; ?>">
+                                    <select class="form-control skala-dropdown" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>"  style="width: 110px;"
+                                        data-bobot="<?= $pk['bobot']; ?>"
+                                         data-input-id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" 
+                                        data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $pk['id']; ?>"
+                                        >
                                         <?php foreach ($c['parent'] as $option) : ?>
                                             <option value="<?= $option['skala']; ?>"
                                                 data-bobot="<?= $pk['bobot']; ?>"
@@ -84,7 +86,7 @@
                     $totalPenilaianCombo = 0;
                     $n = 1;
                      foreach ($countDetail as $dKey => $d) :
-                        $totalPenilaian += $d['penilaian'];
+                         $totalPenilaian += $d['penilaian'];
                         $totalPenilaianCombo += $d['penilaian'];
                     ?>
                         <tr>
@@ -94,9 +96,11 @@
                             
                             <?php if ($dKey === 0) : ?>
                                 <td width="5%" rowspan="<?= count($countDetail) ?>">
-                                    <select class="form-control skala-dropdown" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>"
-                                        data-bobot="<?= $pk['bobot']; ?>" style="width: 110px;"
-                                        data-input-id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>" data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $d['id']; ?>">>
+                                    <select class="form-control skala-dropdown" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>"style="width: 110px;"
+                                        data-bobot="<?= $pk['bobot']; ?>"
+                                        data-id-parent="<?= $d['parent']; ?>"
+                                        data-input-id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>"
+                                         data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $d['id']; ?>">>
                                         <?php foreach ($countDetail as $option) : ?>
                                             <option value="<?= $option['skala']; ?>"
                                                 data-bobot="<?= $pk['bobot']; ?>"
@@ -130,8 +134,10 @@
                 <?php endforeach; ?>
                 <?php if (count($countDetail) > 0) : ?>
                     <tr>
-                        <td class="text-center text-right" style="text-align: right;" colspan="8"><strong>Total Point: </strong></td>
-                        <td class="text-center"><strong><?= $totalPenilaianCombo; ?></strong></td>
+                        <td class="text-center text-right" style="text-align: right;" colspan="6"><strong>Total Point: </strong></td>
+                        <td class="text-center">
+                            <input class="form-control" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $pk['id']; ?>" name="totalDetail-<?= $pk['id']; ?>" readonly>
+                        </td>
                     </tr>
                 <?php endif; ?>
 
