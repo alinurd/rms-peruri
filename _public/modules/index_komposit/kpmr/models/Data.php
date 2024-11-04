@@ -29,6 +29,7 @@ class Data extends MX_Model {
             
             foreach ($parents as $parent) {
                 $parentData = [
+                    'id' => $parent['id'],
                     'urut' => $parent['urut'],
                     'parameter' => $parent['parameter'],
                     'skala' => $parent['skala'],
