@@ -31,7 +31,7 @@
                 }
             ?>
                 <tr style="background-color:#d5edef;">
-                    <td class="text-center" width="5%" rowspan="<?= $parentRowspan + $ss ?>"><?= $nc++ ?></td>
+                    <td class="text-center" width="5%" rowspan="<?= $parentRowspan + $ss ?>"><?= $nc ?></td>
                     <td colspan="9"><b><?= $c['data'] ?></b></td>
                 </tr>
 
@@ -42,9 +42,8 @@
                             <?php if (count($countDetail) > 0) : ?>
                             colspan="8"
                             <?php endif; ?>>
-                           id:<?= $pk['id']; ?>- BOBOT: <?= $pk['bobot']; ?>
+                            <?= $pk['parameter']; ?>                        
                         </td>
-
                         <?php if (count($countDetail) === 0) : ?>
                             <td width="5%"><?= $pk['skala']; ?></td>
                             <td width="5%"><?= $pk['penilaian']; ?></td>
@@ -98,6 +97,7 @@
                                 <td width="5%" rowspan="<?= count($countDetail) ?>">
                                     <select class="form-control skala-dropdown" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>"style="width: 110px;"
                                         data-bobot="<?= $pk['bobot']; ?>"
+                                        data-urut="<?= $d['urut']; ?>"
                                         data-id-parent="<?= $d['parent']; ?>"
                                         data-input-id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>"
                                          data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $d['id']; ?>">>
@@ -118,7 +118,7 @@
                                 <td  rowspan="<?= count($countDetail) ?>">
 
                                 <center>
-                                   <input class="form-control" style="width: 100px; text-align: center" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
+                                   <input class="form-control subTotalDetail-<?= $d['parent']; ?>" style="width: 100px; text-align: center" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
                                    </center>
                                 </td>
                             <?php endif; ?>
@@ -134,14 +134,15 @@
                 <?php endforeach; ?>
                 <?php if (count($countDetail) > 0) : ?>
                     <tr>
-                        <td class="text-center text-right" style="text-align: right;" colspan="6"><strong>Total Point: </strong></td>
+                        <td class="text-center text-right" style="text-align: right;" colspan="6"><strong>Total Point <?=$nc?>:  </strong></td>
                         <td class="text-center">
                             <input class="form-control" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $pk['id']; ?>" name="totalDetail-<?= $pk['id']; ?>" readonly>
                         </td>
                     </tr>
                 <?php endif; ?>
 
-            <?php endforeach; ?>
+            <?php
+        $nc++; endforeach; ?>
         </tbody>
 
         <tr style="position: sticky; bottom: 0; background: #367FA9; color:#fff; z-index: 1;">
