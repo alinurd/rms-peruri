@@ -151,7 +151,6 @@
         <input class="form-control " type="hidden" id="totalPerhitungan" name="totalPerhitungan" readonly>
     </th>
     <th class="text-center" colspan="2">
-        <!-- Tombol Simpan dengan gaya yang lebih menarik -->
         <button class="btn btn-save" onclick="simpanData()">
             <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
         </button>
