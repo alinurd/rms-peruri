@@ -33,6 +33,7 @@ class Data extends MX_Model {
                     'parameter' => $parent['parameter'],
                     'skala' => $parent['skala'],
                     'penilaian' => $parent['penilaian'],
+                    'bobot' => $parent['bobot'],
                     'detail' => []
                 ];
  
