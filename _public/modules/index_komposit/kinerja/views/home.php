@@ -42,7 +42,7 @@
                 ?>
                     <tr>
                         <td rowspan="<?= count($countDetailx) + 1 ?>"><?= $pk['urut']; ?></td>
-                        <td width="40%"
+                        <td width="30%"
                             <?php if (count($countDetailx) > 0) : ?>
                             colspan="8"
                             <?php endif; ?>>
@@ -54,9 +54,9 @@
                             <td width="5%"><?= $pk['penilaian']; ?></td>
                             <?php if ($pKey === 0) : ?>
 
-                            <td width="5%"><input type="text" style="width: 110px;"></td>
-                            <td width="5%"><input type="text" style="width: 110px;"></td>
-                            <td class="text-center" width="10%">%</td>
+                                <td ><input type="text" style="width: 150px;"></td>
+                                <td ><input type="text" style="width: 150px;"></td>
+                            <td class="text-center" width="10%">target/realisasi</td>
                             <td width="5%" rowspan="<?= count($c['parent']) ?>">
                                     <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>" style="width: 110px;"
                                         data-bobot="<?= $pk['bobot']; ?>"
@@ -73,7 +73,8 @@
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
-                                </td>                            <td width="5%">hasil</td>
+                                </td>                            
+                                <td width="5%">hasil</td>
                             <?php endif; ?>
 
                         <?php endif; ?>
@@ -87,12 +88,12 @@
                         $totalPenilaianCombo += $d['penilaian'];
                     ?>
                         <tr>
-                            <td width="40%"><?= $n++; ?>.&nbsp; <?= $d['parameter']; ?></td>
+                            <td width="30%"><?= $n++; ?>.&nbsp; <?= $d['parameter']; ?></td>
                             <td width="5%"><?= $d['skala']; ?></td>
                             <td width="5%"><?= $d['penilaian']; ?></td>
                             <?php if ($dKey === 0) : ?>
-                                <td width="5%"><input type="text" style="width: 110px;"></td>
-                                <td width="5%"><input type="text" style="width: 110px;"></td>
+                                <td ><input type="text" style="width: 150px;"></td>
+                                <td ><input type="text" style="width: 150px;"></td>
                                 <td class="text-center" width="10%">%</td>
                                 <td width="5%" rowspan="<?= count($countDetailx) ?>">
                                     <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>" style="width: 110px;"
