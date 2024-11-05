@@ -6,6 +6,7 @@
             <th>Parameter</th>
             <th width="10%">Skala</th>
             <th width="10%">Hasil Penilaian</th>
+            <th width="10px">Bobot</th>
             <th width="5%">Aksi</th>
         </tr>
     </thead>
@@ -25,6 +26,14 @@
             <td><input class="form-control" type="text" name="param[]" value="<?= $p['parameter'] ?>" placeholder="Parameter"></td>
             <td><input class="form-control" type="number" name="skala[]" value="<?= $p['skala'] ?>" placeholder="Skala"></td>
             <td><input class="form-control" type="number" name="penilaian[]" value="<?= $p['penilaian'] ?>" placeholder="Hasil Penilaian"></td>
+            <td>
+                
+<div class="input-group" width="10px">
+  <input class="form-control" width="10px" type="number" name="bobot[]" value="<?= $p['bobot'] ?>"  placeholder="bobot" >
+  <span class="input-group-addon" id="bobot">%</span>
+</div>
+                
+            </td>
             <td>
                 <button type="button" class="btn btn-info add-Detailxxxx" data-urutan="<?= $p['urut'] ?>"><i class="fa fa-plus"></i></button>
                 <button type="button" class="btn btn-danger delete-row"><i class="fa fa-trash"></i></button>
@@ -137,6 +146,7 @@ function findLastDetailRow(mainRow) {
         <td><input class="form-control" type="text" name="param[]" placeholder="Parameter"></td>
         <td><input class="form-control" type="number" name="skala[]" placeholder="Skala"></td>
         <td><input class="form-control" type="number" name="penilaian[]" placeholder="Hasil Penilaian"></td>
+        <td><input class="form-control" type="number" name="bobot[]" placeholder="bobot"></td>
         <td>
             <button type="button" class="btn btn-info add-Detail"><i class="fa fa-plus"></i></button>
             <button type="button" class="btn btn-danger delete-row"><i class="fa fa-trash"></i></button>
