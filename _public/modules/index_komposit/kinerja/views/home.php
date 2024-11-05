@@ -36,6 +36,12 @@
 
              <?php foreach ($c['parent'] as $pKey => $pk) :
                     $countDetailx = $c['detail'][$pk['id']];
+                    $resParents = $this->db
+                    ->where('id_komposit', $pk['id_combo'])
+                    //  ->where('urut', $pk['urut'])
+                    ->order_by('urut')
+                    ->get('bangga_indexkom_realisasi')
+                    ->row_array();
                 ?>
                  <tr>
                      <td rowspan="<?= count($countDetailx) + 1 ?>"><?= $pk['urut']; ?></td>
@@ -51,23 +57,16 @@
                          <td width="5%"><?= $pk['penilaian']; ?></td>
                          <?php if ($pKey === 0) : ?>
                              <td>
-                                 <input type="text" id="target-<?= $pk['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $pk['id']; ?>)">
+                                 <input type="text" id="target-<?= $pk['id']; ?>" value="<?=$resParents['target']?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $pk['id']; ?>)">
                              </td>
                              <td>
-                                 <input type="text" id="realisasitw-<?= $pk['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $pk['id']; ?>)">
+                                 <input type="text" id="realisasitw-<?= $pk['id']; ?>" data-absolut="0" value="<?=$resParents['realisasitw']?>"  style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $pk['id']; ?>)" >
                              </td>
                              <td class="text-center" width="10%">
-                                 Absolute ?<br>
-                                 <input type="radio" id="isAbsolute-<?= $pk['id']; ?>-1" name="absolut[<?= $pk['id']; ?>]" value="1" onclick="updatePercentage(<?= $pk['id']; ?>)">
-                                 <label for="isAbsolute-<?= $pk['id']; ?>-1">Ya</label>
-
-                                 <input type="radio" id="isAbsolute-<?= $pk['id']; ?>-0" name="absolut[<?= $pk['id']; ?>]" value="0" onclick="updatePercentage(<?= $pk['id']; ?>)" checked>
-                                 <label for="isAbsolute-<?= $pk['id']; ?>-0">Tidak</label>
-
+                             <input type="checkbox" id="isAbsolute-<?= $pk['id']; ?>-1" name="absolut[]" value="1" <?= $resParents['absolut'] > 0 ? 'checked' : '' ?> onclick="updatePercentage(<?= $pk['id']; ?>)">
+                             <label for="isAbsolute-<?= $pk['id']; ?>-1">Absolute</label
                                  <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>
                              </td>
-
-
                              <td>
                                  <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>" style="width: 110px;"
                                      data-bobot="<?= $pk['bobot']; ?>"
@@ -103,6 +102,12 @@
                     foreach ($countDetailx as $dKey => $d) :
                         $totalPenilaian += $d['penilaian'];
                         $totalPenilaianCombo += $d['penilaian'];
+                        $resDetail = $this->db
+                            ->where('id_komposit', $d['id_param'])
+                            ->where('urut', $pk['urut'])
+                            ->order_by('urut')
+                            ->get('bangga_indexkom_realisasi')
+                            ->row_array();
                     ?>
                      <tr>
                          <td width="30%"><?= $n++; ?>.&nbsp; <?= $d['parameter']; ?></td>
@@ -110,17 +115,14 @@
                          <td width="5%"><?= $d['penilaian']; ?></td>
                          <?php if ($dKey === 0) : ?>
                              <td>
-                                 <input type="text" class="form-control" id="target-<?= $d['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $d['id']; ?>)">
+                                 <input type="text" class="form-control" id="target-<?= $d['id']; ?>" value="<?=$resDetail['target']?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $d['id']; ?>)">
                              </td>
                              <td>
-                                 <input type="text" class="form-control" id="realisasitw-<?= $d['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $d['id']; ?>)">
+                                 <input type="text" class="form-control" id="realisasitw-<?= $d['id']; ?>" value="<?=$resDetail['realisasitw']?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $d['id']; ?>)">
                              </td>
                              <td class="text-center" width="10%">
-                                 Absolute ?<br>
-                                 <input type="radio" id="isAbsolute-<?= $d['id']; ?>-1" name="absolut[]" value="1" onclick="updatePercentage(<?= $d['id']; ?>)">
-                                 <label for="isAbsolute-<?= $d['id']; ?>-1">Ya</label>
-                                 <input type="radio" id="isAbsolute-<?= $d['id']; ?>-0" name="absolut[]" value="0" onclick="updatePercentage(<?= $d['id']; ?>)">
-                                 <label for="isAbsolute-<?= $d['id']; ?>-0">Tidak</label>
+                                 <input type="checkbox" id="isAbsolute-<?= $d['id']; ?>-1" name="absolut[]" value="1" onclick="updatePercentage(<?= $d['id']; ?>)" <?= $resDetail['absolut'] > 0 ? 'checked' : '' ?> >
+                                 <label for="isAbsolute-<?= $d['id']; ?>-1">Absolute</label> 
                                  <br><span class="badge" id="persentase-<?= $d['id']; ?>">0 %</span>
                              </td>
                              <td width="5%" rowspan="<?= count($countDetailx) ?>">

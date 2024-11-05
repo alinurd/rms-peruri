@@ -56,6 +56,7 @@ class Data extends MX_Model {
     function simpan($data) {
          foreach ($data['id'] as $index => $id) {
              $upd = array(
+                'jenis' => 0,
                 'id_komposit' => $id,
                 'urut' => $data['urut'][$index],
                 'penjelasan' => $data['penjelasan'][$index],

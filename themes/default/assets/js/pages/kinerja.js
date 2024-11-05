@@ -11,8 +11,7 @@ $(document).ready(function () {
 
     $("#simpan").click(function () {
         var ids = [];
-        var penjelasans = []; // Pastikan ada input untuk ini
-        var realisasi = [];
+         var realisasi = [];
         var urut = [];
         var target = [];
         var realisasitw = [];
@@ -25,42 +24,35 @@ $(document).ready(function () {
         $('input[name="urut[]"]').each(function () {
             urut.push($(this).val());
         });
-    
-        // Ambil nilai dari input target
+     
         $('input[name="target[]"]').each(function () {
             target.push($(this).val());
         });
-    
-        // Ambil nilai dari input realisasitw
+     
         $('input[name="realisasitw[]"]').each(function () {
             realisasitw.push($(this).val());
         });
-    
-        // Ambil nilai dari radio button yang terpilih
-        $('input[name^="absolut["]:checked').each(function () {
-            absolut.push($(this).val());
+     
+        $('input[name="absolut[]"]').each(function () {
+            if ($(this).is(':checked')) {
+                absolut.push($(this).val()); 
+            } else {
+                absolut.push("0");  
+            }
         });
-    
-        // Ambil nilai dari dropdown
+        
+     
         $('select[name="realisasi[]"]').each(function () {
             var selectedOption = $(this).find('option:selected').val();
             realisasi.push(selectedOption);
         });
-    
-        // Debugging: Cek data yang diambil
-        console.log('IDs:', ids);
-        console.log('Urut:', urut);
-        console.log('Target:', target);
-        console.log('Realisasitw:', realisasitw);
-        console.log('Absolut:', absolut);
-        console.log('Realisasi:', realisasi);
-    
+
+  
         var data = {
             'id': ids,
             'urut': urut,
-            'penjelasan': penjelasans, // Pastikan Anda mengisi ini
-            'target': target,
-            'realisasitw': realisasitw, // Pastikan Anda mengisi ini
+             'target': target,
+            'realisasitw': realisasitw, 
             'absolut': absolut,
             'realisasi': realisasi
         };
@@ -70,13 +62,12 @@ $(document).ready(function () {
         // Kirim data ke server
         var parent = $(this).parent();
         var url = modul_name + "/simpan";
-        // cari_ajax_combo("post", parent, data, parent, url, "result");
+        cari_ajax_combo("post", parent, data, parent, url, "result");
     
         return false; // Hentikan form submission
     });
     
-    
-});
+ });
 
 function result(res){
     pesan_toastr('Mohon Tunggu', 'info', 'Prosess', 'toast-top-center', true);
