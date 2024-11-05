@@ -41,7 +41,18 @@
         </div>
     </div>
 <?php // endif; ?> -->
-
+<style>
+        .modal { z-index: 2050; }
+        .double-scroll { width: 100%; }
+        thead th, tfoot th { padding: 5px !important; text-align: center; }
+        .w250 { width: 250px; }
+        .w150 { width: 150px; }
+        .w100 { width: 100px; }
+        .w80 { width: 80px; }
+        .w50 { width: 50px; }
+        td ol { padding-left: 10px; width: 300px; }
+        td ol li { margin-left: 5px; }
+    </style>
 <div class="row">
     <?php
     $jml_id_rcsa = count($id_rcsa);
