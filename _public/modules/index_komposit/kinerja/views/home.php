@@ -51,17 +51,19 @@
                          <td width="5%"><?= $pk['penilaian']; ?></td>
                          <?php if ($pKey === 0) : ?>
                              <td>
-                                 <input type="text" id="target-<?= $pk['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]'" oninput="updatePercentage(<?= $pk['id']; ?>)">
+                                 <input type="text" id="target-<?= $pk['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $pk['id']; ?>)">
                              </td>
                              <td>
-                                 <input type="text" id="realisasitw-<?= $pk['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]'" oninput="updatePercentage(<?= $pk['id']; ?>)">
+                                 <input type="text" id="realisasitw-<?= $pk['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $pk['id']; ?>)">
                              </td>
                              <td class="text-center" width="10%">
-                             Absolute ?<br>
-                                 <input type="radio"  id="calc-type-<?= $pk['id']; ?>" name="absolut[]" value="1" onclick="updatePercentage(<?= $pk['id']; ?>)">
-                                 <label for="absolut-<?= $pk['id']; ?>">Ya</label>
-                                 <input type="radio"  id="calc-type-<?= $pk['id']; ?>" name="absolut[]" value="0" onclick="updatePercentage(<?= $pk['id']; ?>)" checked>
-                                 <label for="non-absolut-<?= $pk['id']; ?>">Tidak</label>
+                                 Absolute ?<br>
+                                 <input type="radio" id="isAbsolute-<?= $pk['id']; ?>-1" name="absolut[<?= $pk['id']; ?>]" value="1" onclick="updatePercentage(<?= $pk['id']; ?>)">
+                                 <label for="isAbsolute-<?= $pk['id']; ?>-1">Ya</label>
+
+                                 <input type="radio" id="isAbsolute-<?= $pk['id']; ?>-0" name="absolut[<?= $pk['id']; ?>]" value="0" onclick="updatePercentage(<?= $pk['id']; ?>)" checked>
+                                 <label for="isAbsolute-<?= $pk['id']; ?>-0">Tidak</label>
+
                                  <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>
                              </td>
 
@@ -84,8 +86,8 @@
                                  </select>
                              </td>
                              <td rowspan="<?= count($c['parent']) ?>">
-                             <input type="hidden" name="id[]" value="<?= $pk['id_combo'] ?>">
-                             <input type="hidden" name="urut[]" value="<?= $pk['urut'] ?>">
+                                 <input type="hidden" name="id[]" value="<?= $pk['id_combo'] ?>">
+                                 <input type="hidden" name="urut[]" value="<?= $pk['urut'] ?>">
                                  <center>
                                      <input class="form-control perhitungan" style="width: 100px; text-align: center;" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
                                  </center>
@@ -108,22 +110,22 @@
                          <td width="5%"><?= $d['penilaian']; ?></td>
                          <?php if ($dKey === 0) : ?>
                              <td>
-                                 <input type="text" class="form-control" id="target-<?= $d['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]'" oninput="updatePercentage(<?= $d['id']; ?>)">
+                                 <input type="text" class="form-control" id="target-<?= $d['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $d['id']; ?>)">
                              </td>
                              <td>
-                                 <input type="text" class="form-control" id="realisasitw-<?= $d['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]'" oninput="updatePercentage(<?= $d['id']; ?>)">
+                                 <input type="text" class="form-control" id="realisasitw-<?= $d['id']; ?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $d['id']; ?>)">
                              </td>
                              <td class="text-center" width="10%">
                                  Absolute ?<br>
-                                 <input type="radio"  id="calc-type-<?= $d['id']; ?>" name="absolut[]" value="1" onclick="updatePercentage(<?= $d['id']; ?>)">
-                                 <label for="absolut-<?= $d['id']; ?>">Ya</label>
-                                 <input type="radio" id="calc-type-<?= $d['id']; ?>" name="absolut[]" value="0" onclick="updatePercentage(<?= $d['id']; ?>)" checked>
-                                 <label for="non-absolut-<?= $d['id']; ?>">Tidak</label>
+                                 <input type="radio" id="isAbsolute-<?= $d['id']; ?>-1" name="absolut[]" value="1" onclick="updatePercentage(<?= $d['id']; ?>)">
+                                 <label for="isAbsolute-<?= $d['id']; ?>-1">Ya</label>
+                                 <input type="radio" id="isAbsolute-<?= $d['id']; ?>-0" name="absolut[]" value="0" onclick="updatePercentage(<?= $d['id']; ?>)">
+                                 <label for="isAbsolute-<?= $d['id']; ?>-0">Tidak</label>
                                  <br><span class="badge" id="persentase-<?= $d['id']; ?>">0 %</span>
                              </td>
                              <td width="5%" rowspan="<?= count($countDetailx) ?>">
-                             <input type="hidden" name="id[]" value="<?= $d['id_param'] ?>">
-                             <input type="hidden" name="urut[]" value="<?= $d['urut'] ?>">
+                                 <input type="hidden" name="id[]" value="<?= $d['id_param'] ?>">
+                                 <input type="hidden" name="urut[]" value="<?= $d['urut'] ?>">
                                  <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>" style="width: 110px;"
                                      data-bobot="<?= $pk['bobot']; ?>"
                                      data-urut="<?= $d['urut']; ?>"

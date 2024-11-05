@@ -11,51 +11,71 @@ $(document).ready(function () {
 
     $("#simpan").click(function () {
         var ids = [];
-        var penjelasans = [];
+        var penjelasans = []; // Pastikan ada input untuk ini
         var realisasi = [];
         var urut = [];
         var target = [];
         var realisasitw = [];
         var absolut = [];
- 
+    
         $('input[name="id[]"]').each(function () {
             ids.push($(this).val());
         });
+    
         $('input[name="urut[]"]').each(function () {
             urut.push($(this).val());
         });
+    
+        // Ambil nilai dari input target
         $('input[name="target[]"]').each(function () {
             target.push($(this).val());
         });
-
+    
+        // Ambil nilai dari input realisasitw
         $('input[name="realisasitw[]"]').each(function () {
             realisasitw.push($(this).val());
         });
-        $('input[name="absolut[]"]').each(function () {
+    
+        // Ambil nilai dari radio button yang terpilih
+        $('input[name^="absolut["]:checked').each(function () {
             absolut.push($(this).val());
         });
- 
+    
+        // Ambil nilai dari dropdown
         $('select[name="realisasi[]"]').each(function () {
             var selectedOption = $(this).find('option:selected').val();
             realisasi.push(selectedOption);
         });
- 
+    
+        // Debugging: Cek data yang diambil
+        console.log('IDs:', ids);
+        console.log('Urut:', urut);
+        console.log('Target:', target);
+        console.log('Realisasitw:', realisasitw);
+        console.log('Absolut:', absolut);
+        console.log('Realisasi:', realisasi);
+    
         var data = {
             'id': ids,
             'urut': urut,
-            'penjelasan': penjelasans,
+            'penjelasan': penjelasans, // Pastikan Anda mengisi ini
             'target': target,
-            'realisasitw': realisasitw,
+            'realisasitw': realisasitw, // Pastikan Anda mengisi ini
             'absolut': absolut,
             'realisasi': realisasi
         };
- 
-        console.log(data);
+    
+        console.log(data); // Cek data yang akan dikirim
+    
+        // Kirim data ke server
         var parent = $(this).parent();
         var url = modul_name + "/simpan";
-
-        cari_ajax_combo("post", parent, data, parent, url, "result");
+        // cari_ajax_combo("post", parent, data, parent, url, "result");
+    
+        return false; // Hentikan form submission
     });
+    
+    
 });
 
 function result(res){
@@ -95,7 +115,7 @@ function calculateDropdown(element) {
 
 function updatePercentage(id) {
     const targetInput = document.getElementById(`target-${id}`);
-    const isAbsolute = document.getElementById(`calc-type-${id}`).checked;
+    const isAbsolute = document.getElementById(`isAbsolute-${id}-1`).checked;
     const realisasiInput = document.getElementById(`realisasitw-${id}`);
     const persentaseSpan = document.getElementById(`persentase-${id}`);
      let targetValue = targetInput.value.replace(/\./g, '').replace(',', '.');
