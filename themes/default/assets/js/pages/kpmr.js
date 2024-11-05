@@ -77,7 +77,7 @@ function calculateDropdown(element) {
     $('#totalDetail-' + idParent).val(totalDetail.toFixed(2));
 
     var totalPerhitungan = 0;
-    $('.perhitungan-' + idParent).each(function () {
+    $('.perhitungan').each(function () {
         totalPerhitungan += parseFloat($(this).val()) || 0;
     });
     $('#totalPerhitungan').val(totalPerhitungan.toFixed(2));

@@ -80,7 +80,7 @@
                                 </td>
                                 <td rowspan="<?= count($c['parent']) ?>">
                                     <center>
-                                        <input class="form-control perhitungan-<?= $pk['id']; ?>" style="width: 100px; text-align: center;" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
+                                        <input class="form-control perhitungan" style="width: 100px; text-align: center;" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
                                     </center>
                                 </td>
                             
@@ -156,7 +156,7 @@
                     <tr>
                         <td class="text-center text-right" style="text-align: right;" colspan="6"><strong>Total Point <?= $nc ?>: </strong></td>
                         <td class="text-center">
-                            <input class="form-control perhitungan-<?= $pk['id']; ?>" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $pk['id']; ?>" name="totalDetail-<?= $pk['id']; ?>" readonly>
+                            <input class="form-control perhitungan" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $pk['id']; ?>" name="totalDetail-<?= $pk['id']; ?>" readonly>
                         </td>
                     </tr>
                 <?php endif; ?>
