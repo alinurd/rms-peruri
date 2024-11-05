@@ -63,6 +63,7 @@ function calculateDropdown(element) {
     var inputId = element.data('input-id');
     var rumusId = element.data('input-rumus-id');
     var idParent = element.data('id-parent');
+    var nc = element.data('nc');
 
     $('#' + inputId).val(hasil.toFixed(2));
 
@@ -74,7 +75,7 @@ function calculateDropdown(element) {
         totalDetail += parseFloat($(this).val()) || 0;
     });
 	
-    $('#totalDetail-' + idParent).val(totalDetail.toFixed(2));
+    $('#totalDetail-' + nc).val(totalDetail.toFixed(2));
 
     var totalPerhitungan = 0;
     $('.perhitungan').each(function () {

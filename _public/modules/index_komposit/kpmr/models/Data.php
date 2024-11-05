@@ -40,21 +40,10 @@ class Data extends MX_Model {
                 ];
  
                 $details = $this->db->where('id_param', $parent['id'])
-                                    ->order_by('urut')
-                                    ->get('bangga_index_komposit_detail')
-                                    ->result_array();
-                
-                foreach ($details as $detail) {
-                    $parentData['detail'][] = [
-                        'parent' => $detail['id_param'],
-                        'id' => $detail['id'],
-                        'urut' => $detail['urut'],
-                        'parameter' => $detail['parameter'],
-                        'skala' => $detail['skala'],
-                        'penilaian' => $detail['penilaian']
-                    ];
-                }
-
+                ->order_by('urut')
+                ->get('bangga_index_komposit_detail')
+                ->result_array();
+                $comboData['detail'][$parent['id']] = $details;
                 $comboData['parent'][] = $parentData;
             }
 

@@ -20,7 +20,8 @@ class Data extends MX_Model {
         foreach ($combos as $combo) {
             $comboData = [
                 'data' => $combo['data'],
-                'parent' => []
+                'parent' => [],
+                'detail' => [],
             ];
              $parents = $this->db->where('id_combo', $combo['id'])
                                 ->order_by('urut')
@@ -29,6 +30,8 @@ class Data extends MX_Model {
             
             foreach ($parents as $parent) {
                 $parentData = [
+                    'id' => $parent['id'],
+                    'id_combo' => $parent['id_combo'],
                     'urut' => $parent['urut'],
                     'parameter' => $parent['parameter'],
                     'skala' => $parent['skala'],
@@ -40,17 +43,7 @@ class Data extends MX_Model {
                                     ->order_by('urut')
                                     ->get('bangga_index_komposit_detail')
                                     ->result_array();
-                
-                foreach ($details as $detail) {
-                    $parentData['detail'][] = [
-                        'id' => $detail['id'],
-                        'urut' => $detail['urut'],
-                        'parameter' => $detail['parameter'],
-                        'skala' => $detail['skala'],
-                        'penilaian' => $detail['penilaian']
-                    ];
-                }
-
+                $comboData['detail'][$parent['id']] = $details;
                 $comboData['parent'][] = $parentData;
             }
 
