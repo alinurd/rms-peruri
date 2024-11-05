@@ -12,9 +12,11 @@ $(document).ready(function () {
     $("#simpan").click(function () {
         var ids = [];
         var penjelasans = [];
-        var evidences = [];
         var realisasi = [];
         var urut = [];
+        var target = [];
+        var realisasitw = [];
+        var absolut = [];
  
         $('input[name="id[]"]').each(function () {
             ids.push($(this).val());
@@ -22,13 +24,15 @@ $(document).ready(function () {
         $('input[name="urut[]"]').each(function () {
             urut.push($(this).val());
         });
- 
-        $('textarea[name="penjelasan[]"]').each(function () {
-            penjelasans.push($(this).val());
+        $('input[name="target[]"]').each(function () {
+            target.push($(this).val());
         });
- 
-        $('textarea[name="evidence[]"]').each(function () {
-            evidences.push($(this).val());
+
+        $('input[name="realisasitw[]"]').each(function () {
+            realisasitw.push($(this).val());
+        });
+        $('input[name="absolut[]"]').each(function () {
+            absolut.push($(this).val());
         });
  
         $('select[name="realisasi[]"]').each(function () {
@@ -40,10 +44,13 @@ $(document).ready(function () {
             'id': ids,
             'urut': urut,
             'penjelasan': penjelasans,
-            'evidence': evidences,
+            'target': target,
+            'realisasitw': realisasitw,
+            'absolut': absolut,
             'realisasi': realisasi
         };
  
+        console.log(data);
         var parent = $(this).parent();
         var url = modul_name + "/simpan";
 
@@ -88,11 +95,10 @@ function calculateDropdown(element) {
 
 function updatePercentage(id) {
     const targetInput = document.getElementById(`target-${id}`);
-    const realisasiInput = document.getElementById(`realisasi-${id}`);
+    const isAbsolute = document.getElementById(`calc-type-${id}`).checked;
+    const realisasiInput = document.getElementById(`realisasitw-${id}`);
     const persentaseSpan = document.getElementById(`persentase-${id}`);
-    const isAbsolute = document.querySelector(`input[name="calc-type-${id}"]:checked`).value === "1";
-
-    let targetValue = targetInput.value.replace(/\./g, '').replace(',', '.');
+     let targetValue = targetInput.value.replace(/\./g, '').replace(',', '.');
     let realisasiValue = realisasiInput.value.replace(/\./g, '').replace(',', '.');
 
     targetInput.value = _formatNumber(targetValue.replace('.', ','));
@@ -112,6 +118,6 @@ function updatePercentage(id) {
             percentage = (realisasiValue / targetValue) * 100;
         }
     }
-    persentaseSpan.textContent = percentage>0? percentage.toFixed(2):0;
+    persentaseSpan.textContent = (percentage > 0 ? percentage.toFixed(2) : 0) + " %";
 }
  
