@@ -1,5 +1,5 @@
-
-<?php if (isset($log)) : ?>
+<!-- 
+<?php // if (isset($log)) : ?>
     <style>
         .modal { z-index: 2050; }
         .double-scroll { width: 100%; }
@@ -27,20 +27,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($log as $index => $row) : ?>
+                    <?php // foreach ($log as $index => $row) : ?>
                         <tr>
-                            <td class="text-center"><?= $index + 1; ?></td>
-                            <td><?= htmlspecialchars($row['keterangan']); ?></td>
-                            <td><?= htmlspecialchars($row['note']); ?></td>
-                            <td><?= htmlspecialchars($row['create_date']); ?></td>
-                            <td><?= htmlspecialchars($row['create_user']); ?></td>
+                            <td class="text-center"><?php // $index + 1; ?></td>
+                            <td><?php // htmlspecialchars($row['keterangan']); ?></td>
+                            <td><?php // htmlspecialchars($row['note']); ?></td>
+                            <td><?php // htmlspecialchars($row['create_date']); ?></td>
+                            <td><?php // htmlspecialchars($row['create_user']); ?></td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php // endforeach; ?>
                 </tbody>
             </table>
         </div>
     </div>
-<?php endif; ?>
+<?php // endif; ?> -->
 
 <div class="row">
     <?php
