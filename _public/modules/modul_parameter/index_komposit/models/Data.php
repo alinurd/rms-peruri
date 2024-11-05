@@ -21,7 +21,8 @@ class Data extends MX_Model {
                 'urut' => $urut,
                 'parameter' => $data['param'][$index],
                 'skala' => $data['skala'][$index],
-                'penilaian' => $data['penilaian'][$index]
+                'penilaian' => $data['penilaian'][$index],
+                'bobot' => $data['bobot'][$index]
             ];
             
              $x = $this->db->where('id_combo', $newid)->where('urut', $urut)->get("bangga_index_komposit")->row_array();

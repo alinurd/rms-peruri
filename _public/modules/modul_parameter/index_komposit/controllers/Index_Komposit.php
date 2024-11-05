@@ -34,8 +34,9 @@ class Index_Komposit extends BackendController {
 		$this->set_Sort_Table($this->tbl_master,'id');
 		
 		// $this->set_Table_List($this->tbl_master,'kode');
+		$this->set_Table_List($this->tbl_master,'pid', 'Jenis', 10);
 		$this->set_Table_List($this->tbl_master,'data', '', 50);
-		$this->set_Table_List($this->tbl_master,'parent_name', 'Kriteria Dampak', 10);
+		$this->set_Table_List($this->tbl_master,'param', 'jml Parameter', 10);
 		// $this->set_Table_List($this->tbl_master,'param1','',10, 'center');
 		// $this->set_Table_List($this->tbl_master,'urut','',10, 'center');
 		$this->set_Table_List($this->tbl_master,'aktif','',10, 'center');
@@ -83,4 +84,19 @@ class Index_Komposit extends BackendController {
 		
 		return $result;
 	}
+
+	function listBox_PID($row, $value){
+		$x="KMPR";
+		if($value==1){
+			$x="Kinerja";
+		} 
+		return $x;
+	}
+	
+	function listBox_PARAM($row, $value){
+ 		$rows = $this->db->where('id_combo', $row['l_id'])->get("bangga_index_komposit")->result_array();
+ 		
+				return count($rows);
+	}
+	
 }
