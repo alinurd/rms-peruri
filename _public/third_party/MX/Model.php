@@ -130,6 +130,20 @@ class MX_Model extends CI_Model {
 			case 'rcsa_data':
 				$query="select id, judul_assesment as name from "._TBL_RCSA." order by judul_assesment";
 				break;
+				case 'rcsa_detail':
+					$where='';
+					if (is_array($param)){
+						$where="pic_no='".$param[0]."' and year(bangga_rcsa_detail.create_date)='".$param[1]."' and rcsa_no='".$param[2]."'";
+					}elseif (!empty($param)){
+						$where="rcsa_no='".$param."'";
+					}
+					$query = "SELECT bangga_rcsa_detail.id, bangga_library.description AS name 
+							  FROM bangga_rcsa_detail 
+							  LEFT JOIN bangga_library ON bangga_library.id = bangga_rcsa_detail.event_no 
+							  WHERE {$where}
+							  ORDER BY description";
+					break;
+				
 			case 'judul_assesment':
 					$query = "SELECT id, judul_assesment AS name 
 							  FROM " . _TBL_RCSA . " 
@@ -173,7 +187,7 @@ class MX_Model extends CI_Model {
 				if (!empty($param2)){
 					$where=$param2;
 				}
-					
+					 
 				$query="SELECT  id, description as name FROM "._TBL_LIBRARY." where status=1 and type={$param}  {$where} order by code";
 				
 				break;
