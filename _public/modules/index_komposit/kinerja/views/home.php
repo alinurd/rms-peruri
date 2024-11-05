@@ -37,7 +37,7 @@
                     <td colspan="9"><b><?= $c['data'] ?></b></td>
                 </tr>
 
-                <?php foreach ($c['parent'] as $pk) :
+                <?php foreach ($c['parent'] as $pKey=> $pk) :
                     $countDetailx = $c['detail'][$pk['id']];
                 ?>
                     <tr>
@@ -52,18 +52,37 @@
                         <?php if (count($countDetailx) === 0) : ?>
                             <td width="5%"><?= $pk['skala']; ?></td>
                             <td width="5%"><?= $pk['penilaian']; ?></td>
+                            <?php if ($pKey === 0) : ?>
+
                             <td width="5%"><input type="text" style="width: 110px;"></td>
                             <td width="5%"><input type="text" style="width: 110px;"></td>
                             <td class="text-center" width="10%">%</td>
-                            <td width="5%"><input type="text" style="width: 110px;"></td>
-                            <td width="5%">hasil</td>
+                            <td width="5%" rowspan="<?= count($c['parent']) ?>">
+                                    <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>" style="width: 110px;"
+                                        data-bobot="<?= $pk['bobot']; ?>"
+                                        data-id-parent="<?= $pk['id']; ?>"
+                                        data-input-id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>"
+                                        data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $pk['id']; ?>">
+                                        <option selected value="0" data-bobot="0" data-penilaian="0"> -Skala- </option>
+                                        <?php foreach ($c['parent'] as $option) : ?>
+                                            <option value="<?= $option['skala']; ?>"
+                                                data-bobot="<?= $pk['bobot']; ?>"
+                                                <?= ($resParents['realisasi'] == $option['skala']) ? 'selected' : ''; ?>
+                                                data-penilaian="<?= $option['penilaian']; ?>">
+                                                <?= $option['skala']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>                            <td width="5%">hasil</td>
+                            <?php endif; ?>
+
                         <?php endif; ?>
                     </tr>
 
                     <?php
                     $totalPenilaian = 0;
                     $n = 1;
-                    foreach ($countDetailx as $d) :
+                    foreach ($countDetailx as $dKey=> $d) :
                         $totalPenilaian += $d['penilaian'];
                         $totalPenilaianCombo += $d['penilaian'];
                     ?>
@@ -71,11 +90,32 @@
                             <td width="40%"><?= $n++; ?>.&nbsp; <?= $d['parameter']; ?></td>
                             <td width="5%"><?= $d['skala']; ?></td>
                             <td width="5%"><?= $d['penilaian']; ?></td>
-                            <td width="5%"><input type="text" style="width: 110px;"></td>
-                            <td width="5%"><input type="text" style="width: 110px;"></td>
-                            <td class="text-center" width="10%">%</td>
-                            <td width="5%"><input type="text" style="width: 110px;"></td>
-                            <td width="5%">hasil</td>
+                            <?php if ($dKey === 0) : ?>
+                                <td width="5%"><input type="text" style="width: 110px;"></td>
+                                <td width="5%"><input type="text" style="width: 110px;"></td>
+                                <td class="text-center" width="10%">%</td>
+                                <td width="5%" rowspan="<?= count($countDetailx) ?>">
+                                    <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>" style="width: 110px;"
+                                        data-bobot="<?= $pk['bobot']; ?>"
+                                        data-urut="<?= $d['urut']; ?>"
+                                        data-nc="<?= $nc; ?>"
+                                        data-id-parent="<?= $d['id_param']; ?>"
+                                        data-input-id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>"
+                                        data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $d['id']; ?>">
+                                        <option selected value="0" data-bobot="0" data-penilaian="0"> -Skala- </option>
+                                        <?php foreach ($countDetailx as $option) : ?>
+                                            <option value="<?= $option['skala']; ?>"
+                                                <?= ($resDetail['realisasi'] == $option['skala']) ? 'selected' : ''; ?>
+                                                data-bobot="<?= $pk['bobot']; ?>"
+                                                data-penilaian="<?= $option['penilaian']; ?>">
+                                                <?= $option['skala']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>                                
+                                <td width="5%">hasil</td>
+                            <?php endif; ?>
+
                         </tr>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
