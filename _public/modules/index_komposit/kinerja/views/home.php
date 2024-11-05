@@ -52,8 +52,8 @@
                             <td width="5%"><?= $pk['penilaian']; ?></td>
                             <?php if ($pKey === 0) : ?>
 
-                                <td><input type="text" style="width: 150px;"></td>
-                                <td><input type="text" style="width: 150px;"></td>
+                                <td><input type="number" style="width: 150px;"></td>
+                                <td><input type="number" style="width: 150px;"></td>
                                 <td class="text-center" width="10%">target/realisasi</td>
                                 <td width="5%" rowspan="<?= count($c['parent']) ?>">
                                     <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>" style="width: 110px;"
@@ -119,7 +119,7 @@
                                 <td rowspan="<?= count($countDetailx) ?>">
 
                                     <center>
-                                        <input class="form-control subTotalDetail-<?= $d['id_param']; ?>" style="width: 100px; text-align: center" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
+                                        <input class="form-control subTotalDetail-<?= $nc; ?>" style="width: 100px; text-align: center" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
                                     </center>
                                 </td> <?php endif; ?>
 
