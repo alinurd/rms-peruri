@@ -34,15 +34,15 @@
 
                 <?php foreach ($c['parent'] as $pKey => $pk) : 
                      $resParents = $this->db
-                     ->where('id_komposit', $pk['id'])
-                     ->where('urut', $pk['urut'])
+                     ->where('id_komposit', $pk['id_combo'])
+                    //  ->where('urut', $pk['urut'])
                      ->order_by('urut')
                      ->get('bangga_indexkom_realisasi')
                      ->row_array(); 
                     ?>
 
                     <tr>
-                        <td rowspan="<?= count($countDetail) + 1 ?>"><?= $pk['id']; ?></td>
+                        <td rowspan="<?= count($countDetail) + 1 ?>"><?= $pk['parameter']; ?></td>
                         <td width="40%"
                             <?php if (count($countDetail) > 0) : ?>
                             colspan="8"
@@ -71,7 +71,7 @@
                                     </select>
                                 </td>
                                 <td rowspan="<?= count($c['parent']) ?>">
-                                <input type="hidden" name="id[]" value="<?=$pk['id']?>">
+                                <input type="hidden" name="id[]" value="<?=$pk['id_combo']?>">
                                 <input type="hidden" name="urut[]" value="<?=$pk['urut']?>">
 
                                     <center>
@@ -98,7 +98,7 @@
                         $totalPenilaian += $d['penilaian'];
                         $totalPenilaianCombo += $d['penilaian'];
                         $resDetail = $this->db
-                        ->where('id_komposit', $d['id'])
+                        ->where('id_komposit', $d['parent'])
                         ->where('urut', $pk['urut'])
                         ->order_by('urut')
                         ->get('bangga_indexkom_realisasi')
@@ -129,7 +129,7 @@
                                     </select>
                                 </td>
                                 <td rowspan="<?= count($countDetail) ?>">
-                                <input type="hidden" name="id[]" value="<?=$d['id']?>">
+                                <input type="hidden" name="id[]" value="<?=$d['parent']?>">
                                 <input type="hidden" name="urut[]" value="<?=$pk['urut']?>">
 
                                     <center>

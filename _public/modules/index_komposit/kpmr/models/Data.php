@@ -30,6 +30,7 @@ class Data extends MX_Model {
             foreach ($parents as $parent) {
                 $parentData = [
                     'id' => $parent['id'],
+                    'id_combo' => $parent['id_combo'],
                     'urut' => $parent['urut'],
                     'parameter' => $parent['parameter'],
                     'skala' => $parent['skala'],
