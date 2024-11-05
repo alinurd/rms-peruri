@@ -71,7 +71,7 @@ function calculateDropdown(element) {
     $('#' + rumusId).val(rumus);
 
     var totalDetail = 0;
-    $('.subTotalDetail-' + idParent).each(function () {
+    $('.subTotalDetail-' + nc).each(function () {
         totalDetail += parseFloat($(this).val()) || 0;
     });
 	
