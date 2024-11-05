@@ -84,3 +84,34 @@ function calculateDropdown(element) {
     $('#totalPerhitungan').val(totalPerhitungan.toFixed(2));
     $('#totalPerhitunganText').html(totalPerhitungan.toFixed(2));
 }
+
+
+function updatePercentage(id) {
+    const targetInput = document.getElementById(`target-${id}`);
+    const realisasiInput = document.getElementById(`realisasi-${id}`);
+    const persentaseSpan = document.getElementById(`persentase-${id}`);
+    const isAbsolute = document.querySelector(`input[name="calc-type-${id}"]:checked`).value === "1";
+
+    let targetValue = targetInput.value.replace(/\./g, '').replace(',', '.');
+    let realisasiValue = realisasiInput.value.replace(/\./g, '').replace(',', '.');
+
+    targetInput.value = _formatNumber(targetValue.replace('.', ','));
+    realisasiInput.value = _formatNumber(realisasiValue.replace('.', ','));
+
+    targetValue = parseFloat(targetValue);
+    realisasiValue = parseFloat(realisasiValue);
+
+    let percentage = 0;
+
+    if (isAbsolute) {
+        if (targetValue !== 0) {
+            percentage = ((targetValue - (realisasiValue - targetValue)) / targetValue) * 100;
+        }
+    } else {
+        if (targetValue !== 0) {
+            percentage = (realisasiValue / targetValue) * 100;
+        }
+    }
+    persentaseSpan.textContent = percentage>0? percentage.toFixed(2):0;
+}
+ 

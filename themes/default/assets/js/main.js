@@ -1082,3 +1082,13 @@ function showMyImage(fileInput, gambar) {
 function fullScreen(theURL) {
 	window.open(theURL, '', 'fullscreen=yes, scrollbars=auto' );
 }
+
+function _formatNumber(value) {
+    const isNegative = value.startsWith('-');
+    const number = value.replace(/[^0-9,]/g, ''); // Hanya angka dan koma
+    const formatted = number.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Tambah titik pemisah ribuan
+    
+    // Tambahkan kembali tanda minus jika ada
+    return isNegative ? `-${formatted}` : formatted;
+	
+	}
