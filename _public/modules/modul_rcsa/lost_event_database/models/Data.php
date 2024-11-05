@@ -70,6 +70,7 @@ class Data extends MX_Model {
         // Data preparation for insertion or update
         $upd = [
             'rcsa_no'                     => $data['rcsa_no'],
+            'event_no'                     => $data['event_no'],
             'rcsa_detail_id'              => $data['id_detail'],
             'identifikasi_kejadian'       => $data['identifikasi_kejadian'],
             'kategori'                    => $data['kategori'],
@@ -79,14 +80,14 @@ class Data extends MX_Model {
             'kat_risiko'                  => $data['kat_risiko'],
             'hub_kejadian_risk_event'     => $data['hub_kejadian_risk_event'],
             'status_asuransi'             => $data['status_asuransi'],
-            'nilai_premi'                 => $data['nilai_premi'],
-            'nilai_klaim'                 => $data['nilai_klaim'],
+            'nilai_premi'                 => str_replace(",", "", $data['nilai_premi']),
+            'nilai_klaim'                 => str_replace(",", "", $data['nilai_klaim']),
             'mitigasi_rencana'            => $data['mitigasi_rencana'],
             'mitigasi_realisasi'          => $data['mitigasi_realisasi'],
             'rencana_perbaikan_mendatang' => $data['rencana_perbaikan_mendatang'],
             'pihak_terkait'               => $data['pihak_terkait'],
             'penjelasan_kerugian'         => $data['penjelasan_kerugian'],
-            'nilai_kerugian'              => $data['nilai_kerugian'],
+            'nilai_kerugian'              => str_replace(",", "",$data['nilai_kerugian']),
             'kejadian_berulang'           => $data['kejadian_berulang'],
             'frekuensi_kejadian'          => $data['frekuensi_kejadian'],
             'skal_dampak_in'              => $data['skal_dampak_in'],
@@ -96,11 +97,6 @@ class Data extends MX_Model {
         ];
 
         if($data['nama_event'] != ""){
-            // $lib = [
-            //     'description' => $data['nama_event'],
-            //     'create_user' => $this->authentication->get_info_user('username'),
-            //     'create_date' => date('Y-m-d H:i:s')
-            // ];
 
             $lib['description'] = $data['nama_event'];
             $lib['risk_type_no'] = 0;
@@ -114,25 +110,46 @@ class Data extends MX_Model {
                 'type' => 'add'
             ]);
 
-            $upa['library_no'] = $newId;
-            $upa['child_no'] = $newId;
-            $upa['kategori_risiko'] = $data['kat_risiko'];
-            $upa['create_user'] = $this->authentication->get_info_user('username');
+            $upd['event_no'] = $newId;
 
-            $resul1=$this->crud->crud_data(array('table'=>_TBL_LIBRARY_DETAIL, 'field'=>$upa,'type'=>'add'));
         }
 
         // Determine whether to add or update data based on type
         if ($data['type'] == "edit") {
+            $updxx = [
+                'rcsa_no'                     => $data['rcsa_no'],
+                'identifikasi_kejadian'       => $data['identifikasi_kejadian'],
+                'kategori'                    => $data['kategori'],
+                'sumber_penyebab'             => $data['sumber_penyebab'],
+                'penyebab_kejadian'           => $data['penyebab_kejadian'],
+                'penanganan'                  => $data['penanganan'],
+                'kat_risiko'                  => $data['kat_risiko'],
+                'hub_kejadian_risk_event'     => $data['hub_kejadian_risk_event'],
+                'status_asuransi'             => $data['status_asuransi'],
+                'nilai_premi'                 => str_replace(",", "", $data['nilai_premi']),
+                'nilai_klaim'                 => str_replace(",", "", $data['nilai_klaim']),
+                'mitigasi_rencana'            => $data['mitigasi_rencana'],
+                'mitigasi_realisasi'          => $data['mitigasi_realisasi'],
+                'rencana_perbaikan_mendatang' => $data['rencana_perbaikan_mendatang'],
+                'pihak_terkait'               => $data['pihak_terkait'],
+                'penjelasan_kerugian'         => $data['penjelasan_kerugian'],
+                'nilai_kerugian'              => str_replace(",", "",$data['nilai_kerugian']),
+                'kejadian_berulang'           => $data['kejadian_berulang'],
+                'frekuensi_kejadian'          => $data['frekuensi_kejadian'],
+                'skal_dampak_in'              => $data['skal_dampak_in'],
+                'skal_prob_in'                => $data['skal_prob_in'],
+                'target_res_dampak'           => $data['target_res_dampak'],
+                'target_res_prob'             => $data['target_res_prob'],
+            ];
             // Update mode
-            $upd['update_user'] = $this->authentication->get_info_user('username');
-            $upd['update_date'] = date('Y-m-d H:i:s');
+            $updxx['update_user'] = $this->authentication->get_info_user('username');
+            $updxx['update_date'] = date('Y-m-d H:i:s');
             $where = ['id' => $data['id_edit']];
 
             // Execute update
             return $this->crud->crud_data([
                 'table' => _TBL_RCSA_LOST_EVENT,
-                'field' => $upd,
+                'field' => $updxx,
                 'where' => $where,
                 'type' => 'update'
             ]);

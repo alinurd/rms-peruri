@@ -10,6 +10,8 @@ if(!$lost_event){
     }
 }
 
+
+
 ?>
 <div class="row">
     <div class="col-md-6">
@@ -17,10 +19,18 @@ if(!$lost_event){
             <h5 class="text-center" style="color: #343a40;">Kejadian Risiko</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <input type="hidden" name="rcsa_no_e" id="rcsa_no_e" value="<?=$lost_event ? $lost_event['rcsa_no'] : $rcsa_no ?>">
+                <input type="hidden" name="event_no" id="event_no" >
                 <thead class="thead-light">
                 <tr>
                     <th width="20%">Nama Kejadian (Event)</th>
-                    <td width="70%" id="td_peristiwa">
+                    <?php if($type === "edit") : ?>
+                        <td colspan="2">
+                            <?= $data_event['event_name']?>
+                        </td>
+                    <?php endif;?>
+
+                    <?php if($type === "add") : ?>
+                        <td width="70%" id="td_peristiwa">
                         <?= form_dropdown(
                             'id_detail',
                             $cboper,
@@ -42,6 +52,9 @@ if(!$lost_event){
                     <td id="td_peristiwa_lib" width="10%">
                         <button type="button" class="btn btn-info" id="peristiwa_lib">Library</button>
                     </td>
+                    <?php endif;?>
+
+                    
                 </tr>
 
                     <tr>

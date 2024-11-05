@@ -37,6 +37,8 @@ class Lost_Event_Database extends BackendController
         $data['periode']   = $this->input->get('periode');
         $user_info         = $this->authentication->get_info_user();
         $own               = $user_info['group']['owner']['owner_no'];
+
+        
         
         if ($this->input->get('owner')) {
             $own = $this->input->get('owner');
@@ -128,18 +130,10 @@ class Lost_Event_Database extends BackendController
     // Description: Loads modal form data for adding/editing a lost event
     // ==========================================
     public function get_detail_modal() {
+
         $id                 = $this->input->post("id_edit");
         $type               = $this->input->post("type");
         $param              = $this->input->post("rcsa");
-
-        if ($this->input->post("filter_owner")!= 0 || $this->input->post("filter_periode") != 0) {
-            $param = [
-                'filter_owner'   => $this->input->post("filter_owner"),
-                'filter_periode' => $this->input->post("filter_periode"),
-                'rcsa'           => $param,
-            ];
-        }
-
         $data['rcsa_no']    = $this->input->post("rcsa");
         $data['cboLike']    = $this->cboLike;
         $data['cboImpact']  = $this->cboImpact;
@@ -151,8 +145,28 @@ class Lost_Event_Database extends BackendController
         // If editing, load existing data
         if ($type === "edit") {
             $detailedit = $this->db->where('id', $id)->get(_TBL_RCSA_LOST_EVENT)->row_array();
+            $this->db->select([
+                'a.rcsa_no AS rcsa_no',
+                'a.id AS id_loss_event',
+                'YEAR(a.create_date) AS tahun',
+                'b.name AS name',
+                'd.description AS event_name',
+                'b.judul_assesment AS judul_assesment',
+                'b.owner_no AS owner_no'
+            ])
+            ->from('bangga_rcsa_lost_event a')
+            ->join('bangga_view_rcsa b', 'a.rcsa_no = b.id', 'inner')
+            ->join('bangga_library d', 'a.event_no = d.id', 'inner')
+            ->join('bangga_data_combo h', 'a.kategori = h.id', 'left')
+            ->join('bangga_data_combo j', 'a.kat_risiko = j.id', 'left');
+            
+            $query = $this->db->get();
+            $result = $query->result_array();
+            
+            $data_event = $this->db->where('id_loss_event', $id)->get(_TBL_VIEW_RCSA_LOST_EVENT)->row_array();
             $param              = $detailedit['rcsa_no'];
             $data['lost_event'] = $detailedit;
+            $data['data_event'] = $data_event;
             $data['type'] = 'edit';
 
             // Load risk level labels
@@ -226,7 +240,14 @@ class Lost_Event_Database extends BackendController
 
     public function get_mitigasi() {
         $post   = $this->input->post("id_detail"); 
-        $hasil  = $this->db->select('proaktif')->where('rcsa_detail_no', $post)->get('bangga_rcsa_action')->row_array()  ;
+        $hasil = $this->db->select('bangga_rcsa_action.proaktif AS proaktif, bangga_rcsa_detail.event_no AS event_no')
+        ->from('bangga_rcsa_action')
+        ->join('bangga_rcsa_detail', 'bangga_rcsa_action.rcsa_detail_no = bangga_rcsa_detail.id', 'left') // ganti sesuai kondisi join (inner, left, right)
+        ->where('bangga_rcsa_action.rcsa_detail_no', $post)
+        ->get()
+        ->row_array();
+
+
         echo json_encode($hasil);
     }
 }

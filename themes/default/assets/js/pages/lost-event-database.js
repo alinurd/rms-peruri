@@ -16,14 +16,15 @@ $(function () {
       var type = $(this).data("type");
       var url = modul_name + "/get_detail_modal";
       var rcsa_no = $("#filter_judul_assesment").val();
-      var filter_owner = $("#filter_owner").val();
-      var filter_periode = $("#filter_periode").val();
+      if (rcsa_no === "" && type === "add") {
+        alert("Pilih judul assesment terlebih dahulu !!!");
+        return false;
+      }
+
       var data = {
         id_edit: id,
         type: type,
         rcsa: rcsa_no,
-        filter_owner: filter_owner,
-        filter_periode: filter_periode,
       };
       var parent = $(this).parent();
 
@@ -45,7 +46,6 @@ $(function () {
     // Save Button - Data Validation & Submission
     // ==========================================
     $(document).on("click", "#btn-simpan", function () {
-      // if (validateInputs()) {
       const type = $(this).attr("data-type");
       const id_edit = $(this).attr("data-edit");
 
@@ -57,6 +57,7 @@ $(function () {
           type === "edit"
             ? $("#rcsa_no_e").val()
             : $("#filter_judul_assesment").val(),
+        event_no: $("#event_no").val(),
         nama_event: $("#peristiwabaru").val(),
         id_detail: $("#id_detail").val(),
         identifikasi_kejadian: $("#identifikasi_kejadian").val(),
@@ -92,8 +93,6 @@ $(function () {
         url,
         "result_simpan_lost_event"
       );
-      // }
-      // return false;
     });
 
     // ==========================================
@@ -174,36 +173,9 @@ function result_modal_data(hasil) {
 }
 
 function resultGetmitigasi(hasil) {
-  // console.log(hasil);
   $("#mitigasi_rencana").val(hasil.proaktif);
-  // $("#level_risiko_inher_label").html(hasil.level_text);
+  $("#event_no").val(hasil.event_no);
 }
-
-// ==========================================
-// Validation Function for Input Fields
-// ==========================================
-// function validateInputs() {
-//   $(".text-danger").empty(); // Clear previous error messages
-//   let hasError = false;
-
-//   const requiredFields = [
-//     { id: "#id_detail", errorMsg: "Nama Kejadian harus diisi." },
-//     {
-//       id: "#identifikasi_kejadian",
-//       errorMsg: "Identifikasi Kejadian harus diisi.",
-//     },
-//     // Add more fields with specific error messages here
-//   ];
-
-//   requiredFields.forEach((field) => {
-//     if (!$(field.id).val()) {
-//       $(field.id).siblings(".text-danger").text(field.errorMsg);
-//       hasError = true;
-//     }
-//   });
-
-//   return !hasError; // Return false if any validation failed
-// }
 
 // ==========================================
 // Result Display Functions
