@@ -144,7 +144,7 @@
                                 <td rowspan="<?= count($countDetailx) ?>">
 
                                     <center>
-                                        <input class="form-control subTotalDetail-<?= $d['id_param']; ?>" style="width: 100px; text-align: center" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
+                                        <input class="form-control subTotalDetail-<?= $nc; ?>" style="width: 100px; text-align: center" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
                                     </center>
                                 </td>
                                 <td rowspan="<?= count($countDetailx) ?>">
