@@ -1,6 +1,4 @@
-    <div>
-        <span class="btn btn-primary btn-sm" style="bottom: 30px; right: 15px; cursor:pointer; position: fixed; padding: 5px 15px; z-index: 1000;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan </span>
-    </div>
+ 
     <h3>Parameter Penentuan Hasil Penilaian Pencapaian Kinerja</h3>
     <table class="display table table-bordered" id="tbl_event">
         <thead>
@@ -20,7 +18,7 @@
             <?php $nc = 1;
             $totalPenilaianCombo = 0;
             foreach ($kompositData as $c) :
-                
+
                 $ss = 1;
                 $parentRowspan = 0;
 
@@ -33,11 +31,11 @@
                 }
             ?>
                 <tr style="background-color:#d5edef;">
-                    <td class="text-center" width="5%" rowspan="<?= $parentRowspan + $ss ?>"><?= $nc++ ?></td>
+                    <td class="text-center" width="5%" rowspan="<?= $parentRowspan + $ss ?>"><?= $nc ?></td>
                     <td colspan="9"><b><?= $c['data'] ?></b></td>
                 </tr>
 
-                <?php foreach ($c['parent'] as $pKey=> $pk) :
+                <?php foreach ($c['parent'] as $pKey => $pk) :
                     $countDetailx = $c['detail'][$pk['id']];
                 ?>
                     <tr>
@@ -54,10 +52,10 @@
                             <td width="5%"><?= $pk['penilaian']; ?></td>
                             <?php if ($pKey === 0) : ?>
 
-                                <td ><input type="text" style="width: 150px;"></td>
-                                <td ><input type="text" style="width: 150px;"></td>
-                            <td class="text-center" width="10%">target/realisasi</td>
-                            <td width="5%" rowspan="<?= count($c['parent']) ?>">
+                                <td><input type="text" style="width: 150px;"></td>
+                                <td><input type="text" style="width: 150px;"></td>
+                                <td class="text-center" width="10%">target/realisasi</td>
+                                <td width="5%" rowspan="<?= count($c['parent']) ?>">
                                     <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>" style="width: 110px;"
                                         data-bobot="<?= $pk['bobot']; ?>"
                                         data-id-parent="<?= $pk['id']; ?>"
@@ -73,8 +71,12 @@
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
-                                </td>                            
-                                <td width="5%">hasil</td>
+                                </td>
+                                <td rowspan="<?= count($c['parent']) ?>">
+                                    <center>
+                                        <input class="form-control perhitungan" style="width: 100px; text-align: center;" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
+                                    </center>
+                                </td>
                             <?php endif; ?>
 
                         <?php endif; ?>
@@ -83,7 +85,7 @@
                     <?php
                     $totalPenilaian = 0;
                     $n = 1;
-                    foreach ($countDetailx as $dKey=> $d) :
+                    foreach ($countDetailx as $dKey => $d) :
                         $totalPenilaian += $d['penilaian'];
                         $totalPenilaianCombo += $d['penilaian'];
                     ?>
@@ -92,8 +94,8 @@
                             <td width="5%"><?= $d['skala']; ?></td>
                             <td width="5%"><?= $d['penilaian']; ?></td>
                             <?php if ($dKey === 0) : ?>
-                                <td ><input type="text" style="width: 150px;"></td>
-                                <td ><input type="text" style="width: 150px;"></td>
+                                <td><input type="text" style="width: 150px;"></td>
+                                <td><input type="text" style="width: 150px;"></td>
                                 <td class="text-center" width="10%">%</td>
                                 <td width="5%" rowspan="<?= count($countDetailx) ?>">
                                     <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>" style="width: 110px;"
@@ -113,27 +115,67 @@
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
-                                </td>                                
-                                <td width="5%">hasil</td>
-                            <?php endif; ?>
+                                </td>
+                                <td rowspan="<?= count($countDetailx) ?>">
+
+                                    <center>
+                                        <input class="form-control subTotalDetail-<?= $d['id_param']; ?>" style="width: 100px; text-align: center" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
+                                    </center>
+                                </td> <?php endif; ?>
 
                         </tr>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
-                <?php if ($ss>1) : ?>
+                <?php if ($ss > 1) : ?>
 
-                     <tr>
-                        <td class="text-center text-right" style="text-align: right;" colspan="8"><strong>Total Point: </strong></td>
-                        <td class="text-center"><strong><?= $ss; ?></strong></td>
+                    <tr>
+                    <td class="text-center text-right" style="text-align: right;" colspan="8"><strong>Total Point <?= $nc ?>: </strong></td>
+                        <td class="text-center">
+                        <input class="form-control perhitungan" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $nc; ?>" name="totalDetail-<?= $nc; ?>" readonly></td>
                     </tr>
-                    <?php endif; ?>
+                <?php endif; ?>
 
-            <?php endforeach; ?>
+            <?php 
+                        $nc++;
+                    endforeach; ?>
         </tbody>
 
-        <tr style="position: sticky; bottom: 0; background: #367FA9; color:#fff; z-index: 1;">
-            <th class="text-center" style="font-weight:bold; color:#fff;" colspan="9">Hasil Perhitungan Indikator: </th>
-            <th class="text-center" style="background:yellow; color:#000;"><?= $totalPenilaianCombo; ?></th>
+        <tr style="position: sticky; bottom: 0;  background: #367FA9; color:#fff; z-index: 1;">
+            <th class="text-center" style="text-align:end" colspan="7">
+                <button class="btn btn-save" id="simpan">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
+                </button>
+            </th>
+            <th class="" style="font-weight:bold; color:#fff; text-align:center" colspan="2">Hasil Perhitungan Indikator: </th>
+            <th class="text-center" style="background:yellow; color:#000;">
+            <span id="totalPerhitunganText">0</span>
+                <input class="form-control " type="hidden" id="totalPerhitungan" name="totalPerhitungan" readonly>
+            <!-- <br><br>
+                <button class="btn btn-save" id="simpan">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
+                </button> -->
+            </th>
         </tr>
     </table>
-    </div>
+    <style>
+            .btn-save {
+                background-color: #fff;
+                color: #367FA9;
+                font-weight: bold;
+                border: none;
+                border-radius: 5px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                cursor: pointer;
+                transition: background-color 0.3s, box-shadow 0.3s;
+            }
+
+            .btn-save:hover {
+                background-color: #28597A;
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+            }
+
+            .btn-save:active {
+                background-color: #204562;
+                box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+            }
+        </style>

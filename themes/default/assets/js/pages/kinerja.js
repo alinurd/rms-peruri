@@ -64,7 +64,7 @@ function calculateDropdown(element) {
     var rumusId = element.data('input-rumus-id');
     var idParent = element.data('id-parent');
     var nc = element.data('nc');
-
+    // console.log("jalan")
     $('#' + inputId).val(hasil.toFixed(2));
 
     var rumus = bobot > 0 ? `${bobot}% X ${penilaian}` : penilaian;
