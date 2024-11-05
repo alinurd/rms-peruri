@@ -1,47 +1,80 @@
 <?php
 // doi::dump($label_res);
+if(!$lost_event){
+    $chekya = "checked";
+}else{
+    if ($lost_event['kejadian_berulang'] == 1) {
+        $chekya = "checked";
+    } else {
+        $chektdk = "checked";
+    }
+}
+
 ?>
 <div class="row">
     <div class="col-md-6">
-        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Kejadian Risiko</h5>
             <table class="table table-bordered" style="background-color: white;">
+                <input type="hidden" name="rcsa_no_e" id="rcsa_no_e" value="<?=$lost_event ? $lost_event['rcsa_no'] : $rcsa_no ?>">
                 <thead class="thead-light">
-                    <tr>
-                        <th width="20%">Nama Kejadian (Event)</th>
-                        <th><input style="background-color: #367FA9; color: white; border: none;" type="text" class="form-control" id="nm_event" name="nm_event" value="<?= $action_detail['event_name']?>" readonly></th>
-                    </tr>
+                <tr>
+                    <th width="20%">Nama Kejadian (Event)</th>
+                    <td width="70%" id="td_peristiwa">
+                        <?= form_dropdown(
+                            'id_detail',
+                            $cboper,
+                            $lost_event ? $lost_event['rcsa_detail_id'] : '',
+                            'class="eventcombo select2 form-control" style="width:450px !important;" id="id_detail"' . $disable
+                        ); ?>
+                        <div class="text-danger" id="error-id_detail"></div>
+                    </td>
+                    <td width="10%" id="td_peristiwa_new">
+                        <button type="button" class="btn btn-info <?= $hide_edit ?>" id="peristiwa_baru">New</button>
+                    </td>
+                    <td id="td_peristiwabaru">
+                        <?= form_input(
+                            'peristiwabaru',
+                            $detail ? $detail['peristiwabaru'] : '',
+                            'class="form-control" placeholder="Input Peristiwa Baru" id="peristiwabaru"'
+                        ); ?>
+                    </td>
+                    <td id="td_peristiwa_lib" width="10%">
+                        <button type="button" class="btn btn-info" id="peristiwa_lib">Library</button>
+                    </td>
+                </tr>
+
                     <tr>
                         <th width="20%">Identifikasi Kejadian</th>
-                        <td>
+                        <td colspan="2">
                             <textarea class="form-control" id="identifikasi_kejadian" cols="30" rows="5" required><?= $lost_event['identifikasi_kejadian'];?></textarea>
                             <div class="text-danger" id="error-identifikasi_kejadian"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Kategori Kejadian</th>
-                        <td>
-                            <input type="text" class="form-control" id="kategori" name="kategori" required value="<?= $lost_event['kategori'];?>">
+                        <td colspan="2">
+                            <?= form_dropdown('kategori', $kategori_kejadian, ($lost_event) ? $lost_event['kategori'] : '', 'class="select2 form-control" style="width:100%;" id="kategori"' . $disable); ?>
                             <div class="text-danger" id="error-kategori"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Sumber Penyebab</th>
-                        <td>
+                        <td colspan="2">
                             <input type="text" class="form-control" id="sumber_penyebab" name="sumber_penyebab" required value="<?= $lost_event['sumber_penyebab'];?>">
                             <div class="text-danger" id="error-sumber_penyebab"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Penyebab Kejadian</th>
-                        <td>
+                        <td colspan="2">
                             <textarea class="form-control" id="penyebab_kejadian" cols="30" rows="5" required><?= $lost_event['penyebab_kejadian'];?></textarea>
                             <div class="text-danger" id="error-penyebab_kejadian"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Penanganan Saat Kejadian</th>
-                        <td>
+                        <td colspan="2">
                             <textarea class="form-control" id="penanganan" cols="30" rows="5" required><?= $lost_event['penanganan'];?></textarea>
                             <div class="text-danger" id="error-penanganan"></div>
                         </td>
@@ -49,15 +82,14 @@
                 </thead>
             </table>
         </div>
-        <br>
-        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Hubungan Kejadian Risiko Dengan Risk Event</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
                     <tr>
                         <th width="20%">Kategori Risiko</th>
                         <td colspan="3">
-                            <input type="text" class="form-control" id="kat_risiko" name="kat_risiko" required value="<?= $lost_event['kat_risiko'];?>">
+                        <?= form_dropdown('kat_risiko', $kat_risiko, ($lost_event) ? $lost_event['kat_risiko'] : '', 'class="select2 form-control" style="width:100%;" id="kat_risiko"' . $disable); ?>
                             <div class="text-danger" id="error-kat_risiko"></div>
                         </td>
                     </tr>
@@ -115,10 +147,8 @@
                 </thead>
             </table>
         </div>
-        <br>
-
-        <!-- Asuransi -->
-        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
+                <!-- Asuransi -->
+        <div style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Asuransi</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -135,14 +165,14 @@
                         <td>
                             <div class="input-group">
                                 <span class="input-group-addon">Rp.</span>
-                                <input type="text" class="form-control" id="nilai_premi" name="nilai_premi" value="<?= $lost_event['nilai_premi'];?>" required>
+                                <input type="text" class="form-control rupiah" id="nilai_premi" name="nilai_premi" value="<?= number_format($lost_event['nilai_premi'],0,',',',');?>" required>
                             </div>
                             <div class="text-danger" id="error-nilai_premi"></div>
                         </td>
                         <td>
                             <div class="input-group">
                                 <span class="input-group-addon">Rp.</span>
-                                <input type="text" class="form-control" id="nilai_klaim" name="nilai_klaim" value="<?= $lost_event['nilai_klaim'];?>" required>
+                                <input type="text" class="form-control rupiah" id="nilai_klaim" name="nilai_klaim" value="<?= number_format($lost_event['nilai_klaim'],0,',',',');?>" required>
                             </div>
                             <div class="text-danger" id="error-nilai_klaim"></div>
                         </td>
@@ -154,7 +184,7 @@
 
     <!-- Rencana dan Realisasi Perlakuan Risiko -->
     <div class="col-md-6">
-        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
+        <div style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Rencana dan Realisasi Perlakuan Risiko</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -166,21 +196,20 @@
                 <tbody>
                     <tr>
                         <td>
-                            <input type="text" class="form-control" id="mitigasi_rencana" name="mitigasi_rencana" value="<?= $lost_event['mitigasi_rencana'];?>" required>
+                            <textarea class="form-control" id="mitigasi_rencana" name="mitigasi_rencana" readonly style="height: auto !important;"><?= $lost_event['mitigasi_rencana'] ;?></textarea>
+                            <!-- <input type="text" class="form-control" id="mitigasi_rencana" name="mitigasi_rencana"readonly> -->
                             <div class="text-danger" id="error-mitigasi_rencana"></div>
                         </td>
                         <td>
-                            <input type="text" class="form-control" id="mitigasi_realisasi" name="mitigasi_realisasi" value="<?= $lost_event['mitigasi_realisasi'];?>" required>
+                            <input type="text" class="form-control" id="mitigasi_realisasi" name="mitigasi_realisasi" value="-" readonly>
                             <div class="text-danger" id="error-mitigasi_realisasi"></div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <br>
-
-        <!-- Perbaikan Mendatang -->
-        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
+                <!-- Perbaikan Mendatang -->
+        <div style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Perbaikan Mendatang</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -203,9 +232,8 @@
                 </tbody>
             </table>
         </div>
-        <br>
-        <!-- Kerugian -->
-        <div class="mb-2" style="background-color: white; padding: 10px; border-radius: 10px;">
+               <!-- Kerugian -->
+        <div style="background-color: white; padding: 10px; border-radius: 10px;">
             <h5 class="text-center" style="color: #343a40;">Kerugian</h5>
             <table class="table table-bordered" style="background-color: white;">
                 <thead class="thead-light">
@@ -221,7 +249,7 @@
                         <td>
                             <div class="input-group">
                                 <span class="input-group-addon">Rp.</span>
-                                <input type="text" class="form-control" id="nilai_kerugian" name="nilai_kerugian" value="<?= $lost_event['nilai_kerugian'];?>" required>
+                                <input type="text" class="form-control rupiah" id="nilai_kerugian" name="nilai_kerugian" value="<?= number_format($lost_event['nilai_kerugian'],0,',',',');?>" required>
                             </div>
                             <div class="text-danger" id="error-nilai_kerugian"></div>
                         </td>
@@ -229,14 +257,15 @@
                     <tr>
                         <th width="20%">Kejadian Berulang</th>
                         <td>
-                            <input type="text" class="form-control" id="kejadian_berulang" name="kejadian_berulang" value="<?= $lost_event['kejadian_berulang'];?>" required>
+                            <input type="radio" name="kejadian_berulang" id="ya" value="1" <?= $disable ?> <?= $chekya ?>> <label for="ya">Ya</label> &nbsp; &nbsp; &nbsp;
+                            <input type="radio" name="kejadian_berulang" value="0" id="tidak" <?= $disable ?> <?= $chektdk ?>> <label for="tidak">Tidak</label>
                             <div class="text-danger" id="error-kejadian_berulang"></div>
                         </td>
                     </tr>
                     <tr>
                         <th width="20%">Frekuensi Kejadian</th>
                         <td>
-                            <input type="text" class="form-control" id="frekuensi_kejadian" name="frekuensi_kejadian" value="<?= $lost_event['frekuensi_kejadian'];?>" required>
+                        <?= form_dropdown('frekuensi_kejadian', $frekuensi_kejadian, ($lost_event) ? $lost_event['frekuensi_kejadian'] : '', 'class="select2 form-control" style="width:100%;" id="frekuensi_kejadian"' . $disable); ?>
                             <div class="text-danger" id="error-frekuensi_kejadian"></div>
                         </td>
                     </tr>
@@ -246,6 +275,33 @@
     </div>
 </div>
 <div class="row text-center">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <a href="#" id="btn-simpan" class="btn btn-primary" data-edit="<?= ($type != 'add') ? $lost_event['id'] : '';?>" data-id="<?= $action_detail['rcsa_detail_no'];?>" data-month="<?= ($type != 'add') ? $lost_event['bulan'] : $action_detail['bulan'];?>" data-type = "<?= $type;?>" >Simpan</a>
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    <a href="#" id="btn-simpan" class="btn btn-primary" data-edit="<?= ($type != 'add') ? $lost_event['id'] : '';?>"  data-type = "<?= $type;?>" >Simpan</a>
 </div>
+<!-- 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script>
+    $(document).ready(function() {
+        // Hide the "Input Peristiwa Baru" and "Library" elements by default
+        $('#td_peristiwabaru').hide();
+        $('#td_peristiwa_lib').hide();
+
+        // Optional: Show elements when "New" button is clicked
+        $('#peristiwa_baru').on('click', function() {
+            $('#td_peristiwa').hide();
+            $('#td_peristiwa_new').hide();
+            $('#td_peristiwabaru').show();
+            $('#td_peristiwa_lib').show();
+            $('#mitigasi_rencana').removeAttr('readonly');
+        });
+
+        // Optional: Show "Library" when a certain event occurs
+        $('#peristiwa_lib').on('click', function() {
+            $('#td_peristiwa').show();
+            $('#td_peristiwa_new').show();
+            $('#td_peristiwabaru').hide();
+            $('#td_peristiwa_lib').hide();
+            $('#mitigasi_rencana').attr('readonly', true);
+        });
+    });
+</script>
