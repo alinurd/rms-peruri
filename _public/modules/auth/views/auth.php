@@ -20,7 +20,7 @@
 </div>
 <div class="text-center box-login">
     <div class="etc-logo-login" style="background-image: <?php img_url('logo-white.png');?>"></div>
-    <div class="logo">e-Risk login</div>
+    <div class="logo"><?=$this->authentication->get_Preference('judul_atas');?></div>
     <div>
         	
         </div>
