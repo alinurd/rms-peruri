@@ -1,3 +1,8 @@
+<?php
+
+    // doi::dump($judulAssesment);
+
+?>
 <div class="row">
     <div class="col-md-12">
         <!-- ==========================================
@@ -52,11 +57,7 @@
     <div class="col-md-4 col-sm-8 col-xs-6">
         <label for="filter_judul_assesment"><?= lang("msg_filter_assesment_label"); ?></label>
         <select name="judul_assesment" id="filter_judul_assesment" class="form-control select2" style="width: 100%;">
-            <?php foreach ($judulAssesment as $key => $value): ?>
-                <option value="<?= $key; ?>" <?= ($this->input->get('judul_assesment') == $key) ? 'selected' : ''; ?>>
-                    <?= $value; ?>
-                </option>
-            <?php endforeach; ?>
+            <option value="">- select -</option>
         </select>
     </div>
 
@@ -130,7 +131,7 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li class="delete"><a href="#">Delete</a></li>
+                                        <li class="delete pointer" data-id="<?= $q['id_loss_event'] ;?>" id="deleteLost"><a href="#">Delete</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -153,6 +154,26 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true" style="display:none">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content modal-question">
+      <div class="modal-header"><h4 class="modal-title"><?php echo lang('msg_del_header');?></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="id_lost">
+        <p class="question"><?php echo lang('msg_del_title');?></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang('msg_del_batal');?></button>
+        <button type="button" class="btn btn-danger btn-grad" id="confirm"><?php echo lang('msg_del_hapus');?></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- ==========================================
      Popup Display Script
