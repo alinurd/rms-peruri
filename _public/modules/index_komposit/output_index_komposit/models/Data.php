@@ -12,13 +12,14 @@ class Data extends MX_Model {
         $result = [];
         
          $combos = $this->db->where('kelompok', 'Index Komposit')
-                            ->where('pid', 0)
+                            // ->where('pid', 0)
                             ->where('aktif', 1)
                             ->get('bangga_data_combo')
                             ->result_array();
         
         foreach ($combos as $combo) {
             $comboData = [
+                'pid' => $combo['pid'],
                 'data' => $combo['data'],
                 'parent' => []
             ];
