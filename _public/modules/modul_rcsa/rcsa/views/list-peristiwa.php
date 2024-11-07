@@ -46,19 +46,25 @@ if ($parent['sts_propose'] == 5) {
                 foreach ($row['detail'] as $ros) :
                     $sts_heatmap = $this->db->where('id',$ros['id'])->get('bangga_rcsa_detail')->row_array();
                     // doi::dump($sts_heatmap);
+                    // doi::dump($ros);
                     $act = $this->db->where('rcsa_detail_no', $ros['id'])->get('bangga_rcsa_action')->row_array();
                     $actkri = $this->db->where('rcsa_detail', $ros['id'])->get('bangga_kri')->row_array();
-                    $inherent_level = $this->data->get_master_level(true, $ros['inherent_level']);
 
-                    $residual_level = $this->data->get_master_level(true, $ros['residual_level']);
+                    $inherent_level     = $this->data->cek_level_new($ros['analisis_like_inherent'], $ros['analisis_impact_inherent']);
+                    $residual_level     = $this->data->cek_level_new($ros['analisis_like_residual'], $ros['analisis_impact_residual']);
+                    // doi::dump($cek_score);
+                    // doi::dump($cek_score1);
+                    // $inherent_level = $this->data->get_master_level(true, $ros['inherent_level']);
+
+                    // $residual_level = $this->data->get_master_level(true, $ros['residual_level']);
                     // var_dump($a);
                     if (!$inherent_level) {
-                        $inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+                        $inherent_level = ['color' => '', 'warna_txt' => '', 'tingkat' => '-'];
                     }
-                    $a = $inherent_level['level_mapping'];
+                    $a = $inherent_level['tingkat'];
 
                     if (!$residual_level) {
-                        $residual_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+                        $residual_level = ['color' => '', 'warna_txt' => '', 'tingkat' => '-'];
                     }
 
 
@@ -114,7 +120,7 @@ if ($parent['sts_propose'] == 5) {
                                 <?php echo ($sts_heatmap['sts_heatmap'] == 1) ? 'checked' : ''; ?>>
                                 </center>
                         </td>
-                        <td class="peristiwa  pointer">
+                        <td class="peristiwa  pointer"> 
                             <?= $ros['event_name']; ?>
                             <!-- <div class="row-options pull-right">
                                 <a href="<?= base_url(_MODULE_NAME_REAL_ . '/tambah-peristiwa/edit/' . $ros['id']  . '/' . $ros['rcsa_no']) ?>" class="  <?= $hide_edit; ?>" id="edit-peristiwa" data-id="0" data-rcsa="<?= $parent['id']; ?>"> Edit </a>
@@ -126,24 +132,25 @@ if ($parent['sts_propose'] == 5) {
                         <td class="edit text-center  pointer">
                             <?php
                             $like = $this->db
-                                ->where('id', $residual_level['likelihood'])
+                                ->where('id', $residual_level['code_likelihood'])
                                 ->get('bangga_level')->row_array();
 
                             $impact = $this->db
-                                ->where('id', $residual_level['impact'])
+                                ->where('id', $residual_level['code_impact'])
                                 ->get('bangga_level')->row_array();
                             $likeinherent = $this->db
-                                ->where('id', $inherent_level['likelihood'])
+                                ->where('id', $inherent_level['code_likelihood'])
                                 ->get('bangga_level')->row_array();
 
                             $impactinherent = $this->db
-                                ->where('id', $inherent_level['impact'])
+                                ->where('id', $inherent_level['code_impact'])
                                 ->get('bangga_level')->row_array();
+                                // doi::dump($like);
 
-                            if ($ros['inherent_level'] > 0) : ?>
+                            if ($ros['analisis_like_inherent'] > 0) : ?>
 
                                 <span id="inherent_level_label">
-                                    <span style="background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;">&nbsp; <?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;<?= $inherent_level['level_mapping']; ?>&nbsp;</span>
+                                    <span style="background-color:<?= $inherent_level['warna_bg']; ?>;color:<?= $inherent_level['warna_txt']; ?>;">&nbsp; <?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;<?= $inherent_level['tingkat']; ?>&nbsp;</span>
                                 </span>
 
                                 <!--echo "<span style='background-color:" . $ros[' warna'] . ";color:" . $ros['warna_text'] . ";'>&nbsp;" . $ros['inherent_analisis'] . "&nbsp;</span>" ;; ?>
@@ -168,9 +175,9 @@ if ($parent['sts_propose'] == 5) {
                         </td>
                         <td class="edit text-center  pointer">
                             <?php
-                            if ($ros['inherent_level'] > 0) : ?>
+                            if ($ros['analisis_like_residual'] > 0) : ?>
                                 <span id="residual_level_label">
-                                    <span style="background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;">&nbsp; <?= $like['code']; ?> x <?= $impact['code']; ?>&nbsp;<?= $residual_level['level_mapping']; ?>&nbsp;</span>
+                                    <span style="background-color:<?= $residual_level['warna_bg']; ?>;color:<?= $residual_level['warna_txt']; ?>;">&nbsp; <?= $like['code']; ?> x <?= $impact['code']; ?>&nbsp;<?= $residual_level['tingkat']; ?>&nbsp;</span>
                                 </span>
 
                                 <!-- echo "<span style='background-color:" . $ros[' warna_residual'] . ";color:" . $ros['warna_text_residual'] . ";'>&nbsp;" . $ros['residual_analisis'] . "&nbsp;</span>" ;; ?> -->

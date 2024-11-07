@@ -1122,5 +1122,11 @@ $msg="risk impcat yang anda masukan sudah ada";
 		$hasil['parent'] = $rows;
 		return $hasil;
 	}
+
+	function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        return $rows;
+	}
 }
 /* End of file app_login_model.php */
