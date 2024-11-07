@@ -2515,8 +2515,8 @@
   color: #333333 !important;
 }
 
-table #indexKomposit th,
-td {
+table .indexKomposit, td .indexKomposit,
+td .indexKomposit {
   border: 1px solid #000;
   padding: 8px;
   text-align: center;

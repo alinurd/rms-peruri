@@ -966,10 +966,10 @@ class MX_Model extends CI_Model
 		$kualitasKPMR = $data['KPMR']['realisasiText'];
 		$totalPenilaianCombo = $data['KPMR']['realisasiAngka'];
 		$result = '
-		<table id="indexKomposit">
+		<table class="indexKomposit">
 			<tr>
-				<th id="kinerja" rowspan="2"><center>Kinerja</center></th>
-				<th id="kpmr" colspan="' . count($kmpr) . '">Kualitas Penerapan Manajemen Risiko</th>
+				<th id="kinerja"class="indexKomposit"  rowspan="2"><center>Kinerja</center></th>
+				<th id="kpmr" class="indexKomposit" colspan="' . count($kmpr) . '">Kualitas Penerapan Manajemen Risiko</th>
 			</tr>
 			<tr>';
 
@@ -983,13 +983,13 @@ class MX_Model extends CI_Model
 			$result .= '<tr>';
 			foreach ($row as $index => $cell) {
 				if ($index == 0) {
-					$result .= '<th id="kinerja">' . $cell . '</th>';
+					$result .= '<th id="kinerja" >' . $cell . '</th>';
 				} else {
 					$highlight = ($row[0] == $kualitasKinerja && $index == array_search($kualitasKPMR, $kmpr) + 1) ? "highlight" : "";
 					$cellClass = $this->getCellClassKomposit($cell);
 
 					$result .= '
-					<td class="' . $cellClass . '">
+					<td class="' . $cellClass . ' indexKomposit">
 						<span id="isi" class="' . $highlight . ' peta" 
 							data-toggle="popover" 
 							data-placement="top" 
