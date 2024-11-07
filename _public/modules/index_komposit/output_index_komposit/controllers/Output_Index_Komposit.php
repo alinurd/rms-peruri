@@ -20,7 +20,10 @@ class Output_Index_Komposit extends BackendController
 		$this->cbo_owner 			= $this->get_combo('owner');
 		$this->cbo_loss 			= [1 => 'Ya', 0 => 'Tidak'];
 		$this->cbo_periode 			= $this->get_combo('periode');
- 
+		$user=$this->authentication->get_Info_User();
+		$this->owner=$user['group']['owner']['owner_no'];
+		$this->tw=4;
+		$this->bln='November - Triwulan 4';
 	}
 
 	public function index()
@@ -30,9 +33,15 @@ class Output_Index_Komposit extends BackendController
 		$data = $this->data->getParamDrawKomposit();
  		$data['kompositData'] = $this->data->getKompositData();
 		$data['realisasi'] = $this->db
+		
+		->where('owner', $this->owner)
+		->where('tw', $this->tw)
 			->get('bangga_indexkom_realisasi')
 			->result_array();
-			$data[]= 
+
+			$data['owner']=$this->owner;
+			$data['tw']=$this->tw;
+			$data['bln']=$this->bln;
 		$this->template->build('home', $data);
 	}
 
