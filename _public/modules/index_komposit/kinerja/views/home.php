@@ -130,8 +130,9 @@
                                  <input type="text" id="realisasitw-<?= $pk['id']; ?>" data-absolut="0" value="<?=$resParents['realisasitw']?>"  style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $pk['id']; ?>)" >
                              </td>
                              <td class="text-center" width="10%">
+                             <input type="hidden" name="idx[]" value="<?= $pk['id'] ?>">
                              <input type="checkbox" id="isAbsolute-<?= $pk['id']; ?>-1" name="absolut[]" value="1" <?= $resParents['absolut'] > 0 ? 'checked' : '' ?> onclick="updatePercentage(<?= $pk['id']; ?>)">
-                             <label for="isAbsolute-<?= $pk['id']; ?>-1">Absolute</label
+                             <label for="isAbsolute-<?= $pk['id']; ?>-1">Absolute</label>
                                  <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>
                              </td>
                              <td>
@@ -191,15 +192,17 @@
                                  <input type="text" class="form-control" id="realisasitw-<?= $d['id']; ?>" value="<?=$resDetail['realisasitw']?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $d['id']; ?>)">
                              </td>
                              <td class="text-center" width="10%">
+                                 <input type="hidden" name="idx[]" value="<?= $d['id'] ?>">
                                  <input type="checkbox" id="isAbsolute-<?= $d['id']; ?>-1" name="absolut[]" value="1" onclick="updatePercentage(<?= $d['id']; ?>)" <?= $resDetail['absolut'] > 0 ? 'checked' : '' ?> >
                                  <label for="isAbsolute-<?= $d['id']; ?>-1">Absolute</label> 
-                                 <br><span class="badge" id="persentase-<?= $d['id']; ?>">0 %</span>
+                                 <br><span class="badge" id="persentase-<?= $d['id']; ?>">0 %ff</span>
                              </td>
                              <td width="5%" rowspan="<?= count($countDetailx) ?>">
                                  <input type="hidden" name="id[]" value="<?= $d['id_param'] ?>">
                                  <input type="hidden" name="urut[]" value="<?= $d['urut'] ?>">
                                  <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>" style="width: 110px;"
                                      data-bobot="<?= $pk['bobot']; ?>"
+                                     data-idx="<?= $d['id']; ?>"
                                      data-urut="<?= $d['urut']; ?>"
                                      data-nc="<?= $nc; ?>"
                                      data-id-parent="<?= $d['id_param']; ?>"

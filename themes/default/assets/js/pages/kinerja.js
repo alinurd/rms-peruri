@@ -7,7 +7,16 @@ $(document).ready(function () {
  
     $('.skala-dropdown').on('change', function () {
         calculateDropdown($(this));
+ 
     });
+   
+    $('input[name="idx[]"]').each(function() {
+         var id = $(this).val();
+        updatePercentage(id);
+    });
+
+    
+  
 
     $("#simpan").click(function () {
         var ids = [];
@@ -107,6 +116,7 @@ function calculateDropdown(element) {
 
 
 function updatePercentage(id) {
+    console.log(id)
     const targetInput = document.getElementById(`target-${id}`);
     const isAbsolute = document.getElementById(`isAbsolute-${id}-1`).checked;
     const realisasiInput = document.getElementById(`realisasitw-${id}`);
@@ -131,6 +141,7 @@ function updatePercentage(id) {
             percentage = (realisasiValue / targetValue) * 100;
         }
     }
+    console.log(percentage)
     persentaseSpan.textContent = (percentage > 0 ? percentage.toFixed(2) : 0) + " %";
 }
  
