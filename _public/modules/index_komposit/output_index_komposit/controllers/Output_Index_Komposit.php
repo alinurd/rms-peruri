@@ -25,8 +25,10 @@ class Output_Index_Komposit extends BackendController
 
 	public function index()
 	{
+		$user=$this->authentication->get_Info_User();
+		$data['owner']=$user['group']['owner']['owner_no'];
 		$data = $this->data->getParamDrawKomposit();
-		$data['kompositData'] = $this->data->getKompositData();
+ 		$data['kompositData'] = $this->data->getKompositData();
 		$data['realisasi'] = $this->db
 			->get('bangga_indexkom_realisasi')
 			->result_array();

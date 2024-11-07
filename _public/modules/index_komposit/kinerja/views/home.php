@@ -1,4 +1,4 @@
- <h3>Parameter Penentuan Hasil Penilaian Pencapaian Kinerja</h3>
+ <h3>Parameter Penentuan Hasil Penilaian Pencapaian Kinerja | <strong><?=$bln?></strong></h3>
  <table class="display table table-bordered" id="tbl_event">
      <thead>
          <tr>
@@ -38,7 +38,8 @@
                     $countDetailx = $c['detail'][$pk['id']];
                     $resParents = $this->db
                     ->where('id_komposit', $pk['id_combo'])
-                    //  ->where('urut', $pk['urut'])
+                    ->where('owner', $owner)
+                    ->where('tw', $tw)
                     ->order_by('urut')
                     ->get('bangga_indexkom_realisasi')
                     ->row_array();
@@ -105,6 +106,8 @@
                         $resDetail = $this->db
                             ->where('id_komposit', $d['id_param'])
                             ->where('urut', $pk['urut'])
+                            ->where('owner', $owner)
+                            ->where('tw', $tw)
                             ->order_by('urut')
                             ->get('bangga_indexkom_realisasi')
                             ->row_array();

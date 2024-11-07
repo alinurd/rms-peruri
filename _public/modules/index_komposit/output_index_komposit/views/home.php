@@ -40,6 +40,7 @@
                                                     $countDetailx = $c['detail'][$pk['id']];
                                                     $resParents = $this->db
                                                         ->where('id_komposit', $pk['id_combo'])
+                                                        ->where('owner', $owner)
                                                         ->order_by('urut')
                                                         ->get('bangga_indexkom_realisasi')
                                                         ->row_array();
@@ -63,6 +64,7 @@
                                                         foreach ($countDetailx as $dKey => $d) {
                                                             $resDetail = $this->db
                                                                 ->where('id_komposit', $d['id_param'])
+                                                                ->where('owner', $owner)
                                                                 ->where('urut', $pk['urut'])
                                                                 ->order_by('urut')
                                                                 ->get('bangga_indexkom_realisasi')
@@ -154,6 +156,7 @@
                                                     $countDetailx = $c['detail'][$pk['id']];
                                                     $resParents = $this->db
                                                         ->where('id_komposit', $pk['id_combo'])
+                                                        ->where('owner', $owner)
                                                         ->order_by('urut')
                                                         ->get('bangga_indexkom_realisasi')
                                                         ->row_array();
@@ -178,6 +181,7 @@
                                                             $resDetail = $this->db
                                                                 ->where('id_komposit', $d['id_param'])
                                                                 ->where('urut', $pk['urut'])
+                                                                ->where('owner', $owner)
                                                                 ->order_by('urut')
                                                                 ->get('bangga_indexkom_realisasi')
                                                                 ->row_array();

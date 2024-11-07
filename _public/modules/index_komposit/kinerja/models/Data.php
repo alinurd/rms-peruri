@@ -55,7 +55,7 @@ class Data extends MX_Model {
     }
     
 
-    function simpan($data) {
+    function simpan($data, $owner, $tw) {
         foreach ($data['id'] as $index => $id) {
             $upd = array(
                'jenis' => 1,
@@ -66,15 +66,17 @@ class Data extends MX_Model {
                'absolut' => $data['absolut'][$index],
                'realisasi' => $data['realisasi'][$index]
            );
-   
+           
             $res = $this->db->where('id_komposit', $id)
                            ->where('urut', $data['urut'][$index])
+                           ->where('owner', $owner)
+                            ->where('tw', $tw)
                            ->get(_TBL_INDEXKOM_REALISASI)
                            ->result_array();
    
            if (count($res) > 0) {
                 $upd['update_user'] = $this->authentication->get_Info_User('username');
-               $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut']];
+               $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut'], 'owner' => $owner, 'tw' => $tw];
    
                $this->crud->crud_data(array(
                    'table' => _TBL_INDEXKOM_REALISASI,
@@ -87,6 +89,8 @@ class Data extends MX_Model {
            } else {
                 $upd['create_user'] = $this->authentication->get_Info_User('username');
    
+                $upd['owner'] = $owner;
+                $upd['tw'] = $tw;
                $result[] = $this->crud->crud_data(array(
                    'table' => _TBL_INDEXKOM_REALISASI,
                    'field' => $upd,
