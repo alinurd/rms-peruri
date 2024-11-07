@@ -735,9 +735,9 @@ $msg="risk impcat yang anda masukan sudah ada";
 		} else {
 			// Jika add, tambahkan informasi pengguna yang membuat data baru
 			$upd['create_user'] = $this->authentication->get_info_user('username');
-			
 			// Insert data utama mitigasi
 			$id = $this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upd, 'type' => 'add']);
+			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updx, 'where' => array('id' => $data['id_detail']), 'type' => 'update'));
 			$id = $this->db->insert_id();
 			$type = "add";
 		}
