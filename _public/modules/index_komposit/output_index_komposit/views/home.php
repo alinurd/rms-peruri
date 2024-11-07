@@ -28,6 +28,12 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        $level=[
+                                            >90=>[
+                                                "data" => >"Strong",
+                                                "nilai" => >90,
+                                            ]
+                                        ]
                                         $nc = 1;
                                         $totalPenilaianCombo = 0;
 

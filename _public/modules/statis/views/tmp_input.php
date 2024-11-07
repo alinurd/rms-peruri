@@ -683,6 +683,19 @@ function draw($master, $data, $tab = '', $next_row = false, $cols = '')
 							if (!empty($disabled))
 								$content .= form_hidden($label, $isi);
 							break;
+							case 'number':
+   								$addon="hide";
+								if($row['input']['type']=="%"){
+									$addon="";
+								}
+								$content = "<input type='number' name='$label' value='$isi' class='form-control numericdot $error $align' $disabled size='$row[size]' $onChange id='$label' $readOnly $autofocus>
+								  <span class='input-group-addon ".$addon."' id='bobot'>".$row['input']['type']."</span>
+";
+								if (!empty($disabled)) {
+									$content .= "<input type='hidden' name='$label' value='$isi'>";
+								}
+								break;
+							
 						case 'float':
 							$isi = number_format(floatval($isi));
 							if (empty($isi))
