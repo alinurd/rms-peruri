@@ -132,20 +132,20 @@ if ($parent['sts_propose'] == 5) {
                         <td class="edit text-center  pointer">
                             <?php
                             $like = $this->db
-                                ->where('id', $residual_level['code_likelihood'])
+                                ->where('id', $residual_level['like_no'])
                                 ->get('bangga_level')->row_array();
 
                             $impact = $this->db
-                                ->where('id', $residual_level['code_impact'])
+                                ->where('id', $residual_level['impact_no'])
                                 ->get('bangga_level')->row_array();
                             $likeinherent = $this->db
-                                ->where('id', $inherent_level['code_likelihood'])
+                                ->where('id', $inherent_level['like_no'])
                                 ->get('bangga_level')->row_array();
 
                             $impactinherent = $this->db
-                                ->where('id', $inherent_level['code_impact'])
+                                ->where('id', $inherent_level['impact_no'])
                                 ->get('bangga_level')->row_array();
-                                // doi::dump($like);
+                                // doi::dump($inherent_level);
 
                             if ($ros['analisis_like_inherent'] > 0) : ?>
 
