@@ -1,8 +1,58 @@
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-sm-8 panel-heading">
+                <h3 style="padding-left:10px;"><?= lang("msg_title") ?></h3>
+            </div>
+            <div class="col-sm-4" style="text-align:right">
+                <ul class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#">Index Komposit</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <section class="x_panel">
     <div class="x_title">
         <h3>Output Index Komposit</h3>
-
         <div class="clearfix"></div>
+        <form method="GET" action="<?= site_url(_MODULE_NAME_REAL_.'/index'); ?>">
+            <div class="row">
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <label for="filter_periode">Tahun</label>
+                    <select name="periode" id="filter_periode" class="form-control select2" style="width: 100%;">
+                        <?php foreach ($cboPeriod as $key => $value): ?>
+                            <option value="<?= ($key == 0) ? '0' : $value; ?>" <?= ($periode == $value) ? 'selected' : ''; ?>><?= $value; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-6 col-sm-8 col-xs-6">
+                    <label for="filter_owner">Risk Owner</label>
+                    <select name="owner" id="filter_owner" class="form-control select2" style="width: 100%;">
+                        <?php foreach ($cboOwner as $key => $value): ?>
+                            <option value="<?= $key; ?>" <?= ($owner == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="filter_triwulan">Triwulan <?=$tw?></label>
+                    <select name="triwulan" id="filter_triwulan" class="form-control select2" style="width: 80%;">
+                        <option value="1" <?= ($tw == 1) ? 'selected' : ''; ?>>Triwulan 1</option>
+                        <option value="2" <?= ($tw == 2) ? 'selected' : ''; ?>>Triwulan 2</option>
+                        <option value="3" <?= ($tw == 3) ? 'selected' : ''; ?>>Triwulan 3</option>
+                        <option value="4" <?= ($tw == 4) ? 'selected' : ''; ?>>Triwulan 4</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 col-sm-2 col-xs-2 mt-3">
+                    <button type="submit" class="btn btn-success text-white" style="margin-top: 25px;">
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;Filter
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="x_content">
         <div class="row">
@@ -40,9 +90,9 @@
                                                     $countDetailx = $c['detail'][$pk['id']];
                                                     $resParents = $this->db
                                                         ->where('id_komposit', $pk['id_combo'])
-                                                        
                                                         ->where('owner', $owner)
                                                         ->where('tw', $tw)
+                                                        ->where('periode', $periode)
                                                         ->order_by('urut')
                                                         ->get('bangga_indexkom_realisasi')
                                                         ->row_array();
@@ -69,6 +119,7 @@
                                                                 
                                                         ->where('owner', $owner)
                                                         ->where('tw', $tw)
+                                                        ->where('periode', $periode)
                                                                 ->where('urut', $pk['urut'])
                                                                 ->order_by('urut')
                                                                 ->get('bangga_indexkom_realisasi')
@@ -163,6 +214,7 @@
                                                         
                                                         ->where('owner', $owner)
                                                         ->where('tw', $tw)
+                                                        ->where('periode', $periode)
                                                         ->order_by('urut')
                                                         ->get('bangga_indexkom_realisasi')
                                                         ->row_array();
@@ -190,6 +242,7 @@
                                                                 
                                                         ->where('owner', $owner)
                                                         ->where('tw', $tw)
+                                                        ->where('periode', $periode)
                                                                 ->order_by('urut')
                                                                 ->get('bangga_indexkom_realisasi')
                                                                 ->row_array();

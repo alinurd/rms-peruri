@@ -40,6 +40,7 @@
                     ->where('id_komposit', $pk['id_combo'])
                     ->where('owner', $owner)
                     ->where('tw', $tw)
+                    ->where('periode', $periode)
                     ->order_by('urut')
                     ->get('bangga_indexkom_realisasi')
                     ->row_array();
@@ -108,6 +109,7 @@
                             ->where('urut', $pk['urut'])
                             ->where('owner', $owner)
                             ->where('tw', $tw)
+                            ->where('periode', $periode)
                             ->order_by('urut')
                             ->get('bangga_indexkom_realisasi')
                             ->row_array();

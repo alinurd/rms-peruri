@@ -24,7 +24,18 @@ class Kinerja extends BackendController
 		$user=$this->authentication->get_Info_User();
 		$this->owner=$user['group']['owner']['owner_no'];
 		$this->tw=4;
-		$this->bln='November - Triwulan 4';
+		$this->periode=2024;
+		$this->tw=4;
+		if ($this->input->get('triwulan')) {
+            $this->tw = $this->input->get('triwulan');
+        }
+
+		if ($this->input->get('owner')) {
+            $this->owner = $this->input->get('owner');
+        }
+		if ($this->input->get('periode')) {
+			$this->periode = $this->input->get('periode');
+		}
 	}
 
 	public function index() { 
@@ -33,34 +44,18 @@ class Kinerja extends BackendController
 		 $data['owner']=$this->owner;
 		 $data['tw']=$this->tw;
 		 $data['bln']=$this->bln;
+		 $data['periode']=$this->periode;
+		 
+		 $data['cboPeriod']    = $this->cbo_periode;
+		 $data['cboOwner']     = $this->cbo_parent;
+
 		 		$this->template->build('home', $data);
-	}
-
-	public function save(){
-		$post 	= $this->input->post();
-
-		$id = $this->data->simpan_realisasi($post);
-		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
-		$data['detail'] = $this->db->where('id', $post['detail_rcsa_no'])->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
-		$data['realisasi'] = $this->data->get_realisasi($post['detail_rcsa_no'], $post['bulan']);
-		// $result['combo'] = $this->load->view('list-realisasi', $data, true);
-		echo json_encode($data);
-
-
-		
-		// 	var_dump($simpan);
-		// exit;
-		// echo "<script>
-		// 	alert('Berhasil proses data!');
-		// 	window.location.href = '" . base_url("level_risiko/index") . "';
-		// </script>";
-
 	}
 	
 	public function simpan(){
 		$post 	= $this->input->post();
 
-		$id = $this->data->simpan($post, $this->owner, $this->tw);
+		$id = $this->data->simpan($post, $this->owner, $this->tw, $this->periode);
 
 		echo json_encode($post);
 

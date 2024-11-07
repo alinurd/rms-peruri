@@ -23,6 +23,15 @@ class Output_Index_Komposit extends BackendController
 		$user=$this->authentication->get_Info_User();
 		$this->owner=$user['group']['owner']['owner_no'];
 		$this->tw=4;
+		if ($this->input->get('triwulan')) {
+            $this->tw = $this->input->get('triwulan');
+        }
+		if ($this->input->get('owner')) {
+            $this->owner = $this->input->get('owner');
+        }
+		if ($this->input->get('periode')) {
+            $this->periode = $this->input->get('periode');
+        }
 		$this->bln='November - Triwulan 4';
 	}
 
@@ -42,6 +51,10 @@ class Output_Index_Komposit extends BackendController
 			$data['owner']=$this->owner;
 			$data['tw']=$this->tw;
 			$data['bln']=$this->bln;
+			$data['periode']=$this->periode;
+			
+			$data['cboPeriod']    = $this->cbo_periode;
+			$data['cboOwner']     = $this->cbo_parent;
 		$this->template->build('home', $data);
 	}
 
