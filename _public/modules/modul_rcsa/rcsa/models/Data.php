@@ -735,9 +735,9 @@ $msg="risk impcat yang anda masukan sudah ada";
 		} else {
 			// Jika add, tambahkan informasi pengguna yang membuat data baru
 			$upd['create_user'] = $this->authentication->get_info_user('username');
-			
 			// Insert data utama mitigasi
 			$id = $this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upd, 'type' => 'add']);
+			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updx, 'where' => array('id' => $data['id_detail']), 'type' => 'update'));
 			$id = $this->db->insert_id();
 			$type = "add";
 		}
@@ -1121,6 +1121,12 @@ $msg="risk impcat yang anda masukan sudah ada";
 		$rows = $this->db->where('id', intval($id))->get(_TBL_VIEW_RCSA)->row_array();
 		$hasil['parent'] = $rows;
 		return $hasil;
+	}
+
+	function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        return $rows;
 	}
 }
 /* End of file app_login_model.php */

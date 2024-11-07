@@ -1,3 +1,6 @@
+<?php
+// doi::dump($field);
+?>
 <div class="row">
     <div class="col-md-12">
         <div class="row">
@@ -97,19 +100,21 @@
                                 <?php
                                 $no = 1;
                                 foreach ($field as $q) {
-                                    $residual_level = $this->data->get_master_level(true, $q['inherent_level']);
-                                    $inherent = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">' . $residual_level['level_mapping'] . '</span>';
+                                    $cek_score = $this->data->cek_level_new($q['analisis_like_inherent'], $q['analisis_impact_inherent']);
+                                    // $residual_level = $this->data->get_master_level(true,  $cek_score['like']['code']);
+                                    $inherent = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $cek_score['warna_bg'] . ';color:' . $cek_score['warna_txt'] . ';">' . $cek_score['tingkat'] . '</span>';
 
-                                    $residual_level1 = $this->data->get_master_level(true, $q['residual_level']);
-                                    $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level1['color'] . ';color:' . $residual_level1['color_text'] . ';">' . $residual_level1['level_mapping'] . '</span>';
+                                    $cek_score1 = $this->data->cek_level_new($q['analisis_like_residual'], $q['analisis_impact_residual']);
+                                    // $residual_level1 = $this->data->get_master_level(true,$cek_score1['like']['code']);
+                                    $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $cek_score1['warna_bg'] . ';color:' . $cek_score1['warna_txt'] . ';">' . $cek_score1['tingkat'] . '</span>';
                                 ?>
                                     <tr>
                                         <td class="text-center" style="position: sticky; left: 0; background: white;z-index: 99;"><?= $no++ ?></td>
                                         <td style="position: sticky; left: 30px; background: white;z-index: 99;"><?= $q['name'] ?></td>
                                         <td style="position: sticky; left: 180px; background: white;z-index: 99;"><?= $q['event_name'] ?></td>
                                         <td  class="text-center"><?= $q['tahun'] ?></td>
-                                        <td><?= $inherent ?></td>
-                                        <td><?= $target ?></td>
+                                        <td><?php echo $inherent ?></td>
+                                        <td><?php echo $target ?></td>
                                         <?php
                                         switch ($triwulan) {
                                             case 1:

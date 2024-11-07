@@ -67,10 +67,11 @@ class Data extends MX_Model {
     // ==========================================
     public function simpan_lost_event($data) {
 
+
         // Data preparation for insertion or update
         $upd = [
             'rcsa_no'                     => $data['rcsa_no'],
-            'event_no'                     => $data['event_no'],
+            'event_no'                    => $data['event_no'],
             'rcsa_detail_id'              => $data['id_detail'],
             'identifikasi_kejadian'       => $data['identifikasi_kejadian'],
             'kategori'                    => $data['kategori'],
@@ -101,6 +102,7 @@ class Data extends MX_Model {
             $lib['description'] = $data['nama_event'];
             $lib['risk_type_no'] = 0;
             $lib['type'] = 1;
+            $lib['jenis_lib'] = "new";
             $lib['code'] = $this->cari_code_library($data, 1);
             $lib['create_user'] = $this->authentication->get_info_user('username');
 

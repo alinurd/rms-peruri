@@ -48,10 +48,11 @@ class Lost_Event_Database extends BackendController
             $judul_assesment = $this->input->get('judul_assesment');
         }
 
+        
         $data['owner']             = $own;
         $data['judul_assesment']   = $judul_assesment;
         
-        // Pagination calculations
+        // Pagination calculations  
         $total_data       = $this->data->count_all_data($data);
         $total_pages      = ceil($total_data / $limit);
         $offset           = ($page - 1) * $limit;
@@ -62,8 +63,9 @@ class Lost_Event_Database extends BackendController
         $x['end_data']     = min($offset + $limit, $total_data);
         $x['cboPeriod']    = $this->cbo_periode;
         $x['cboOwner']     = $this->cbo_parent;
-        $x['judulAssesment'] = $this->cbo_judul_assesment;
-        $x['field']        = $this->data->getDetail($data, $limit, $offset);
+        // $x['judulAssesment'] = $this->cbo_judul_assesment;
+        $x['judulAssesment']    = $this->get_combo('judul_assesment_new',$own);
+        $x['field']             = $this->data->getDetail($data, $limit, $offset);
 
         // Generate pagination
         $x['pagination'] = $total_data > 0 ? $this->pagination($data, $total_pages, $page) : '';
@@ -250,6 +252,33 @@ class Lost_Event_Database extends BackendController
 
         echo json_encode($hasil);
     }
+
+
+    public function get_judul_assesment(){
+        $owner_no = $this->input->post("owner_no"); 
+        $tahun = $this->input->post("tahun"); 
+        $hasil = $this->get_combo('judul_assesment_new', $owner_no,$tahun);
+    
+        // Array untuk menyimpan <option>
+        $options = '';
+        foreach ($hasil as $key => $value) {
+            $selected = ($this->input->get('judul_assesment') == $key) ? 'selected' : '';
+            $options .= '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
+        }
+    
+        echo json_encode(['options' => $options]);
+    }
+
+
+    public function delete_data(){
+        $id = $this->input->post("id");
+        $this->db->where('id', $id);
+        $res =  $this->db->delete('bangga_rcsa_lost_event');
+        echo json_encode($res);
+        // exit;
+    }
+    
+    
 }
 
 /* End of file Lost_Event_Database.php */

@@ -118,6 +118,28 @@ $(function () {
       }
     );
 
+    // Trigger delete confirmation modal
+    $("li.delete").on("click", null, function () {
+      $("#id_lost").val($(this).data("id"));
+      $("#confirmDelete").modal("show"); // Show the confirmation modal
+    });
+
+    // Confirm delete action
+    $("#confirm").one("click", function () {
+      var id = $("#id_lost").val(); // Get the URL from data attribute
+      const data = {
+        id: id,
+      };
+      cari_ajax_combo(
+        "post",
+        $(this).parent(),
+        data,
+        "",
+        modul_name + "/delete-data",
+        "resultDelete"
+      );
+    });
+
     function updateRiskLevel(
       likelihoodSelector,
       impactSelector,
@@ -133,6 +155,33 @@ $(function () {
         data,
         "",
         modul_name + "/cek-level",
+        resultFunction
+      );
+    }
+
+    $(document).on("change", "#filter_owner,#filter_periode", function () {
+      UpdateJudulAssesment(
+        "#filter_owner",
+        "#filter_periode",
+        "resultJudulAssesment"
+      );
+    });
+
+    function UpdateJudulAssesment(
+      filter_owner,
+      filter_periode,
+      resultFunction
+    ) {
+      const data = {
+        owner_no: $(filter_owner).val(),
+        tahun: $(filter_periode).val(),
+      };
+      cari_ajax_combo(
+        "post",
+        $(filter_owner).parent(),
+        data,
+        "",
+        modul_name + "/get-judul-assesment",
         resultFunction
       );
     }
@@ -175,6 +224,27 @@ function result_modal_data(hasil) {
 function resultGetmitigasi(hasil) {
   $("#mitigasi_rencana").val(hasil.proaktif);
   $("#event_no").val(hasil.event_no);
+}
+
+function resultJudulAssesment(hasil) {
+  // Mengganti opsi di dalam #filter_judul_assesment
+  $("#filter_judul_assesment").html(hasil.options);
+
+  // Inisialisasi ulang select2 jika diperlukan
+  $("#filter_judul_assesment").select2();
+}
+function resultDelete(hasil) {
+  pesan_toastr(
+    "Berhasil dihapus...",
+    "success",
+    "Success",
+    "toast-top-center",
+    true
+  );
+  // Tambahkan waktu penundaan sebelum halaman di-reload
+  setTimeout(function () {
+    location.reload();
+  }, 5000); // 3000 ms = 3 detik (sesuaikan sesuai kebutuhan)
 }
 
 // ==========================================
