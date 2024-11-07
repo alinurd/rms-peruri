@@ -72,6 +72,7 @@ class Data extends MX_Model {
 
             $res = $this->db->where('id_komposit', $id)
                            ->where('urut', $data['urut'][$index])
+                           ->where('jenis', 1)
                            ->where('owner', $owner)
                             ->where('tw', $tw)
                             ->where('periode', $periode)
@@ -80,7 +81,7 @@ class Data extends MX_Model {
    
            if (count($res) > 0) {
                 $upd['update_user'] = $this->authentication->get_Info_User('username');
-               $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut'], 'owner' => $owner, 'tw' => $tw, 'periode' => $periode];
+               $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut'], 'owner' => $owner, 'tw' => $tw, 'jenis' => 1, 'periode' => $periode];
    
                $this->crud->crud_data(array(
                    'table' => _TBL_INDEXKOM_REALISASI,
