@@ -57,26 +57,25 @@
                                                  
                                                     $bobot = $c['bobot'];
                                                  
+                                                    $penilaian=$skala[$resParents['realisasi']];
                                                     if ($bobot > 0) {
+                                                        $nilai = ($bobot / 100) * $skala[$resParents['realisasi']];
                                                         $nilai = ($bobot / 100) * $skala[$resParents['realisasi']];
                                                     } else {
                                                         $nilai = $skala[$resParents['realisasi']];  
                                                     } 
+                                                    $totalPenilai += $penilaian;
                                                     $totalNilai += $nilai;
                                                      $countDetail = $c['detail'][$pk['id']];
                                                      
                                                  }
                                         ?>
                                                 <tr>
-                                                    <td rowspan=""><?= $nc++ ?></td>
+                                                    <td class="text-center"><?= $nc++ ?></td>
                                                     <td  ><?= $c['data'] ?></td>
-                                                    <td ><?= $bobot ?> %</td>
-                                                    <td >
-                                                        <?=$totalNilai?>
-                                                    </td>
-                                                    <td >
-                                                    <?=$bobot*$totalNilai?>
-                                                    </td>
+                                                    <td class="text-center"><?= $bobot ?> %</td>
+                                                    <td class="text-center"><?=$totalPenilai?></td>
+                                                    <td class="text-center"><?=$totalNilai?></td>
                                                 </tr>
                                                  
                                                    
