@@ -179,9 +179,19 @@ class Data extends MX_Model {
 			->where('id', $impact)
  			->get('bangga_level')->row_array();
 
+        // doi::dump($result);
 		return $result;
 
 	}
+
+    function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        
+		// doi::dump($rows);
+        return $rows;
+	}
+
     
 }
 /* End of file app_login_model.php */

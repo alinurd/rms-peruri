@@ -62,7 +62,7 @@
         '1' => '#00712D',    // Cukup & Efektif
         '2' => '#06D001',    // Sebagian
         '3' => '#FEEC37',    // Cukup & Tidak Efektif
-        '4' => '#9BEC00',    // Tidak Cukup & Efektif Sebagian
+        '4' => '#ffa000',    // Tidak Cukup & Efektif Sebagian
         '5' => '#B8001F'   // Tidak Cukup & Tidak Efektif
     ];
 
