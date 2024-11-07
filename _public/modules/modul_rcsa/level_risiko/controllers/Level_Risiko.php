@@ -281,7 +281,7 @@ class Level_Risiko extends BackendController
 	}
 
 
-
+	
 	function cek_level()
 	{
 		$post = $this->input->post();

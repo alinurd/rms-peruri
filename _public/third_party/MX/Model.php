@@ -148,13 +148,19 @@ class MX_Model extends CI_Model
 							  AND judul_assesment != ''
 							  ORDER BY judul_assesment";
 				break;
-				// case 'judul_assesment_new':
-				// 		$query = "SELECT id, judul_assesment AS name 
-				// 				  FROM " . _TBL_RCSA . " 
-				// 				  WHERE judul_assesment IS NOT NULL 
-				// 				  AND judul_assesment != '' AND owner_no = '".$param."'
-				// 				  ORDER BY judul_assesment";
-				// 	break;
+
+
+			case 'judul_assesment_new':
+				$where = "AND owner_no = '".$param."'";
+				if($param2> 0){
+					$where .= "AND YEAR(create_date) LIKE '%".$param2."%'";
+				}
+					$query = "SELECT id, judul_assesment AS name 
+							  FROM " . _TBL_RCSA . " 
+							  WHERE judul_assesment IS NOT NULL 
+							  AND judul_assesment != '' {$where}
+							  ORDER BY judul_assesment";
+				break;
 			case 'officer':
 				$query = "select id, officer_name as name from " . _TBL_OFFICER . "";
 				break;
