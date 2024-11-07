@@ -20,15 +20,41 @@ class Output_Index_Komposit extends BackendController
 		$this->cbo_owner 			= $this->get_combo('owner');
 		$this->cbo_loss 			= [1 => 'Ya', 0 => 'Tidak'];
 		$this->cbo_periode 			= $this->get_combo('periode');
- 
+		$user=$this->authentication->get_Info_User();
+		$this->owner=$user['group']['owner']['owner_no'];
+		$this->tw=4;
+		if ($this->input->get('triwulan')) {
+            $this->tw = $this->input->get('triwulan');
+        }
+		if ($this->input->get('owner')) {
+            $this->owner = $this->input->get('owner');
+        }
+		if ($this->input->get('periode')) {
+            $this->periode = $this->input->get('periode');
+        }
+		$this->bln='November - Triwulan 4';
 	}
 
-	public function index() { 
+	public function index()
+	{
+		$user=$this->authentication->get_Info_User();
+		$data['owner']=$user['group']['owner']['owner_no'];
+		$data = $this->data->getParamDrawKomposit();
  		$data['kompositData'] = $this->data->getKompositData();
-		 $data['realisasi'] = $this->db 
-                     ->get('bangga_indexkom_realisasi')
-                    ->result_array();
+		$data['realisasi'] = $this->db
+		
+		->where('owner', $this->owner)
+		->where('tw', $this->tw)
+			->get('bangga_indexkom_realisasi')
+			->result_array();
 
+			$data['owner']=$this->owner;
+			$data['tw']=$this->tw;
+			$data['bln']=$this->bln;
+			$data['periode']=$this->periode;
+			
+			$data['cboPeriod']    = $this->cbo_periode;
+			$data['cboOwner']     = $this->cbo_parent;
 		$this->template->build('home', $data);
 	}
 
