@@ -41,36 +41,38 @@ $(document).ready(function () {
             }
         });
         
-     
         $('select[name="realisasi[]"]').each(function () {
             var selectedOption = $(this).find('option:selected').val();
             realisasi.push(selectedOption);
         });
 
-  
+        var owner = $('input[name="owner"]').val();
+        var tw = $('input[name="tw"]').val();
+        var periode = $('input[name="periode"]').val();
+
         var data = {
             'id': ids,
             'urut': urut,
              'target': target,
             'realisasitw': realisasitw, 
             'absolut': absolut,
-            'realisasi': realisasi
+            'realisasi': realisasi,
+            'owner': owner,
+            'tw': tw,
+            'periode': periode,
         };
     
-        console.log(data); // Cek data yang akan dikirim
-    
-        // Kirim data ke server
-        var parent = $(this).parent();
+     
+         var parent = $(this).parent();
         var url = modul_name + "/simpan";
         cari_ajax_combo("post", parent, data, parent, url, "result");
     
-        return false; // Hentikan form submission
-    });
+     });
     
  });
 
 function result(res){
-    pesan_toastr('Mohon Tunggu', 'info', 'Prosess', 'toast-top-center', true);
+    pesan_toastr('Proses Simpan Berhasil...', 'info', 'Prosess', 'toast-top-center', true);
 }
 
 function calculateDropdown(element) {

@@ -56,6 +56,9 @@ class Data extends MX_Model {
     
 
     function simpan($data, $owner, $tw, $periode) {
+        $owner=$data['owner'];
+        $tw=$data['tw'];
+        $periode=$data['periode'];
         foreach ($data['id'] as $index => $id) {
             $upd = array(
                'jenis' => 1,

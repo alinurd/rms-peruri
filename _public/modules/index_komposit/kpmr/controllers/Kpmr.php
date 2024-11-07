@@ -23,8 +23,7 @@ class Kpmr extends BackendController
 		
 		$user=$this->authentication->get_Info_User();
 		$this->owner=$user['group']['owner']['owner_no'];
-		$this->tw=4;
-		$this->periode=2024;
+ 		$this->periode=2024;
 		$this->tw=4;
 		if ($this->input->get('triwulan')) {
             $this->tw = $this->input->get('triwulan');
@@ -62,10 +61,7 @@ class Kpmr extends BackendController
 	public function simpan(){
 		$post 	= $this->input->post();
 		$id = $this->data->simpan($post, $this->owner, $this->tw, $this->periode);
-
 		echo json_encode($post);
- 
-
 	}
 	
 	 

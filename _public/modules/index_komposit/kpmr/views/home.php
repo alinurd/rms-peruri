@@ -56,8 +56,15 @@
         </form>
     </section>
 
-
-
+<?php
+    $hide="hide";
+ if($owner && $tw && $periode){
+    $hide="";
+}
+?>
+<input type="hidden" name="owner" value="<?=$owner?>">
+<input type="hidden" name="tw" value="<?=$tw?>">
+<input type="hidden" name="periode" value="<?=$periode?>">
     <table class="display table table-bordered" id="tbl_event">
         <thead>
             <tr>
@@ -72,7 +79,7 @@
                 <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Evidence</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="<?=$hide?>">
             <?php $nc = 1;
             $totalPenilaianCombo = 0;
             foreach ($kompositData as $c) :
@@ -241,7 +248,7 @@
                 <input class="form-control " type="hidden" id="totalPerhitungan" name="totalPerhitungan" readonly>
             </th>
             <th class="text-center" colspan="2">
-                <button class="btn btn-save" id="simpan">
+                <button class="btn btn-save <?=$hide?>" id="simpan">
                     <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
                 </button>
             </th>
