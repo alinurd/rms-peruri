@@ -238,20 +238,23 @@ alert('Session anda telah berakhir. Silahkan login kembali.');
 		$sts_add="primary";
 		$sts_del="info";
 		$sts_cetak="success";
+		$sts_reset="danger";
 		
 		
 		$sts = $this->authentication->get_Privilege("icon_tombol");
 		$txt_add="";
 		$txt_del="";
 		$txt_print="";
+		$txt_reset 	= lang("msg_tombol_reset");
 		if ($sts){
-			$txt_add = lang("msg_tombol_add");
-			$txt_del = lang("msg_tombol_del");
-			$txt_print = lang("msg_tombol_print");
+			$txt_add 	= lang("msg_tombol_add");
+			$txt_del 	= lang("msg_tombol_del");
+			$txt_print 	= lang("msg_tombol_print");
 		}
 		
 		$this->_tombol['list']['add']='<a class="add btn btn-'.$sts_add.' btn-flat" href="'.base_url($this->_Snippets_['modul']).'/add" data-toggle="popover" data-content="'.lang("msg_prop_tombol_add").'"><i class="fa fa-plus"></i> '.$txt_add.'</a>&nbsp;&nbsp;';
 		$this->_tombol['list']['del']='<button type="submit" class="delete btn btn-'.$sts_del.' btn-flat" value="Delete" name="delete_category" data-toggle="popover" data-content="'.lang("msg_prop_tombol_del").'"><i class="fa fa-trash"></i> &nbsp;'.$txt_del.'</button>&nbsp;';
+		$this->_tombol['list']['res']='<button type="button" id="resetBtn" class="reset btn btn-'.$sts_reset.' btn-flat" value="reset" name="reset_category" data-toggle="popover" data-content="'.lang("msg_prop_tombol_reset").'"><i class="fa fa-undo"></i> &nbsp;'.$txt_reset.'</button>&nbsp;';
 		
 		$this->_tombol['list']['print']=$this->_TOMBOL_PRINT(array('pdf','excel'));
 		
@@ -296,6 +299,9 @@ alert('Session anda telah berakhir. Silahkan login kembali.');
 		$this->_tombol['act_personal']['tombol']['view']=array('default'=>false,'url'=>base_url($this->_Snippets_['modul'].'/view'),'label'=>'View');
 		$this->_tombol['act_personal']['tombol']['print']=array('default'=>false,'url'=>base_url($this->_Snippets_['modul'].'/print'),'label'=>'Print','target'=>'_blank');
 		$this->_tombol['act_personal']['tombol']['delete']=array('default'=>false,'url'=>base_url($this->_Snippets_['modul'].'/delete'),'label'=>'Delete','class'=>'delete');
+		if ($this->uri->segment(1) == 'rcsa' && $this->authentication->is_admin()) {
+			$this->_tombol['act_personal']['tombol']['reset']=array('default'=>false,'url'=>base_url($this->_Snippets_['modul'].'/reset'),'label'=>'Reset','class'=>'reset');
+		}
 	}
 	
 	public function reg_var()

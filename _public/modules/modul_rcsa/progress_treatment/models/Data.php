@@ -252,13 +252,13 @@ if($rows){
                             <tr>
                                 <td style="padding: 10px; vertical-align: top;">
                                     <div class="input-group">
-                                        <input readonly type="number" name="target_progress'.$data['data']['id'].$month.'" id="target_progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data_risk_treatment['target_progress_detail'].'" aria-describedby="basic-addon2">
+                                        <input style="width:100px !important;" readonly type="number" name="target_progress'.$data['data']['id'].$month.'" id="target_progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data_risk_treatment['target_progress_detail'].'" aria-describedby="basic-addon2">
                                         <span class="input-group-addon" id="basic-addon2">%</span>
                                     </div>
                                 </td>
                                 <td style="padding: 10px; vertical-align: top;">
                                     <div class="input-group">
-                                        <input type="number" name="progress'.$data['data']['id'].$month.'" id="progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data['data']['progress_detail'].'" aria-describedby="basic-addon2">
+                                        <input style="width:100px !important;" type="number" name="progress'.$data['data']['id'].$month.'" id="progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data['data']['progress_detail'].'" aria-describedby="basic-addon2">
                                         <span class="input-group-addon" id="basic-addon2">%</span>
                                     </div>
                                 </td>
@@ -267,21 +267,20 @@ if($rows){
                                 <td style="padding: 10px; vertical-align: top;">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                        <input readonly type="text" name="target_damp_loss'.$data['data']['id'].$month.'" id="target_damp_loss'.$data['data']['id'].$month.'" 
+                                        <input style="width:100px !important;" readonly type="text" name="target_damp_loss'.$data['data']['id'].$month.'" id="target_damp_loss'.$data['data']['id'].$month.'" 
                                         value="'.number_format($data_risk_treatment['target_damp_loss'],0,',',',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
                                     </div>
                                 </td>
                                 <td style="padding: 10px; vertical-align: top;">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                        <input type="text" name="damp_loss'.$data['data']['id'].$month.'" id="damp_loss'.$data['data']['id'].$month.'" 
+                                        <input style="width:100px !important;" type="text" name="damp_loss'.$data['data']['id'].$month.'" id="damp_loss'.$data['data']['id'].$month.'" 
                                         value="'.number_format($data['data']['damp_loss'],0,',',',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
                                     </div>
                                 </td>
                             </tr>
                         </table>
-                        <br>
-                        <div style="text-align: center; margin-top: 15px;">
+                        <div style="text-align: center; margin-top: 5px;">
                             <button type="button" class="btn btn-primary" id="simpan_realisasi_'.$data['data']['id'].'" data-month="'.$month.'" data-id="'.$data['data']['id'].'">
                                 <i class="fa fa-floppy-o" aria-hidden="true"></i>
                             </button>

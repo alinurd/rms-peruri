@@ -195,6 +195,65 @@ $(function () {
     );
   });
 
+  $(document).on("click", "li.reset", function () {
+    var data_url = $(this).attr("url");
+    var id = data_url.match(/\/(\d+)$/)[1];
+    var url = modul_name + "/reset";
+    var data = {
+      id: id,
+    };
+    var parent = $(this).parent();
+    cari_ajax_combo("post", parent, data, "", url, "result_show_modal_reset");
+  });
+
+  $(document).on("click", "#resetBtn", function () {
+    // Array to store selected checkbox values
+    let selectedValues = [];
+
+    // Collect values from checked checkboxes
+    $('input[name="check_item[]"]:checked').each(function () {
+      selectedValues.push($(this).val());
+    });
+
+    // Check if any checkboxes were selected
+    if (selectedValues.length === 0) {
+      alert("Silakan pilih setidaknya satu data untuk direset."); // Alert if no checkbox is selected
+      return; // Exit the function
+    }
+
+    var url = modul_name + "/reset"; // Define the URL for the AJAX request
+    var data = {
+      id: selectedValues, // Send selected values as an array
+    };
+
+    var parent = $(this).parent(); // Get the parent element of the button
+
+    // Call the AJAX function to send data
+    cari_ajax_combo("post", parent, data, "", url, "result_show_modal_reset");
+  });
+
+  $(document).on("click", "#btn-reset", function () {
+    var idRCSAValues = [];
+
+    // Menggunakan selektor atribut [name="id_rcsa[]"] untuk memilih elemen input
+    $('input[name="id_rcsa[]"]').each(function () {
+      idRCSAValues.push($(this).val());
+    });
+
+    var note = $("#note").val();
+
+    var url = modul_name + "/proses_reset"; // Define the URL for the AJAX request
+    var data = {
+      id: idRCSAValues,
+      note: note,
+    };
+
+    var parent = $(this).parent(); // Get the parent element of the button
+
+    // Call the AJAX function to send data
+    cari_ajax_combo("post", parent, data, "", url, "result_proses_reset");
+  });
+
   $(document).on("click", "#cmdRisk_Register, .showRegister", function () {
     var id = $(this).data("id");
     var owner = $(this).data("owner");
@@ -1502,4 +1561,36 @@ function remove_install_impact(t, iddel) {
     });
   }
   return false;
+}
+
+function result_show_modal_reset(hasil) {
+  $("#modal_general").find(".modal-body").html(hasil.cek);
+  $("#modal_general").find(".modal-title").html("RESET DRAFTING RISK REGISTER");
+  $("#modal_general").modal("show");
+  //   console.log(hasil.id_rcsa[0]);
+}
+
+function result_proses_reset(hasil) {
+  if (hasil.status == "success") {
+    pesan_toastr(
+      hasil.message,
+      hasil.status,
+      "Success",
+      "toast-top-center",
+      true
+    );
+  } else {
+    pesan_toastr(
+      hasil.message,
+      hasil.status,
+      "Error",
+      "toast-top-center",
+      true
+    );
+  }
+
+  // Tambahkan waktu penundaan sebelum halaman di-reload
+  setTimeout(function () {
+    location.reload();
+  }, 5000); // 3000 ms = 3 detik (sesuaikan sesuai kebutuhan)
 }

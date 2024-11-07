@@ -20,11 +20,11 @@
 			$photo = staft_url($user_photo);
 		}else{
 			$photo = img_url('male.png');
-			if ($gender=="P")
-				$photo = base_url('/themes/defult/assets/images/logo-white.png');
+			// if ($gender=="P")
+			// 	$photo = base_url('/themes/defult/assets/images/logo-white.png');
 		}
 	}
-	$photo = base_url('/themes/defult/assets/images/logo-white.png');
+	// $photo = base_url('/themes/defult/assets/images/logo-white.png');
 
  ?>
  <div class="col-md-3 left_col">
@@ -40,7 +40,7 @@
 	<!-- menu profile quick info -->
 	<div class="profile clearfix">
 	  <div class="profile_pic">
-		<img src="<?=base_url('/themes/defult/assets/images/logo-white.png');?>" alt="..." class="img-circle profile_img">
+		<img src="<?=$photo;?>" alt="..." class="img-circle profile_img">
 	  </div>
 	  <div class="profile_info">
 		<span>Welcome,</span>

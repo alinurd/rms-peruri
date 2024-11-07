@@ -19,6 +19,7 @@ $lang['msg_tombol_back']			= "Back";
 $lang['msg_tombol_send']			= "Send";
 $lang['msg_tombol_change_pass']		= "Change Password";
 $lang['msg_tombol_add_list']		= "Add";
+$lang['msg_tombol_reset']		    = "Reset";
 
 $lang['msg_prop_tombol_add']		= "Add New Data";
 $lang['msg_prop_tombol_del']		= "Delete Data Selected";

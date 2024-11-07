@@ -647,6 +647,9 @@ if($dtkri){
 		$url = base_url($this->modul_name . '/risk-event/' . $owner);
 		$tombol['detail'] = array("default" => true, "url" => $url, "label" => "Start Risk Register");
 		$tombol['edit'] = ['default' => false, 'url' => base_url($this->_Snippets_['modul'] . '/edit'), 'label' => 'Edit'];
+		// $tombol['reset'] = ['default' => false, 'url' => base_url($this->_Snippets_['modul'] . '/reset'), 'label' => 'Reset'];
+		
+		
 
 		if (array_key_exists($id, $this->use_list)) {
 			if ($this->use_list[$id]['jml'] > 0)
@@ -2239,5 +2242,82 @@ if($dtkri){
 		$result['post'] = $post;
 		echo json_encode($result);
 	}
+
+
+	public function reset() {
+		// Get the array of IDs from the POST request
+		$id_rcsa = $this->input->post("id");
+	
+		// Ensure $id_rcsa is an array; if it comes in as a comma-separated string, explode it
+		if (!is_array($id_rcsa)) {
+			$id_rcsa = explode(',', $id_rcsa);
+		}
+	
+		// Retrieve logs for the selected IDs
+		$data['log'] = $this->db->where_in('rcsa_no', $id_rcsa)->get(_TBL_LOG_PROPOSE)->result_array();
+		$data['id_rcsa'] = $id_rcsa; // Menambahkan $data['id_rcsa']
+	
+		// Load the view with the retrieved logs
+		$result['cek'] = $this->load->view('modal_reset', $data, true);
+		
+		// Return the result as JSON
+		echo json_encode($result);
+	}
+	
+
+
+	public function proses_reset() {
+		// Ambil data dari request POST
+		$ids = $this->input->post('id');
+		$note = $this->input->post('note');
+		// $approve_user = $this->input->post('approve_user');
+	
+		// Cek apakah data ID tidak kosong
+		if (empty($ids) || empty($note)) {
+			$result = array(
+				'status' => 'error',
+				'message' => 'Data tidak lengkap. Pastikan semua input diisi.'
+			);
+			echo json_encode($result);
+			return;
+		}
+	
+		// Mulai proses update satu per satu
+		foreach ($ids as $id) {
+			$data = array(
+				'table' => 'rcsa',
+				'type' => 'update',
+				'field' => array(
+					'sts_propose' => 0
+				),
+				'where' => array('id' => $id)
+			);
+	
+			// Lakukan update data
+			$this->crud->crud_data($data);
+	
+			// Log proses
+			$log_data = array(
+				'rcsa_no' => $id,
+				'note' => $note,
+				'petugas_no' => $this->authentication->get_Info_User("identifier"),
+				'keterangan' => 'Reset Drafting Risk Register',
+				'create_user' => $this->authentication->get_Info_User('username')
+			);
+			$this->db->insert('log_propose', $log_data);
+		}
+	
+		// Siapkan respon akhir
+		$result = array(
+			'status' => 'success',
+			'message' => 'Proses reset berhasil dilakukan.',
+			'updated_ids' => $ids
+		);
+	
+		// Kembalikan hasil dalam format JSON
+		echo json_encode($result);
+	}
+	
+	
 
 }
