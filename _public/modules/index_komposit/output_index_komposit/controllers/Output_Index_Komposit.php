@@ -23,12 +23,27 @@ class Output_Index_Komposit extends BackendController
  
 	}
 
-	public function index() { 
- 		$data['kompositData'] = $this->data->getKompositData();
-		 $data['realisasi'] = $this->db 
-                     ->get('bangga_indexkom_realisasi')
-                    ->result_array();
+	public function index()
+	{
+		$data['kompositData'] = $this->data->getKompositData();
+		$data['realisasi'] = $this->db
+			->get('bangga_indexkom_realisasi')
+			->result_array();
+		$data['levelKPMR'] = [
+			['min' =>90, 'max' => 1000, 'label' => "Strong"],
+			['min' => 85, 'max' => 90, 'label' => "Satisfactory"],
+			['min' => 80, 'max' => 84, 'label' => "Fair"],
+			['min' => 75, 'max' => 79, 'label' => "Marginal"],
+			['min' => 0, 'max' => 74, 'label' => "Unsatisfactory"],
+		];
 
+		$data['levelKinerja'] = [
+			['min' => 95, 'max' => 1000, 'label' => "Sangat Baik"],
+			['min' => 90, 'max' => 95, 'label' => "Baik"],
+			['min' => 80, 'max' => 89, 'label' => "Cukup"],
+			['min' => 70, 'max' => 79, 'label' => "Kurang"],
+			['min' => 0, 'max' => 70, 'label' => "Buruk"],
+		];
 		$this->template->build('home', $data);
 	}
 

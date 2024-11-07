@@ -20,7 +20,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th >Indikator</th>
+                                            <th>Indikator</th>
                                             <th>Bobot</th>
                                             <th>Hasil Penilaian</th>
                                             <th>Skor Penilaian</th>
@@ -28,75 +28,92 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        // $level=[
-                                        //     >90=>[
-                                        //         "data" => >"Strong",
-                                        //         "nilai" => >90,
-                                        //     ]
-                                        // ]
+                                        $kualitasKPMR = "Undefined"; 
                                         $nc = 1;
                                         $totalPenilaianCombo = 0;
-
-                                        foreach ($kompositData as $c) :
-                                            if ($c['pid'] == 0) : 
-                                                 $bobot = 0; 
-                                                $totalBobot = 0; 
-                                                $nilai = 0; 
-                                                $totalNilai = 0; 
-                                                $penilaian = 0; 
-                                                $skalaValue = [];
-                                                
-                                                foreach ($c['parent'] as $pk) { 
+                                        foreach ($kompositData as $k => $c) :
+                                            if ($c['pid'] == 0) :
+                                                $bobot = $c['bobot'];
+                                                $totalNilai = 0;
+                                                $totalPenilai = 0;
+                                                foreach ($c['parent'] as $pk) {
+                                                    $countDetailx = $c['detail'][$pk['id']];
                                                     $resParents = $this->db
                                                         ->where('id_komposit', $pk['id_combo'])
                                                         ->order_by('urut')
                                                         ->get('bangga_indexkom_realisasi')
                                                         ->row_array();
-                                                    
+
                                                     $skala = [$pk['skala'] => $pk['penilaian']];
-                                                 
-                                                    $bobot = $c['bobot'];
-                                                 
-                                                    $penilaian=$skala[$resParents['realisasi']];
+                                                    $hasilPenilaian = $skala[$resParents['realisasi']] ?? 0;
+
                                                     if ($bobot > 0) {
-                                                        $nilai = ($bobot / 100) * $skala[$resParents['realisasi']];
-                                                        $nilai = ($bobot / 100) * $skala[$resParents['realisasi']];
+                                                        $nilai = ($bobot / 100) * $hasilPenilaian;
                                                     } else {
-                                                        $nilai = $skala[$resParents['realisasi']];  
-                                                    } 
-                                                    $totalPenilai += $penilaian;
+                                                        $nilai = $hasilPenilaian;
+                                                    }
+
+                                                    $totalPenilai += $hasilPenilaian;
                                                     $totalNilai += $nilai;
-                                                     $countDetail = $c['detail'][$pk['id']];
-                                                     
-                                                 }
+
+                                                    if (count($countDetailx) > 0) {
+                                                        $totalDetailPenilai = 0;
+                                                        $totalDetailNilai = 0;
+
+                                                        foreach ($countDetailx as $dKey => $d) {
+                                                            $resDetail = $this->db
+                                                                ->where('id_komposit', $d['id_param'])
+                                                                ->where('urut', $pk['urut'])
+                                                                ->order_by('urut')
+                                                                ->get('bangga_indexkom_realisasi')
+                                                                ->row_array();
+                                                            $skalaDetail = [$d['skala'] => $d['penilaian']];
+                                                            $hasilPenilaianDetail = ($pk['bobot'] / 100) * $skalaDetail[$resDetail['realisasi']] ?? 0;
+                                                            if ($bobot > 0) {
+                                                                $nilaiDetail = ($bobot / 100) * $hasilPenilaianDetail;
+                                                            } else {
+                                                                $nilaiDetail = $hasilPenilaianDetail;
+                                                            }
+
+                                                            $totalDetailPenilai += $hasilPenilaianDetail;
+                                                            $totalDetailNilai += $nilaiDetail;
+                                                        }
+
+                                                        $totalPenilai += $totalDetailPenilai;
+                                                        $totalNilai += $totalDetailNilai;
+                                                    }
+                                                }
+                                                $totalPenilaianCombo += $totalNilai;
                                         ?>
                                                 <tr>
                                                     <td class="text-center"><?= $nc++ ?></td>
-                                                    <td  ><?= $c['data'] ?></td>
+                                                    <td><?= $c['data'] ?></td>
                                                     <td class="text-center"><?= $bobot ?> %</td>
-                                                    <td class="text-center"><?=$totalPenilai?></td>
-                                                    <td class="text-center"><?=$totalNilai?></td>
+                                                    <td class="text-center"><?= $totalPenilai ?></td>
+                                                    <td class="text-center"><?= $totalNilai ?></td>
                                                 </tr>
-                                                 
-                                                   
-                                         <?php endif;
-                                        endforeach; ?>
 
-                                        <!-- Baris Total Nilai -->
+                                        <?php
+                                            endif;
+                                        endforeach;
+                                        foreach ($levelKPMR as $level) {
+                                            if ($totalPenilaianCombo >= $level['min'] && $totalPenilaianCombo <= $level['max']) {
+                                                $kualitasKPMR = $level['label'];
+                                                break;
+                                            }
+                                        }
+                                        ?>
                                         <tr style="background: #367FA9; color:#fff;">
                                             <th colspan="4" style="text-align: center;">Total Nilai</th>
-                                            <th><?= $totalPenilaianCombo ?></th> <!-- Tampilkan nilai total penilaian di sini -->
+                                            <th class="text-center"><?= $totalPenilaianCombo ?></th>
                                         </tr>
-
-                                        <!-- Baris Kualitas Penerapan Manajemen Risiko -->
                                         <tr style="background: #367FA9; color:#fff;">
                                             <th colspan="4" style="text-align: center;">Kualitas Penerapan Manajemen Risiko (KPMR)</th>
-                                            <th>Fair</th>
+                                            <th class="text-center"><?=$kualitasKPMR?></th>
                                         </tr>
+
                                     </tbody>
                                 </table>
-
-
                             </div>
                         </div>
                     </div>
@@ -124,21 +141,91 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>No</td>
-                                            <td>Indikator</td>
-                                            <td>Bobot</td>
-                                            <td>Hasil Penilaian</td>
-                                            <td>Skor Penilaian</td>
-                                        </tr>
+                                        <?php
+                                        $kualitasKPMR = "Undefined"; 
+                                        $nc = 1;
+                                        $totalPenilaianCombo = 0;
+                                        foreach ($kompositData as $k => $c) :
+                                            if ($c['pid'] == 1) :
+                                                $bobot = $c['bobot'];
+                                                $totalNilai = 0;
+                                                $totalPenilai = 0;
+                                                foreach ($c['parent'] as $pk) {
+                                                    $countDetailx = $c['detail'][$pk['id']];
+                                                    $resParents = $this->db
+                                                        ->where('id_komposit', $pk['id_combo'])
+                                                        ->order_by('urut')
+                                                        ->get('bangga_indexkom_realisasi')
+                                                        ->row_array();
+
+                                                    $skala = [$pk['skala'] => $pk['penilaian']];
+                                                    $hasilPenilaian = $skala[$resParents['realisasi']] ?? 0;
+
+                                                    if ($bobot > 0) {
+                                                        $nilai = ($bobot / 100) * $hasilPenilaian;
+                                                    } else {
+                                                        $nilai = $hasilPenilaian;
+                                                    }
+
+                                                    $totalPenilai += $hasilPenilaian;
+                                                    $totalNilai += $nilai;
+
+                                                    if (count($countDetailx) > 0) {
+                                                        $totalDetailPenilai = 0;
+                                                        $totalDetailNilai = 0;
+
+                                                        foreach ($countDetailx as $dKey => $d) {
+                                                            $resDetail = $this->db
+                                                                ->where('id_komposit', $d['id_param'])
+                                                                ->where('urut', $pk['urut'])
+                                                                ->order_by('urut')
+                                                                ->get('bangga_indexkom_realisasi')
+                                                                ->row_array();
+                                                            $skalaDetail = [$d['skala'] => $d['penilaian']];
+                                                            $hasilPenilaianDetail = ($pk['bobot'] / 100) * $skalaDetail[$resDetail['realisasi']] ?? 0;
+                                                            if ($bobot > 0) {
+                                                                $nilaiDetail = ($bobot / 100) * $hasilPenilaianDetail;
+                                                            } else {
+                                                                $nilaiDetail = $hasilPenilaianDetail;
+                                                            }
+
+                                                            $totalDetailPenilai += $hasilPenilaianDetail;
+                                                            $totalDetailNilai += $nilaiDetail;
+                                                        }
+
+                                                        $totalPenilai += $totalDetailPenilai;
+                                                        $totalNilai += $totalDetailNilai;
+                                                    }
+                                                }
+                                                $totalPenilaianCombo += $totalNilai;
+                                        ?>
+                                                <tr>
+                                                    <td class="text-center"><?= $nc++ ?></td>
+                                                    <td><?= $c['data'] ?></td>
+                                                    <td class="text-center"><?= $bobot ?> %</td>
+                                                    <td class="text-center"><?= $totalPenilai ?></td>
+                                                    <td class="text-center"><?= $totalNilai ?></td>
+                                                </tr>
+
+                                        <?php
+                                            endif;
+                                        endforeach;
+                                        foreach ($levelKinerja as $level) {
+                                            if ($totalPenilaianCombo >= $level['min'] && $totalPenilaianCombo <= $level['max']) {
+                                                $kualitasKinerja = $level['label'];
+                                                break;
+                                            }
+                                        }
+                                        ?>
                                         <tr style="background: #367FA9; color:#fff;">
                                             <th colspan="4" style="text-align: center;">Total Nilai</th>
-                                            <th>83</th>
+                                            <th class="text-center"><?= $totalPenilaianCombo ?></th>
                                         </tr>
                                         <tr style="background: #367FA9; color:#fff;">
-                                            <th colspan="4" style="text-align: center;">Kinerja</th>
-                                            <th>Fair</th>
+                                            <th colspan="4" style="text-align: center;">Kualitas Penerapan Manajemen Risiko (KPMR)</th>
+                                            <th class="text-center"><?=$kualitasKinerja?></th>
                                         </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -179,17 +266,33 @@
                                 <table class="display table table-bordered" id="tbl_event">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>KPMR</th>
-                                            <th>Skor Penilaian</th>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">KPMR</th>
+                                            <th class="text-center">Skor Penilaian</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php
+                                        $no=1;
+                                        foreach($levelKPMR as $k=> $p):
+                                            ?>
                                         <tr>
-                                            <td>No</td>
-                                            <td>Indikator</td>
-                                            <td>Skor Penilaian</td>
-                                        </tr>
+                                            <td class="text-center"><?=$no++?></td>
+                                            <td ><?=$p['label']?></td>
+                                            <td class="text-center">
+                                            <?php 
+                                                $ln= $p['min'] .' - '. $p['max'];
+                                            if($p['max']==1000){
+                                                $ln= ' > '. $p['min'];
+                                            }elseif($p['min']==0){
+                                                $ln= ' < '. $p['max'];
+
+                                            }?>
+                                                <?=$ln?></td>
+                                                
+                                            </td>
+                                         </tr>
+                                         <?php endforeach?>
                                     </tbody>
                                 </table>
                             </div>
@@ -217,11 +320,26 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+                                        $no=1;
+                                        $ln='Undefined';
+                                        foreach($levelKinerja as $k=> $p):
+                                            ?>
                                         <tr>
-                                            <td>No</td>
-                                            <td>Indikator</td>
-                                            <td>Skor Penilaian</td>
-                                        </tr>
+                                            <td class="text-center"><?=$no++?></td>
+                                            <td ><?=$p['label']?></td>
+                                            <td class="text-center">
+                                            <?php 
+                                                $ln= $p['min'] .' - '. $p['max'];
+                                            if($p['max']==1000){
+                                                $ln= ' > '. $p['min'];
+                                            }elseif($p['min']==0){
+                                                $ln= ' < '. $p['max'];
+
+                                            }?>
+                                                <?=$ln?></td>
+                                         </tr>
+                                         <?php endforeach?>
                                     </tbody>
                                 </table>
                             </div>

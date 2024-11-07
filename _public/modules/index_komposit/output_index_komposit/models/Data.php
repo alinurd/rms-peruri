@@ -19,6 +19,7 @@ class Data extends MX_Model {
         
         foreach ($combos as $combo) {
             $comboData = [
+                'id' => $combo['id'],
                 'pid' => $combo['pid'],
                 'bobot' => $combo['param1'],
                 'data' => $combo['data'],
