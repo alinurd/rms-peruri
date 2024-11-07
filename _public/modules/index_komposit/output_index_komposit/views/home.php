@@ -28,12 +28,18 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        // $level=[
+                                        //     >90=>[
+                                        //         "data" => >"Strong",
+                                        //         "nilai" => >90,
+                                        //     ]
+                                        // ]
                                         $nc = 1;
                                         $totalPenilaianCombo = 0;
 
                                         foreach ($kompositData as $c) :
                                             if ($c['pid'] == 0) : 
-                                                $bobot = 0; 
+                                                 $bobot = 0; 
                                                 $totalBobot = 0; 
                                                 $nilai = 0; 
                                                 $totalNilai = 0; 
@@ -49,7 +55,7 @@
                                                     
                                                     $skala = [$pk['skala'] => $pk['penilaian']];
                                                  
-                                                    $bobot = $pk['bobot'];
+                                                    $bobot = $c['bobot'];
                                                  
                                                     if ($bobot > 0) {
                                                         $nilai = ($bobot / 100) * $skala[$resParents['realisasi']];
@@ -57,20 +63,19 @@
                                                         $nilai = $skala[$resParents['realisasi']];  
                                                     } 
                                                     $totalNilai += $nilai;
-                                                    $totalBobot += $bobot; 
-                                                    $countDetail = $c['detail'][$pk['id']];
+                                                     $countDetail = $c['detail'][$pk['id']];
                                                      
                                                  }
                                         ?>
                                                 <tr>
                                                     <td rowspan=""><?= $nc++ ?></td>
                                                     <td  ><?= $c['data'] ?></td>
-                                                    <td ><?= $totalBobot ?> %</td>
+                                                    <td ><?= $bobot ?> %</td>
                                                     <td >
                                                         <?=$totalNilai?>
                                                     </td>
                                                     <td >
-                                                    <?=$totalBobot*$totalNilai?>
+                                                    <?=$bobot*$totalNilai?>
                                                     </td>
                                                 </tr>
                                                  
