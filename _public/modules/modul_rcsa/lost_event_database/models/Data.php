@@ -67,10 +67,11 @@ class Data extends MX_Model {
     // ==========================================
     public function simpan_lost_event($data) {
 
+
         // Data preparation for insertion or update
         $upd = [
             'rcsa_no'                     => $data['rcsa_no'],
-            'event_no'                     => $data['event_no'],
+            'event_no'                    => $data['event_no'],
             'rcsa_detail_id'              => $data['id_detail'],
             'identifikasi_kejadian'       => $data['identifikasi_kejadian'],
             'kategori'                    => $data['kategori'],

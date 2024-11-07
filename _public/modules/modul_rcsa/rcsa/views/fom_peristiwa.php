@@ -60,7 +60,6 @@ if ($field['iskri'] == 0) {
     $kriact = 'active';
 }
 
-// test 
 // $pb = [
 //     '' => '- Pilih Proses Bisnis -',
 //     'proses bisnis 1' => 'Pembelian',
@@ -148,7 +147,11 @@ if ($field['iskri'] == 0) {
                     <li role="presentation" class="<?= $kriact ?> <?= $krion  ?>"><a href="#iskri" data-toggle="tab">Key Risk Indikator</a></li>
                 </ul>
             </div>
-            <div class="clearfix"> </div>
+            <section class="x_panel" style="margin: 0px !important;padding:0px !important;">
+                <div class="x_content">
+                    <strong>Peristiwa Risiko : <?= $detail['event_name']; ?></strong>
+                </div>
+            </section>
             <div class="tab-content">
                 <div id="identify" class="tab-pane fade in  <?= $identifyact ?>">
                     <!-- <?php doi::dump($detail['pi']); ?>     -->
@@ -158,7 +161,6 @@ if ($field['iskri'] == 0) {
                     <?= form_hidden('tab', 'identify', 'class="form-control text-right" id="tab"'); ?>
                     <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
                     <?= form_hidden('id_edit_baru', ($id_edit) ? ($id_edit) : '0', 'class="form-control text-right" id="id_edit"'); ?>
-
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_peristiwa">
                         <section class="x_panel">
                             <div class="x_content">
