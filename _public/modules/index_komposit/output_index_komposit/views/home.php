@@ -28,7 +28,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $kualitasKPMR = "Undefined"; 
+                                        $kualitasKPMR = "Undefined";
                                         $nc = 1;
                                         $totalPenilaianCombo = 0;
                                         foreach ($kompositData as $k => $c) :
@@ -109,7 +109,7 @@
                                         </tr>
                                         <tr style="background: #367FA9; color:#fff;">
                                             <th colspan="4" style="text-align: center;">Kualitas Penerapan Manajemen Risiko (KPMR)</th>
-                                            <th class="text-center"><?=$kualitasKPMR?></th>
+                                            <th class="text-center"><?= $kualitasKPMR ?></th>
                                         </tr>
 
                                     </tbody>
@@ -142,9 +142,9 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $kualitasKPMR = "Undefined"; 
+                                        $kualitasKinerja = "Undefined";
                                         $nc = 1;
-                                        $totalPenilaianCombo = 0;
+                                        $totalPenilaianKinerja = 0;
                                         foreach ($kompositData as $k => $c) :
                                             if ($c['pid'] == 1) :
                                                 $bobot = $c['bobot'];
@@ -197,7 +197,7 @@
                                                         $totalNilai += $totalDetailNilai;
                                                     }
                                                 }
-                                                $totalPenilaianCombo += $totalNilai;
+                                                $totalPenilaianKinerja += $totalNilai;
                                         ?>
                                                 <tr>
                                                     <td class="text-center"><?= $nc++ ?></td>
@@ -211,7 +211,7 @@
                                             endif;
                                         endforeach;
                                         foreach ($levelKinerja as $level) {
-                                            if ($totalPenilaianCombo >= $level['min'] && $totalPenilaianCombo <= $level['max']) {
+                                            if ($totalPenilaianKinerja >= $level['min'] && $totalPenilaianKinerja <= $level['max']) {
                                                 $kualitasKinerja = $level['label'];
                                                 break;
                                             }
@@ -219,11 +219,11 @@
                                         ?>
                                         <tr style="background: #367FA9; color:#fff;">
                                             <th colspan="4" style="text-align: center;">Total Nilai</th>
-                                            <th class="text-center"><?= $totalPenilaianCombo ?></th>
+                                            <th class="text-center"><?= $totalPenilaianKinerja ?></th>
                                         </tr>
                                         <tr style="background: #367FA9; color:#fff;">
                                             <th colspan="4" style="text-align: center;">Kualitas Penerapan Manajemen Risiko (KPMR)</th>
-                                            <th class="text-center"><?=$kualitasKinerja?></th>
+                                            <th class="text-center"><?= $kualitasKinerja ?></th>
                                         </tr>
 
                                     </tbody>
@@ -239,13 +239,33 @@
         <div class="row">
             <div class="col-md-12">
                 <section class="x_panel">
+                <div class="x_title">
+                    <center><i>Map Output Index Komposit</i></center>                
+                    <div class="clearfix"></div>
+                    </div>
                     <div class="x_content">
-                        <div class="row">
-                            <div class="clearfix"></div>
-                            <center>
-                                <strong>MAP</strong>
-                            </center>
-                        </div>
+                        <center>
+                            <div class="row">
+                                 <?php
+                                $indexKinerja=[];
+                                $kmpr=[];
+                                foreach ($levelKinerja as $k) {
+                                    $nilaiArray = explode(',', $k['nilai']);
+                                    $indexKinerja[] = array_merge([$k['label']], $nilaiArray);
+                                }
+                                
+                                foreach($levelKPMR as $k){
+                                    $kmpr[] = $k['label'];
+                                }
+                                $data=[
+                                    'KINERJA'=>['label'=>'KINERJA', 'realisasiText'=>$kualitasKinerja, 'realisasiAngka'=>$totalPenilaianKinerja], 
+                                    'KPMR'=>['label'=>'KPMR', 'realisasiText'=>$kualitasKPMR, 'realisasiAngka'=>$totalPenilaianKinerja], 
+                                ];
+                                echo $this->data->drawMapKomposit($indexKinerja, $kmpr, $data);
+                                ?>
+
+                            </div>
+                        </center>
                     </div>
                 </section>
             </div>
@@ -256,7 +276,7 @@
             <div class="col-md-6">
                 <section class="x_panel">
                     <div class="x_title">
-                        <i>Conversi Skor Penilaian Terhadap KPMR</i>
+                        <center><i>Conversi Skor Penilaian Terhadap KPMR</i></center>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -273,26 +293,25 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $no=1;
-                                        foreach($levelKPMR as $k=> $p):
-                                            ?>
-                                        <tr>
-                                            <td class="text-center"><?=$no++?></td>
-                                            <td ><?=$p['label']?></td>
-                                            <td class="text-center">
-                                            <?php 
-                                                $ln= $p['min'] .' - '. $p['max'];
-                                            if($p['max']==1000){
-                                                $ln= ' > '. $p['min'];
-                                            }elseif($p['min']==0){
-                                                $ln= ' < '. $p['max'];
+                                        $no = 1;
+                                        foreach ($levelKPMR as $k => $p):
+                                        ?>
+                                            <tr>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td><?= $p['label'] ?></td>
+                                                <td class="text-center">
+                                                    <?php
+                                                    $ln = $p['min'] . ' - ' . $p['max'];
+                                                    if ($p['max'] == 1000) {
+                                                        $ln = ' > ' . $p['min'];
+                                                    } elseif ($p['min'] == 0) {
+                                                        $ln = ' < ' . $p['max'];
+                                                    } ?>
+                                                    <?= $ln ?></td>
 
-                                            }?>
-                                                <?=$ln?></td>
-                                                
-                                            </td>
-                                         </tr>
-                                         <?php endforeach?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -304,7 +323,7 @@
             <div class="col-md-6">
                 <section class="x_panel">
                     <div class="x_title">
-                        <i>Conversi Skor Penilaian Terhadap Pencapaian Kinerja</i>
+                        <center><i>Conversi Skor Penilaian Terhadap Pencapaian Kinerja</i></center>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -320,26 +339,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
-                                        $no=1;
-                                        $ln='Undefined';
-                                        foreach($levelKinerja as $k=> $p):
-                                            ?>
-                                        <tr>
-                                            <td class="text-center"><?=$no++?></td>
-                                            <td ><?=$p['label']?></td>
-                                            <td class="text-center">
-                                            <?php 
-                                                $ln= $p['min'] .' - '. $p['max'];
-                                            if($p['max']==1000){
-                                                $ln= ' > '. $p['min'];
-                                            }elseif($p['min']==0){
-                                                $ln= ' < '. $p['max'];
-
-                                            }?>
-                                                <?=$ln?></td>
-                                         </tr>
-                                         <?php endforeach?>
+                                        <?php
+                                        $no = 1;
+                                        $ln = 'Undefined';
+                                        foreach ($levelKinerja as $k => $p):
+                                        ?>
+                                            <tr>
+                                                <td class="text-center"><?= $no++ ?></td>
+                                                <td><?= $p['label'] ?></td>
+                                                <td class="text-center">
+                                                    <?php
+                                                    $ln = $p['min'] . ' - ' . $p['max'];
+                                                    if ($p['max'] == 1000) {
+                                                        $ln = ' > ' . $p['min'];
+                                                    } elseif ($p['min'] == 0) {
+                                                        $ln = ' < ' . $p['max'];
+                                                    } ?>
+                                                    <?= $ln ?></td>
+                                            </tr>
+                                        <?php endforeach ?>
                                     </tbody>
                                 </table>
                             </div>

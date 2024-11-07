@@ -7,7 +7,7 @@ class Data extends MX_Model {
         parent::__construct();
 	}
 
-    public function getKompositData()
+    function getKompositData()
     {
         $result = [];
         
@@ -56,47 +56,8 @@ class Data extends MX_Model {
         return $result;
     }
     
-    function simpan($data) {
-         foreach ($data['id'] as $index => $id) {
-             $upd = array(
-                'jenis' => 0,
-                'id_komposit' => $id,
-                'urut' => $data['urut'][$index],
-                'penjelasan' => $data['penjelasan'][$index],
-                'evidence' => $data['evidence'][$index],
-                'realisasi' => $data['realisasi'][$index]
-            );
-    
-             $res = $this->db->where('id_komposit', $id)
-                            ->where('urut', $data['urut'][$index])
-                            ->get(_TBL_INDEXKOM_REALISASI)
-                            ->result_array();
-    
-            if (count($res) > 0) {
-                 $upd['update_user'] = $this->authentication->get_Info_User('username');
-                $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut']];
-    
-                $this->crud->crud_data(array(
-                    'table' => _TBL_INDEXKOM_REALISASI,
-                    'field' => $upd,
-                    'where' => $whereDetail,
-                    'type' => 'update'
-                ));
-                
-                $result[] = $res[0]['id'];
-            } else {
-                 $upd['create_user'] = $this->authentication->get_Info_User('username');
-    
-                $result[] = $this->crud->crud_data(array(
-                    'table' => _TBL_INDEXKOM_REALISASI,
-                    'field' => $upd,
-                    'type' => 'add'
-                ));
-            }
-        }
-        
-        return $result;
-    }
+   
+	 
     
     
 }

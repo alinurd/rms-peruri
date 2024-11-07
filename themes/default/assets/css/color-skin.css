@@ -2514,3 +2514,50 @@
 .text-default:focus {
   color: #333333 !important;
 }
+
+table #indexKomposit th,
+td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: center;
+}
+
+#kpmr {
+  border: 1px solid #000;
+  background-color: #0e4d78;
+  color: white;
+  text-align: center;
+  width: 110px;
+  padding: 5px;
+
+}
+
+#kinerja {
+  border: 1px solid #000;
+
+  background-color: #02a1b3;
+  color: white;
+  width: 110px;
+  padding: 5px;
+
+}
+
+#isi {
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+
+}
+.strong { background-color: #64cf0e; }          /* Warna hijau muda untuk 'Strong' */
+.satisfactory { background-color: #f3fce6; }    /* Warna hijau lebih muda untuk 'Satisfactory' */
+.fair { background-color: #fcc858; }            /* Warna kuning muda untuk 'Fair' */
+.marginal { background-color: #f7dcdc; }        /* Warna orange muda untuk 'Marginal' */
+.unsatisfactory { background-color: #cc0404; }  /* Warna merah muda untuk 'Unsatisfactory' */
+
+.highlight {
+  outline: 4px solid red;
+  border-radius: 50%;
+  padding: 4px;
+  display: inline-block;
+}
