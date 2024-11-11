@@ -32,27 +32,27 @@ if(!$lost_event){
 
                 <?php if($type === "add") : ?>
                     <td width="70%" id="td_peristiwa">
-                    <?= form_dropdown(
-                        'id_detail',
-                        $cboper,
-                        $lost_event ? $lost_event['rcsa_detail_id'] : '',
-                        'class="eventcombo select2 form-control" style="width:100% !important;" id="id_detail"' . $disable
-                    ); ?>
-                    <div class="text-danger" id="error-id_detail"></div>
-                </td>
-                <td width="10%" id="td_peristiwa_new">
-                    <button type="button" class="btn btn-info <?= $hide_edit ?>" id="peristiwa_baru">New</button>
-                </td>
-                <td id="td_peristiwabaru">
-                    <?= form_input(
-                        'peristiwabaru',
-                        $detail ? $detail['peristiwabaru'] : '',
-                        'class="form-control" placeholder="Input Peristiwa Baru" id="peristiwabaru"'
-                    ); ?>
-                </td>
-                <td id="td_peristiwa_lib" width="10%">
-                    <button type="button" class="btn btn-info" id="peristiwa_lib">Library</button>
-                </td>
+                        <?= form_dropdown(
+                            'id_detail',
+                            $cboper,
+                            $lost_event ? $lost_event['rcsa_detail_id'] : '',
+                            'class="eventcombo select2 form-control" style="width:100% !important;" id="id_detail"' . $disable
+                        ); ?>
+                        <div class="text-danger" id="error-id_detail"></div>
+                    </td>
+                    <td width="10%" id="td_peristiwa_new">
+                        <button type="button" class="btn btn-info <?= $hide_edit ?>" id="peristiwa_baru">New</button>
+                    </td>
+                    <td id="td_peristiwabaru">
+                        <?= form_input(
+                            'peristiwabaru',
+                            $detail ? $detail['peristiwabaru'] : '',
+                            'class="form-control" placeholder="Input Peristiwa Baru" id="peristiwabaru"'
+                        ); ?>
+                    </td>
+                    <td id="td_peristiwa_lib" width="10%">
+                        <button type="button" class="btn btn-info" id="peristiwa_lib">Library</button>
+                    </td>
                 <?php endif;?>
 
                 
@@ -220,14 +220,14 @@ if(!$lost_event){
                     <td>
                         <div class="input-group">
                             <span class="input-group-addon">Rp.</span>
-                            <input type="text" class="form-control rupiah" id="nilai_premi" name="nilai_premi" value="<?= number_format($lost_event['nilai_premi'],0,',',',');?>" required>
+                            <input type="text" class="form-control rupiah" id="nilai_premi" name="nilai_premi" value="<?= ($lost_event['nilai_premi']) ? number_format($lost_event['nilai_premi'],0,',',',') : "";?>" required>
                         </div>
                         <div class="text-danger" id="error-nilai_premi"></div>
                     </td>
                     <td>
                         <div class="input-group">
                             <span class="input-group-addon">Rp.</span>
-                            <input type="text" class="form-control rupiah" id="nilai_klaim" name="nilai_klaim" value="<?= number_format($lost_event['nilai_klaim'],0,',',',');?>" required>
+                            <input type="text" class="form-control rupiah" id="nilai_klaim" name="nilai_klaim" value="<?= ($lost_event['nilai_klaim']) ? number_format($lost_event['nilai_klaim'],0,',',',') : "";?>" required>
                         </div>
                         <div class="text-danger" id="error-nilai_klaim"></div>
                     </td>
@@ -283,7 +283,7 @@ if(!$lost_event){
                     <td>
                         <div class="input-group">
                             <span class="input-group-addon">Rp.</span>
-                            <input type="text" class="form-control rupiah" id="nilai_kerugian" name="nilai_kerugian" value="<?= number_format($lost_event['nilai_kerugian'],0,',',',');?>" required>
+                            <input type="text" class="form-control rupiah" id="nilai_kerugian" name="nilai_kerugian" value="<?= ($lost_event['nilai_kerugian']) ? number_format($lost_event['nilai_kerugian'],0,',',',') : "";?>" required>
                         </div>
                         <div class="text-danger" id="error-nilai_kerugian"></div>
                     </td>
@@ -326,6 +326,7 @@ if(!$lost_event){
             $('#td_peristiwa_new').hide();
             $('#td_peristiwabaru').show();
             $('#td_peristiwa_lib').show();
+            $('#id_detail').val('');
             
         });
 
@@ -335,6 +336,8 @@ if(!$lost_event){
             $('#td_peristiwa_new').show();
             $('#td_peristiwabaru').hide();
             $('#td_peristiwa_lib').hide();
+            $('#peristiwabaru').val('');
+
             
         });
     });
