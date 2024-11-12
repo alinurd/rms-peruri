@@ -27,7 +27,7 @@ class Indikator_Stress_Test extends BackendController {
 		$this->set_Table_List($this->tbl_master,'judul', '', 50);
 		$this->set_Table_List($this->tbl_master,'periode', 'Tahun', 10,'center');
 		$this->set_Table_List($this->tbl_master,'status','',10, 'center');
-		$this->set_Close_Setting();
+		$this->set_Close_Setting(); 
 	}
  
 
