@@ -58,6 +58,7 @@ $(document).ready(function () {
 });
 
 function result(res){
+    console.log(res)
     pesan_toastr('Proses Simpan Berhasil...', 'info', 'Prosess', 'toast-top-center', true);
 }
 

@@ -61,7 +61,7 @@ class Kpmr extends BackendController
 	public function simpan(){
 		$post 	= $this->input->post();
 		$id = $this->data->simpan($post, $this->owner, $this->tw, $this->periode);
-		echo json_encode($post);
+		echo json_encode($id);
 	}
 	
 	 

@@ -78,7 +78,7 @@ class Data extends MX_Model {
     
             if (count($res) > 0) {
                  $upd['update_user'] = $this->authentication->get_Info_User('username');
-                $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut'], 'jenis' => 1,'tw' => $tw, 'periode' => $periode];
+                $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut'], 'jenis' => 0,'tw' => $tw, 'periode' => $periode];
     
                 $this->crud->crud_data(array(
                     'table' => _TBL_INDEXKOM_REALISASI,
