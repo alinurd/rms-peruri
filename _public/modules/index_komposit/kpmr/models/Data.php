@@ -54,7 +54,7 @@ class Data extends MX_Model {
     }
     
     function simpan($data, $owner, $tw, $periode) {
-        $owner=$data['owner'];
+        // $owner=$data['owner'];
         $tw=$data['tw'];
         $periode=$data['periode'];
          foreach ($data['id'] as $index => $id) {
@@ -69,7 +69,7 @@ class Data extends MX_Model {
     
              $res = $this->db->where('id_komposit', $id)
                             ->where('urut', $data['urut'][$index])
-                            ->where('owner', $owner)
+                            // ->where('owner', $owner)
                             ->where('tw', $tw)
                             ->where('jenis',0)
                             ->where('periode', $periode)
@@ -78,7 +78,7 @@ class Data extends MX_Model {
     
             if (count($res) > 0) {
                  $upd['update_user'] = $this->authentication->get_Info_User('username');
-                $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut'], 'owner' => $owner, 'jenis' => 1,'tw' => $tw, 'periode' => $periode];
+                $whereDetail = ['id' => $res[0]['id'], 'urut' => $res[0]['urut'], 'jenis' => 1,'tw' => $tw, 'periode' => $periode];
     
                 $this->crud->crud_data(array(
                     'table' => _TBL_INDEXKOM_REALISASI,
@@ -90,7 +90,7 @@ class Data extends MX_Model {
                 $result[] = $res[0]['id'];
             } else {
                  $upd['create_user'] = $this->authentication->get_Info_User('username');
-                 $upd['owner'] = $owner;
+                //  $upd['owner'] = $owner;
                  $upd['tw'] = $tw;
                  $upd['periode'] = $periode;
                 $result[] = $this->crud->crud_data(array(

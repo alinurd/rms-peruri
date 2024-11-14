@@ -28,14 +28,14 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-6 col-sm-8 col-xs-6">
+                <!-- <div class="col-md-6 col-sm-8 col-xs-6">
                     <label for="filter_owner">Risk Owner</label>
                     <select name="owner" id="filter_owner" class="form-control select2" style="width: 100%;">
                         <?php foreach ($cboOwner as $key => $value): ?>
                             <option value="<?= $key; ?>" <?= ($owner == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
                         <?php endforeach; ?>
                     </select>
-                </div>
+                </div> -->
                 <div class="col-md-2 col-sm-2 col-xs-2">
                     <label for="filter_triwulan">Triwulan <?=$tw?></label>
                     <select name="triwulan" id="filter_triwulan" class="form-control select2" style="width: 80%;">
@@ -90,7 +90,7 @@
                                                     $countDetailx = $c['detail'][$pk['id']];
                                                     $resParents = $this->db
                                                         ->where('id_komposit', $pk['id_combo'])
-                                                        ->where('owner', $owner)
+                                                        // ->where('owner', $owner)
                                                         ->where('tw', $tw)
                                                         ->where('periode', $periode)
                                                         ->order_by('urut')
@@ -117,7 +117,7 @@
                                                             $resDetail = $this->db
                                                                 ->where('id_komposit', $d['id_param'])
                                                                 
-                                                        ->where('owner', $owner)
+                                                        // ->where('owner', $owner)
                                                         ->where('tw', $tw)
                                                         ->where('periode', $periode)
                                                                 ->where('urut', $pk['urut'])
@@ -212,7 +212,7 @@
                                                     $resParents = $this->db
                                                         ->where('id_komposit', $pk['id_combo'])
                                                         
-                                                        ->where('owner', $owner)
+                                                        // ->where('owner', $owner)
                                                         ->where('tw', $tw)
                                                         ->where('periode', $periode)
                                                         ->order_by('urut')
@@ -240,7 +240,7 @@
                                                                 ->where('id_komposit', $d['id_param'])
                                                                 ->where('urut', $pk['urut'])
                                                                 
-                                                        ->where('owner', $owner)
+                                                        // ->where('owner', $owner)
                                                         ->where('tw', $tw)
                                                         ->where('periode', $periode)
                                                                 ->order_by('urut')
