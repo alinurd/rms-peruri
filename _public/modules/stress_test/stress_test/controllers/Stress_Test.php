@@ -90,10 +90,14 @@ class Stress_Test extends BackendController
 		
 		// Ambil nilai 'rkap' dari hasil query dan tentukan kondisi
 		$rkap = floatval($res['rkap']); // Ambil nilai rkap dan pastikan dalam bentuk float
+
+
 		if (preg_match('/\d{1,3}(\.\d{3})+/', $rkap)) {
 			$rkap = str_replace('.','',$rkap);
+			if (preg_match('/\d{1,3}(\.\d{3})+/', $value)) {
+				$value = str_replace('.','',$value);
+			}
 		}
-
 		// Tentukan hasil berdasarkan perbandingan antara $value dan $rkap
 		if ($value < $rkap) {
 			$result = $res['kurang']; // Ambil hasil jika value lebih kecil dari rkap

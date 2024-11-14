@@ -25,6 +25,7 @@ class Indikator_Stress_Test extends BackendController {
 			
 		$this->set_Field_Primary('id');
 		$this->set_Join_Table(array('pk'=>$this->tbl_master));
+		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
 		$this->set_Sort_Table($this->tbl_master,'id');
 		$this->set_Table_List($this->tbl_master,'judul','',50);
 		$this->set_Table_List($this->tbl_master,'periode_name', 'Tahun', 10,'center');
@@ -120,6 +121,27 @@ class Indikator_Stress_Test extends BackendController {
 
 		return $return;
 	}
+
+	function POST_DELETE_PROCESSOR($ids) {
+		// Periksa apakah $ids adalah array
+		if (!is_array($ids)) {
+			return false; // Kembalikan false jika input bukan array
+		}
+		$this->db->where('id', $id);
+		$del = $this->db->delete('bangga_indikator_stress_test');
+		foreach ($ids as $id) {
+			$this->db->where('id_parent', $id);
+			$del = $this->db->delete('bangga_indikator_stress_test_detail');
+			
+			// Cek apakah penghapusan gagal
+			if (!$del) {
+				return false; // Kembalikan false jika salah satu penghapusan gagal
+			}
+		}
+		
+		return true; // Kembalikan true jika semua penghapusan berhasil
+	}
+	
 
 	function indikator($id = 0)
 	{
