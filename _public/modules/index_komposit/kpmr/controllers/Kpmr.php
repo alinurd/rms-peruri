@@ -44,7 +44,7 @@ class Kpmr extends BackendController
 	public function index() { 
  		$data['kompositData'] = $this->data->getKompositData();
 		 $data['realisasi'] = $this->db 
-		 ->where('owner', $this->owner)
+		//  ->where('owner', $this->owner)
 		 ->where('tw', $this->tw)
                      ->get('bangga_indexkom_realisasi')
                     ->result_array();
@@ -61,7 +61,7 @@ class Kpmr extends BackendController
 	public function simpan(){
 		$post 	= $this->input->post();
 		$id = $this->data->simpan($post, $this->owner, $this->tw, $this->periode);
-		echo json_encode($post);
+		echo json_encode($id);
 	}
 	
 	 

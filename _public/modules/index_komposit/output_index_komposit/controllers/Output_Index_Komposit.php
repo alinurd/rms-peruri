@@ -48,7 +48,7 @@ class Output_Index_Komposit extends BackendController
 			->get('bangga_indexkom_realisasi')
 			->result_array();
 
-			$data['owner']=$this->owner;
+			// $data['owner']=$this->owner;
 			$data['tw']=$this->tw;
 			$data['bln']=$this->bln;
 			$data['periode']=$this->periode;
