@@ -43,11 +43,11 @@ class Kpmr extends BackendController
 
 	public function index() { 
  		$data['kompositData'] = $this->data->getKompositData();
-		 $data['realisasi'] = $this->db 
-		//  ->where('owner', $this->owner)
-		 ->where('tw', $this->tw)
-                     ->get('bangga_indexkom_realisasi')
-                    ->result_array();
+		//  $data['realisasi'] = $this->db 
+		// //  ->where('owner', $this->owner)
+		//  ->where('tw', $this->tw)
+        //              ->get('bangga_indexkom_realisasi')
+        //             ->result_array();
 		$data['owner']=$this->owner;
 		$data['tw']=$this->tw;
 		$data['bln']=$this->bln;
