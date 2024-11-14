@@ -36,37 +36,95 @@ $comboColor = [
 <table class="table table-bordered" id="tbl_sasaran_new">
     <thead class="sticky-thead">
         <tr>
-            <th width="7%">Urut</th>
-            <th>Indikator</th>
-            <th width="10%">RKAP</th>
-            <th width="10%">Satuan</th>
-            <th width="10%">Kurang</th>
-            <th width="10%">Sama</th>
-            <th width="10%">Lebih</th>
-            <th width="5%">Aksi</th>
+            <th class="text-center" width="5%">Urut</th>
+            <th class="text-center">Indikator</th>
+            <th class="text-center" width="10%">RKAP</th>
+            <th class="text-center" width="10%">Satuan</th>
+            <th class="text-center" width="10%">Kurang</th>
+            <th class="text-center" width="10%">Sama</th>
+            <th class="text-center" width="10%">Lebih</th>
+            <th class="text-center" width="5%">Aksi</th>
         </tr>
         <tr>
 
         </tr>
     </thead>
     <tbody>
-    <?php foreach($data as $p):
-            $details = $this->db
-                ->where('id_parent', $p['id'])
-                ->get('bangga_indikator_stress_test_detail')
-                ->result_array(); ?>
-        <?php foreach ($details as $detail): ?>
+        
+    <?php foreach($data as $p): ?>
             <tr class="detail-row">
                 <td>
-                <input type="hidden" class="form-control" name="detail_edit[<?= $p['urut'] ?>][]" value="<?= $detail['id'] ?>" readonly>
-                <input class="form-control" type="text" name="param[<?= $p['urut'] ?>][]" value="<?= $detail['parameter'] ?>" placeholder="Detail Parameter"></td>
-                <td><input class="form-control" type="number" name="skala[<?= $p['urut'] ?>][]" value="<?= $detail['skala'] ?>" placeholder="Detail Skala"></td>
-                <td><input class="form-control" type="number" name="detail_penilaian[<?= $p['urut'] ?>][]" value="<?= $detail['penilaian'] ?>" placeholder="Detail Penilaian"></td>
+                <input type="hidden" class="form-control" name="detail_edit[]" value="<?= $p['id'] ?>" readonly>
+                <input class="form-control text-center" type="text" name="urut[]" value="<?= $p['urut'] ?>" placeholder="Detail Indikator" readonly></td>
+                <td><input class="form-control" type="text" name="param[]" value="<?= $p['parameter'] ?>" placeholder="Indikator"></td>
                 <td>
-                    <button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button>
+                    <input class="form-control rkap" type="text" name="rkap[]" value="<?= $p['rkap'] ?>" placeholder="RKAP">
+                </td>
+
+                <td><input class="form-control" type="text" name="satuan[]" value="<?= $p['satuan'] ?>" placeholder="Satuan"></td>
+                <td style="vertical-align: middle;">
+                    <!-- Dropdown untuk memilih warna -->
+                    <select name="kurang[]" class="selectpicker form-control select-color" 
+                            data-style="btn btn-outline-primary" 
+                            data-width="100%" 
+                            data-size="7" 
+                            data-container="body" 
+                            required>
+                        <?php foreach ($textColor as $key => $value): ?>
+                            <option value="<?= $value; ?>" 
+                                    data-color="<?= $comboColor[$key]; ?>" 
+                                    data-content="<span class='badge' style='background-color: <?= $comboColor[$key]; ?>; color: #FFFFFF;'><?= $value; ?></span>" 
+                                    <?= ($p['kurang'] == $value) ? 'selected' : ''; ?>>
+                                <?= $value; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
+                    <!-- Input untuk menampilkan kode warna yang dipilih -->
+                    <input class="form-control color-input" 
+                        type="hidden" 
+                        name="color_kurang[]" 
+                        value="<?= $p['color_kurang'] ?>" 
+                        readonly 
+                        placeholder="Warna">
+                </td>
+
+                <td style="vertical-align: middle;">
+                    <select name="sama[]" class="selectpicker form-control select-color" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
+                        <?php foreach ($textColor as $key => $value): ?>
+                            <option value="<?= $value; ?>" data-color="<?= $comboColor[$key]; ?>"  data-content="<span class='badge' style='background-color: <?= $comboColor[$key]; ?>; color: #FFFFFF'><?= $value; ?></span>" <?= ($p['sama'] == $value) ? 'selected' : ''; ?>>
+                                <?= $value; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <!-- Input untuk menampilkan kode warna yang dipilih -->
+                    <input class="form-control color-input" 
+                        type="hidden" 
+                        name="color_sama[]" 
+                        value="<?= $p['color_sama'] ?>" 
+                        readonly 
+                        placeholder="Warna">
+                </td>
+                <td style="vertical-align: middle;">
+                    <select name="lebih[]" class="selectpicker form-control select-color" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
+                        <?php foreach ($textColor as $key => $value): ?>
+                            <option value="<?= $value; ?>" data-color="<?= $comboColor[$key]; ?>"  data-content="<span class='badge' style='background-color: <?= $comboColor[$key]; ?>; color: #FFFFFF'><?= $value; ?></span>" <?= ($p['lebih'] == $value) ? 'selected' : ''; ?>>
+                                <?= $value; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <!-- Input untuk menampilkan kode warna yang dipilih -->
+                    <input class="form-control color-input" 
+                        type="hidden" 
+                        name="color_lebih[]" 
+                        value="<?= $p['color_lebih'] ?>" 
+                        readonly 
+                        placeholder="Warna">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger delete-row"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
-        <?php endforeach; ?>
     <?php endforeach; ?>
     </tbody>
 </table>
@@ -78,174 +136,102 @@ $comboColor = [
 </center>
 
 <script>
-    
-    // Fungsi untuk memperbarui urutan dan rowspan kolom utama
-function updateUrutAbjad() {
+document.addEventListener("DOMContentLoaded", function () {
     const tbody = document.querySelector("#tbl_sasaran_new tbody");
-    const rows = tbody.querySelectorAll(".main-row");
 
-    rows.forEach((row, index) => {
-        const urutInput = row.querySelector('input[name="urut[]"]');
-        urutInput.value = String.fromCharCode(65 + index); // Mengatur urutan ke huruf A, B, C, ...
-        updateRowspan(row); // Memperbarui rowspan
-    });
-}
-
-// Fungsi memperbarui rowspan kolom utama
-function updateRowspan(mainRow) {
-    const urutCell = mainRow.querySelector("td");
-    let detailCount = 0;
-    let nextRow = mainRow.nextElementSibling;
-
-    while (nextRow && nextRow.classList.contains("detail-row")) {
-        detailCount++;
-        nextRow = nextRow.nextElementSibling;
+    // Fungsi memperbarui urutan abjad
+    function updateUrutAbjad() {
+        const rows = tbody.querySelectorAll(".detail-row");
+        rows.forEach((row, index) => {
+            row.querySelector('input[name="urut[]"]').value = String.fromCharCode(65 + index);
+        });
     }
-    urutCell.rowSpan = detailCount + 1; // Mengatur rowspan
-}
 
-// Event listener untuk tombol delete pada baris utama dan detail
-function addDeleteEventListeners() {
-    document.querySelectorAll(".delete-row").forEach(button => {
-        button.addEventListener("click", function() {
-            const mainRow = button.closest("tr");
-
-            // Menghapus semua baris detail yang terkait dengan baris utama
-            let nextRow = mainRow.nextElementSibling;
-            while (nextRow && nextRow.classList.contains("detail-row")) {
-                nextRow.remove();
-                nextRow = mainRow.nextElementSibling;
+    // Fungsi untuk mengatur warna default pada halaman load
+    function setDefaultColor() {
+        document.querySelectorAll('.select-color').forEach(function(select) {
+            const selectedColor = select.querySelector('option:checked').dataset.color;
+            if (selectedColor) {
+                select.closest('td').querySelector('.color-input').value = selectedColor;
             }
-            
-            mainRow.remove(); // Hapus baris utama
-            updateUrutAbjad(); // Memperbarui urutan setelah menghapus
         });
-    });
-
-    document.querySelectorAll(".delete-detail-row").forEach(button => {
-        button.addEventListener("click", function() {
-            const detailRow = button.closest("tr");
-            const mainRow = detailRow.previousElementSibling.classList.contains("main-row")
-                ? detailRow.previousElementSibling
-                : detailRow.previousElementSibling.previousElementSibling;
-            detailRow.remove(); // Hapus baris detail
-            updateRowspan(mainRow); // Memperbarui rowspan setelah menghapus
-        });
-    });
-}
-
-// Event listener untuk menambah detail baru
-function findLastDetailRow(mainRow) {
-    let nextRow = mainRow.nextElementSibling;
-
-    while (nextRow && nextRow.classList.contains("detail-row")) {
-        if (!nextRow.nextElementSibling || !nextRow.nextElementSibling.classList.contains("detail-row")) {
-            return nextRow;
-        }
-        nextRow = nextRow.nextElementSibling;
     }
-    return null;
-}
 
- 
- document.getElementById("addParam").addEventListener("click", function() {
-    const tbody = document.querySelector("#tbl_sasaran_new tbody");
-    const rowCount = tbody.querySelectorAll(".main-row").length;
-    const urutan = String.fromCharCode(65 + rowCount); 
-
-    const newRow = document.createElement("tr");
-    newRow.classList.add("main-row");
-
-    newRow.innerHTML = `
-        <td rowspan="1"><input type="text" class="form-control" name="urut[]" value="${urutan}" readonly></td>
-        <td><input class="form-control" type="text" name="param[]" placeholder="Indikator"></td>
-        <td><input class="form-control" type="number" name="rkap[]" placeholder="RKAP"></td>
-        <td><input class="form-control" type="text" name="satuan[]" placeholder="Satuan"></td>
-        <td style="vertical-align: middle;">
-            <select name="kurang[]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
-                <?php foreach ($textColor as $key => $value): ?>
-                    <option value="<?= $value; ?>" data-content="<span class='badge' style='background-color: <?= $comboColor[$key]; ?>; color: #FFFFFF'><?= $value; ?></span>">
-                        <?= $value; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </td>
-        <td style="vertical-align: middle;">
-            <select name="sama[]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
-                <?php foreach ($textColor as $key => $value): ?>
-                    <option value="<?= $value; ?>" data-content="<span class='badge' style='background-color: <?= $comboColor[$key]; ?>; color: #FFFFFF'><?= $value; ?></span>">
-                        <?= $value; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </td>
-        <td style="vertical-align: middle;">
-            <select name="lebih[]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
-                <?php foreach ($textColor as $key => $value): ?>
-                    <option value="<?= $value; ?>" data-content="<span class='badge' style='background-color: <?= $comboColor[$key]; ?>; color: #FFFFFF'><?= $value; ?></span>">
-                        <?= $value; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </td>
-        <td>
-            <button type="button" class="btn btn-danger delete-row"><i class="fa fa-trash"></i></button>
-        </td>
-    `;
-
-    tbody.appendChild(newRow);
-
-    // Tambahkan event listener delete untuk baris utama yang baru dibuat
-    newRow.querySelector(".delete-row").addEventListener("click", function() {
-        let nextRow = newRow.nextElementSibling;
-        while (nextRow && nextRow.classList.contains("detail-row")) {
-            nextRow.remove();
-            nextRow = newRow.nextElementSibling;
-        }
-        newRow.remove();
-        updateUrutAbjad(); // Memperbarui urutan setelah menghapus
-    });
-
-
-    updateUrutAbjad(); // Memperbarui urutan abjad
-    addDeleteEventListeners(); // Tambah event listener untuk semua delete
-    $('.selectpicker').selectpicker();
-});
-
-//add param detail defult
-document.querySelectorAll(".add-Detailxxxx").forEach(button => {
-    button.addEventListener("click", function() {
-        var urutan = $(this).data("urutan");
-        console.log(urutan) 
-        const mainRow = button.closest("tr");
+    // Tambah baris utama baru
+    document.getElementById("addParam").addEventListener("click", function () {
         const newRow = document.createElement("tr");
         newRow.classList.add("detail-row");
-        const tbody = document.querySelector("#tbl_sasaran_new tbody");
-        const rowCount = tbody.querySelectorAll("main-row").length;
-         newRow.innerHTML = `
-            <td><input type="text" class="form-control" name="detail_param[${urutan}][]" placeholder="${urutan} Parameter"></td>
-            <td><input class="form-control" type="number" name="detail_skala[${urutan}][]" placeholder="Skala"></td>
-            <td><input class="form-control" type="number" name="detail_penilaian[${urutan}][]" placeholder="Hasil Penilaian"></td>
-            <td><button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button></td>
+
+        const abjad = String.fromCharCode(65 + tbody.querySelectorAll(".detail-row").length);
+        newRow.innerHTML = `
+            <td>
+                <input type="text" class="form-control text-center" name="urut[]" value="${abjad}" readonly>
+            </td>
+            <td>
+                <input class="form-control" type="text" name="param[]" placeholder="Indikator">
+            </td>
+            <td>
+                <input class="form-control rkap" type="text" name="rkap[]" placeholder="RKAP">
+            </td>
+            <td>
+                <input class="form-control" type="text" name="satuan[]" placeholder="Satuan">
+            </td>
+            ${['kurang', 'sama', 'lebih'].map(key => `
+            <td>
+                <select name="${key}[]" class="selectpicker form-control select-color" data-style="btn btn-outline-primary" required>
+                    <?php foreach ($textColor as $id => $value): ?>
+                    <option value="<?= $value; ?>" 
+                            data-color="<?= $comboColor[$id]; ?>" 
+                            data-content="<span class='badge' style='background-color: <?= $comboColor[$id]; ?>; color: #FFFFFF;'><?= $value; ?></span>">
+                        <?= $value; ?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+                <input class="form-control color-input" type="hidden" name="color_${key}[]" readonly>
+            </td>`).join('')}
+            <td class="text-center">
+                <button type="button" class="btn btn-danger delete-row"><i class="fa fa-trash"></i></button>
+            </td>
         `;
 
-        // Menambahkan baris detail baru di bawah semua baris detail yang ada
-            let nextRow = mainRow.nextElementSibling;
-            while (nextRow && nextRow.classList.contains("detail-row")) {
-                nextRow = nextRow.nextElementSibling;
-            }
-            if (nextRow) {
-                // Jika ada baris setelah detail, masukkan di atas baris itu
-                nextRow.insertAdjacentElement('beforebegin', newRow);
-            } else {
-                // Jika tidak ada baris detail, masukkan di bawah baris utama
-                mainRow.insertAdjacentElement('afterend', newRow);
-            }
-            updateRowspan(mainRow); // Memperbarui rowspan
+        tbody.appendChild(newRow);
+        updateUrutAbjad();
+        $('.selectpicker').selectpicker('refresh');
+        setDefaultColor(); // Set warna default untuk baris baru
+    });
 
-        });
+    // Hapus baris utama
+    tbody.addEventListener("click", function (e) {
+        if (e.target.closest(".delete-row")) {
+            const row = e.target.closest("tr");
+            row.remove();
+            updateUrutAbjad();
+        }
+    });
+
+    // jQuery untuk validasi input angka
+    $(document).on('input', '.rkap', function() {
+        let value = this.value.replace(/[^0-9.,-]/g, ''); // Memungkinkan tanda koma dan titik
+        if (value.indexOf('-') > 0) value = value.replace('-', '');
+        if ((value.match(/[.,]/g) || []).length > 1) value = value.replace(/[.,]+$/, '');
+        
+        // Ganti titik dengan koma agar konsisten
+        this.value = value.replace(',', '.');
+    });
+
+    $(document).on('blur', '.rkap', function() {
+        if (this.value === '.' || this.value === ',') this.value = '';
+    });
+
+
+    // Event delegation untuk select dropdown
+    $(document).on('change', '.select-color', function() {
+        const selectedColor = $(this).find('option:selected').data('color');
+        $(this).closest('td').find('.color-input').val(selectedColor);
+    });
+
+    // Set warna default saat halaman dimuat
+    setDefaultColor();
 });
-
-addDeleteEventListeners();
 
 </script>
