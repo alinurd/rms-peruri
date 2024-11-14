@@ -258,7 +258,7 @@ $hide = $periode ? "" : "hide";
 
 <script>
 // Validasi input dan kirim data melalui AJAX
-$('.best').on('input', function () {
+$('.best').on('change', function () {
     let value = this.value.replace(/[^0-9.,-]/g, ''); // Memungkinkan tanda koma dan titik
     if (value.indexOf('-') > 0) value = value.replace('-', '');
     if ((value.match(/[.,]/g) || []).length > 1) value = value.replace(/[.,]+$/, '');
@@ -274,8 +274,8 @@ $('.best').on('input', function () {
     cari_ajax_combo("post", "", data, "", url, "result_best");
 });
 
-// Validasi input dan kirim data melalui AJAX
-$('.base').on('input', function () {
+// Validasi change dan kirim data melalui AJAX
+$('.base').on('change', function () {
     let value = this.value.replace(/[^0-9.,-]/g, ''); // Memungkinkan tanda koma dan titik
     if (value.indexOf('-') > 0) value = value.replace('-', '');
     if ((value.match(/[.,]/g) || []).length > 1) value = value.replace(/[.,]+$/, '');
@@ -291,8 +291,8 @@ $('.base').on('input', function () {
     cari_ajax_combo("post", "", data, "", url, "result_base");
 });
 
-// Validasi input dan kirim data melalui AJAX
-$('.worst').on('input', function () {
+// Validasi change dan kirim data melalui AJAX
+$('.worst').on('change', function () {
     let value = this.value.replace(/[^0-9.,-]/g, ''); // Memungkinkan tanda koma dan titik
     if (value.indexOf('-') > 0) value = value.replace('-', '');
     if ((value.match(/[.,]/g) || []).length > 1) value = value.replace(/[.,]+$/, '');
