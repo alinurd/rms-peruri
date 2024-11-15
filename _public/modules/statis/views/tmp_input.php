@@ -850,7 +850,7 @@ function draw($master, $data, $tab = '', $next_row = false, $cols = '')
 									$pbaru = "";
 								}
 
-								doi::dump($pbaru);
+								// doi::dump($pbaru);
 
 								$xx = anchor_popup($pbaru, $isi, $atts);
 
