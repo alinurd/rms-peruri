@@ -16,7 +16,7 @@
     .form-control {
         resize: none;
         overflow: hidden;
-        height: 104px;
+        /* height: 104px; */
     }
 
     .file_upload > input{display:none;}
