@@ -844,13 +844,20 @@ function draw($master, $data, $tab = '', $next_row = false, $cols = '')
 									'window_name' => '_blank'
 								);
 
-								$pbaru = base_url()  . 'themes/file/' . $kel . '/' . $isi;
+								
+								// Menghasilkan path lokal dengan menggabungkan base path dan file
+								$basePath = base_url() . 'themes/file/' . $kel . '/' . $isi;
+							
 
-								if (!file_exists($pbaru)) {
-									$pbaru = "";
+								$response = @file_get_contents($basePath);
+
+								// Jika file berhasil diakses
+								if ($response !== false) {
+									$pbaru = $basePath;
+								} else {
+									$pbaru = "";  // File tidak ditemukan
 								}
 
-								// doi::dump($pbaru);
 
 								$xx = anchor_popup($pbaru, $isi, $atts);
 
