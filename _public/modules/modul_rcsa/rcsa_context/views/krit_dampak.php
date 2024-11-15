@@ -24,7 +24,7 @@ $info_owner = $this->authentication->get_info_user('group_owner');
 						<aside class="profile-info col-md-12">
 
 							<div class="x_content" style="overflow-x:auto;">
-								<table class="table table-bordered">
+								<table class="table table-bordered" style="width: 100%; table-layout: fixed;">
 									<thead>
 										<tr>
 											<th>Kategori</th>
