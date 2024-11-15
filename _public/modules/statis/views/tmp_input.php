@@ -844,6 +844,14 @@ function draw($master, $data, $tab = '', $next_row = false, $cols = '')
 									'window_name' => '_blank'
 								);
 
+								$pbaru = base_url()  . 'themes/file/' . $kel . '/' . $isi;
+
+								if (!file_exists($pbaru)) {
+									$pbaru = "";
+								}
+
+								doi::dump($pbaru);
+
 								$xx = anchor_popup($pbaru, $isi, $atts);
 
 								$oo = '<br/><span class="well"><a href="' . $pbaru . '" data-target="' . $kel . '" data-file="' . $isi . '" class="preview_file_temp pointer text-primary">' . $xx . '</a></span> 
