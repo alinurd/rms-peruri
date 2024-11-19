@@ -643,100 +643,241 @@ class MX_Model extends CI_Model
 
 	function draw_rcsa($data, $type = 'inherent')
 	{
-		$like = $this->db->where('category', 'likelihood')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
-		$impact = $this->db->where('category', 'impact')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
+		// doi::dump($data);
+		// Mengambil data 'likelihood' dan 'impact' dari database
+		$like 	= $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
+		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
+		$abjad 	= ['E', 'D', 'C', 'B', 'A']; // Daftar abjad untuk menggantikan kode tingkat kemungkinan
 
-		$content = '<center><table style="text-align:center;" border="0">';
-		$no = 0;
-		$noTd = 5;
-		$nourut = 0;
-		// echo '<pre>';
-		// print_r($data);
-		// echo '</pre>';
-		// die();
-		foreach ($data as $key => $row) {
-			++$no;
-			$nilai = (!empty($row['nilai'])) ? $row['nilai'] : "";
-			if ($key == 0) {
-				$content .= '<tr><td rowspan="5" class="text-center"><strong></strong></td><td height="50px" style=" padding:13px;min-width:55px;">' . $impact[$nourut]['level'] . '</td><td style="padding:13px;min-width:55px;">' . $impact[$nourut]['code'] . '</td>';
-				++$nourut;
+		// Fungsi untuk mencari data berdasarkan like_no dan impact_no
+		function find_data($data, $like_no, $impact_no)
+		{
+			foreach ($data as $item) {
+				if ($item['like_no'] == $like_no && $item['impact_no'] == $impact_no) {
+					return $item;
+				}
 			}
-			$content .= '<td data-id="' . $row['id'] . '"  class="pointer peta" onclick="hoho(this)" style="background-color:' . $row['warna_bg'] . ';color:' . $row['warna_txt'] . ';padding:33px;border:solid 1px black;min-width:45px; font-size:16px; font-weight:bold;" data-toggle = "popover" data-placement="top" data-html="true" data-content="<strong>' . $row['tingkat'] . '</strong><br/>Standar Nilai :<br/>Impact: [ >=' . $row['bawah_impact'] . ' s.d <=' . $row['atas_impact'] . ']<br/>Likelihood: [ >=' . $row['bawah_like'] . ' s.d <=' . $row['atas_like'] . ']" data-nilai="' . $nilai . '" data-kel="' . $type . '">' . $nilai . '</td>';
-			if ($no % 5 == 0 && $key < 24) {
-				--$noTd;
-				$content .= '</tr><tr><td class="td-nomor-v" style="padding:13px;">' . $impact[$nourut]['level'] . '</td><td height="90px" style="padding:13px;min-width:55px;">' . $impact[$nourut]['code'] . '</td>';
-				++$nourut;
+			return null;
+		}
+
+		// Awal tabel HTML
+		$content = '<center><table style="text-align:center; border-collapse: collapse; width: 100%; font-size: 12px;" border="0">';
+		
+		// Judul tabel
+		$content .= '
+			<tr>
+				<td></td><td></td>
+				<td colspan="5" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . ucfirst($type) . ' Risk</td>
+			</tr>';
+
+		// Header vertikal "Tingkatan Kemungkinan"
+		$content .= '<tr>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:5px; writing-mode: vertical-rl; transform: rotate(180deg);">TINGKATAN KEMUNGKINAN</td>';
+		$content .= '</tr>';
+
+		// Baris tingkat kemungkinan
+		foreach ($like as $index => $row_l) {
+			$code_abjad = $abjad[$index] ?? $row_l['code'];
+			$content .= '<tr>';
+			$content .= sprintf(
+				'<td style="text-align:center; font-weight:bolder; color:black; padding:5px; font-size:10px; height: 40px;">%s<br>%s</td>',
+				$row_l['level'],
+				$code_abjad
+			);
+
+			// Kolom tingkat dampak
+			foreach ($impact as $row_i) {
+				$like_no 	= $row_l['id'];
+				$impact_no 	= $row_i['id'];
+				
+
+				$item_data = find_data($data, $like_no, $impact_no);
+				// doi::dump($item_data);
+				// Data default jika tidak ditemukan
+				$score 		= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
+				$nilai 		= $item_data['nilai'] ?? '';
+				$warna_bg 	= $item_data['warna_bg'] ?? '#ffffff';
+				$warna_txt 	= $item_data['warna_txt'] ?? '#000000';
+				$tingkat	= $item_data['tingkat'] ?? '';
+				$bawah_impact = $item_data['bawah_impact'] ?? '';
+				$atas_impact = $item_data['atas_impact'] ?? '';
+				$bawah_like = $item_data['bawah_like'] ?? '';
+				$atas_like = $item_data['atas_like'] ?? '';
+
+				$content .= '
+					<td data-id="' . $row_i['id'] . '" 
+						class="pointer peta" onclick="hoho(this)" 
+						style="position: relative; background-color:' . $warna_bg . '; 
+								color:' . $warna_txt . '; 
+								width: 60px; 
+								height: 60px; 
+								padding: 5px; 
+								border: 1px solid white; 
+								font-size: 10px; 
+								font-weight: bold; 
+								text-align: center; 
+								vertical-align: middle;"
+								data-toggle="popover"
+								data-placement="top"
+								data-html="true"
+								data-content="<strong>'.$tingkat.'</strong><br/>Standar Nilai :<br/>Impact: [ >= '.$bawah_impact.' s.d <= '.$atas_impact.']<br/>Likelihood: [ >='.$bawah_like.' s.d <= '.$atas_like.']"
+								data-nilai="'.$nilai.'"
+								data-kel="'.$type.'"
+								data-like="'.$item_data['code_likelihood'].'"
+								data-impact="'.$item_data['code_impact'].'"
+								>
+						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">' . $score . '</div>
+						' . $nilai . '
+					</td>';
 			}
-		}
-		$content .= '<tr><td colspan="3" rowspan="3"></td>';
-		foreach ($like as $key => $row) {
-			$content .= '<td style="padding:13px;">' . $row['code'] . '</td>';
-		}
-		$content .= '</tr><tr>';
-		foreach ($like as $key => $row) {
-			$content .= '<td width="50px" style="padding:13px;">' . $row['level'] . '</td>';
-		}
-		$content .= '</tr><tr><td class="text-center" colspan="4"><strong>Probability</strong></td></tr>';
-		$content .= '</table><br/>&nbsp;';
 
-		$row_ket = $this->db->select('rcsa_owner_no, name as name')->where('sts_propose', 4)->distinct()->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			$content .= '</tr>';
+		}
 
-		// $content .='<table class="table" width="50%" style="text-align:left;width:50%;" border="1"><tr><td colspan="2">Keterangan :</td></tr>';
-		// // Doi::dump($row_ket);
-		// foreach($row_ket as $row){
-		// 	$content .='<tr><td width="15%" style="vertical-align:middle !important;"><a class="kotak-list"></td><td>'.$row['name'].'</td></tr>';
-		// }
-		// $content .='</table><br/>&nbsp;';
-		$content .= '<div class="row"><div class="col-md-12" id="detail_map"></div></div>';
+		// Footer tabel untuk kode dampak
+		$content .= '<tr><td></td><td></td>';
+		foreach ($impact as $row_i) {
+			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['code'] . '</td>';
+		}
+		$content .= '</tr>';
+
+		// Footer tabel untuk level dampak
+		$content .= '<tr><td></td><td></td>';
+		foreach ($impact as $row_i) {
+			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['level'] . '</td>';
+		}
+		$content .= '</tr>';
+
+		// Footer utama untuk judul "Tingkatan Dampak"
+		$content .= sprintf(
+			'<tr><td></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;">TINGKATAN DAMPAK</td></tr>',
+			count($impact)
+		);
+
+		// Menutup tabel
+		$content .= '</table></center>';
+
 		return $content;
 	}
+
+
+
 	function draw_rcsa_res($data, $type = 'residual')
 	{
-		$like = $this->db->where('category', 'likelihood')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
-		$impact = $this->db->where('category', 'impact')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
+		// doi::dump($data);
+		// Mengambil data 'likelihood' dan 'impact' dari database
+		$like 	= $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
+		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
+		$abjad 	= ['E', 'D', 'C', 'B', 'A']; // Daftar abjad untuk menggantikan kode tingkat kemungkinan
 
-		$content = '<center><table style="text-align:center;" border="0">';
-		$no = 0;
-		$noTd = 5;
-		$nourut = 0;
-		// echo '<pre>';
-		// print_r($data);
-		// echo '</pre>';
-		// die();
-		foreach ($data as $key => $row) {
-			++$no;
-			$nilai = (!empty($row['nilai'])) ? $row['nilai'] : "";
-			if ($key == 0) {
-				$content .= '<tr><td rowspan="5" class="text-center"><strong></strong></td><td height="50px" style=" padding:13px;min-width:55px;">' . $impact[$nourut]['level'] . '</td><td style="padding:13px;min-width:55px;">' . $impact[$nourut]['code'] . '</td>';
-				++$nourut;
+		// Fungsi untuk mencari data berdasarkan like_no dan impact_no
+		function find_data_res($data, $like_no, $impact_no)
+		{
+			foreach ($data as $item) {
+				if ($item['like_no'] == $like_no && $item['impact_no'] == $impact_no) {
+					return $item;
+				}
 			}
-			$content .= '<td data-id="' . $row['id'] . '"  class="pointer peta" onclick="hoho(this)" style="background-color:' . $row['warna_bg'] . ';color:' . $row['warna_txt'] . ';padding:33px;border:solid 1px black;min-width:45px; font-size:16px; font-weight:bold;" data-toggle = "popover" data-placement="top" data-html="true" data-content="<strong>' . $row['tingkat'] . '</strong><br/>Standar Nilai :<br/>Impact: [ >=' . $row['bawah_impact'] . ' s.d <=' . $row['atas_impact'] . ']<br/>Likelihood: [ >=' . $row['bawah_like'] . ' s.d <=' . $row['atas_like'] . ']" data-nilai="' . $nilai . '" data-kel="' . $type . '">' . $nilai . '</td>';
-			if ($no % 5 == 0 && $key < 24) {
-				--$noTd;
-				$content .= '</tr><tr><td class="td-nomor-v" style="padding:13px;">' . $impact[$nourut]['level'] . '</td><td height="90px" style="padding:13px;min-width:55px;">' . $impact[$nourut]['code'] . '</td>';
-				++$nourut;
+			return null;
+		}
+
+		// Awal tabel HTML
+		$content = '<center><table style="text-align:center; border-collapse: collapse; width: 100%; font-size: 12px;" border="0">';
+		
+		// Judul tabel
+		$content .= '
+			<tr>
+				<td></td><td></td>
+				<td colspan="5" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . ucfirst($type) . ' Risk</td>
+			</tr>';
+
+		// Header vertikal "Tingkatan Kemungkinan"
+		$content .= '<tr>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:5px; writing-mode: vertical-rl; transform: rotate(180deg);">TINGKATAN KEMUNGKINAN</td>';
+		$content .= '</tr>';
+
+		// Baris tingkat kemungkinan
+		foreach ($like as $index => $row_l) {
+			$code_abjad = $abjad[$index] ?? $row_l['code'];
+			$content .= '<tr>';
+			$content .= sprintf(
+				'<td style="text-align:center; font-weight:bolder; color:black; padding:5px; font-size:10px; height: 40px;">%s<br>%s</td>',
+				$row_l['level'],
+				$code_abjad
+			);
+
+			// Kolom tingkat dampak
+			foreach ($impact as $row_i) {
+				$like_no 	= $row_l['id'];
+				$impact_no 	= $row_i['id'];
+				
+
+				$item_data = find_data_res($data, $like_no, $impact_no);
+				// doi::dump($item_data);
+				// Data default jika tidak ditemukan
+				$score 		= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
+				$nilai 		= $item_data['nilai'] ?? '';
+				$warna_bg 	= $item_data['warna_bg'] ?? '#ffffff';
+				$warna_txt 	= $item_data['warna_txt'] ?? '#000000';
+				$tingkat	= $item_data['tingkat'] ?? '';
+				$bawah_impact = $item_data['bawah_impact'] ?? '';
+				$atas_impact = $item_data['atas_impact'] ?? '';
+				$bawah_like = $item_data['bawah_like'] ?? '';
+				$atas_like = $item_data['atas_like'] ?? '';
+
+				$content .= '
+					<td data-id="' . $row_i['id'] . '" 
+						class="pointer peta" onclick="hoho(this)" 
+						style="position: relative; background-color:' . $warna_bg . '; 
+								color:' . $warna_txt . '; 
+								width: 60px; 
+								height: 60px; 
+								padding: 5px; 
+								border: 1px solid white; 
+								font-size: 10px; 
+								font-weight: bold; 
+								text-align: center; 
+								vertical-align: middle;"
+								data-toggle="popover"
+								data-placement="top"
+								data-html="true"
+								data-content="<strong>'.$tingkat.'</strong><br/>Standar Nilai :<br/>Impact: [ >= '.$bawah_impact.' s.d <= '.$atas_impact.']<br/>Likelihood: [ >='.$bawah_like.' s.d <= '.$atas_like.']"
+								data-nilai="'.$nilai.'"
+								data-kel="'.$type.'"
+								data-like="'.$item_data['code_likelihood'].'"
+								data-impact="'.$item_data['code_impact'].'"
+								>
+						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">' . $score . '</div>
+						' . $nilai . '
+					</td>';
 			}
-		}
-		$content .= '<tr><td colspan="3" rowspan="3"></td>';
-		foreach ($like as $key => $row) {
-			$content .= '<td style="padding:13px;">' . $row['code'] . '</td>';
-		}
-		$content .= '</tr><tr>';
-		foreach ($like as $key => $row) {
-			$content .= '<td width="50px" style="padding:13px;">' . $row['level'] . '</td>';
-		}
-		$content .= '</tr><tr><td class="text-center" colspan="4"><strong>Probability</strong></td></tr>';
-		$content .= '</table><br/>&nbsp;';
 
-		$row_ket = $this->db->select('rcsa_owner_no, name as name')->where('sts_propose', 4)->distinct()->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			$content .= '</tr>';
+		}
 
-		// $content .='<table class="table" width="50%" style="text-align:left;width:50%;" border="1"><tr><td colspan="2">Keterangan :</td></tr>';
-		// // Doi::dump($row_ket);
-		// foreach($row_ket as $row){
-		// 	$content .='<tr><td width="15%" style="vertical-align:middle !important;"><a class="kotak-list"></td><td>'.$row['name'].'</td></tr>';
-		// }
-		// $content .='</table><br/>&nbsp;';
-		$content .= '<div class="row"><div class="col-md-12" id="detail_map"></div></div>';
+		// Footer tabel untuk kode dampak
+		$content .= '<tr><td></td><td></td>';
+		foreach ($impact as $row_i) {
+			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['code'] . '</td>';
+		}
+		$content .= '</tr>';
+
+		// Footer tabel untuk level dampak
+		$content .= '<tr><td></td><td></td>';
+		foreach ($impact as $row_i) {
+			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['level'] . '</td>';
+		}
+		$content .= '</tr>';
+
+		// Footer utama untuk judul "Tingkatan Dampak"
+		$content .= sprintf(
+			'<tr><td></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;">TINGKATAN DAMPAK</td></tr>',
+			count($impact)
+		);
+
+		// Menutup tabel
+		$content .= '</table></center>';
+
 		return $content;
 	}
 
