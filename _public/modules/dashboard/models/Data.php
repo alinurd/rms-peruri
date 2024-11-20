@@ -253,18 +253,10 @@ class Data extends MX_Model
 					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
 					
 				}
-            }
-
-            // if (isset($row['like_no'], $row['impact_no'])) {
-            //     $key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
-            //     $row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
-                
-            // }
-
-            
+            }         
             
 
-            $hasil['residual1'] = $this->data->draw_rcsa1($mapping1, 'residual1');
+            $hasil['residual1'] = $this->data->draw_rcsa1($mapping1, 'Target');
         }
 
         return $hasil;
