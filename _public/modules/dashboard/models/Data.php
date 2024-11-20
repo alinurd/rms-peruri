@@ -34,6 +34,10 @@ class Data extends MX_Model
 				$this->db->where('period_no', $data['id_period']);
 			}
 
+            if ($data['bulan'] > 0) {
+                $this->db->where("bulan BETWEEN {$data['bulan']} AND {$data['bulanx']}");
+            }
+
 			// doi::dump($data['id_period']); 
 			// === Fetch Inherent Data ===
 			$rows = $this->db->select('analisis_like_inherent, analisis_impact_inherent, COUNT(*) as jml')
@@ -94,6 +98,10 @@ class Data extends MX_Model
 			if ($data['id_period'] > 0) {
 				$this->db->where('period_no', $data['id_period']);
 			}
+
+            if ($data['bulan'] > 0) {
+                $this->db->where("bulan BETWEEN {$data['bulan']} AND {$data['bulanx']}");
+            }
 
 
 
@@ -165,37 +173,96 @@ class Data extends MX_Model
                 $this->db->where('period_no', $data['id_period']);
             }
 
-            if ($data['bulan'] > 0) {
-                $this->db->where('bulan', $data['bulan']);
-            }
+            // if ($data['bulan'] > 0) {
+            //     $this->db->where('bulan', $data['bulan']);
+            // }
 
-            // === Fetch Data for Residual 1 ===
-            $rows = $this->db->select('MAX(rcsa_no) AS rcsa_no, MAX(create_date) AS create_date, risk_level_action, COUNT(risk_level_action) AS jml')
-                ->group_by('risk_level_action')
-                ->order_by('create_date', 'desc')
-                ->where('sts_propose', 4)
-                ->where('urgensi_no', 0)
-                ->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
-                ->result_array();
-
-            $arrData1 = [];
-            $groupedData1 = [];
-
-            foreach ($rows as $row) {
-                $rcsa_no = $row['rcsa_no'];
-                if (!isset($groupedData1[$rcsa_no]) || $row['create_date'] > $groupedData1[$rcsa_no]['create_date']) {
-                    $groupedData1[$rcsa_no] = $row;
-                }
-            }
-
-            foreach ($groupedData1 as $ros) {
-                $arrData1[$ros['risk_level_action']] = $ros['jml'];
-            }
-
+            $fields = [];
+            $groupBy = [];
+            
+            // Input berupa angka tunggal
+            $input = $data['bulan'] - 1; // Contoh input
+            
+            // Pastikan input valid (0-11)
+            if ($input >= 0 && $input <= 11) {
+                $likeField = "JSON_UNQUOTE(JSON_EXTRACT(bangga_analisis_risiko.target_like, '$[$input]'))";
+                $impactField = "JSON_UNQUOTE(JSON_EXTRACT(bangga_analisis_risiko.target_impact, '$[$input]'))";
+            
+                // Tambahkan field untuk SELECT
+                $fields[] = "$likeField AS like_value";
+                $fields[] = "COUNT($likeField) AS count_like";
+                $fields[] = "$impactField AS impact_value";
+                $fields[] = "COUNT($impactField) AS count_impact";
+            
+                // Tambahkan field untuk GROUP BY
+                $groupBy[] = "like_value";
+                $groupBy[] = "impact_value";
+            } 
+            
+            // Tambahkan field utama ke dalam SELECT
+            $mainFields = [
+                'MAX(bangga_view_rcsa_action_detail.rcsa_no) AS rcsa_no',
+                'MAX(bangga_view_rcsa_action_detail.create_date) AS create_date', 'COUNT(*) as jml'
+            ];
+            
+            // Bangun query
+            $this->db->select(array_merge($mainFields, $fields));
+            $this->db->from('bangga_view_rcsa_action_detail');
+            $this->db->join(
+                'bangga_analisis_risiko',
+                'bangga_analisis_risiko.id_detail = bangga_view_rcsa_action_detail.id',
+                'left'
+            );
+            
+            // Tambahkan kondisi WHERE
+            $this->db->where([
+                'sts_propose' => 4,
+                'sts_heatmap' => '1',
+                'urgensi_no' => 0,
+            ]);
+            
+            // Tambahkan GROUP BY
+            $this->db->group_by($groupBy);
+            
+            // Tambahkan ORDER BY
+            $this->db->order_by('create_date', 'DESC');
+            
+            // Eksekusi query
+            $query = $this->db->get();
+            
+            // Debug query jika diperlukan
+            // echo $this->db->get_compiled_select();
+            
+            // Ambil hasil dalam bentuk array
+            $rows = $query->result_array();
+        
+            $arrData = [];
+			foreach ($rows as $ros) {
+				// Pastikan kolom analisis_like_residual dan analisis_impact_residual ada dan valid
+				if (isset($ros['like_value'], $ros['impact_value'])) {
+					$key = $ros['like_value'] . '-' . $ros['impact_value']; // Gabungkan likelihood dan impact
+					$arrData[$key] = $ros['jml'];
+				}
+			}
+            
+           
             // === Update Residual 1 Mapping ===
             foreach ($mapping1 as &$row) {
-                $row['nilai'] = array_key_exists($row['id'], $arrData1) ? $arrData1[$row['id']] : '';
+                if (isset($row['like_no'], $row['impact_no'])) {
+					$key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+					
+				}
             }
+
+            // if (isset($row['like_no'], $row['impact_no'])) {
+            //     $key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+            //     $row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+                
+            // }
+
+            
+            
 
             $hasil['residual1'] = $this->data->draw_rcsa1($mapping1, 'residual1');
         }
@@ -318,6 +385,14 @@ class Data extends MX_Model
 
         return $query;
     }
+
+	function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        
+		// doi::dump($rows);
+        return $rows;
+	}
 
     // === Get Master Level ===
     function get_master_level($filter = false, $id = 0)

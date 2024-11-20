@@ -14,25 +14,26 @@ padding: 10px;
 			<tr>
                 <td>Existing Control</td>
                 <?php 
-                $a = $data['control_no'];
+                // $a = $data['control_no'];
         
-                $b = str_replace("\/",',', $a);
-                $b = str_replace("[",'', $b);
-                $b = str_replace("]",'', $b);
-                $b = explode(",", $b);
-                $hasil='';
-                $hasil.='<ol>';
-                foreach ($b as $key => $control) {
-                    $id = str_replace('"','', $control);
-                    if ($control == "") {
-                        $hasil.="";
-                    }else{
-                    $hasil.='<li>'.$id.'</li>';
-                    }
-                }
-                $hasil.='</ol>';
+                // $b = str_replace("\/",',', $a);
+                // $b = str_replace("[",'', $b);
+                // $b = str_replace("]",'', $b);
+                // $b = explode(",", $b);
+                // $hasil='';
+                // $hasil.='<ol>';
+                // foreach ($b as $key => $control) {
+                //     $id = str_replace('"','', $control);
+                //     if ($control == "") {
+                //         $hasil.="";
+                //     }else{
+                //     $hasil.='<li>'.$id.'</li>';
+                //     }
+                // }
+                // $hasil.='</ol>';
                  ?>
-                <td><?= $hasil; ?></td>
+                <!-- <td><?= $hasil; ?></td> -->
+                <td><?=$data['note_control'];?></td>
             </tr>
             <tr><td>Note Control</td><td><?=$data['note_control'];?></td></tr>
 			<tr><td>Risk Control Assessment</td><td><?=$data['risk_control'];?></td></tr>
