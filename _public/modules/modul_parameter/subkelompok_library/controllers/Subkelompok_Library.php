@@ -8,13 +8,15 @@ class Subkelompok_Library extends BackendController {
 	public function __construct()
 	{
         parent::__construct();
-		$this->kelCombo="subkel-library";
+		$this->kelCombo="kelompok-risiko";
 		$this->set_Tbl_Master(_TBL_DATA_COMBO);
-		
-		$this->set_Open_Tab('Kelompok Library');
+ 		$this->pid=$this->get_combo('data-combo-tasktonimi','kategori-risiko');
+
+		$this->set_Open_Tab('Kelompok Risiko T3');
 			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			$this->addField(array('field'=>'kelompok', 'show'=>false, 'save'=>true, 'default'=>$this->kelCombo));
-			$this->addField(array('field'=>'data', 'required'=>true, 'search'=>true, 'size'=>50));
+			$this->addField(array('field'=>'pid', 'input'=>'combo', 'title'=>'Kategori Risiko T2','show'=>true , 'required'=>true,  'combo'=>$this->pid, 'size'=>50));
+			$this->addField(array('field'=>'data' , 'title'=>'Kelompok Risiko T3', 'required'=>true, 'search'=>true, 'size'=>50));
 			$this->addField(array('field'=>'aktif', 'type'=>'string', 'input'=>'boolean', 'search'=>true, 'size'=>20));
 		$this->set_Close_Tab();
 			
@@ -25,9 +27,22 @@ class Subkelompok_Library extends BackendController {
 		$this->set_Sort_Table($this->tbl_master,'urut');
 		
 		// $this->set_Table_List($this->tbl_master,'kode');
+		$this->set_Table_List($this->tbl_master,'pid','',20, '');
 		$this->set_Table_List($this->tbl_master,'data');
 		$this->set_Table_List($this->tbl_master,'aktif','',10, 'center');
 		
 		$this->set_Close_Setting();
+	}
+
+	
+	function listBox_PID($row, $value)
+	{
+		$pid = $this->db->where_in('id', $value)->get(_TBL_DATA_COMBO)->row_array();
+ 		$result =  '<span class="text-danger">unknow</span>'; 
+		if($pid){
+			$result=$pid['data'];
+		}
+		
+		return $result;
 	}
 }
