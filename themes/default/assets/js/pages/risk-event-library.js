@@ -1,4 +1,30 @@
+function resultHasil(x){
+	console.log(x)
+}
 $(function(){
+	
+	$("#l_t1, #q_l_t1").change(function () {
+		var parent = $(this).parent();
+		var id = $(this).attr('id');
+		var nilai = $(this).val();
+		var type = 0;
+		var target_combo='';
+	
+		if (id === 'l_t1') {
+			type = 1;
+			target_combo = $("#l_t2");
+		} else if (id === 'l_t2') {
+			type = 2;
+			target_combo = $("#l_t3");
+		}
+	
+		var data = { 'type': type, 'id': nilai };
+		var url = "ajax/takstonomi";
+	
+		cari_ajax_combo("post", parent, data, target_combo, url, 'resultHasil');
+	});
+	
+
 	$("#l_kel, #q_l_kel").change(function(){
 		var parent = $(this).parent();
 		var id = $(this).attr('id');

@@ -206,7 +206,38 @@ class Data extends MX_Model {
 		return $result;
 	}
 
-	
+
+
+	function get_map_takstonomi($type, $id)
+{
+    $data = [];
+    if ($type == 1) {
+        $data = $this->db
+            ->select('id, data')
+            ->from(_TBL_DATA_COMBO)
+            ->where('pid', $id)
+            ->where('kelompok', 'kategori-risiko')
+            ->where('aktif', 1)
+            ->get()
+            ->result_array();
+    }
+
+    if (count($data) > 0) {
+        $option = '<option value="0">' . lang('msg_cbo_select') . '</option>';
+        foreach ($data as $row) {
+            $option .= '<option value="' . $row['id'] . '">' . $row['data'] . '</option>';
+        }
+    } else {
+        $option = '<option value="0">' . lang('msg_cbo_select') . '</option>';
+    }
+ 
+    $result['combo'] = $option;
+    return $result;
+}
+
+
+
+
 	function get_data_type_risk($param){
 		if ($param>0){
 			$sql= $this->db

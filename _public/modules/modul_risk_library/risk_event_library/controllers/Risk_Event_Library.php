@@ -15,9 +15,9 @@ class Risk_Event_Library extends BackendController {
  		$this->cbo_risk_type=$this->get_combo('risk_type');
 		$this->cbo_status = [1=>'aktif', 0=>'tidak aktif'];
   		$this->t1=$this->get_combo('tasktonimi','t1');
-  		$this->t2=$this->get_combo('tasktonimi','t2');
-  		$this->t3=$this->get_combo('tasktonimi','t3');
-
+  		$this->t2=[0=>'- Pilih Kategori Risiko (T2) -'];
+  		$this->t3=[0=>'- Pilih Kelompok Risiko (T3) -'];
+ 
 		$this->set_Tbl_Master(_TBL_LIBRARY);
 		$this->set_Table(_TBL_RISK_TYPE);
 		
