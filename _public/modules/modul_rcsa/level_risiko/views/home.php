@@ -100,13 +100,14 @@
                                 <?php
                                 $no = 1;
                                 foreach ($field as $q) {
-                                    $cek_score = $this->data->cek_level_new($q['analisis_like_inherent'], $q['analisis_impact_inherent']);
-                                    // $residual_level = $this->data->get_master_level(true,  $cek_score['like']['code']);
-                                    $inherent = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $cek_score['warna_bg'] . ';color:' . $cek_score['warna_txt'] . ';">' . $cek_score['tingkat'] . '</span>';
+                                    // $cek_score = $this->data->cek_level_new($q['analisis_like_inherent'], $q['analisis_impact_inherent']);
+                                    $residual_level = $this->data->get_master_level(true,  $q['inherent_level']);
+                                    // doi::dump($residual_level);
+                                    $inherent = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">' . $residual_level['level_mapping'] . '</span>';
 
-                                    $cek_score1 = $this->data->cek_level_new($q['analisis_like_residual'], $q['analisis_impact_residual']);
-                                    // $residual_level1 = $this->data->get_master_level(true,$cek_score1['like']['code']);
-                                    $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $cek_score1['warna_bg'] . ';color:' . $cek_score1['warna_txt'] . ';">' . $cek_score1['tingkat'] . '</span>';
+                                    // $cek_score1 = $this->data->cek_level_new($q['analisis_like_residual'], $q['analisis_impact_residual']);
+                                    $residual_level1 = $this->data->get_master_level(true,$q['residual_level']);
+                                    $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level1['color'] . ';color:' . $residual_level1['color_text'] . ';">' . $residual_level1['level_mapping'] . '</span>';
                                 ?>
                                     <tr>
                                         <td class="text-center" style="position: sticky; left: 0; background: white;z-index: 99;"><?= $no++ ?></td>

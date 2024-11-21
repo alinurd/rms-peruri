@@ -42,7 +42,7 @@ if ($parent['sts_propose'] == 5) {
                     <td colspan="10"><strong><?= strtoupper($row['nama']); ?></strong></td>
                 </tr>
                 <?php
-                $no = 0;
+                $no = 0; 
                 foreach ($row['detail'] as $ros) :
                     $sts_heatmap = $this->db->where('id',$ros['id'])->get('bangga_rcsa_detail')->row_array();
                     // doi::dump($sts_heatmap);
@@ -50,21 +50,21 @@ if ($parent['sts_propose'] == 5) {
                     $act = $this->db->where('rcsa_detail_no', $ros['id'])->get('bangga_rcsa_action')->row_array();
                     $actkri = $this->db->where('rcsa_detail', $ros['id'])->get('bangga_kri')->row_array();
 
-                    $inherent_level     = $this->data->cek_level_new($ros['analisis_like_inherent'], $ros['analisis_impact_inherent']);
-                    $residual_level     = $this->data->cek_level_new($ros['analisis_like_residual'], $ros['analisis_impact_residual']);
+                    // $inherent_level     = $this->data->cek_level_new($ros['analisis_like_inherent'], $ros['analisis_impact_inherent']);
+                    // $residual_level     = $this->data->cek_level_new($ros['analisis_like_residual'], $ros['analisis_impact_residual']);
                     // doi::dump($cek_score);
                     // doi::dump($cek_score1);
-                    // $inherent_level = $this->data->get_master_level(true, $ros['inherent_level']);
+                    $inherent_level = $this->data->get_master_level(true, $ros['inherent_level']);
 
-                    // $residual_level = $this->data->get_master_level(true, $ros['residual_level']);
+                    $residual_level = $this->data->get_master_level(true, $ros['residual_level']);
                     // var_dump($a);
                     if (!$inherent_level) {
-                        $inherent_level = ['color' => '', 'warna_txt' => '', 'tingkat' => '-'];
+                        $inherent_level = ['color' => '', 'warna_txt' => '', 'level_mapping' => '-'];
                     }
                     $a = $inherent_level['tingkat'];
 
                     if (!$residual_level) {
-                        $residual_level = ['color' => '', 'warna_txt' => '', 'tingkat' => '-'];
+                        $residual_level = ['color' => '', 'warna_txt' => '', 'level_mapping' => '-'];
                     }
 
 
@@ -132,25 +132,25 @@ if ($parent['sts_propose'] == 5) {
                         <td class="edit text-center  pointer">
                             <?php
                             $like = $this->db
-                                ->where('id', $residual_level['like_no'])
+                                ->where('id', $residual_level['likelihood'])
                                 ->get('bangga_level')->row_array();
 
                             $impact = $this->db
-                                ->where('id', $residual_level['impact_no'])
+                                ->where('id', $residual_level['impact'])
                                 ->get('bangga_level')->row_array();
                             $likeinherent = $this->db
-                                ->where('id', $inherent_level['like_no'])
+                                ->where('id', $inherent_level['likelihood'])
                                 ->get('bangga_level')->row_array();
 
                             $impactinherent = $this->db
-                                ->where('id', $inherent_level['impact_no'])
+                                ->where('id', $inherent_level['impact'])
                                 ->get('bangga_level')->row_array();
                                 // doi::dump($inherent_level);
 
                             if ($ros['analisis_like_inherent'] > 0) : ?>
 
                                 <span id="inherent_level_label">
-                                    <span style="background-color:<?= $inherent_level['warna_bg']; ?>;color:<?= $inherent_level['warna_txt']; ?>;">&nbsp; <?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;<?= $inherent_level['tingkat']; ?>&nbsp;</span>
+                                    <span style="background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;">&nbsp; <?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;<?= $inherent_level['level_mapping']; ?>&nbsp;</span>
                                 </span>
 
                                 <!--echo "<span style='background-color:" . $ros[' warna'] . ";color:" . $ros['warna_text'] . ";'>&nbsp;" . $ros['inherent_analisis'] . "&nbsp;</span>" ;; ?>
@@ -177,7 +177,7 @@ if ($parent['sts_propose'] == 5) {
                             <?php
                             if ($ros['analisis_like_residual'] > 0) : ?>
                                 <span id="residual_level_label">
-                                    <span style="background-color:<?= $residual_level['warna_bg']; ?>;color:<?= $residual_level['warna_txt']; ?>;">&nbsp; <?= $like['code']; ?> x <?= $impact['code']; ?>&nbsp;<?= $residual_level['tingkat']; ?>&nbsp;</span>
+                                    <span style="background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;">&nbsp; <?= $like['code']; ?> x <?= $impact['code']; ?>&nbsp;<?= $residual_level['level_mapping']; ?>&nbsp;</span>
                                 </span>
 
                                 <!-- echo "<span style='background-color:" . $ros[' warna_residual'] . ";color:" . $ros['warna_text_residual'] . ";'>&nbsp;" . $ros['residual_analisis'] . "&nbsp;</span>" ;; ?> -->
