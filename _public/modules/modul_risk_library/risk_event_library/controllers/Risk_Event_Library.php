@@ -8,15 +8,15 @@ class Risk_Event_Library extends BackendController {
 	var $risk_type=[];
 	public function __construct() {
         parent::__construct();
-		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+		ini_set('max_execution_time', 300);
 		ini_set('memory_limit', '-1');
 		$this->type_risk=1;
 		// $this->kel=array('0'=>' - Select - ','1'=>'Internal','2'=>'External');
  		$this->cbo_risk_type=$this->get_combo('risk_type');
 		$this->cbo_status = [1=>'aktif', 0=>'tidak aktif'];
   		$this->t1=$this->get_combo('tasktonimi','t1');
-  		$this->t2=[0=>'- Pilih Kategori Risiko (T2) -'];
-  		$this->t3=[0=>'- Pilih Kelompok Risiko (T3) -'];
+  		$this->t2=[0=>lang('msg_cbo_select')];
+  		$this->t3=[0=>lang('msg_cbo_select')];
  
 		$this->set_Tbl_Master(_TBL_LIBRARY);
 		$this->set_Table(_TBL_RISK_TYPE);

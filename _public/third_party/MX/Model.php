@@ -302,7 +302,7 @@ class MX_Model extends CI_Model
 		$d = $data->result();
 
 		if ($this->no_select)
-			$combo[''] = " - select - ";
+			$combo[''] = lang('msg_cbo_select');
 		else
 			$combo = [];
 
