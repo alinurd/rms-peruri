@@ -31,7 +31,7 @@ class Auth extends BackendController {
 	public function season()
 	{
 		
-$urll=$this->input->get('basedata');
+$url=$this->input->get('basedata');
 $startHttp = strpos($url, "http");
 
 		// Cari posisi awal "https" dalam string
