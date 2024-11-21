@@ -10,19 +10,21 @@ class Tema_Library extends BackendController {
         parent::__construct();
 		$this->type_risk=2;
 		$this->kel=$this->get_combo('data-combo','kel-library');
-		$this->cbo_risk_type=[4=>"Tema (T1)"];
+		$this->cbo_risk_type=[4=>"T1 - Tema Risko"];
 		
 		$this->set_Tbl_Master(_TBL_LIBRARY);
 		$this->set_Table(_TBL_RISK_TYPE);
 		
 		$this->set_Open_Tab('Data Risk Event Library');
-			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
-			// $this->addField(array('field'=>'kel', 'type'=>'free', 'input'=>'combo', 'combo'=>$this->kel, 'size'=>50));
-			$this->addField(array('field'=>'risk_type_no', 'input'=>'combo', 'combo'=>$this->cbo_risk_type, 'size'=>50));
-			$this->addField(array('field'=>'code','search'=>true, 'size'=>10));
-			$this->addField(array('field'=>'type','search'=>false, 'size'=>10));
-			$this->addField(array('field'=>'description', 'input'=>'multitext', 'search'=>true, 'size'=>500));
-			// $this->addField(array('field'=>'notes','show'=>false, 'input'=>'multitext', 'search'=>false, 'size'=>500));
+ 			// $this->addField(array('field'=>'kel', 'type'=>'free', 'input'=>'combo', 'combo'=>$this->kel, 'size'=>50));
+			 $this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
+			 $this->addField(array('field'=>'type', 'show'=>false, 'save'=>true, 'default'=>4));
+
+			// $this->addField(array('field'=>'risk_type_no', 'input'=>'combo','show'=>true, 'combo'=>$this->cbo_risk_type, 'size'=>50));
+			$this->addField(array('field'=>'code','search'=>true,'show'=>true, 'size'=>10));
+ 			$this->addField(array('field'=>'description', 'title'=>'Tema Risiko', 'size'=>100));
+
+ 			// $this->addField(array('field'=>'notes','show'=>false, 'input'=>'multitext', 'search'=>false, 'size'=>500));
 			// $this->addField(array('field'=>'item_use', 'type'=>'free', 'show'=>false, 'search'=>false));
 			$this->addField(array('field'=>'status', 'input'=>'boolean', 'size'=>40));
 		$this->set_Close_Tab();
@@ -31,11 +33,11 @@ class Tema_Library extends BackendController {
 		$this->set_Join_Table(array('pk'=>$this->tbl_master));
 		
 		$this->set_Sort_Table($this->tbl_master,'id');
-		$this->set_Where_Table($this->tbl_master, 'risk_type_no', '=', 4);
+		$this->set_Where_Table($this->tbl_master, 'type', '=', 4);
 		
 		// $this->set_Table_List($this->tbl_master,'kel');
 		// $this->set_Table_List($this->tbl_risk_type,'type');
-		$this->set_Table_List($this->tbl_master,'code', '', 5);
+		// $this->set_Table_List($this->tbl_master,'code', '', 5);
 		$this->set_Table_List($this->tbl_master,'description', '', 40);
 		// $this->set_Table_List($this->tbl_master,'notes');
 		// $this->set_Table_List($this->tbl_master,'item_use');

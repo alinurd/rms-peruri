@@ -46,7 +46,7 @@ class Data extends MX_Model {
 	}
 	function save_map_event($newid = 0, $data = array(), $tipe = 1, $mode = 'new', $old_data = array()){
 		
-		doi::dump($data);
+		// doi::dump($data);
 		if (count($data['library_no']) > 0) {
 			foreach ($data['library_no'] as $key => $row) {
 				$upd = array();

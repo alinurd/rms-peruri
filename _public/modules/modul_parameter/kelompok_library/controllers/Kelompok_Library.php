@@ -8,12 +8,15 @@ class Kelompok_Library extends BackendController {
 	public function __construct()
 	{
         parent::__construct();
-		$this->kelCombo = "kel-library";
+		$this->kelCombo = "kategori-risiko";
 		$this->set_Tbl_Master(_TBL_DATA_COMBO);
-		
-		$this->set_Open_Tab('Kelompok Library');
+ 		$this->cbo_risk_type=$this->get_combo('library_t1');
+
+		$this->set_Open_Tab('Kategori Risiko (T2)');
 			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			$this->addField(array('field'=>'kelompok', 'show'=>false, 'save'=>true, 'default'=>$this->kelCombo));
+			$this->addField(array('field'=>'pid', 'input'=>'combo','show'=>true, 'combo'=>$this->cbo_risk_type, 'size'=>50));
+
 			$this->addField(array('field'=>'data', 'required'=>true, 'search'=>true, 'size'=>50));
 			$this->addField(array('field'=>'aktif', 'type'=>'string', 'input'=>'boolean', 'search'=>true, 'size'=>20));
 			$this->addField(array('field'=> 'param1', 'type'=>'string', 'input'=>'boolean', 'show'=> false, 'size'=>20));
