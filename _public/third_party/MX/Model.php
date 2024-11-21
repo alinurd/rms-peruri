@@ -82,25 +82,29 @@ class MX_Model extends CI_Model
 				}
 				$query = "SELECT  id, CASE WHEN kode='' THEN data ELSE concat(kode,'-',data) END as name FROM " . _TBL_DATA_COMBO . " where aktif='1' {$where} order by urut, data";
 				break;
-			case "data-combo-tasktonimi":
+			case "tasktonimi":
 				$where = '';
-				if (is_array($param)) {
-					$where = " and kelompok='" . $param[0] . "' and id='" . $param[1] . "'";
-				} elseif (!empty($param)) {
-					$where = " and kelompok='" . $param . "'";
+				if($param=='t1'){
+					$tbl='library';
+					$param=4;
+				}elseif($param=='t2'){ 
+					$query = "SELECT bl.description, dc.id as id,   CONCAT(bl.description, ' - ', dc.data)   AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN bangga_library AS bl ON bl.id = dc.pid WHERE dc.aktif = '1' and dc.kelompok='kategori-risiko' ORDER BY dc.urut, dc.data";
+				}elseif($param=='t3'){
+ 					$query = "SELECT bl.data, dc.id as id,  CONCAT(bl.data, ' - ', dc.data)  AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN " . _TBL_DATA_COMBO . " AS bl ON bl.id = dc.pid WHERE dc.aktif = '1' and dc.kelompok='kelompok-risiko' ORDER BY dc.urut, dc.data";
+				}elseif($param=='t4'){
+					$tbl='library';
+					$param=1;
 				}
-				$query = "SELECT 
-                 dc.id as id, 
-                 CASE 
-                     WHEN dc.kode = '' THEN dc.data 
-                     ELSE CONCAT(dc.kode, '-', dc.data) 
-                 END AS name 
-				FROM " . _TBL_DATA_COMBO . " AS dc
-				JOIN bangga_library AS bl ON bl.id = dc.pid
-				WHERE dc.aktif = '1' 
+				if($tbl=="library"){
+					$query = "SELECT  id, description as name FROM " . _TBL_LIBRARY . " where status=1 and type={$param}  {$where} order by code";
+				}else{
+					if (is_array($param)) {
+						$where = " and kelompok='" . $param[0] . "' and id='" . $param[1] . "'";
+					} elseif (!empty($param)) {
+						$where = " and kelompok='" . $param . "'";
+					}
 					
-					{$where} 
-				ORDER BY dc.urut, dc.data";
+				}
 				break;
 			case 'accountable-input':
 				$query = "select DISTINCT rcsa_owner_no as id, name from " . _TBL_VIEW_RCSA_MITIGASI . "  ";

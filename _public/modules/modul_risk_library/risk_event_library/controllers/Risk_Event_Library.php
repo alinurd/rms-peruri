@@ -12,22 +12,26 @@ class Risk_Event_Library extends BackendController {
 		ini_set('memory_limit', '-1');
 		$this->type_risk=1;
 		// $this->kel=array('0'=>' - Select - ','1'=>'Internal','2'=>'External');
-		$this->kel=$this->get_combo('data-combo','kel-library');
-		$this->cbo_risk_type=$this->get_combo('risk_type');
+ 		$this->cbo_risk_type=$this->get_combo('risk_type');
 		$this->cbo_status = [1=>'aktif', 0=>'tidak aktif'];
-		$this->kel = $this->get_combo('data-combo', 'kel-library');
+  		$this->t1=$this->get_combo('tasktonimi','t1');
+  		$this->t2=$this->get_combo('tasktonimi','t2');
+  		$this->t3=$this->get_combo('tasktonimi','t3');
 
 		$this->set_Tbl_Master(_TBL_LIBRARY);
 		$this->set_Table(_TBL_RISK_TYPE);
 		
-		$this->set_Open_Tab('Data Risk Event Library');
+		$this->set_Open_Tab('Data Peristiwa Risiko T4');
 			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			// $this->addField(array('field'=>'kel', 'type'=>'free', 'required'=>true, 'input'=>'combo', 'combo'=>$this->kel, 'size'=>50));
 			$this->addField(array('field'=>'risk_type_no','title'=>'Kategori Risiko', 'input'=>'combo', 'required'=>false,'show'=>false, 'combo'=>$this->cbo_risk_type, 'size'=>50));
-			$this->addField(array('field'=>'code','title'=>'Risk Event Code', 'search'=>false, 'size'=>10));
-			$this->addField(array('field'=>'description', 'input'=>'multitext', 'search'=>true, 'size'=>500));
-		$this->addField(array('field' => 'kategori_risiko', 'title' => 'Kategori Risiko', 'input' => 'combo:search', 'combo' => $this->kel, 'size' => 70, 'search' => true, 'required' => true));
-		$this->addField(array('field'=>'notes','show'=>false, 'input'=>'multitext', 'search'=>false, 'size'=>500));
+			$this->addField(array('field'=>'code','title'=>'Risk Event Code', 'show'=>false, 'search'=>false, 'size'=>10));
+			$this->addField(array('field' => 't1', 'title' => 'Tema (T1)', 'input' => 'combo:search', 'combo' => $this->t1, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field' => 't2', 'title' => 'Kategori (T2)', 'input' => 'combo:search', 'combo' => $this->t2, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field' => 't3', 'title' => 'Kelompok (T3)', 'input' => 'combo:search', 'combo' => $this->t3, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field'=>'description', 'title'=>'Peristiwa Risiko (T4)', 'search'=>true, 'required' => true, 'size'=>90));
+		
+			$this->addField(array('field'=>'notes','show'=>false, 'input'=>'multitext', 'search'=>false, 'size'=>500));
 			$this->addField(array('field'=>'jml_couse', 'type'=>'free', 'show'=>false, 'search'=>false));
 			$this->addField(array('field'=>'jml_impact', 'type'=>'free', 'show'=>false, 'search'=>false));
 			$this->addField(array('field'=>'cause', 'type'=>'free', 'search'=>false, 'mode'=>'o'));
