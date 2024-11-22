@@ -1127,28 +1127,51 @@ $(function () {
 
     var target_like = [];
     var target_impact = [];
+    var month = [];
+
+    // Loop untuk 12 bulan
     for (var i = 1; i <= 12; i++) {
-      target_like.push($("#likeTargetResidual" + i).val());
-      target_impact.push($("#impactTargetResidual" + i).val());
+        var like_value = $("#likeTargetResidual" + i).val();
+        var impact_value = $("#impactTargetResidual" + i).val();
+        var month_value = $("#likeTargetResidual" + i).data("month"); // Mengambil data-month
+
+        // Hanya tambahkan bulan jika ada nilai pada target_like atau target_impact
+        if (like_value !== "" || impact_value !== "") {
+            month.push(month_value); // Menyimpan bulan yang terisi
+        }
+
+        // Menambahkan target_like jika terisi
+        if (like_value !== "") {
+            target_like.push(like_value); // Menambahkan target_like
+        }
+
+        // Menambahkan target_impact jika terisi
+        if (impact_value !== "") {
+            target_impact.push(impact_value); // Menambahkan target_impact
+        }
     }
 
+    // Siapkan data yang akan dikirimkan
     var data = {
-      id_detail: id_detail,
-      analisis_like_inherent: analisis_like_inherent,
-      analisis_impact_inherent: analisis_impact_inherent,
-      analisis_like_residual: analisis_like_residual,
-      analisis_impact_residual: analisis_impact_residual,
-      inherent_level: inherent_level,
-      residual_level: residual_level,
-      target_impact: target_impact,
-      target_like: target_like,
+        id_detail: id_detail,
+        analisis_like_inherent: analisis_like_inherent,
+        analisis_impact_inherent: analisis_impact_inherent,
+        analisis_like_residual: analisis_like_residual,
+        analisis_impact_residual: analisis_impact_residual,
+        inherent_level: inherent_level,
+        residual_level: residual_level,
+        target_impact: target_impact,
+        target_like: target_like,
+        month: month // Menambahkan array month yang sudah terisi dengan bulan yang sesuai
     };
 
+    // Kirim data dengan ajax
     var parent = $(this).parent();
     var url = modul_name + "/simpan-analisis";
 
     cari_ajax_combo("post", parent, data, parent, url, "simpan_analisis");
-  });
+});
+
 });
 
 function simpan_analisis(hasil) {
