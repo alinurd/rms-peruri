@@ -37,34 +37,34 @@
 				$couse = $row['ket_likelihood'];
 				$impact = $row['ket_impact'];
 				
-				// $residual_level = $this->data->get_master_level(true, $row['residual_level']);
-				// $inherent_level = $this->data->get_master_level(true, $row['inherent_level']);
-				// // var_dump($a);
-				// if (!$inherent_level) {
-				// 	$inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-				// }
+				$residual_level = $this->data->get_master_level(true, $row['residual_level']);
+				$inherent_level = $this->data->get_master_level(true, $row['inherent_level']);
+				// var_dump($row);
+				if (!$inherent_level) {
+					$inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+				}
 
-				// if (!$residual_level) {
-				// 	$residual_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-				// }
-				$inherent_level     = $this->data->cek_level_new($row['analisis_like_inherent'], $row['analisis_impact_inherent']);
-				$residual_level     = $this->data->cek_level_new($row['analisis_like_residual'], $row['analisis_impact_residual']);
+				if (!$residual_level) {
+					$residual_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+				}
+				// $inherent_level     = $this->data->cek_level_new($row['analisis_like_inherent'], $row['analisis_impact_inherent']);
+				// $residual_level     = $this->data->cek_level_new($row['analisis_like_residual'], $row['analisis_impact_residual']);
 				// doi::dump($cek_score);
 				// doi::dump($cek_score1);
 				// $inherent_level = $this->data->get_master_level(true, $ros['inherent_level']);
 
 				// $residual_level = $this->data->get_master_level(true, $ros['residual_level']);
 				// var_dump($a);
-				if (!$inherent_level) {
-					$inherent_level = ['color' => '', 'warna_txt' => '', 'tingkat' => '-'];
-				}
-				$a = $inherent_level['tingkat'];
+				// if (!$inherent_level) {
+				// 	$inherent_level = ['color' => '', 'warna_txt' => '', 'tingkat' => '-'];
+				// }
+				// $a = $inherent_level['tingkat'];
 
-				if (!$residual_level) {
-					$residual_level = ['color' => '', 'warna_txt' => '', 'tingkat' => '-'];
-				}
+				// if (!$residual_level) {
+				// 	$residual_level = ['color' => '', 'warna_txt' => '', 'tingkat' => '-'];
+				// }
 
-				$b = $residual_level['tingkat'];
+				// $b = $residual_level['tingkat'];
 				// doi::dump($inherent_level);
 
 
@@ -72,19 +72,19 @@
 				// die();
 
 				$like = $this->db
-				->where('id', $residual_level['like_no'])
+				->where('id', $residual_level['likelihood'])
 					->get('bangga_level')->row_array();
 				
 				$impactx = $this->db
-				->where('id', $residual_level['impact_no'])
+				->where('id', $residual_level['impact'])
 				->get('bangga_level')->row_array();
 
 				$likeinherent = $this->db
-				->where('id', $inherent_level['like_no'])
+				->where('id', $inherent_level['likelihood'])
 				->get('bangga_level')->row_array();
 				
 				$impactinherent = $this->db
-				->where('id', $inherent_level['impact_no'])
+				->where('id', $inherent_level['impact'])
 				->get('bangga_level')->row_array();
 				// doi::dump($like);
 			?>
@@ -93,13 +93,13 @@
 					<td><?= $row['name']; ?></td>
 					<td><?= $row['kategori']; ?></td>
 					<td><?= $row['event_name']; ?></td>
-					<td style="text-align: center; background-color:<?= $inherent_level['warna_bg']; ?>;color:<?= $inherent_level['warna_txt']; ?>;">
-						<?= $a; ?>
+					<td style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;">
+						<?= $inherent_level['level_mapping']; ?>
 						<br>
 						[&nbsp;<?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;]
 					</td>
 
-					<td style="text-align: center; background-color:<?= $residual_level['warna_bg']; ?>;color:<?= $residual_level['warna_txt']; ?>;"><?= $b; ?> <br>[&nbsp;<?= $like['code']; ?> x <?= $impactx['code']; ?>&nbsp;]</td>
+					<td style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= $residual_level['level_mapping']; ?> <br>[&nbsp;<?= $like['code']; ?> x <?= $impactx['code']; ?>&nbsp;]</td>
 
 
 				</tr>

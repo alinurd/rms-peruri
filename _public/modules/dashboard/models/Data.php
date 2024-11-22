@@ -39,12 +39,20 @@ class Data extends MX_Model
             }
 
 			// doi::dump($data['id_period']); 
+			// // === Fetch Inherent Data ===
+			// $rows = $this->db->select('analisis_like_inherent, analisis_impact_inherent, COUNT(*) as jml')
+			// ->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
+			// ->where('sts_propose', 4)
+			// ->where('sts_heatmap', '1')
+			// ->group_by(['analisis_like_inherent', 'analisis_impact_inherent']) // Kelompokkan berdasarkan kedua kolom
+			// ->get()
+			// ->result_array();
 			// === Fetch Inherent Data ===
-			$rows = $this->db->select('analisis_like_inherent, analisis_impact_inherent, COUNT(*) as jml')
+			$rows = $this->db->select('inherent_likelihood, inherent_impact, COUNT(*) as jml')
 			->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
 			->where('sts_propose', 4)
 			->where('sts_heatmap', '1')
-			->group_by(['analisis_like_inherent', 'analisis_impact_inherent']) // Kelompokkan berdasarkan kedua kolom
+			->group_by(['inherent_likelihood', 'inherent_impact']) // Kelompokkan berdasarkan kedua kolom
 			->get()
 			->result_array();
 
@@ -53,8 +61,13 @@ class Data extends MX_Model
 			$arrData = [];
 			foreach ($rows as $ros) {
 				// Pastikan kolom analisis_like_inherent dan analisis_impact_inherent ada dan valid
-				if (isset($ros['analisis_like_inherent'], $ros['analisis_impact_inherent'])) {
-					$key = $ros['analisis_like_inherent'] . '-' . $ros['analisis_impact_inherent']; // Gabungkan likelihood dan impact
+				// if (isset($ros['analisis_like_inherent'], $ros['analisis_impact_inherent'])) {
+				// 	$key = $ros['analisis_like_inherent'] . '-' . $ros['analisis_impact_inherent']; // Gabungkan likelihood dan impact
+				// 	$arrData[$key] = $ros['jml'];
+				// }
+
+                if (isset($ros['inherent_likelihood'], $ros['inherent_impact'])) {
+					$key = $ros['inherent_likelihood'] . '-' . $ros['inherent_impact']; // Gabungkan likelihood dan impact
 					$arrData[$key] = $ros['jml'];
 				}
 			}
@@ -105,13 +118,20 @@ class Data extends MX_Model
 
 
 
-			$rows = $this->db->select('analisis_like_residual, analisis_impact_residual, COUNT(*) as jml')
-				->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
-				->where('sts_propose', 4)
-				->where('sts_heatmap', '1')
-				->group_by(['analisis_like_residual', 'analisis_impact_residual']) // Kelompokkan berdasarkan kedua kolom
-				->get()
-				->result_array();
+			// $rows = $this->db->select('analisis_like_residual, analisis_impact_residual, COUNT(*) as jml')
+			// 	->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
+			// 	->where('sts_propose', 4)
+			// 	->where('sts_heatmap', '1')
+			// 	->group_by(['analisis_like_residual', 'analisis_impact_residual']) // Kelompokkan berdasarkan kedua kolom
+			// 	->get()
+			// 	->result_array();
+			$rows = $this->db->select('residual_likelihood, residual_impact, COUNT(*) as jml')
+			->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
+			->where('sts_propose', 4)
+			->where('sts_heatmap', '1')
+			->group_by(['residual_likelihood', 'residual_impact']) // Kelompokkan berdasarkan kedua kolom
+			->get()
+			->result_array();
 
 			// Debugging: Check rows of residual data
 			// doi::dump($rows);
@@ -119,8 +139,12 @@ class Data extends MX_Model
 			$arrData = [];
 			foreach ($rows as $ros) {
 				// Pastikan kolom analisis_like_residual dan analisis_impact_residual ada dan valid
-				if (isset($ros['analisis_like_residual'], $ros['analisis_impact_residual'])) {
-					$key = $ros['analisis_like_residual'] . '-' . $ros['analisis_impact_residual']; // Gabungkan likelihood dan impact
+				// if (isset($ros['analisis_like_residual'], $ros['analisis_impact_residual'])) {
+				// 	$key = $ros['analisis_like_residual'] . '-' . $ros['analisis_impact_residual']; // Gabungkan likelihood dan impact
+				// 	$arrData[$key] = $ros['jml'];
+				// }
+				if (isset($ros['residual_likelihood'], $ros['residual_impact'])) {
+					$key = $ros['residual_likelihood'] . '-' . $ros['residual_impact']; // Gabungkan likelihood dan impact
 					$arrData[$key] = $ros['jml'];
 				}
 			}

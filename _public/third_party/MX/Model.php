@@ -694,15 +694,15 @@ class MX_Model extends CI_Model
 				$item_data = find_data($data, $like_no, $impact_no);
 				// doi::dump($item_data);
 				// Data default jika tidak ditemukan
-				$score 		= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
-				$nilai 		= $item_data['nilai'] ?? '';
-				$warna_bg 	= $item_data['warna_bg'] ?? '#ffffff';
-				$warna_txt 	= $item_data['warna_txt'] ?? '#000000';
-				$tingkat	= $item_data['tingkat'] ?? '';
-				$bawah_impact = $item_data['bawah_impact'] ?? '';
-				$atas_impact = $item_data['atas_impact'] ?? '';
-				$bawah_like = $item_data['bawah_like'] ?? '';
-				$atas_like = $item_data['atas_like'] ?? '';
+				$score 			= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
+				$nilai 			= $item_data['nilai'] ?? '';
+				$warna_bg 		= $item_data['warna_bg'] ?? '#ffffff';
+				$warna_txt 		= $item_data['warna_txt'] ?? '#000000';
+				$tingkat		= $item_data['tingkat'] ?? '';
+				$bawah_impact 	= $item_data['bawah_impact'] ?? '';
+				$atas_impact 	= $item_data['atas_impact'] ?? '';
+				$bawah_like 	= $item_data['bawah_like'] ?? '';
+				$atas_like 		= $item_data['atas_like'] ?? '';
 
 				$content .= '
 					<td data-id="' . $row_i['id'] . '" 

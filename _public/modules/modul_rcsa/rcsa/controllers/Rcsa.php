@@ -2227,6 +2227,7 @@ if($dtkri){
 		$result['post'] = $post;
 		echo json_encode($result);
 	}
+	
 	public function simpan_treatment(){
 		$post = $this->input->post();
 		
