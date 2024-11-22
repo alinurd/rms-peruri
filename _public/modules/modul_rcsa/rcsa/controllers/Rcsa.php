@@ -708,10 +708,7 @@ if($dtkri){
 		}
 		$data['krii'] = $this->get_combo('data-combo', 'kri');
 		$data['per_data'] = [0 => '-select-', 1 => 'Bulan', 2 => 'Triwulan', 3 => 'semester'];
-		$data['satuan'] = $this->get_combo('data-combo', 'satuan');
-		$data['kategori'] = $this->get_combo('data-combo', 'kel-library');
-		$data['subkategori'] = $this->get_combo('data-combo', 'subkel-library');
-		$data['tema'] = $this->get_combo('library_t1');
+		
 		$data['area'] = $this->get_combo('parent-input');
 		$data['rcsa_no'] = $id_rcsa;
 		$data['np'] = $this->get_combo('negatif_poisitf');
@@ -721,12 +718,12 @@ if($dtkri){
 		$data['parent'] = $this->db->where('id', $id_rcsa)->get(_TBL_VIEW_RCSA)->row_array();
 
 		$rows = $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_RCSA_SASARAN)->result_array();
-		$data['sasaran'] = ['- select -'];
+		$data['sasaran'] = [0=>lang('msg_cbo_select')];
 		foreach ($rows as $row) {
 			$data['sasaran'][$row['id']] = $row['sasaran'];
 		}
 		$rows_bisnis = $this->db->where('rcsa_no',$id_rcsa)->get(_TBL_RCM)->result_array();
-		$data['proses_bisnis'] = ['- select -'];
+		$data['proses_bisnis'] = [0=>lang('msg_cbo_select')];
 		foreach ($rows_bisnis as $rb) {
 			$data['proses_bisnis'][$rb['id']] = $rb['bussines_process'];
 		}
@@ -886,8 +883,23 @@ if($dtkri){
 		$data['realisasi'] = $this->data->get_realisasi($id_edit);
 		$data['list_realisasi'] = $this->load->view('list-realisasi', $data, true);
 		$data['inptkri'] = $this->load->view('kri', $data, true);
+		$data['cboper'] = [0=>lang('msg_cbo_select')];
+		$data['kategori'] = [0=>lang('msg_cbo_select')];
+		$data['subkategori'] = [0=>lang('msg_cbo_select')];
+		$data['tema'] = $this->get_combo('library_t1');
 
-		$data['cboper'] = $this->get_combo('library', 1);
+		if($detail['sub_kategori']){
+			$data['cboper'] = $this->get_combo('tasktonimi', 't4', $detail['sub_kategori']);
+		}
+		if($detail['tema']){
+			$data['kategori'] = $this->get_combo('tasktonimi', 't2', $detail['tema']);
+		}
+		if($detail['kategori']){
+			$data['subkategori'] = $this->get_combo('tasktonimi', 't3', $detail['kategori']);
+		}
+
+		$data['satuan'] = $this->get_combo('data-combo', 'satuan');
+	 
 
 		$cbogroup = $this->get_combo('library', 2);
 		$data['cbogroup'] = $cbogroup;
