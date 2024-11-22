@@ -667,15 +667,15 @@ $msg="risk impcat yang anda masukan sudah ada";
 
 		$upd['pi'] =4;
 		$upd['rcsa_no'] = $data['rcsa_no'];
-		$upd['inherent_likelihood'] = $data['inherent_likelihood'];
-		$upd['inherent_impact'] = $data['inherent_impact'];
-		$upd['inherent_level'] = $data['inherent_level'];
+		// $upd['inherent_likelihood'] = $data['inherent_likelihood'];
+		// $upd['inherent_impact'] = $data['inherent_impact'];
+		// $upd['inherent_level'] = $data['inherent_level'];
 
 
-		$upd['residual_likelihood'] = $data['residual_likelihood'];
-		$upd['residual_impact'] = $data['residual_impact'];
+		// $upd['residual_likelihood'] = $data['residual_likelihood'];
+		// $upd['residual_impact'] = $data['residual_impact'];
 		$upd['risk_level'] = $data['residual_impact'];
-		$upd['residual_level'] = $data['residual_level'];
+		// $upd['residual_level'] = $data['residual_level'];
 		$upd['note_control'] = $data['note_control'];
 		$upd['coa'] = str_replace(',', '', $data['coa']);
 
@@ -702,8 +702,8 @@ $msg="risk impcat yang anda masukan sudah ada";
 			// $wherekri['rcsa_detail']=$data['id_edit'];
 			// $result=$this->crud->crud_data(array('table'=> 'bangga_kri', 'field'=> $updkri,'where'=>array('rcsa_detail'=>$data['id_edit']),'type'=>'update'));
 
-			doi::dump($cek_error);
-			doi::dump('id_edit ' . $id);
+			// doi::dump($cek_error);
+			// doi::dump('id_edit ' . $id);
 		}
 
 		// die('cek');

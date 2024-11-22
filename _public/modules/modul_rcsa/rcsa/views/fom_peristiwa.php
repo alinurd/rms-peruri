@@ -156,46 +156,48 @@ if ($field['iskri'] == 0) {
             <div class="tab-content">
                 <style>
                     .card.bg-primary {
-            position: relative;
-            background-color: #007bff;
-            color: white;
-            border-radius: 4px;
-            padding: 20px;
-            overflow: hidden; /* Supaya cahaya tidak keluar dari batas elemen */
-        }
+                        position: relative;
+                        background-color: #007bff;
+                        color: white;
+                        border-radius: 4px;
+                        padding: 20px;
+                        overflow: hidden; /* Supaya cahaya tidak keluar dari batas elemen */
+                    }
 
-        .card.bg-primary::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%; /* Cahaya mulai dari luar elemen */
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
-            animation: slide-right 3s infinite; /* Animasi berjalan ke kanan */
-        }
+                    .card.bg-primary::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: -100%; /* Cahaya mulai dari luar elemen */
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+                        animation: slide-right 3s infinite; /* Animasi berjalan ke kanan */
+                    }
 
-        @keyframes slide-right {
-            0% {
-                left: -100%; /* Mulai dari luar sisi kiri elemen */
-            }
-            100% {
-                left: 100%; /* Bergerak ke luar sisi kanan elemen */
-            }
-        }
+                    @keyframes slide-right {
+                        0% {
+                            left: -100%; /* Mulai dari luar sisi kiri elemen */
+                        }
+                        100% {
+                            left: 100%; /* Bergerak ke luar sisi kanan elemen */
+                        }
+                    }
 
 
 
-        
+            
 
                 </style>
-                    <div class="card bg-primary">
+                    <?php if($detail['event_name']) {?>
+                        <div class="card bg-primary">
                         <div class="card-body">
                             <h4>
                             <strong>Peristiwa Risiko : </strong> <?= $detail['event_name']; ?>
                             </h4>
                         </div>
                     </div>
+                    <?php } ?>
                 <div id="identify" class="tab-pane fade in  <?= $identifyact ?>">
                     <!-- <?php doi::dump($detail['pi']); ?>     -->
                     <div class="clearfix"> </div>
@@ -595,13 +597,20 @@ if ($field['iskri'] == 0) {
                                     </td>
 
                                     <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                    <?php for ($i = 1; $i <= 12; $i++) { ?>
+
+                                    <?php for ($i = 1; $i <= 12; $i++) { 
+                                        $datatarget = $this->db->where('id_detail', $id_edit)->where('bulan', $i)->get("bangga_analisis_risiko")->row_array();
+
+                                        // Ambil nilai target_like dan target_impact dari $datatarget jika tersedia
+                                        $selected_target_like = !empty($datatarget['target_like']) ? $datatarget['target_like'] : '';
+                                        $selected_target_impact = !empty($datatarget['target_impact']) ? $datatarget['target_impact'] : '';
+                                    ?>
                                         <input type="hidden" name="month" id="month">
                                         <td class="text-center">
-                                            <?php echo form_dropdown('target_like', $cboLike, (empty($target_like[$i-1])) ? '' : $target_like[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
+                                            <?php echo form_dropdown('target_like[]', $cboLike, $selected_target_like, 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
                                         </td>
                                         <td class="text-center">
-                                            <?php echo form_dropdown('target_impact', $cboImpact, (empty($target_impact[$i-1])) ? '' : $target_impact[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
+                                            <?php echo form_dropdown('target_impact[]', $cboImpact, $selected_target_impact, 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
                                         </td>
                                         <td class="text-center">
                                             <span id="targetResidualLabel<?= $i ?>">
