@@ -194,7 +194,7 @@ class Data extends MX_Model
         }
 
         if ($data['bulan'] > 0) {
-            $this->db->where("bulan BETWEEN {$data['bulan']} AND {$data['bulanx']}");
+            $this->db->where("bulan_target BETWEEN {$data['bulan']} AND {$data['bulanx']}");
         }
 
         $rows = $this->db->select('target_like, target_impact, COUNT(*) as jml')
