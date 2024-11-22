@@ -1,5 +1,27 @@
 var asal_event;
 $(function () {
+  $("#tema, #kategori, #sub_kategori").change(function () {
+		var parent = $(this).parent();
+		var id = $(this).attr('id');
+		var nilai = $(this).val();
+		var type = 0;
+		var target_combo='';
+ 		if (id === 'tema') {
+			type = 1;
+			target_combo = $("#kategori");
+		} else if (id === 'kategori') {
+			type = 2;
+			target_combo = $("#sub_kategori");
+		}else if (id === 'sub_kategori') {
+			type = 3;
+			target_combo = $("#event_no");
+		}
+
+		var data = { 'type': type, 'id': nilai };
+ 		var url = "ajax/takstonomi";
+		cari_ajax_combo("post", parent, data, target_combo, url);
+	});
+
   $(document).on("ready", function () {
     //update level analisis Inherent
     var likelihood = $("#likeAnalisisInheren").val();
@@ -15,7 +37,7 @@ $(function () {
     };
     var parent = $(this).parent();
     var url = modul_name + "/cek-level";
-    cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
+    // cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
 
     //update level analisis Residual
     var likelihood = $("#likeAnalisisResidual").val();
@@ -30,7 +52,7 @@ $(function () {
     };
     var parent = $(this).parent();
     var url = modul_name + "/cek-level";
-    cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
+    // cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
 
     //update level Target
     for (var i = 1; i <= 12; i++) {
@@ -49,7 +71,7 @@ $(function () {
         var parent = $(this).parent();
         var url = modul_name + "/cek-level";
 
-        cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
+        // cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
       } else {
         console.error(
           "Error: Nilai mode, month, atau impact tidak terdefinisi dengan benar."

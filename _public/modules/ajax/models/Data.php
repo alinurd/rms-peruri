@@ -239,6 +239,13 @@ class Data extends MX_Model {
                         {$where} 
                       ORDER BY dc.urut, dc.data";
             break;
+			case 3:
+				$query = "SELECT id as id, 
+							CONCAT(description) AS data 
+							FROM bangga_library
+							WHERE status = 1    AND t3= {$id} 
+							ORDER BY description";
+            break;
 
         default:
             return ['combo' => '<option value="0">' . lang('msg_cbo_select') . '</option>'];

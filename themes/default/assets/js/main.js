@@ -595,8 +595,8 @@ function cari_ajax_combo(tipe, parent, data, target_combo, url, proses_result, s
 		url:url,
 		data:data,
 		dataType: "json",
-		success:function(result){ 
- 			if (proses_result.length>0)
+		success:function(result){
+			if (proses_result.length==0 || proses_result.length>0)	
 				target_combo.html(result.combo)
 			else
 				window[proses_result](result);
@@ -605,10 +605,13 @@ function cari_ajax_combo(tipe, parent, data, target_combo, url, proses_result, s
 				stopLooding(parent);
 		},
 			error:function(msg){
-			console.log(msg); 
-			if (sts_loading)
-				stopLooding(parent);
-				pesan_toastr(pesan, 'err', title_msg, 'toast-top-center');
+			console.log(msg);
+			// alert('Season anda')
+			// location.reload();
+			// if (sts_loading)
+
+			// 	stopLooding(parent);
+		  pesan_toastr(pesan, 'err', title_msg, 'toast-top-center');
 		},
 		complate:function(){
 		}
