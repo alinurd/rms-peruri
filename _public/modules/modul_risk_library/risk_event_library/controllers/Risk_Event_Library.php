@@ -25,7 +25,7 @@ class Risk_Event_Library extends BackendController {
 			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			// $this->addField(array('field'=>'kel', 'type'=>'free', 'required'=>true, 'input'=>'combo', 'combo'=>$this->kel, 'size'=>50));
 			$this->addField(array('field'=>'risk_type_no','title'=>'Kategori Risiko', 'input'=>'combo', 'required'=>false,'show'=>false, 'combo'=>$this->cbo_risk_type, 'size'=>50));
-			$this->addField(array('field'=>'code','title'=>'Risk Event Code', 'show'=>false, 'search'=>false, 'size'=>10));
+			$this->addField(array('field'=>'code','title'=>'Risk Event Code', 'show'=>true, 'search'=>false, 'size'=>10));
 			$this->addField(array('field' => 't1', 'title' => 'Tema (T1)', 'input' => 'combo:search', 'combo' => $this->t1, 'size' => 80, 'search' => true, 'required' => true));
 			$this->addField(array('field' => 't2', 'title' => 'Kategori (T2)', 'input' => 'combo:search', 'combo' => $this->t2, 'size' => 80, 'search' => true, 'required' => true));
 			$this->addField(array('field' => 't3', 'title' => 'Kelompok (T3)', 'input' => 'combo:search', 'combo' => $this->t3, 'size' => 80, 'search' => true, 'required' => true));
@@ -127,6 +127,21 @@ class Risk_Event_Library extends BackendController {
 	function updateBox_CODE($field, $row, $value){
 		$content = form_input($field['label'],$value," size='{$field['size']}' class='form-control'  id='{$field['label']}' readonly='readonly' ");
 		return $content;
+	}
+	function updateBox_T1($field, $row, $value){
+		$this->t1=$this->get_combo('tasktonimi','t1');
+		$content = form_dropdown($field['label'], $this->t1,$value,'class="form-control select2" id="l_t1" style="width:400px;"');
+ 		return $content;
+	}
+	function updateBox_T2($field, $row, $value){
+		$this->t2=$this->get_combo('tasktonimi','t2', $row['l_t1']);
+		$content = form_dropdown($field['label'], $this->t2,$value,'class="form-control select2" id="l_t2" style="width:400px;"');
+ 		return $content;
+	}
+	function updateBox_T3($field, $row, $value){	
+		$this->t3=$this->get_combo('tasktonimi','t3', $row['l_t2']);
+		$content = form_dropdown($field['label'], $this->t3,$value,'class="form-control select2" id="l_t3"  style="width:400px;"');
+ 		return $content;
 	}
 	
 	public function index() {	
