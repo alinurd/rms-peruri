@@ -50,8 +50,9 @@ class Risk_Event_Library extends BackendController {
 		
 		// $this->set_Table_List($this->tbl_master,'kel');
 		// $this->set_Table_List($this->tbl_risk_type,'type');
-		$this->set_Table_List($this->tbl_master,'code', '', 5);
-		$this->set_Table_List($this->tbl_master, 'kategori_risiko', 'Kategori Risiko', 5);
+ 		$this->set_Table_List($this->tbl_master, 't1', '', 5);
+		$this->set_Table_List($this->tbl_master, 't2', '', 5);
+		$this->set_Table_List($this->tbl_master, 't3', '', 5);
 		$this->set_Table_List($this->tbl_master,'description', '', 20);
 		// $this->set_Table_List($this->tbl_master,'notes');
 		$this->set_Table_List($this->tbl_master,'jml_couse', 'Jumlah Cause', 10, 'center');
@@ -151,6 +152,28 @@ class Risk_Event_Library extends BackendController {
 		$this->template->build('statis/table',$this->_param_list_); 
 	}
 	
+	function listBox_T1($row, $value){
+		$t1=$this->get_combo('tasktonimi','t1', $row['l_t1']);
+ 		$result=$t1[$value];
+		return $result;
+	}
+	function listBox_T2($row, $value){
+		$query = $this->db->select('data')
+		->where('id', $value)
+		->get(_TBL_DATA_COMBO)
+ 		->row_array(); 
+  		$result=$query['data'];
+ 		return $result;
+	}
+	function listBox_T3($row, $value){
+		$query = $this->db->select('data')
+		->where('id', $value)
+		->get(_TBL_DATA_COMBO)
+ 		->row_array(); 
+  		$result=$query['data'];
+ 		return $result;
+	}
+
 	function insertBox_CAUSE($field){
 		$content = $this->get_cause();
 		return $content;
