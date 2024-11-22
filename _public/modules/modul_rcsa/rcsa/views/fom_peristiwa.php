@@ -517,6 +517,7 @@ if ($field['iskri'] == 0) {
                                     <!-- Kolom Detail Risiko Inhern -->
                                     <td class="sticky text-center" style="left: 0;">
                                         <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['analisis_like_inherent'])) ? '' : $analisiData['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
+                                        <input type="hidden" id="inherent_level" name="inherent_level">
                                     </td>
                                     <td class="sticky text-center" style="left: 67px;">
                                         <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['analisis_impact_inherent'])) ? '' : $analisiData['analisis_impact_inherent'], 'class="form-control" id="impactAnalisisInheren"'); ?>
@@ -546,6 +547,7 @@ if ($field['iskri'] == 0) {
                                                 <?php echo strtoupper((count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['level_mapping'] : ''); ?>
                                             </span>
                                         </span><span id="spinner-residual" class="spinner"></span>
+                                        <input type="hidden" id="residual_level" name="residual_level">
                                     </td>
 
                                     <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->

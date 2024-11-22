@@ -1740,7 +1740,7 @@ if($dtkri){
 
 		$post = $this->input->post();
 
-		$id = $this->data->simpan_risk_level($post);
+		// $id = $this->data->simpan_risk_level($post);
 		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
 		$data['field'] = $this->data->get_peristiwa($post['rcsa_no']);
 
@@ -2194,6 +2194,10 @@ if($dtkri){
 		$upd['analisis_impact_inherent'] = $post['analisis_impact_inherent'];
 		$upd['analisis_like_residual'] = $post['analisis_like_residual'];
 		$upd['analisis_impact_residual'] = $post['analisis_impact_residual'];
+		$updPI['inherent_likelihood'] = $post['analisis_like_inherent'];
+		$updPI['inherent_impact'] 	= $post['analisis_impact_inherent'];
+		$updPI['residual_likelihood'] = $post['analisis_like_residual'];
+		$updPI['residual_impact'] = $post['analisis_impact_residual'];
 		$upd['target_impact'] = json_encode($post['target_impact']);
 		$upd['target_like'] = json_encode($post['target_like']);
 		$analisis = $this->db->where('id_detail', $post['id_detail'])->get('bangga_analisis_risiko')->row_array();
@@ -2201,9 +2205,15 @@ if($dtkri){
 		$add=false;
  		if ($analisis) {
  			$upd['update_by'] = $this->authentication->get_info_user('username');
+			 $updPI['inherent_level'] = $post['inherent_level'];
+			 $updPI['residual_level'] = $post['residual_level'];
+			 $updPI['update_user'] = $this->authentication->get_info_user('username');
+			 $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updPI, 'where' => array('id' => $post['id_detail']), 'type' => 'update'));
 			 $res= $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $upd, 'where' => array('id_detail' => $post['id_detail']), 'type' => 'update'));
 		} else {
 			$updPI['pi'] = 3;
+			$updPI['inherent_level'] = $post['inherent_level'];
+			$updPI['residual_level'] = $post['residual_level'];
 			$updPI['update_user'] = $this->authentication->get_info_user('username');
  			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updPI, 'where' => array('id' => $post['id_detail']), 'type' => 'update'));
 			$upd['id_detail'] = $post['id_detail'];
