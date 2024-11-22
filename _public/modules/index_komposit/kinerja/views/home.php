@@ -1,4 +1,69 @@
- <h3>Parameter Penentuan Hasil Penilaian Pencapaian Kinerja</h3>
+ <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-8 panel-heading">
+                    <h3 style="padding-left:10px;"><?= lang("msg_title") ?></h3>
+                </div>
+                <div class="col-sm-4" style="text-align:right">
+                    <ul class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                        <li><a href="#">Index Komposit</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="x_panel">
+        <div class="x_title">
+            <span>Parameter Penentuan Hasil Penilaian Pencapaian Kinerja</span>
+        </div>
+        <div class="clearfix"></div>
+        <form method="GET" action="<?= site_url(_MODULE_NAME_REAL_ . '/index'); ?>">
+            <div class="row">
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <label for="filter_periode">Tahun</label>
+                    <select name="periode" id="filter_periode" class="form-control select2" style="width: 100%;">
+                        <?php foreach ($cboPeriod as $key => $value): ?>
+                            <option value="<?= ($key == 0) ? '0' : $value; ?>" <?= ($periode == $value) ? 'selected' : ''; ?>><?= $value; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <!-- <div class="col-md-6 col-sm-8 col-xs-6">
+                    <label for="filter_owner">Risk Owner</label>
+                    <select name="owner" id="filter_owner" class="form-control select2" style="width: 100%;">
+                        <?php foreach ($cboOwner as $key => $value): ?>
+                            <option value="<?= $key; ?>" <?= ($owner == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div> -->
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="filter_triwulan">Triwulan <?= $tw ?></label>
+                    <select name="triwulan" id="filter_triwulan" class="form-control select2" style="width: 80%;">
+                        <option value="1" <?= ($tw == 1) ? 'selected' : ''; ?>>Triwulan 1</option>
+                        <option value="2" <?= ($tw == 2) ? 'selected' : ''; ?>>Triwulan 2</option>
+                        <option value="3" <?= ($tw == 3) ? 'selected' : ''; ?>>Triwulan 3</option>
+                        <option value="4" <?= ($tw == 4) ? 'selected' : ''; ?>>Triwulan 4</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 col-sm-2 col-xs-2 mt-3">
+                    <button type="submit" class="btn btn-success text-white" style="margin-top: 25px;">
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;Filter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+<?php
+    $hide="hide";
+ if( $tw && $periode){
+    $hide="";
+}
+?> 
+<input type="hidden" name="owner" value="<?=$owner?>">
+<input type="hidden" name="tw" value="<?=$tw?>">
+<input type="hidden" name="periode" value="<?=$periode?>">
  <table class="display table table-bordered" id="tbl_event">
      <thead>
          <tr>
@@ -6,14 +71,14 @@
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="15%" colspan="2">Parameter</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Skala</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Hasil Penilaian</th>
-             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Target RKAP 2023</th>
-             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Realisasi Tw 1 2024</th>
+             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Target RKAP <?=$periode-1?></th>
+             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Realisasi Tw <?=$tw?>  <?=$periode?></th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">%</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Skala</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Hasil</th>
          </tr>
      </thead>
-     <tbody>
+     <tbody class="<?=$hide?>">
          <?php $nc = 1;
             $totalPenilaianCombo = 0;
             foreach ($kompositData as $c) :
@@ -38,7 +103,9 @@
                     $countDetailx = $c['detail'][$pk['id']];
                     $resParents = $this->db
                     ->where('id_komposit', $pk['id_combo'])
-                    //  ->where('urut', $pk['urut'])
+                    // ->where('owner', $owner)
+                    ->where('tw', $tw)
+                    ->where('periode', $periode)
                     ->order_by('urut')
                     ->get('bangga_indexkom_realisasi')
                     ->row_array();
@@ -63,8 +130,9 @@
                                  <input type="text" id="realisasitw-<?= $pk['id']; ?>" data-absolut="0" value="<?=$resParents['realisasitw']?>"  style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $pk['id']; ?>)" >
                              </td>
                              <td class="text-center" width="10%">
+                             <input type="hidden" name="idx[]" value="<?= $pk['id'] ?>">
                              <input type="checkbox" id="isAbsolute-<?= $pk['id']; ?>-1" name="absolut[]" value="1" <?= $resParents['absolut'] > 0 ? 'checked' : '' ?> onclick="updatePercentage(<?= $pk['id']; ?>)">
-                             <label for="isAbsolute-<?= $pk['id']; ?>-1">Absolute</label
+                             <label for="isAbsolute-<?= $pk['id']; ?>-1">Absolute</label>
                                  <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>
                              </td>
                              <td>
@@ -105,6 +173,9 @@
                         $resDetail = $this->db
                             ->where('id_komposit', $d['id_param'])
                             ->where('urut', $pk['urut'])
+                            // ->where('owner', $owner)
+                            ->where('tw', $tw)
+                            ->where('periode', $periode)
                             ->order_by('urut')
                             ->get('bangga_indexkom_realisasi')
                             ->row_array();
@@ -121,15 +192,17 @@
                                  <input type="text" class="form-control" id="realisasitw-<?= $d['id']; ?>" value="<?=$resDetail['realisasitw']?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $d['id']; ?>)">
                              </td>
                              <td class="text-center" width="10%">
+                                 <input type="hidden" name="idx[]" value="<?= $d['id'] ?>">
                                  <input type="checkbox" id="isAbsolute-<?= $d['id']; ?>-1" name="absolut[]" value="1" onclick="updatePercentage(<?= $d['id']; ?>)" <?= $resDetail['absolut'] > 0 ? 'checked' : '' ?> >
                                  <label for="isAbsolute-<?= $d['id']; ?>-1">Absolute</label> 
-                                 <br><span class="badge" id="persentase-<?= $d['id']; ?>">0 %</span>
+                                 <br><span class="badge" id="persentase-<?= $d['id']; ?>">0 %ff</span>
                              </td>
                              <td width="5%" rowspan="<?= count($countDetailx) ?>">
                                  <input type="hidden" name="id[]" value="<?= $d['id_param'] ?>">
                                  <input type="hidden" name="urut[]" value="<?= $d['urut'] ?>">
                                  <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $d['id']; ?>" style="width: 110px;"
                                      data-bobot="<?= $pk['bobot']; ?>"
+                                     data-idx="<?= $d['id']; ?>"
                                      data-urut="<?= $d['urut']; ?>"
                                      data-nc="<?= $nc; ?>"
                                      data-id-parent="<?= $d['id_param']; ?>"
@@ -173,7 +246,7 @@
 
      <tr style="position: sticky; bottom: 0;  background: #367FA9; color:#fff; z-index: 1;">
          <th class="text-center" style="text-align:end" colspan="7">
-             <button class="btn btn-save" id="simpan">
+             <button class="btn btn-save <?=$hide?>" id="simpan">
                  <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
              </button>
          </th>

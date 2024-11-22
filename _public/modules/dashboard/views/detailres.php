@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div class="table-responsive"> 
 	<table class="table table-bordered table-hover" id="tes1">
 		<caption class="text-center" style="font-size:18px;">
 			CORPORATE RISK MAP PERUM PERURI<br />
@@ -39,6 +39,9 @@
 
 				$residual_level = $this->data->get_master_level(true, $row['residual_level']);
 				$inherent_level = $this->data->get_master_level(true, $row['inherent_level']);
+				// $inherent_level     = $this->data->cek_level_new($row['analisis_like_inherent'], $row['analisis_impact_inherent']);
+				// $residual_level     = $this->data->cek_level_new($row['analisis_like_residual'], $row['analisis_impact_residual']);
+
 				$like = $this->db
 					->where('id', $residual_level['likelihood'])
 					->get('bangga_level')->row_array();

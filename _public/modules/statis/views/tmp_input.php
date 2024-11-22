@@ -683,6 +683,19 @@ function draw($master, $data, $tab = '', $next_row = false, $cols = '')
 							if (!empty($disabled))
 								$content .= form_hidden($label, $isi);
 							break;
+							case 'number':
+   								$addon="hide";
+								if($row['input']['type']=="%"){
+									$addon="";
+								}
+								$content = "<input type='number' name='$label' value='$isi' class='form-control numericdot $error $align' $disabled size='$row[size]' $onChange id='$label' $readOnly $autofocus>
+								  <span class='input-group-addon ".$addon."' id='bobot'>".$row['input']['type']."</span>
+";
+								if (!empty($disabled)) {
+									$content .= "<input type='hidden' name='$label' value='$isi'>";
+								}
+								break;
+							
 						case 'float':
 							$isi = number_format(floatval($isi));
 							if (empty($isi))
@@ -830,6 +843,21 @@ function draw($master, $data, $tab = '', $next_row = false, $cols = '')
 									'screeny'     => 40,
 									'window_name' => '_blank'
 								);
+
+								
+								// Menghasilkan path lokal dengan menggabungkan base path dan file
+								$basePath = base_url() . 'themes/file/' . $kel . '/' . $isi;
+							
+
+								$response = @file_get_contents($basePath);
+
+								// Jika file berhasil diakses
+								if ($response !== false) {
+									$pbaru = $basePath;
+								} else {
+									$pbaru = "";  // File tidak ditemukan
+								}
+
 
 								$xx = anchor_popup($pbaru, $isi, $atts);
 

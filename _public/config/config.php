@@ -41,6 +41,7 @@ $config['modules_locations'] = array(
 	APPPATH.'modules/modul_irp/' => '../modules/modul_irp/',
 	APPPATH.'modules/top_risk/' => '../modules/top_risk/',
 	APPPATH.'modules/index_komposit/' => '../modules/index_komposit/',
+	APPPATH.'modules/stress_test/' => '../modules/stress_test/',
 	);
 	
 $config['file_path']='./themes/file/';

@@ -1122,6 +1122,8 @@ $(function () {
     var analisis_impact_inherent = $("#impactAnalisisInheren").val();
     var analisis_like_residual = $("#likeAnalisisResidual").val();
     var analisis_impact_residual = $("#impactAnalisisResidual").val();
+    var inherent_level = $("#inherent_level").val();
+    var residual_level = $("#residual_level").val();
 
     var target_like = [];
     var target_impact = [];
@@ -1136,6 +1138,8 @@ $(function () {
       analisis_impact_inherent: analisis_impact_inherent,
       analisis_like_residual: analisis_like_residual,
       analisis_impact_residual: analisis_impact_residual,
+      inherent_level: inherent_level,
+      residual_level: residual_level,
       target_impact: target_impact,
       target_like: target_like,
     };
@@ -1180,8 +1184,10 @@ function simpan_analisis(hasil) {
 function LevelAnalisisInheren(hasil) {
   if (hasil.mode == 1) {
     $("#likeAnalisisInherenLabel").html(hasil.level_text);
+    $("#inherent_level").val(hasil.level_no);
   } else if (hasil.mode == 2) {
     $("#likeAnalisisResidualLabel").html(hasil.level_text);
+    $("#residual_level").val(hasil.level_no);
   } else {
     $("input[name='month']").val(hasil.month);
     $("#targetResidualLabel" + hasil.month).html(hasil.level_text);

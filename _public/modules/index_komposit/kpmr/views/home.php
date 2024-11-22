@@ -1,4 +1,70 @@
-    <h3>Parameter Kualitas Penerapan Manajemen Risiko (KPMR)</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-8 panel-heading">
+                    <h3 style="padding-left:10px;"><?= lang("msg_title") ?></h3>
+                </div>
+                <div class="col-sm-4" style="text-align:right">
+                    <ul class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                        <li><a href="#">Index Komposit</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="x_panel">
+        <div class="x_title">
+
+            <apn>Parameter Kualitas Penerapan Manajemen Risiko (KPMR)</apn>
+        </div>
+        <div class="clearfix"></div>
+        <form method="GET" action="<?= site_url(_MODULE_NAME_REAL_ . '/index'); ?>">
+            <div class="row">
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <label for="filter_periode">Tahun</label>
+                    <select name="periode" id="filter_periode" class="form-control select2" style="width: 100%;">
+                        <?php foreach ($cboPeriod as $key => $value): ?>
+                            <option value="<?= ($key == 0) ? '0' : $value; ?>" <?= ($periode == $value) ? 'selected' : ''; ?>><?= $value; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <!-- <div class="col-md-6 col-sm-8 col-xs-6">
+                    <label for="filter_owner">Risk Owner</label>
+                    <select name="owner" id="filter_owner" class="form-control select2" style="width: 100%;">
+                        <?php foreach ($cboOwner as $key => $value): ?>
+                            <option value="<?= $key; ?>" <?= ($owner == $key) ? 'selected' : ''; ?>><?= $value; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div> -->
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="filter_triwulan">Triwulan <?= $tw ?></label>
+                    <select name="triwulan" id="filter_triwulan" class="form-control select2" style="width: 80%;">
+                        <option value="1" <?= ($tw == 1) ? 'selected' : ''; ?>>Triwulan 1</option>
+                        <option value="2" <?= ($tw == 2) ? 'selected' : ''; ?>>Triwulan 2</option>
+                        <option value="3" <?= ($tw == 3) ? 'selected' : ''; ?>>Triwulan 3</option>
+                        <option value="4" <?= ($tw == 4) ? 'selected' : ''; ?>>Triwulan 4</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 col-sm-2 col-xs-2 mt-3">
+                    <button type="submit" class="btn btn-success text-white" style="margin-top: 25px;">
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;Filter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+<?php
+    $hide="hide";
+ if($tw && $periode){
+    $hide="";
+}
+?>
+<input type="hidden" name="owner" value="<?=$owner?>">
+<input type="hidden" name="tw" value="<?=$tw?>">
+<input type="hidden" name="periode" value="<?=$periode?>">
     <table class="display table table-bordered" id="tbl_event">
         <thead>
             <tr>
@@ -13,11 +79,11 @@
                 <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Evidence</th>
             </tr>
         </thead>
-        <tbody>
-        <?php $nc = 1;
+        <tbody class="<?=$hide?>">
+            <?php $nc = 1;
             $totalPenilaianCombo = 0;
             foreach ($kompositData as $c) :
-                
+
                 $ss = 1;
                 $parentRowspan = 0;
 
@@ -35,11 +101,13 @@
                 </tr>
 
                 <?php foreach ($c['parent'] as $pKey => $pk) :
-                                    $countDetailx = $c['detail'][$pk['id']];
+                    $countDetailx = $c['detail'][$pk['id']];
 
                     $resParents = $this->db
                         ->where('id_komposit', $pk['id_combo'])
-                        //  ->where('urut', $pk['urut'])
+                        // ->where('owner', $owner)
+                        ->where('tw', $tw)
+                        ->where('periode', $periode)
                         ->order_by('urut')
                         ->get('bangga_indexkom_realisasi')
                         ->row_array();
@@ -104,6 +172,9 @@
                         $resDetail = $this->db
                             ->where('id_komposit', $d['id_param'])
                             ->where('urut', $pk['urut'])
+                            // ->where('owner', $owner)
+                            ->where('tw', $tw)
+                            ->where('periode', $periode)
                             ->order_by('urut')
                             ->get('bangga_indexkom_realisasi')
                             ->row_array();
@@ -157,7 +228,7 @@
                         </tr>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
-                <?php if ($ss>1) : ?>
+                <?php if ($ss > 1) : ?>
                     <tr>
                         <td class="text-center text-right" style="text-align: right;" colspan="6"><strong>Total Point <?= $nc ?>: </strong></td>
                         <td class="text-center">
@@ -177,7 +248,7 @@
                 <input class="form-control " type="hidden" id="totalPerhitungan" name="totalPerhitungan" readonly>
             </th>
             <th class="text-center" colspan="2">
-                <button class="btn btn-save" id="simpan">
+                <button class="btn btn-save <?=$hide?>" id="simpan">
                     <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
                 </button>
             </th>

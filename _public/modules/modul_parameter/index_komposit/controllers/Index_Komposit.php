@@ -19,7 +19,8 @@ class Index_Komposit extends BackendController {
 			$this->addField(array('field'=>'kelompok', 'show'=>false, 'save'=>true, 'default'=>$this->kelCombo));
 			$this->addField(array('field'=>'pid', 'title' => 'Jenis', 'required' => true, 'input'=>'combo', 'combo'=>$this->pid, 'search'=>true, 'size'=>20));
 			$this->addField(array('field' => 'parent_name', 'show' => false));
-			$this->addField(array('field'=>'data','title' => 'Judul', 'required'=>true, 'search'=>true, 'size'=>50));
+			$this->addField(array('field'=>'data','title' => 'Judul', 'required'=>true, 'search'=>true, 'size'=>100));
+			$this->addField(array('field'=>'param1','title' => 'Bobot','input' => 'number', 'input' => 'number', 'type' =>'%', 'required'=>false, 'search'=>true, 'size'=>9));
 			// $this->addField(array('field'=>'param1', 'input'=>'color', 'search'=>false, 'size'=>50));
 			// $this->addField(array('field'=>'urut', 'input'=>'updown', 'search'=>false, 'size'=>60));
 			$this->addField(array('field'=>'aktif', 'type'=>'string', 'input'=>'boolean', 'search'=>true, 'size'=>20));

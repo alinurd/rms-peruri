@@ -36,15 +36,21 @@ $(document).ready(function () {
             realisasi.push(selectedOption);
         });
  
+        var owner = $('input[name="owner"]').val();
+        var tw = $('input[name="tw"]').val();
+        var periode = $('input[name="periode"]').val();
+
         var data = {
             'id': ids,
             'urut': urut,
             'penjelasan': penjelasans,
             'evidence': evidences,
-            'realisasi': realisasi
+            'realisasi': realisasi,
+            'owner': owner,
+            'tw': tw,
+            'periode': periode,
         };
- 
-        var parent = $(this).parent();
+         var parent = $(this).parent();
         var url = modul_name + "/simpan";
 
         cari_ajax_combo("post", parent, data, parent, url, "result");
@@ -52,7 +58,8 @@ $(document).ready(function () {
 });
 
 function result(res){
-    pesan_toastr('Mohon Tunggu', 'info', 'Prosess', 'toast-top-center', true);
+    console.log(res)
+    pesan_toastr('Proses Simpan Berhasil...', 'info', 'Prosess', 'toast-top-center', true);
 }
 
 function calculateDropdown(element) {

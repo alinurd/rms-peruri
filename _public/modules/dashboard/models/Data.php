@@ -2,388 +2,510 @@
 
 class Data extends MX_Model
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-	function get_map_rcsa($data = [])
+    // === Get RCSA Mapping ===
+    function get_map_rcsa($data = [])
 	{
 		$hasil['inherent'] = '';
 		$hasil['residual'] = '';
 
 		if ($data) {
+			// doi::dump($data); 
+			// Fetching RCSA Mapping Data
 			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
+			// Debugging: Check RCSA Mapping Data
+			// doi::dump($mapping);
+			// === Filter by Owner ===
 			if ($data['id_owner'] > 0) {
 				$this->get_owner_child($data['id_owner']);
 				$this->owner_child[] = $data['id_owner'];
 				$this->db->where_in('rcsa_owner_no', $this->owner_child);
-				$this->db->where('urgensi_no_kadiv >0');
-			} else {
+				$this->db->where('urgensi_no_kadiv > 0');
+				// Debugging: Check owner child data
+				// doi::dump($data['id_owner']);
 			}
+
+			// === Filter by Period ===
 			if ($data['id_period'] > 0) {
 				$this->db->where('period_no', $data['id_period']);
 			}
-			$rows = $this->db->select('inherent_level, count(inherent_level) as jml')->group_by(['inherent_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			// doi::dump($mapping);
+
+            if ($data['bulan'] > 0) {
+                $this->db->where("bulan BETWEEN {$data['bulan']} AND {$data['bulanx']}");
+            }
+
+			// doi::dump($data['id_period']); 
+			// // === Fetch Inherent Data ===
+			// $rows = $this->db->select('analisis_like_inherent, analisis_impact_inherent, COUNT(*) as jml')
+			// ->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
+			// ->where('sts_propose', 4)
+			// ->where('sts_heatmap', '1')
+			// ->group_by(['analisis_like_inherent', 'analisis_impact_inherent']) // Kelompokkan berdasarkan kedua kolom
+			// ->get()
+			// ->result_array();
+			// === Fetch Inherent Data ===
+			$rows = $this->db->select('inherent_likelihood, inherent_impact, COUNT(*) as jml')
+			->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
+			->where('sts_propose', 4)
+			->where('sts_heatmap', '1')
+			->group_by(['inherent_likelihood', 'inherent_impact']) // Kelompokkan berdasarkan kedua kolom
+			->get()
+			->result_array();
+
+			// doi::dump($rows);
+
 			$arrData = [];
-			// die($this->db->last_query());
-			foreach ($rows as &$ros) {
-				$arrData[$ros['inherent_level']] = $ros['jml'];
+			foreach ($rows as $ros) {
+				// Pastikan kolom analisis_like_inherent dan analisis_impact_inherent ada dan valid
+				// if (isset($ros['analisis_like_inherent'], $ros['analisis_impact_inherent'])) {
+				// 	$key = $ros['analisis_like_inherent'] . '-' . $ros['analisis_impact_inherent']; // Gabungkan likelihood dan impact
+				// 	$arrData[$key] = $ros['jml'];
+				// }
+
+                if (isset($ros['inherent_likelihood'], $ros['inherent_impact'])) {
+					$key = $ros['inherent_likelihood'] . '-' . $ros['inherent_impact']; // Gabungkan likelihood dan impact
+					$arrData[$key] = $ros['jml'];
+				}
 			}
 
+			// Debugging: Check mapped inherent data
+			// doi::dump($arrData);
+
+			// === Update Mapping with Inherent Values ===
 			foreach ($mapping as &$row) {
-				if (array_key_exists($row['id'], $arrData))
-					$row['nilai'] = $arrData[$row['id']];
-				else
-					$row['nilai'] = '';
+				// Pastikan kolom likelihood dan impact ada dalam $mapping
+				if (isset($row['like_no'], $row['impact_no'])) {
+					$key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+					
+				}
 			}
-			unset($row);
+			// Debugging: Check mapping after inherent value update
+			// doi::dump($mapping);
+
 			$hasil['inherent'] = $this->data->draw_rcsa($mapping);
 
-			// residual
+			// ========================================================
+
+
+			// === Fetch Residual Data ===
 			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
+
+			// Debugging: Check RCSA Mapping Data for Residual
+			// doi::dump($mapping, 'RCSA Mapping Data for Residual');
+
 			if ($data['id_owner'] > 0) {
 				$this->get_owner_child($data['id_owner']);
 				$this->owner_child[] = $data['id_owner'];
 				$this->db->where_in('rcsa_owner_no', $this->owner_child);
-				$this->db->where('urgensi_no_kadiv >0');
-			} else {
+				$this->db->where('urgensi_no_kadiv > 0');
+				
+				// Debugging: Check owner child data for residual
+				// doi::dump($this->owner_child, 'Owner Child Data for Residual');
 			}
+
 			if ($data['id_period'] > 0) {
 				$this->db->where('period_no', $data['id_period']);
 			}
-			$rows = $this->db->select('residual_level, count(residual_level) as jml')->group_by(['residual_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			// doi::dump($mapping);
+
+            if ($data['bulan'] > 0) {
+                $this->db->where("bulan BETWEEN {$data['bulan']} AND {$data['bulanx']}");
+            }
+
+
+
+			// $rows = $this->db->select('analisis_like_residual, analisis_impact_residual, COUNT(*) as jml')
+			// 	->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
+			// 	->where('sts_propose', 4)
+			// 	->where('sts_heatmap', '1')
+			// 	->group_by(['analisis_like_residual', 'analisis_impact_residual']) // Kelompokkan berdasarkan kedua kolom
+			// 	->get()
+			// 	->result_array();
+			$rows = $this->db->select('residual_likelihood, residual_impact, COUNT(*) as jml')
+			->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
+			->where('sts_propose', 4)
+			->where('sts_heatmap', '1')
+			->group_by(['residual_likelihood', 'residual_impact']) // Kelompokkan berdasarkan kedua kolom
+			->get()
+			->result_array();
+
+			// Debugging: Check rows of residual data
+			// doi::dump($rows);
+
 			$arrData = [];
-			// die($this->db->last_query());
-			foreach ($rows as &$ros) {
-				$arrData[$ros['residual_level']] = $ros['jml'];
+			foreach ($rows as $ros) {
+				// Pastikan kolom analisis_like_residual dan analisis_impact_residual ada dan valid
+				// if (isset($ros['analisis_like_residual'], $ros['analisis_impact_residual'])) {
+				// 	$key = $ros['analisis_like_residual'] . '-' . $ros['analisis_impact_residual']; // Gabungkan likelihood dan impact
+				// 	$arrData[$key] = $ros['jml'];
+				// }
+				if (isset($ros['residual_likelihood'], $ros['residual_impact'])) {
+					$key = $ros['residual_likelihood'] . '-' . $ros['residual_impact']; // Gabungkan likelihood dan impact
+					$arrData[$key] = $ros['jml'];
+				}
 			}
 
+			// Debugging: Check mapped residual data
+			// doi::dump($arrData, 'Mapped Residual Data');
+
+			// === Update Mapping with Residual Values ===
 			foreach ($mapping as &$row) {
-				if (array_key_exists($row['id'], $arrData))
-					$row['nilai'] = $arrData[$row['id']];
-				else
-					$row['nilai'] = '';
+				// Pastikan kolom likelihood dan impact ada dalam $mapping
+				if (isset($row['like_no'], $row['impact_no'])) {
+					$key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+					
+				}
 			}
-			unset($row);
+
+			// Debugging: Check mapping after residual value update
+			// doi::dump($mapping, 'Updated Mapping with Residual');
+
 			$hasil['residual'] = $this->data->draw_rcsa_res($mapping);
 		}
+
+		// Final debugging: Check final result
+		// doi::dump($hasil, 'Final Result');
+
 		return $hasil;
-		// var_dump($hasil);
 	}
- 
- 
-	function get_map_residual1($data = [])
-	{
-		$hasil['residual1'] = '';
 
-		// doi::dump($data);
-		if ($data) {
 
-			$mapping1 = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
+    // === Get RCSA Residual 1 Mapping ===
+    function get_map_residual1($data = [])
+    {
+        $hasil['residual1'] = '';
 
-			if ($data['id_owner'] > 0) {
-				$this->get_owner_child($data['id_owner']);
-				$this->owner_child[] = $data['id_owner'];
-				$this->db->where_in('owner_no', $this->owner_child);
-				$this->db->where('urgensi_no_kadiv >0');
-			} else {
-				// $this->db->where('urgensi_no >0');
-			}
-			if ($data['id_period'] > 0){
-				$this->db->where('period_no', $data['id_period']);
+        if ($data) {
+            // Fetching RCSA Mapping Data for Residual 1
+            $mapping1 = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
 
-			}			
-			if ($data['bulan'] > 0){
-				$this->db->where('bulan', $data['bulan']);
-			}
+            // === Filter by Owner ===
+            if ($data['id_owner'] > 0) {
+                $this->get_owner_child($data['id_owner']);
+                $this->owner_child[] = $data['id_owner'];
+                $this->db->where_in('owner_no', $this->owner_child);
+                $this->db->where('urgensi_no_kadiv > 0');
+            }
 
-			$rows = $this->db->select('MAX(rcsa_no) AS rcsa_no,MAX(create_date) AS create_date, risk_level_action, COUNT(risk_level_action) AS jml')
-				->group_by('risk_level_action')
-				->order_by('create_date', 'desc')
-				->where('sts_propose', 4)
-				->where('urgensi_no ', 0)
-				->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
-				->result_array();
+            // === Filter by Period and Month ===
+            if ($data['id_period'] > 0) {
+                $this->db->where('period_no', $data['id_period']);
+            }
 
-			$arrData1 = [];
-			$groupedData1 = [];
-			foreach ($rows as $row) {
-				$rcsa_no = $row['rcsa_no'];
-				if (!isset($groupedData1[$rcsa_no]) || $row['create_date'] > $groupedData1[$rcsa_no]['create_date']) {
-					$groupedData1[$rcsa_no] = $row;
+            // if ($data['bulan'] > 0) {
+            //     $this->db->where('bulan', $data['bulan']);
+            // }
+
+            $fields = [];
+            $groupBy = [];
+            
+            // Input berupa angka tunggal
+            $input = $data['bulan'] - 1; // Contoh input
+            
+            // Pastikan input valid (0-11)
+            if ($input >= 0 && $input <= 11) {
+                $likeField = "JSON_UNQUOTE(JSON_EXTRACT(bangga_analisis_risiko.target_like, '$[$input]'))";
+                $impactField = "JSON_UNQUOTE(JSON_EXTRACT(bangga_analisis_risiko.target_impact, '$[$input]'))";
+            
+                // Tambahkan field untuk SELECT
+                $fields[] = "$likeField AS like_value";
+                $fields[] = "COUNT($likeField) AS count_like";
+                $fields[] = "$impactField AS impact_value";
+                $fields[] = "COUNT($impactField) AS count_impact";
+            
+                // Tambahkan field untuk GROUP BY
+                $groupBy[] = "like_value";
+                $groupBy[] = "impact_value";
+            } 
+            
+            // Tambahkan field utama ke dalam SELECT
+            $mainFields = [
+                'MAX(bangga_view_rcsa_action_detail.rcsa_no) AS rcsa_no',
+                'MAX(bangga_view_rcsa_action_detail.create_date) AS create_date', 'COUNT(*) as jml'
+            ];
+            
+            // Bangun query
+            $this->db->select(array_merge($mainFields, $fields));
+            $this->db->from('bangga_view_rcsa_action_detail');
+            $this->db->join(
+                'bangga_analisis_risiko',
+                'bangga_analisis_risiko.id_detail = bangga_view_rcsa_action_detail.id',
+                'left'
+            );
+            
+            // Tambahkan kondisi WHERE
+            $this->db->where([
+                'sts_propose' => 4,
+                'sts_heatmap' => '1',
+                'urgensi_no' => 0,
+            ]);
+            
+            // Tambahkan GROUP BY
+            $this->db->group_by($groupBy);
+            
+            // Tambahkan ORDER BY
+            $this->db->order_by('create_date', 'DESC');
+            
+            // Eksekusi query
+            $query = $this->db->get();
+            
+            // Debug query jika diperlukan
+            // echo $this->db->get_compiled_select();
+            
+            // Ambil hasil dalam bentuk array
+            $rows = $query->result_array();
+        
+            $arrData = [];
+			foreach ($rows as $ros) {
+				// Pastikan kolom analisis_like_residual dan analisis_impact_residual ada dan valid
+				if (isset($ros['like_value'], $ros['impact_value'])) {
+					$key = $ros['like_value'] . '-' . $ros['impact_value']; // Gabungkan likelihood dan impact
+					$arrData[$key] = $ros['jml'];
 				}
 			}
-
-			foreach ($groupedData1 as $ros) {
-				$arrData1[$ros['risk_level_action']] = $ros['jml'];
-			}
-
-			foreach ($mapping1 as &$row) {
-				if (array_key_exists($row['id'], $arrData1))
-					$row['nilai'] = $arrData1[$row['id']];
-				else
-					$row['nilai'] = '';
-			}
-			unset($row);
-			$hasil['residual1'] = $this->data->draw_rcsa1($mapping1, 'residual1');
-
-
-			// $hasil['bulan'] = $data['bulan'];
-		}
-
-		// doi::dump($hasil);
-		// var_dump($hasil);
-		return $hasil;
-	}
-	function get_map_residual2($data = [])
-	{
-		$hasil['residual2'] = '';
-
-		// doi::dump($data);
-		if ($data) {
-
-			$mapping1 = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
-
-			if ($data['id_owner'] > 0) {
-				$this->get_owner_child($data['id_owner']);
-				$this->owner_child[] = $data['id_owner'];
-				$this->db->where_in('owner_no', $this->owner_child);
-				$this->db->where('urgensi_no_kadiv >0');
-			} else {
-				// $this->db->where('urgensi_no >0');
-			}
-			if ($data['id_period'] > 0){
-				$this->db->where('period_no', $data['id_period']);
-
-			}			
-			if ($data['bulanx'] > 0){
-				$this->db->where('bulan', $data['bulanx']);
-			}
-
-			$rows = $this->db->select('MAX(rcsa_no) AS rcsa_no,MAX(create_date) AS create_date, risk_level_action, COUNT(risk_level_action) AS jml')
-				->group_by('risk_level_action')
-				->order_by('create_date', 'desc')
-				->where('sts_propose', 4)
-				->where('urgensi_no ', 0)
-				->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
-				->result_array();
-
-			$arrData1 = [];
-			$groupedData1 = [];
-			foreach ($rows as $row) {
-				$rcsa_no = $row['rcsa_no'];
-				if (!isset($groupedData1[$rcsa_no]) || $row['create_date'] > $groupedData1[$rcsa_no]['create_date']) {
-					$groupedData1[$rcsa_no] = $row;
+            
+           
+            // === Update Residual 1 Mapping ===
+            foreach ($mapping1 as &$row) {
+                if (isset($row['like_no'], $row['impact_no'])) {
+					$key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+					
 				}
-			}
+            }         
+            
 
-			foreach ($groupedData1 as $ros) {
-				$arrData1[$ros['risk_level_action']] = $ros['jml'];
-			}
+            $hasil['residual1'] = $this->data->draw_rcsa1($mapping1, 'Target');
+        }
 
-			foreach ($mapping1 as &$row) {
-				if (array_key_exists($row['id'], $arrData1))
-					$row['nilai'] = $arrData1[$row['id']];
-				else
-					$row['nilai'] = '';
-			}
-			unset($row);
-			$hasil['residual2'] = $this->data->draw_rcsa1($mapping1, 'residual2');
+        return $hasil;
+    }
 
+    // === Get RCSA Residual 2 Mapping ===
+    function get_map_residual2($data = [])
+    {
+        $hasil['residual2'] = '';
 
-			// $hasil['bulan'] = $data['bulan'];
-		}
+        if ($data) {
+            // Fetching RCSA Mapping Data for Residual 2
+            $mapping1 = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
 
-		// doi::dump($hasil);
-		// var_dump($hasil);
-		return $hasil;
-	}
- 
+            // === Filter by Owner ===
+            if ($data['id_owner'] > 0) {
+                $this->get_owner_child($data['id_owner']);
+                $this->owner_child[] = $data['id_owner'];
+                $this->db->where_in('owner_no', $this->owner_child);
+                $this->db->where('urgensi_no_kadiv > 0');
+            }
 
+            // === Filter by Period and Month ===
+            if ($data['id_period'] > 0) {
+                $this->db->where('period_no', $data['id_period']);
+            }
 
-	function get_notif($param = array())
+            if ($data['bulanx'] > 0) {
+                $this->db->where('bulan', $data['bulanx']);
+            }
+
+            // === Fetch Data for Residual 2 ===
+            $rows = $this->db->select('MAX(rcsa_no) AS rcsa_no, MAX(create_date) AS create_date, risk_level_action, COUNT(risk_level_action) AS jml')
+                ->group_by('risk_level_action')
+                ->order_by('create_date', 'desc')
+                ->where('sts_propose', 4)
+                ->where('urgensi_no', 0)
+                ->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
+                ->result_array();
+
+            $arrData1 = [];
+            $groupedData1 = [];
+
+            foreach ($rows as $row) {
+                $rcsa_no = $row['rcsa_no'];
+                if (!isset($groupedData1[$rcsa_no]) || $row['create_date'] > $groupedData1[$rcsa_no]['create_date']) {
+                    $groupedData1[$rcsa_no] = $row;
+                }
+            }
+
+            foreach ($groupedData1 as $ros) {
+                $arrData1[$ros['risk_level_action']] = $ros['jml'];
+            }
+
+            // === Update Residual 2 Mapping ===
+            foreach ($mapping1 as &$row) {
+                $row['nilai'] = array_key_exists($row['id'], $arrData1) ? $arrData1[$row['id']] : '';
+            }
+
+            $hasil['residual2'] = $this->data->draw_rcsa1($mapping1, 'residual2');
+        }
+
+        return $hasil;
+    }
+
+    // === Get Notification ===
+    function get_notif($param = array())
+    {
+        $level = -1;
+        $data = [0];
+        if (array_key_exists('level_no', $param['owner'])) {
+            $level = $param['owner']['level_no'];
+        }
+        if ($param['owner_child']) {
+            $data = explode(",", $param['owner_child']);
+        }
+
+        $link = '';
+        if ($level == 3) {
+            $rows = $this->db->where_in('owner_no', $data)
+                ->where('period_no', _TAHUN_NO_)
+                ->where('sts_propose', 2)
+                ->get(_TBL_RCSA)
+                ->result_array();
+            $link = '<a href="' . base_url('approve-div') . '"> disini </a>';
+        } elseif ($level == 4) {
+            $rows = $this->db->where_in('owner_no', $data)
+                ->where('period_no', _TAHUN_NO_)
+                ->where('sts_propose', 1)
+                ->get(_TBL_RCSA)
+                ->result_array();
+            $link = '<a href="' . base_url('propose-div') . '"> disini </a>';
+        } else {
+            $rows = [];
+        }
+
+        $ket = "";
+        if ($rows) {
+            $ket = "Anda memiliki list Assessment yang perlu di Approve, klik " . $link . " untuk melihat ";
+        }
+
+        return $ket;
+    }
+
+    // === Get RCSA Detail ===
+    function get_rcsa_detail($id)
+    {
+        $query = $this->db
+            ->select(_TBL_RCSA_ACTION . '.*,' . _TBL_RCSA . '.id as id_rcsa,' . _TBL_RCSA . '.judul_assesment,' . _TBL_STATUS_ACTION . '.status_action,' . _TBL_STATUS_ACTION . '.span')
+            ->from(_TBL_RCSA_ACTION)
+            ->join(_TBL_RCSA_DETAIL, _TBL_RCSA_ACTION . '.rcsa_detail_no = ' . _TBL_RCSA_DETAIL . '.id')
+            ->join(_TBL_RCSA, _TBL_RCSA_DETAIL . '.rcsa_no = ' . _TBL_RCSA . '.id')
+            ->join(_TBL_STATUS_ACTION, _TBL_RCSA_ACTION . '.status_no = ' . _TBL_STATUS_ACTION . '.id')
+            ->where('rcsa_no', $id)
+            ->order_by(_TBL_RCSA_ACTION . '.create_date desc')
+            ->get()
+            ->result();
+
+        return $query;
+    }
+
+	function cek_level_new($like, $impact)
 	{
-		$level = -1;
-		$data = [0];
-		if (array_key_exists('level_no', $param['owner']))
-			$level = $param['owner']['level_no'];
-		if ($param['owner_child'])
-			$data = explode(",", $param['owner_child']);
-
-		$link = '';
-		if ($level == 3) {
-			$rows = $this->db->where_in('owner_no', $data)->where('period_no', _TAHUN_NO_)->where('sts_propose', 2)->get(_TBL_RCSA)->result_array();
-			$link = '<a href="' . base_url('approve-div') . '"> disini </a>';
-		} elseif ($level == 4) {
-			$rows = $this->db->where_in('owner_no', $data)->where('period_no', _TAHUN_NO_)->where('sts_propose', 1)->get(_TBL_RCSA)->result_array();
-			$link = '<a href="' . base_url('propose-div') . '"> disini </a>';
-		} else {
-			$rows = [];
-		}
-
-		$ket = "";
-		if ($rows) {
-			$ket = "Anda memiliki list Assessment yang perlu di Approve, klik " . $link . " untuk melihat ";
-		}
-
-		return $ket;
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        
+		// doi::dump($rows);
+        return $rows;
 	}
 
-	function get_rcsa_detail($id)
-	{
-		$query = $this->db
-			->select(_TBL_RCSA_ACTION . '.*,' . _TBL_RCSA . '.id as id_rcsa,'  . _TBL_RCSA . '.judul_assesment,' . _TBL_STATUS_ACTION . '.status_action,' . _TBL_STATUS_ACTION . '.span')
-			->from(_TBL_RCSA_ACTION)
-			->join(_TBL_RCSA_DETAIL, _TBL_RCSA_ACTION . '.rcsa_detail_no = ' . _TBL_RCSA_DETAIL . '.id')
-			->join(_TBL_RCSA, _TBL_RCSA_DETAIL . '.rcsa_no = ' . _TBL_RCSA . '.id')
-			->join(_TBL_STATUS_ACTION, _TBL_RCSA_ACTION . '.status_no = ' . _TBL_STATUS_ACTION . '.id')
-			->where('rcsa_no', $id)
-			->order_by(_TBL_RCSA_ACTION . '.create_date desc')
-			->get()
-			->result();
+    // === Get Master Level ===
+    function get_master_level($filter = false, $id = 0)
+    {
+        if ($filter) {
+            $rows = $this->db
+                ->select(_TBL_LEVEL_MAPPING . '.*,' . _TBL_LEVEL_COLOR . '.id as id_color,' . _TBL_LEVEL_COLOR . '.likelihood,' . _TBL_LEVEL_COLOR . '.impact')
+                ->from(_TBL_LEVEL_COLOR)
+                ->where(_TBL_LEVEL_COLOR . '.id', $id)
+                ->join(_TBL_LEVEL_MAPPING, _TBL_LEVEL_COLOR . '.level_risk_no = ' . _TBL_LEVEL_MAPPING . '.id')
+                ->get()
+                ->row_array();
+        } else {
+            $query = $this->db
+                ->select(_TBL_LEVEL_MAPPING . '.*,' . _TBL_LEVEL_COLOR . '.id as id_color,' . _TBL_LEVEL_COLOR . '.likelihood,' . _TBL_LEVEL_COLOR . '.impact')
+                ->from(_TBL_LEVEL_COLOR)
+                ->join(_TBL_LEVEL_MAPPING, _TBL_LEVEL_COLOR . '.level_risk_no = ' . _TBL_LEVEL_MAPPING . '.id')
+                ->get();
+            $rows = json_encode($query->result_array());
+        }
 
-		return $query;
-	}
-	function get_master_level($filter = false, $id = 0)
-	{
-		// doi::dump($id);
-		if ($filter) {
-			$rows = $this->db
-				->select(_TBL_LEVEL_MAPPING . '.*,' . _TBL_LEVEL_COLOR . '.id as id_color,' . _TBL_LEVEL_COLOR . '.likelihood,' . _TBL_LEVEL_COLOR . '.impact')
-				->from(_TBL_LEVEL_COLOR)
-				->where(_TBL_LEVEL_COLOR . '.id', $id)
-				->join(_TBL_LEVEL_MAPPING, _TBL_LEVEL_COLOR . '.level_risk_no = ' . _TBL_LEVEL_MAPPING . '.id')
-				->get()
-				->row_array();
-		} else {
-			$query = $this->db
-				->select(_TBL_LEVEL_MAPPING . '.*,' . _TBL_LEVEL_COLOR . '.id as id_color,' . _TBL_LEVEL_COLOR . '.likelihood,' . _TBL_LEVEL_COLOR . '.impact')
-				->from(_TBL_LEVEL_COLOR)
-				->join(_TBL_LEVEL_MAPPING, _TBL_LEVEL_COLOR . '.level_risk_no = ' . _TBL_LEVEL_MAPPING . '.id')
-				->get();
-			$rows = json_encode($query->result_array());
-		}
-		// var_dump($rows);die();
-		return $rows;
-	}
+        return $rows;
+    }
 
-	function get_task($owner_no = 0)
-	{
-		$rows['tipe'] = '';
-		// $a = $this->id_param_owner['privilege_owner']['id'] ;
-		// var_dump($a);
-		$group = $this->authentication->get_Info_User('group');
-		// if ($group['privilege_owner']['id']>=2){
-		// 	$this->set_Where_Table($tbl,$field,'in',$group['owner_child']);
-		// }
-		if ($this->id_param_owner['privilege_owner']['id'] > 1) {
-			// if ($group['privilege_owner']['id'] > 1) {
-			// $a = $this->db->where('parent_no',$owner_no)->get(_TBL_OWNER)->result();
-			// var_dump($a);
-			$query = $this->db
-				// ->where('approve_kadep', $owner_no)
-				// ->where('user_approve', 1)
-				// ->where_in('owner_no', $this->id_param_owner['owner_child'])
-				->where_in('owner_no', $this->id_param_owner['owner_child_array'])
-				// ->where_in('owner_no', $group['owner_child'])
-				->where('sts_propose', 1)
-				// ->where('user_approve_kadep', NULL)
-				->get(_TBL_VIEW_RCSA)->result();
-			$rows['tipe'] = 'propose-div';
+    // === Get Task ===
+    function get_task($owner_no = 0)
+    {
+        $rows['tipe'] = '';
+        $group = $this->authentication->get_Info_User('group');
 
+        if ($this->id_param_owner['privilege_owner']['id'] > 1) {
+            $query = $this->db
+                ->where_in('owner_no', $this->id_param_owner['owner_child_array'])
+                ->where('sts_propose', 1)
+                ->get(_TBL_VIEW_RCSA)
+                ->result();
+            $rows['tipe'] = 'propose-div';
 
-			if (!$query) {
-				$query = $this->db
-					// ->where('approve_kadiv', $owner_no)
-					// ->where('user_approve_kadep', $owner_no)
-					// ->where('user_approve', 1)
-					->where_in('owner_no', $this->id_param_owner['owner_child_array'])
-					// ->where_in('owner_no', $group['owner_child'])
-					->where('sts_propose', 2)
-					->get(_TBL_VIEW_RCSA)->result();
-				$rows['tipe'] = 'approve-div';
-				// var_dump($owner_no);
-			}
-			if (!$query) {
-				$rows['tipe'] = 'approve-admin';
-				$query = $this->db
-					// ->where('approve_rm', $owner_no)
-					->where('sts_propose', 3)
-					->get(_TBL_VIEW_RCSA)->result();
-			}
-			$rows['propose'] = $query;
-			$query = $this->db
-				// ->where_in('owner_no', $this->id_param_owner['owner_child_array'])
-				->where_in('owner_no', $this->id_param_owner['owner_child_array'])
-				// ->where_in('owner_no', $group['owner_child'])
-				->where_not_in('status', 3)
-				->where('sts_propose >=', 3)
-				->where('period_no', _TAHUN_NO_)
-				->order_by('create_date desc')
-				->get(_TBL_VIEW_RCSA);
+            if (!$query) {
+                $query = $this->db
+                    ->where_in('owner_no', $this->id_param_owner['owner_child_array'])
+                    ->where('sts_propose', 2)
+                    ->get(_TBL_VIEW_RCSA)
+                    ->result();
+                $rows['tipe'] = 'approve-div';
+            }
 
+            if (!$query) {
+                $rows['tipe'] = 'approve-admin';
+                $query = $this->db
+                    ->where('sts_propose', 3)
+                    ->get(_TBL_VIEW_RCSA)
+                    ->result();
+            }
 
-			// $query = $this->db
-			// ->select(_TBL_RCSA_ACTION . '.*,' . _TBL_RCSA . '.id as id_rcsa,' . _TBL_RCSA . '.corporate,' . _TBL_STATUS_ACTION . '.status_action,' . _TBL_STATUS_ACTION . '.span')
-			// ->from(_TBL_RCSA_ACTION)
-			// ->join(_TBL_RCSA_DETAIL, _TBL_RCSA_ACTION .'.rcsa_detail_no = ' . _TBL_RCSA_DETAIL . '.id')
-			// ->join(_TBL_RCSA, _TBL_RCSA_DETAIL .'.rcsa_no = ' . _TBL_RCSA . '.id')
-			// ->join(_TBL_STATUS_ACTION, _TBL_RCSA_ACTION .'.status_no = ' . _TBL_STATUS_ACTION . '.id')
-			// ->where_in(_TBL_RCSA . '.owner_no',$this->id_param_owner['owner_child_array'])
-			// ->where_not_in('status_no',3)
-			// ->where('sts_propose >=',3)
-			// ->order_by(_TBL_RCSA_ACTION . '.create_date desc')
-			// ->get();
+            $rows['propose'] = $query;
+            $query = $this->db
+                ->where_in('owner_no', $this->id_param_owner['owner_child_array'])
+                ->where_not_in('status', 3)
+                ->where('sts_propose >=', 3)
+                ->where('period_no', _TAHUN_NO_)
+                ->order_by('create_date desc')
+                ->get(_TBL_VIEW_RCSA);
+            $rows['action'] = $query->result();
+        } else {
+            $query = $this->db
+                ->where('sts_propose <= 3')
+                ->where('sts_propose >= 0')
+                ->where('date_propose != 0')
+                ->get(_TBL_VIEW_RCSA);
+            $rows['propose'] = $query->result();
 
-			$rows['action'] = $query->result();
-		} else {
+            $query = $this->db
+                ->where_not_in('status', 3)
+                ->where('sts_propose >=', 3)
+                ->where('period_no', _TAHUN_NO_)
+                ->order_by('create_date desc')
+                ->get(_TBL_VIEW_RCSA);
+            $rows['action'] = $query->result();
+            $rows['log'] = $this->db->order_by('create_date', 'desc')->limit(10)->get(_TBL_LOG_PROPOSE)->result_array();
+        }
 
-			$query = $this->db
-				->where('sts_propose<=3')
-				// ->where('sts_propose>=1')
-				->where('sts_propose>=0')
-				->where('date_propose !=0')
-				->get(_TBL_VIEW_RCSA);
-			$rows['propose'] = $query->result();
+        $query = $this->db->where('sticky', '1')->where('status', 1)->get(_TBL_NEWS);
+        $rows['news'] = $query->result();
 
-			$query = $this->db
-				->where_not_in('status', 3)
-				->where('sts_propose >=', 3)
-				->where('period_no', _TAHUN_NO_)
-				->order_by('create_date desc')
-				->get(_TBL_VIEW_RCSA);
+        $query = $this->db->where('tipe_no', 81)->where('status', 1)->order_by('create_date', 'ASC')->get(_TBL_REGULASI);
+        $rows['regulasi'] = $query->result();
 
-			// $query = $this->db
-			// ->select(_TBL_RCSA_ACTION . '.*,' . _TBL_RCSA . '.id as id_rcsa,'  . _TBL_RCSA . '.corporate,'. _TBL_STATUS_ACTION . '.status_action,' . _TBL_STATUS_ACTION . '.span')
-			// ->from(_TBL_RCSA_ACTION)
-			// ->join(_TBL_RCSA_DETAIL, _TBL_RCSA_ACTION .'.rcsa_detail_no = ' . _TBL_RCSA_DETAIL . '.id')
-			// ->join(_TBL_RCSA, _TBL_RCSA_DETAIL .'.rcsa_no = ' . _TBL_RCSA . '.id')
-			// ->join(_TBL_STATUS_ACTION, _TBL_RCSA_ACTION .'.status_no = ' . _TBL_STATUS_ACTION . '.id')
-			// ->where_not_in('status_no',3)
-			// ->where('sts_propose>=',3)
-			// ->order_by(_TBL_RCSA_ACTION . '.create_date desc')
-			// ->get();
-			$rows['action'] = $query->result();
+        return $rows;
+    }
 
-			$rows['log'] = $this->db->order_by('create_date', 'desc')->limit(10)->get(_TBL_LOG_PROPOSE)->result_array();
-		}
-
-		$query = $this->db->where('sticky', '1')->where('status', 1)->get(_TBL_NEWS);
-		$rows['news'] = $query->result();
-		$query = $this->db->where('tipe_no', 81)->where('status', 1)->order_by('create_date', 'ASC')->get(_TBL_REGULASI);
-		$rows['regulasi'] = $query->result();
-
-		//Doi::dump($rows);
-		return $rows;
-	}
- 
-	function get_news($id)
-	{
-		$rows = $this->db->where('id', $id)->get(_TBL_NEWS)->row();
-		return $rows;
-	}
+    // === Get News ===
+    function get_news($id)
+    {
+        $rows = $this->db->where('id', $id)->get(_TBL_NEWS)->row();
+        return $rows;
+    }
 }
-/* End of file app_login_model.php */
+
+/* End of file model/Data.php */
