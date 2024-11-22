@@ -901,7 +901,7 @@ if($dtkri){
 		
 		$data['cboLike']=$cboLike;
 		$data['cboImpact']=$cboImpact;
-		$data['analisiData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->row_array();
+		$data['analisiData'] = $this->db->where('id', $id_edit)->get("bangga_view_rcsa_detail")->row_array();
 		$data['target_like']=json_decode($data['analisiData']['target_like']);
 		$data['target_impact']=json_decode($data['analisiData']['target_impact']);
 		$data['rcsa_treatment'] = $this->db->where('rcsa_detail_no', $id_edit)->get("bangga_rcsa_treatment")->result_array();
