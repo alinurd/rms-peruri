@@ -780,8 +780,8 @@ if($dtkri){
 			$data['krii'] = $this->get_combo('data-combo', 'kri');
 			$data['per_data'] = [0 => '-select-', 1 => 'Bulan', 2 => 'Triwulan', 3 => 'semester'];
 			$data['satuan'] = $this->get_combo('data-combo', 'satuan');
-			$data['kategori'] = $this->get_combo('data-combo', 'kel-library');
-			$data['subkategori'] = $this->get_combo('data-combo', 'subkel-library');
+			// $data['kategori'] = $this->get_combo('data-combo', 'kel-library');
+			// $data['subkategori'] = $this->get_combo('data-combo', 'subkel-library');
 			$data['area'] = $this->get_combo('parent-input');
 			$data['rcsa_no'] = $id_rcsa;
 			$data['events'] = $event;
@@ -894,8 +894,8 @@ if($dtkri){
 		if($detail['tema']){
 			$data['kategori'] = $this->get_combo('tasktonimi', 't2', $detail['tema']);
 		}
-		if($detail['kategori']){
-			$data['subkategori'] = $this->get_combo('tasktonimi', 't3', $detail['kategori']);
+		if($detail['kategori_no']){
+			$data['subkategori'] = $this->get_combo('tasktonimi', 't3', $detail['kategori_no']);
 		}
 
 		$data['satuan'] = $this->get_combo('data-combo', 'satuan');
@@ -1686,7 +1686,7 @@ if($dtkri){
 		$post = $this->input->post();
 		$detail = $this->db->where('id', $post['id_edit'])->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
 // 		doi::dump($detail['event_no']);
-
+// doi::dump($post);
 // die('cek');
 		if (($post['sasaran'] == 0)) {
 			doi::dump($post['sasaran']);
@@ -1718,6 +1718,7 @@ if($dtkri){
 
 
 			$id = $this->data->simpan_risk_event($post);
+			doi::dump($id);
 			$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
 			$data['field'] = $this->data->get_peristiwa($post['rcsa_no']);
 

@@ -610,7 +610,7 @@ function cari_ajax_combo(tipe, parent, data, target_combo, url, proses_result, s
 			// location.reload();
 			// if (sts_loading)
 
-			// 	stopLooding(parent);
+				stopLooding(parent);
 		  pesan_toastr(pesan, 'err', title_msg, 'toast-top-center');
 		},
 		complate:function(){
