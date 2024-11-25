@@ -416,7 +416,7 @@ class Data extends MX_Model
 				$result = $this->crud->crud_data(array('table' => _TBL_LIBRARY_DETAIL, 'field' => $upd, 'where' => array('id' => $data['id_edit'][$key]), 'type' => 'update'));
 			} else {
 				$tab['id'] = 201;
-				$tab['msg'] = 'Peristiwa (T3) yang anda masukan sudah ada';
+				$tab['msg'] = 'Sub-Kelompok Risiko (T4) yang anda masukan sudah ada';
 				return $tab;
 			}
 			$cek_error = $this->db->error();
@@ -541,9 +541,9 @@ $msg="risk impcat yang anda masukan sudah ada";
 						$this->crud->crud_data(['table' => 'bangga_library_detail', 'field' => $updetailx, 'type' => 'add']);
 						// doi::dump($updetailx);
 						$error = $this->db->error();
-						if (!empty($error)) {
-							echo "Error: " . $error['message'];
-						}
+						// if (!empty($error)) {
+						// 	echo "Error: " . $error['message'];
+						// }
 					}
 				}else{
 			$tab['id'] = 201;
