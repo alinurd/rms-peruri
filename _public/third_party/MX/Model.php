@@ -102,7 +102,9 @@ class MX_Model extends CI_Model
 					$param=1;
 				}
 				if($tbl=="library"){
-					$where = " and t3='" . $param2 . "'";
+					if($param2){
+						$where = " and t3='" . $param2 . "'";
+					}
 					$query = "SELECT  id, description as name FROM " . _TBL_LIBRARY . " where status=1 and type={$param}  {$where} order by code";
 				}else{
 					if (is_array($param)) {

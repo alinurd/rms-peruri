@@ -130,7 +130,7 @@ class Risk_Event_Library extends BackendController {
 		return $content;
 	}
 	function updateBox_T1($field, $row, $value){
-		$this->t1=$this->get_combo('tasktonimi','t1');
+		$this->t1=$this->get_combo('tasktonimi','t1',);
 		$content = form_dropdown($field['label'], $this->t1,$value,'class="form-control select2" id="l_t1" style="width:400px;"');
  		return $content;
 	}
@@ -153,8 +153,12 @@ class Risk_Event_Library extends BackendController {
 	}
 	
 	function listBox_T1($row, $value){
-		$t1=$this->get_combo('tasktonimi','t1', $row['l_t1']);
- 		$result=$t1[$value];
+		$query = $this->db->select('description')
+		->where('id', $value)
+		->get(_TBL_LIBRARY)
+ 		->row_array(); 
+  		$result=$query['description'];
+ 		return $result;
 		return $result;
 	}
 	function listBox_T2($row, $value){
