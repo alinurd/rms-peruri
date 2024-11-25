@@ -88,12 +88,12 @@ class MX_Model extends CI_Model
 					$tbl='library';
 					$param=4;
 				}elseif($param=='t2'){ 
-					if(isset($param2)){
+					if($param2){
 						$where = " and dc.pid='" . $param2 . "'";
 					}
 					$query = "SELECT bl.description, dc.id as id,   CONCAT(bl.description, ' - ', dc.data)   AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN bangga_library AS bl ON bl.id = dc.pid WHERE dc.aktif = '1' and dc.kelompok='kategori-risiko' {$where} ORDER BY dc.urut, dc.data";
-				}elseif($param=='t3'){
-					if(isset($param2)){
+ 				}elseif($param=='t3'){
+					if($param2){
 						$where = " and dc.pid='" . $param2 . "'";
 					}
  					$query = "SELECT bl.data, dc.id as id,  CONCAT(bl.data, ' - ', dc.data)  AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN " . _TBL_DATA_COMBO . " AS bl ON bl.id = dc.pid WHERE dc.aktif = '1' and dc.kelompok='kelompok-risiko' {$where} ORDER BY dc.urut, dc.data";

@@ -10,7 +10,7 @@ class Subkelompok_Library extends BackendController {
         parent::__construct();
 		$this->kelCombo="kelompok-risiko";
 		$this->set_Tbl_Master(_TBL_DATA_COMBO);
- 		$this->pid=$this->get_combo('data-combo-tasktonimi','kategori-risiko');
+ 		$this->pid=$this->get_combo('tasktonimi','t2');
 
 		$this->set_Open_Tab('Kelompok Risiko T3');
 			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
