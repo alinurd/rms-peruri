@@ -8,26 +8,30 @@ class Risk_Event_Library extends BackendController {
 	var $risk_type=[];
 	public function __construct() {
         parent::__construct();
-		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+		ini_set('max_execution_time', 300);
 		ini_set('memory_limit', '-1');
 		$this->type_risk=1;
 		// $this->kel=array('0'=>' - Select - ','1'=>'Internal','2'=>'External');
-		$this->kel=$this->get_combo('data-combo','kel-library');
-		$this->cbo_risk_type=$this->get_combo('risk_type');
+ 		$this->cbo_risk_type=$this->get_combo('risk_type');
 		$this->cbo_status = [1=>'aktif', 0=>'tidak aktif'];
-		$this->kel = $this->get_combo('data-combo', 'kel-library');
-
+  		$this->t1=$this->get_combo('tasktonimi','t1');
+  		$this->t2=[0=>lang('msg_cbo_select')];
+  		$this->t3=[0=>lang('msg_cbo_select')];
+ 
 		$this->set_Tbl_Master(_TBL_LIBRARY);
 		$this->set_Table(_TBL_RISK_TYPE);
 		
-		$this->set_Open_Tab('Data Risk Event Library');
+		$this->set_Open_Tab('Data Peristiwa Risiko T4');
 			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			// $this->addField(array('field'=>'kel', 'type'=>'free', 'required'=>true, 'input'=>'combo', 'combo'=>$this->kel, 'size'=>50));
 			$this->addField(array('field'=>'risk_type_no','title'=>'Kategori Risiko', 'input'=>'combo', 'required'=>false,'show'=>false, 'combo'=>$this->cbo_risk_type, 'size'=>50));
-			$this->addField(array('field'=>'code','title'=>'Risk Event Code', 'search'=>false, 'size'=>10));
-			$this->addField(array('field'=>'description', 'input'=>'multitext', 'search'=>true, 'size'=>500));
-		$this->addField(array('field' => 'kategori_risiko', 'title' => 'Kategori Risiko', 'input' => 'combo:search', 'combo' => $this->kel, 'size' => 70, 'search' => true, 'required' => true));
-		$this->addField(array('field'=>'notes','show'=>false, 'input'=>'multitext', 'search'=>false, 'size'=>500));
+			$this->addField(array('field'=>'code','title'=>'Risk Event Code', 'show'=>true, 'search'=>false, 'size'=>10));
+			$this->addField(array('field' => 't1', 'title' => 'Tema (T1)', 'input' => 'combo:search', 'combo' => $this->t1, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field' => 't2', 'title' => 'Kategori (T2)', 'input' => 'combo:search', 'combo' => $this->t2, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field' => 't3', 'title' => 'Kelompok (T3)', 'input' => 'combo:search', 'combo' => $this->t3, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field'=>'description', 'title'=>'Peristiwa Risiko (T4)', 'search'=>true, 'required' => true, 'size'=>90));
+		
+			$this->addField(array('field'=>'notes','show'=>false, 'input'=>'multitext', 'search'=>false, 'size'=>500));
 			$this->addField(array('field'=>'jml_couse', 'type'=>'free', 'show'=>false, 'search'=>false));
 			$this->addField(array('field'=>'jml_impact', 'type'=>'free', 'show'=>false, 'search'=>false));
 			$this->addField(array('field'=>'cause', 'type'=>'free', 'search'=>false, 'mode'=>'o'));
@@ -46,8 +50,9 @@ class Risk_Event_Library extends BackendController {
 		
 		// $this->set_Table_List($this->tbl_master,'kel');
 		// $this->set_Table_List($this->tbl_risk_type,'type');
-		$this->set_Table_List($this->tbl_master,'code', '', 5);
-		$this->set_Table_List($this->tbl_master, 'kategori_risiko', 'Kategori Risiko', 5);
+ 		$this->set_Table_List($this->tbl_master, 't1', '', 5);
+		$this->set_Table_List($this->tbl_master, 't2', '', 5);
+		$this->set_Table_List($this->tbl_master, 't3', '', 5);
 		$this->set_Table_List($this->tbl_master,'description', '', 20);
 		// $this->set_Table_List($this->tbl_master,'notes');
 		$this->set_Table_List($this->tbl_master,'jml_couse', 'Jumlah Cause', 10, 'center');
@@ -124,6 +129,21 @@ class Risk_Event_Library extends BackendController {
 		$content = form_input($field['label'],$value," size='{$field['size']}' class='form-control'  id='{$field['label']}' readonly='readonly' ");
 		return $content;
 	}
+	function updateBox_T1($field, $row, $value){
+		$this->t1=$this->get_combo('tasktonimi','t1',);
+		$content = form_dropdown($field['label'], $this->t1,$value,'class="form-control select2" id="l_t1" style="width:400px;"');
+ 		return $content;
+	}
+	function updateBox_T2($field, $row, $value){
+		$this->t2=$this->get_combo('tasktonimi','t2', $row['l_t1']);
+		$content = form_dropdown($field['label'], $this->t2,$value,'class="form-control select2" id="l_t2" style="width:400px;"');
+ 		return $content;
+	}
+	function updateBox_T3($field, $row, $value){	
+		$this->t3=$this->get_combo('tasktonimi','t3', $row['l_t2']);
+		$content = form_dropdown($field['label'], $this->t3,$value,'class="form-control select2" id="l_t3"  style="width:400px;"');
+ 		return $content;
+	}
 	
 	public function index() {	
 		$this->data_fields['dat_edit']['fields']=$this->post;
@@ -132,6 +152,32 @@ class Risk_Event_Library extends BackendController {
 		$this->template->build('statis/table',$this->_param_list_); 
 	}
 	
+	function listBox_T1($row, $value){
+		$query = $this->db->select('description')
+		->where('id', $value)
+		->get(_TBL_LIBRARY)
+ 		->row_array(); 
+  		$result=$query['description'];
+ 		return $result;
+		return $result;
+	}
+	function listBox_T2($row, $value){
+		$query = $this->db->select('data')
+		->where('id', $value)
+		->get(_TBL_DATA_COMBO)
+ 		->row_array(); 
+  		$result=$query['data'];
+ 		return $result;
+	}
+	function listBox_T3($row, $value){
+		$query = $this->db->select('data')
+		->where('id', $value)
+		->get(_TBL_DATA_COMBO)
+ 		->row_array(); 
+  		$result=$query['data'];
+ 		return $result;
+	}
+
 	function insertBox_CAUSE($field){
 		$content = $this->get_cause();
 		return $content;

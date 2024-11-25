@@ -75,12 +75,54 @@ class MX_Model extends CI_Model
 				break;
 			case "data-combo":
 				$where = '';
-				if (is_array($param)) {
+ 				if (is_array($param)) {
 					$where = " and kelompok='" . $param[0] . "' and id='" . $param[1] . "'";
 				} elseif (!empty($param)) {
 					$where = " and kelompok='" . $param . "'";
 				}
 				$query = "SELECT  id, CASE WHEN kode='' THEN data ELSE concat(kode,'-',data) END as name FROM " . _TBL_DATA_COMBO . " where aktif='1' {$where} order by urut, data";
+				break;
+			case "tasktonimi":
+				$where = '';
+				if($param=='t1'){
+					$tbl='library';
+					$param=4;
+				}elseif($param=='t2'){ 
+					if($param2){
+						$where = " and dc.pid='" . $param2 . "'";
+					}
+					$query = "SELECT bl.description, dc.id as id,   CONCAT(bl.description, ' - ', dc.data)   AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN bangga_library AS bl ON bl.id = dc.pid WHERE dc.aktif = '1' and dc.kelompok='kategori-risiko' {$where} ORDER BY dc.urut, dc.data";
+ 				}elseif($param=='t3'){
+					if($param2){
+						$where = " and dc.pid='" . $param2 . "'";
+					}
+ 					$query = "SELECT bl.data, dc.id as id,  CONCAT(bl.data, ' - ', dc.data)  AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN " . _TBL_DATA_COMBO . " AS bl ON bl.id = dc.pid WHERE dc.aktif = '1' and dc.kelompok='kelompok-risiko' {$where} ORDER BY dc.urut, dc.data";
+				}elseif($param=='t4'){
+					$tbl='library';
+					$param=1;
+				}elseif($param[0]=='t5'){
+					$where = "";
+					if($param[1]){
+						$where = "where child_type='" . $param[1] . "'";
+					}
+					if($param[2]){
+						$where.= "and event_no='" . $param[2] . "'";
+					}
+					$query = "SELECT  child_id as id, child_description as name FROM " . _TBL_VIEW_MAP_LIBRARY . " {$where} order by child_code";
+				}
+				if($tbl=="library"){
+					if($param2){
+						$where = " and t3='" . $param2 . "'";
+					}
+					$query = "SELECT  id, description as name FROM " . _TBL_LIBRARY . " where status=1 and type={$param}  {$where} order by code";
+				}else{
+					if (is_array($param)) {
+						$where = " and kelompok='" . $param[0] . "' and id='" . $param[1] . "'";
+					} elseif (!empty($param)) {
+						$where = " and kelompok='" . $param . "'";
+					}
+					
+				}
 				break;
 			case 'accountable-input':
 				$query = "select DISTINCT rcsa_owner_no as id, name from " . _TBL_VIEW_RCSA_MITIGASI . "  ";
@@ -278,7 +320,7 @@ class MX_Model extends CI_Model
 		$d = $data->result();
 
 		if ($this->no_select)
-			$combo[''] = " - select - ";
+			$combo[''] = lang('msg_cbo_select');
 		else
 			$combo = [];
 

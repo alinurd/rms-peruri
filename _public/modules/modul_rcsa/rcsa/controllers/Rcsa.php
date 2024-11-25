@@ -708,10 +708,7 @@ if($dtkri){
 		}
 		$data['krii'] = $this->get_combo('data-combo', 'kri');
 		$data['per_data'] = [0 => '-select-', 1 => 'Bulan', 2 => 'Triwulan', 3 => 'semester'];
-		$data['satuan'] = $this->get_combo('data-combo', 'satuan');
-		$data['kategori'] = $this->get_combo('data-combo', 'kel-library');
-		$data['subkategori'] = $this->get_combo('data-combo', 'subkel-library');
-		$data['tema'] = $this->get_combo('library_t1');
+		
 		$data['area'] = $this->get_combo('parent-input');
 		$data['rcsa_no'] = $id_rcsa;
 		$data['np'] = $this->get_combo('negatif_poisitf');
@@ -721,12 +718,12 @@ if($dtkri){
 		$data['parent'] = $this->db->where('id', $id_rcsa)->get(_TBL_VIEW_RCSA)->row_array();
 
 		$rows = $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_RCSA_SASARAN)->result_array();
-		$data['sasaran'] = ['- select -'];
+		$data['sasaran'] = [0=>lang('msg_cbo_select')];
 		foreach ($rows as $row) {
 			$data['sasaran'][$row['id']] = $row['sasaran'];
 		}
 		$rows_bisnis = $this->db->where('rcsa_no',$id_rcsa)->get(_TBL_RCM)->result_array();
-		$data['proses_bisnis'] = ['- select -'];
+		$data['proses_bisnis'] = [0=>lang('msg_cbo_select')];
 		foreach ($rows_bisnis as $rb) {
 			$data['proses_bisnis'][$rb['id']] = $rb['bussines_process'];
 		}
@@ -783,8 +780,8 @@ if($dtkri){
 			$data['krii'] = $this->get_combo('data-combo', 'kri');
 			$data['per_data'] = [0 => '-select-', 1 => 'Bulan', 2 => 'Triwulan', 3 => 'semester'];
 			$data['satuan'] = $this->get_combo('data-combo', 'satuan');
-			$data['kategori'] = $this->get_combo('data-combo', 'kel-library');
-			$data['subkategori'] = $this->get_combo('data-combo', 'subkel-library');
+			// $data['kategori'] = $this->get_combo('data-combo', 'kel-library');
+			// $data['subkategori'] = $this->get_combo('data-combo', 'subkel-library');
 			$data['area'] = $this->get_combo('parent-input');
 			$data['rcsa_no'] = $id_rcsa;
 			$data['events'] = $event;
@@ -886,16 +883,35 @@ if($dtkri){
 		$data['realisasi'] = $this->data->get_realisasi($id_edit);
 		$data['list_realisasi'] = $this->load->view('list-realisasi', $data, true);
 		$data['inptkri'] = $this->load->view('kri', $data, true);
+		$data['cboper'] = [0=>lang('msg_cbo_select')];
+		$data['kategori'] = [0=>lang('msg_cbo_select')];
+		$data['subkategori'] = [0=>lang('msg_cbo_select')];
+		$data['tema'] = $this->get_combo('library_t1');
+		$cbogroup = [0=>lang('msg_cbo_select')];
+		$cbogroup1 = [0=>lang('msg_cbo_select')];
+		if($detail['sub_kategori']){
+			$data['cboper'] = $this->get_combo('tasktonimi', 't4', $detail['sub_kategori']);
+		}
+		if($detail['tema']){
+			$data['kategori'] = $this->get_combo('tasktonimi', 't2', $detail['tema']);
+		}
+		if($detail['kategori_no']){
+			$data['subkategori'] = $this->get_combo('tasktonimi', 't3', $detail['kategori_no']);
+		}
+		if($detail['event_no']){
+ 			$cbogroup = $this->get_combo('tasktonimi',['t5', 'cause', $detail['event_no']] );
+			$cbogroup1 = $this->get_combo('tasktonimi',['t5', 'impact', $detail['event_no']] );
+		}
 
-		$data['cboper'] = $this->get_combo('library', 1);
+		$data['satuan'] = $this->get_combo('data-combo', 'satuan');
+	 
 
-		$cbogroup = $this->get_combo('library', 2);
+	
 		$data['cbogroup'] = $cbogroup;
 		$data['inp_couse'] = form_input('', '', ' id="new_cause[]" name="new_cause[]" class="form-control" placeholder="Input Risk Couse Baru"');
 		$data['lib_couse'] = form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="form-control select2" id="risk_couseno');
 
-		$cbogroup1 = $this->get_combo('library', 3);
-		$data['cbogroup1'] = $cbogroup1;
+ 		$data['cbogroup1'] = $cbogroup1;
 		$data['inp_impact'] = form_input('', '', ' id="new_impact[]" name="new_impact[]" class="form-control" placeholder="Input Risk Impact Baru"');
 		$data['cbbii'] = form_dropdown('new_impact_no[]', $cbogroup1, '', 'class="form-control select2"');
 		
@@ -1675,7 +1691,7 @@ if($dtkri){
 		$post = $this->input->post();
 		$detail = $this->db->where('id', $post['id_edit'])->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
 // 		doi::dump($detail['event_no']);
-
+// doi::dump($post);
 // die('cek');
 		if (($post['sasaran'] == 0)) {
 			doi::dump($post['sasaran']);
@@ -1707,7 +1723,7 @@ if($dtkri){
 
 
 			$id = $this->data->simpan_risk_event($post);
-			$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
+ 			$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
 			$data['field'] = $this->data->get_peristiwa($post['rcsa_no']);
 
 
