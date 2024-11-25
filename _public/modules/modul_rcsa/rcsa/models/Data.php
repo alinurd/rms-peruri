@@ -401,6 +401,9 @@ class Data extends MX_Model
 				$updlib['type'] = 1;
 				$updlib['status'] = 1;
 				$updlib['kategori_risiko'] = $data['kategori'];
+				$updlib['t1'] = $data['tema'];
+				$updlib['t2'] = $data['kategori'];
+				$updlib['t3'] = $data['sub_kategori'];
 
 				$updlib['create_user'] = $this->authentication->get_info_user('username');
 
@@ -413,7 +416,7 @@ class Data extends MX_Model
 				$result = $this->crud->crud_data(array('table' => _TBL_LIBRARY_DETAIL, 'field' => $upd, 'where' => array('id' => $data['id_edit'][$key]), 'type' => 'update'));
 			} else {
 				$tab['id'] = 201;
-				$tab['msg'] = 'Peristiwa (T3) yang anda masukan sudah ada';
+				$tab['msg'] = 'Sub-Kelompok Risiko (T4) yang anda masukan sudah ada';
 				return $tab;
 			}
 			$cek_error = $this->db->error();
@@ -472,9 +475,9 @@ class Data extends MX_Model
 							$saveUpdx1 = $this->crud->crud_data(['table' => 'bangga_library_detail', 'field' => $updetail, 'type' => 'add']);
 							$error1 = $this->db->error();
 							// doi::dump('saveUpdx1' . $error1);
-							if (!empty($error)) {
-								echo "Error: " . $error['message'];
-							}
+							// if (!empty($error)) {
+							// 	echo "Error: " . $error['message'];
+							// }
 						}
 					} else {
 						$tab['id'] = 201;
@@ -538,9 +541,9 @@ $msg="risk impcat yang anda masukan sudah ada";
 						$this->crud->crud_data(['table' => 'bangga_library_detail', 'field' => $updetailx, 'type' => 'add']);
 						// doi::dump($updetailx);
 						$error = $this->db->error();
-						if (!empty($error)) {
-							echo "Error: " . $error['message'];
-						}
+						// if (!empty($error)) {
+						// 	echo "Error: " . $error['message'];
+						// }
 					}
 				}else{
 			$tab['id'] = 201;
@@ -639,10 +642,10 @@ $msg="risk impcat yang anda masukan sudah ada";
 
 			// $rows = $this->db->where('rcsa_detail_no', $data['id_edit_baru'])->get('bangga_rcsa_event_sementara')->row_array();
 
-			doi::dump("save baru");
-			doi::dump($cek_error);
-			doi::dump('id_edit ' . $id);
-			doi::dump($upd);
+			// doi::dump("save baru");
+			// doi::dump($cek_error);
+			// doi::dump('id_edit ' . $id);
+			// doi::dump($upd);
 
 			// // Contoh:
 			// if ($id > 0

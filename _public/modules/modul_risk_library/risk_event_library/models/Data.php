@@ -25,8 +25,8 @@ class Data extends MX_Model {
 		// doi::dump($newid);
 		// doi::dump($data);
 		// die('cek');
-		if (count($data['l_kategori_risiko']) > 0) {
-			foreach ($data['l_kategori_risiko'] as $key => $row) {
+		if (count($data['l_t2']) > 0) {
+			foreach ($data['l_t2'] as $key => $row) {
 				$upd = array();
 				$upd['library_no'] = $newid;;
 				$upd['event_no	'] = $data['library_no'][$key];;
@@ -77,7 +77,7 @@ class Data extends MX_Model {
 					$upd=array();
 					$upd['library_no'] = $newid;;
 					$upd['child_no'] = $data['library_no'][$key];;
-					$upd['kategori_risiko'] = $data['l_kategori_risiko'];;
+					$upd['kategori_risiko'] = $data['l_t2'];;
 					
 					if(intval($data['id_edit'][$key])>0)
 						{
@@ -114,7 +114,7 @@ class Data extends MX_Model {
 						$upa=array();
 						$upa['library_no'] = $newid;;
 						$upa['child_no'] = $result1;;
-						$upa['kategori_risiko'] = $data['l_kategori_risiko'];;
+						$upa['kategori_risiko'] = $data['l_t2'];;
 
 
 						if(intval($data['new_cause'][$key])>0)
@@ -150,7 +150,7 @@ class Data extends MX_Model {
 						$upi=array();
 						$upi['library_no'] = $newid;;
 						$upi['child_no'] = $result2;;
-							$upi['kategori_risiko'] = $data['l_kategori_risiko'];;
+							$upi['kategori_risiko'] = $data['l_t2'];;
 
 						if(intval($data['new_cause'][$key])>0)
 							{

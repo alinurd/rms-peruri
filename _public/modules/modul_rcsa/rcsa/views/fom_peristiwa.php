@@ -218,19 +218,19 @@ if ($field['iskri'] == 0) {
                                         </tr>
                                         <tr>
                                             <td width="20%">Tema Risiko (T1)</td>
-                                            <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class="select2 form-control" style="width:100%;" id="tema"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class=" select2 form-control" style="width:100%;" id="tema"' . $disable); ?></td>
                                         </tr>
                                         <tr>
                                             <td width="20%">Kategori Risiko(T2)</td>
                                             <td colspan="2"><?= form_dropdown('kategori', $kategori, ($detail) ? $detail['kategori_no'] : '', 'class="select2 form-control" style="width:100%;" id="kategori"' . $disable); ?></td>
                                         </tr>
-                                        <!-- <tr class="hide">
-                                            <td width="20%">Subkategori risiko (T3)</td>
-                                            <td colspan="2"><?= form_dropdown('sub_kategori', $subkategori, ($detail) ? $detail['sub_kategori'] : '', 'class="select2 form-control" style="width:100%;" id="sub_kategori"' . $disable); ?></td>
+                                        <tr class="">
+                                            <td width="20%">Kelompok Risiko (T3)</td>
+                                            <td colspan="2"><?= form_dropdown('sub_kategori', $subkategori, ($detail) ? $detail['sub_kategori'] : '', 'class=" t3 select2 form-control" style="width:100%;" id="sub_kategori"' . $disable); ?></td>
 
-                                        </tr> -->
+                                        </tr>
                                         <tr>
-                                            <td width="20%">Subkategori Risiko</td>
+                                            <td width="20%">Jenis Risiko</td>
                                             <td colspan="2"><?= form_dropdown('subrisiko', $np, ($detail) ? $detail['subrisiko'] : '', 'class="select2 form-control" style="width:100%;" id="subrisiko"' . $disable); ?></td>
                                         </tr>
 
@@ -240,13 +240,12 @@ if ($field['iskri'] == 0) {
                                             <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
                                         </tr>
 
-                
                                         <tr>
-                                            <td width="20%" rowspan="3">Peristiwa (T3)</td>
+                                            <td width="20%" rowspan="3">Sub-Kelompok Risiko (T4)</td>
                                         </tr>
                                         <tr class="peristiwa_lib">
                                             <td>
-                                                <?= form_dropdown('event_no', $cboper, ($detail) ? $detail['event_no'] : '', 'class="eventcombo select2 form-control" style="width:100%;" id="event_no"' . $disable); ?>
+                                                <?= form_dropdown('event_no', $cboper, ($detail) ? $detail['event_no'] : '', 'class="select2 form-control" style="width:100%;" id="event_no"' . $disable); ?>
                                                 <?php if ($detail) {
                                                     // echo form_hidden('event_no', $detail['event_no']);
                                                 } ?>
@@ -280,7 +279,11 @@ if ($field['iskri'] == 0) {
                                                 <tbody>
 
                                                     <?php
-                                                    $risk_couseno_array = explode(',', $risk_couseno1);
+                                                        $couse_lib='hide';
+                                                        if($detail['event_no']){
+                                                        $couse_lib='';
+                                                    }
+                                                     $risk_couseno_array = explode(',', $risk_couseno1);
 
                                                     // Menghapus spasi di sekitar angka
                                                     $risk_couseno_array = array_map('trim', $risk_couseno_array);
@@ -296,7 +299,7 @@ if ($field['iskri'] == 0) {
 
                                                     ?>
 
-                                                        <tr class="couse_lib">
+                                                        <tr class="couse_lib <?=$couse_lib?>">
                                                             <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
                                                             <td>
                                                                 <?= form_dropdown('risk_couse_no[]', $cbogroup, ($couseno) ? $couseno : '', 'class="select2 form-control" style="width:100%;" id="risk_cousenox"' . $disable); ?>
@@ -351,6 +354,10 @@ if ($field['iskri'] == 0) {
                                                 <tbody>
 
                                                     <?php
+                                                       $impect_lib='hide';
+                                                       if($detail['event_no']){
+                                                           $impect_lib='';
+                                                       }
                                                     $risk_impactno = explode(',', $risk_impectno1);
 
                                                     // Menghapus spasi di sekitar angka
@@ -370,7 +377,7 @@ if ($field['iskri'] == 0) {
                                                         // doi::dump($impactno);
                                                     ?>
 
-                                                        <tr class="impect_lib">
+                                                        <tr class="impect_lib <?=$impect_lib?>">
                                                             <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
                                                             <td><?= form_dropdown('risk_impact_no[]', $cbogroup1, ($impactno) ? $impactno : '', 'class="select2 form-control" style="width:100%;" id="impactnox"' . $disable); ?>
                                                             </td>

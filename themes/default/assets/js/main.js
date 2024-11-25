@@ -605,13 +605,13 @@ function cari_ajax_combo(tipe, parent, data, target_combo, url, proses_result, s
 				stopLooding(parent);
 		},
 			error:function(msg){
-			// console.log(msg);
+			console.log(msg);
 			// alert('Season anda')
-			location.reload();
+			// location.reload();
 			// if (sts_loading)
 
-			// 	stopLooding(parent);
-			// pesan_toastr(pesan, 'err', title_msg, 'toast-top-center');
+				stopLooding(parent);
+		  pesan_toastr(pesan, 'err', title_msg, 'toast-top-center');
 		},
 		complate:function(){
 		}

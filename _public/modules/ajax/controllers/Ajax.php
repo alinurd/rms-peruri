@@ -76,6 +76,12 @@ class Ajax extends FrontendController {
 		echo json_encode($x); 
  	}
 	
+	function takstonomi(){
+		$id = $this->input->post('id');
+		$type = $this->input->post('type');
+		$x=$this->data->get_map_takstonomi($type,$id);
+		echo json_encode($x);
+	}
 	function get_rist_type(){
 		$id = $this->input->post('id');
 		$x=$this->data->get_data_type_risk($id);
