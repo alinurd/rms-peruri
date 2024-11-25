@@ -75,10 +75,10 @@ class Rcsa_Context extends BackendController
 		$this->addField(array('field' => 'environment', 'title' => 'Environment', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'legal', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-		$this->set_Close_Tab();
+		$this->set_Close_Tab(); 
 
 		$this->set_Open_Tab('Dokumen Lainnnya');
-		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
+		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf', 'file_random' => false));
 		$this->set_Close_Tab();
 		
 		$this->set_Open_Tab('Kriteria Kemungkinan Risiko ');

@@ -223,19 +223,30 @@ class Dashboard extends BackendController
 
 		// Jika 'kel' pada POST bernilai 'inherent', menambahkan kondisi 'analisis_like_inherent' dan 'analisis_impact_inherent' pada query
 		if ($post['kel'] == 'inherent') {
-			$this->db->where('analisis_like_inherent', $post['like']);
-			$this->db->where('analisis_impact_inherent', $post['impact']);
+			// $this->db->where('analisis_like_inherent', $post['like']);
+			// $this->db->where('analisis_impact_inherent', $post['impact']);
+			$this->db->where('inherent_likelihood', $post['like']);
+			$this->db->where('inherent_impact', $post['impact']);
+			if ($post['bulan'] > 0) {
+				$this->db->where("bulan BETWEEN {$post['bulan']} AND {$post['bulanx']}");
+			}
+
+			if ($post['tahun'] > 0) {
+				$this->db->where('period_no', $post['tahun']);
+			}
 		}
+
+		
 
 		// Jika 'owner' bernilai 0 dan 'kel' adalah 'inherent', mengambil data berdasarkan kondisi tertentu dari tabel _TBL_VIEW_RCSA_DETAIL
 		if ($post['owner'] == 0 && $post['kel'] == 'inherent') {
 			$rows = $this->db->where('sts_propose', 4)
 				->where('urgensi_no', 0)
 				->where('sts_heatmap', '1')
-				->order_by('analisis_like_inherent', 'DESC')
-				->order_by('analisis_impact_inherent', 'DESC')
-				->order_by('analisis_like_residual', 'DESC')
-				->order_by('analisis_impact_residual', 'DESC')
+				->order_by('inherent_likelihood', 'DESC')
+				->order_by('inherent_impact', 'DESC')
+				->order_by('residual_likelihood', 'DESC')
+				->order_by('residual_impact', 'DESC')
 				->get(_TBL_VIEW_RCSA_DETAIL)
 				->result_array();
 
@@ -262,10 +273,10 @@ class Dashboard extends BackendController
 					->where('sts_heatmap', '1')
 					->where('parent_no', $post['owner'])
 					->where('period_no', $post['tahun'])
-					->order_by('analisis_like_inherent', 'DESC')
-					->order_by('analisis_impact_inherent', 'DESC')
-					->order_by('analisis_like_residual', 'DESC')
-					->order_by('analisis_impact_residual', 'DESC')
+					->order_by('inherent_likelihood', 'DESC')
+					->order_by('inherent_impact', 'DESC')
+					->order_by('residual_likelihood', 'DESC')
+					->order_by('residual_impact', 'DESC')
 					->get(_TBL_VIEW_RCSA_DETAIL)
 					->result_array();
 			} else { // Jika level_no bukan 3, menambahkan kondisi untuk 'rcsa_owner_no'
@@ -275,10 +286,10 @@ class Dashboard extends BackendController
 					->where('urgensi_no', 0)
 					->where('sts_heatmap', '1')
 					->where('period_no', $post['tahun'])
-					->order_by('analisis_like_inherent', 'DESC')
-					->order_by('analisis_impact_inherent', 'DESC')
-					->order_by('analisis_like_residual', 'DESC')
-					->order_by('analisis_impact_residual', 'DESC')
+					->order_by('inherent_likelihood', 'DESC')
+					->order_by('inherent_impact', 'DESC')
+					->order_by('residual_likelihood', 'DESC')
+					->order_by('residual_impact', 'DESC')
 					->get(_TBL_VIEW_RCSA_DETAIL)
 					->result_array();
 			}
@@ -394,8 +405,18 @@ class Dashboard extends BackendController
 		}
 
 		if ($post['kel'] == 'residual') {
-			$this->db->where('analisis_like_residual', $post['like']);
-			$this->db->where('analisis_impact_residual', $post['impact']);
+			// $this->db->where('analisis_like_residual', $post['like']);
+			// $this->db->where('analisis_impact_residual', $post['impact']);
+			$this->db->where('residual_likelihood', $post['like']);
+			$this->db->where('residual_impact', $post['impact']);
+
+			if ($post['bulan'] > 0) {
+				$this->db->where("bulan BETWEEN {$post['bulan']} AND {$post['bulanx']}");
+			}
+
+			if ($post['tahun'] > 0) {
+				$this->db->where('period_no', $post['tahun']);
+			}
 			// $this->db->where('residual_level', $post['id']);
 		} else {
 			$this->db->where('risk_level_action', $post['id']);
@@ -404,7 +425,8 @@ class Dashboard extends BackendController
 
 		if ($post['owner'] == 0 && $post['kel'] == 'residual') {
 			// $rows = $this->db->where('sts_propose', 4)->where('urgensi_no', 0)->order_by('analisis_like_inherent', 'DESC')->order_by('analisis_like_residual', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			$rows = $this->db->where('sts_propose', 4)->where('sts_heatmap', '1')->where('urgensi_no', 0)->order_by('analisis_like_residual', 'DESC')->order_by('analisis_impact_residual', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			// $rows = $this->db->where('sts_propose', 4)->where('sts_heatmap', '1')->where('urgensi_no', 0)->order_by('analisis_like_residual', 'DESC')->order_by('analisis_impact_residual', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			$rows = $this->db->where('sts_propose', 4)->where('sts_heatmap', '1')->where('urgensi_no', 0)->order_by('residual_likelihood', 'DESC')->order_by('residual_impact', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		
 
 		} elseif ($post['owner'] == 0 && $post['kel'] == 'residual') {
@@ -412,6 +434,7 @@ class Dashboard extends BackendController
 				->where('bulan <=', $post['bulanx'])->where('period_no', $post['tahun'])->where('risk_level_action', $post['id'])->order_by('residual_analisis_id', 'DESC')->order_by('residual_analisis_id', 'DESC')->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
 		} elseif ($post['owner'] > 0 && $post['kel'] == 'residual') {
 			if ($b == 3) {
+				// $rows = $this->db->where('sts_propose', 4)->where('sts_heatmap', '1')->where('urgensi_no', 0)->where('parent_no', $post['owner'])->where('period_no', $post['tahun'])->order_by('residual_analisis_id', 'DESC')->order_by('residual_analisis_id', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 				$rows = $this->db->where('sts_propose', 4)->where('sts_heatmap', '1')->where('urgensi_no', 0)->where('parent_no', $post['owner'])->where('period_no', $post['tahun'])->order_by('residual_analisis_id', 'DESC')->order_by('residual_analisis_id', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 			} else {
 

@@ -148,14 +148,60 @@ if ($field['iskri'] == 0) {
                 </ul>
             </div>
             <section class="x_panel" style="margin: 0px !important;padding:0px !important;">
-                <div class="x_content">
+                <!-- <div class="x_content">
                     <strong>Peristiwa Risiko : <?= $detail['event_name']; ?></strong>
-                </div>
+                </div> -->
+                
             </section>
             <div class="tab-content">
+                <style>
+                    .card.bg-primary {
+                        position: relative;
+                        background-color: #007bff;
+                        color: white;
+                        border-radius: 4px;
+                        padding: 20px;
+                        overflow: hidden; /* Supaya cahaya tidak keluar dari batas elemen */
+                    }
+
+                    .card.bg-primary::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: -100%; /* Cahaya mulai dari luar elemen */
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+                        animation: slide-right 3s infinite; /* Animasi berjalan ke kanan */
+                    }
+
+                    @keyframes slide-right {
+                        0% {
+                            left: -100%; /* Mulai dari luar sisi kiri elemen */
+                        }
+                        100% {
+                            left: 100%; /* Bergerak ke luar sisi kanan elemen */
+                        }
+                    }
+
+
+
+            
+
+                </style>
+                    <?php if($detail['event_name']) {?>
+                        <div class="card bg-primary">
+                        <div class="card-body">
+                            <h4>
+                            <strong>Peristiwa Risiko : </strong> <?= $detail['event_name']; ?>
+                            </h4>
+                        </div>
+                    </div>
+                    <?php } ?>
                 <div id="identify" class="tab-pane fade in  <?= $identifyact ?>">
                     <!-- <?php doi::dump($detail['pi']); ?>     -->
                     <div class="clearfix"> </div>
+                    
 
                     <?= form_open_multipart(base_url(_MODULE_NAME_REAL_ . '/' . _METHOD_ . '/save'), array('id' => 'form_peristiwa'), ['id_edit' => $id_edit, 'rcsa_no' => $rcsa_no]); ?>
                     <?= form_hidden('tab', 'identify', 'class="form-control text-right" id="tab"'); ?>
@@ -515,11 +561,11 @@ if ($field['iskri'] == 0) {
                                     <input type="hidden" id="id_detail" value="<?=$detail['id']?>">
                                     <!-- Kolom Detail Risiko Inhern -->
                                     <td class="sticky text-center" style="left: 0;">
-                                        <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['analisis_like_inherent'])) ? '' : $analisiData['analisis_like_inherent'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
+                                        <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['inherent_likelihood'])) ? '' : $analisiData['inherent_likelihood'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
                                         <input type="hidden" id="inherent_level" name="inherent_level">
                                     </td>
                                     <td class="sticky text-center" style="left: 67px;">
-                                        <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['analisis_impact_inherent'])) ? '' : $analisiData['analisis_impact_inherent'], 'class="form-control" id="impactAnalisisInheren"'); ?>
+                                        <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['inherent_impact'])) ? '' : $analisiData['inherent_impact'], 'class="form-control" id="impactAnalisisInheren"'); ?>
                                     </td>
                                     <td class="sticky text-center" style="left: 148px;">
                                         <span id="likeAnalisisInherenLabel">
@@ -533,10 +579,10 @@ if ($field['iskri'] == 0) {
 
                                     <!-- Kolom Detail Risiko Residual -->
                                     <td class="sticky text-center" style="left: 200px;">
-                                        <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['analisis_like_residual'])) ? '' : $analisiData['analisis_like_residual'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
+                                        <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['residual_likelihood'])) ? '' : $analisiData['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
                                     </td>
                                     <td class="sticky text-center" style="left: 268px;">
-                                        <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['analisis_impact_residual'])) ? '' : $analisiData['analisis_impact_residual'], 'class="form-control" id="impactAnalisisResidual"'); ?>
+                                        <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['residual_impact'])) ? '' : $analisiData['residual_impact'], 'class="form-control" id="impactAnalisisResidual"'); ?>
                                     </td>
                                     <td class="sticky text-center" style="left: 349px;">
                                         <span id="likeAnalisisResidualLabel">
@@ -550,13 +596,20 @@ if ($field['iskri'] == 0) {
                                     </td>
 
                                     <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                    <?php for ($i = 1; $i <= 12; $i++) { ?>
+
+                                    <?php for ($i = 1; $i <= 12; $i++) { 
+                                        $datatarget = $this->db->where('id_detail', $id_edit)->where('bulan', $i)->get("bangga_analisis_risiko")->row_array();
+
+                                        // Ambil nilai target_like dan target_impact dari $datatarget jika tersedia
+                                        $selected_target_like = !empty($datatarget['target_like']) ? $datatarget['target_like'] : '';
+                                        $selected_target_impact = !empty($datatarget['target_impact']) ? $datatarget['target_impact'] : '';
+                                    ?>
                                         <input type="hidden" name="month" id="month">
                                         <td class="text-center">
-                                            <?php echo form_dropdown('target_like', $cboLike, (empty($target_like[$i-1])) ? '' : $target_like[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
+                                            <?php echo form_dropdown('target_like[]', $cboLike, $selected_target_like, 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
                                         </td>
                                         <td class="text-center">
-                                            <?php echo form_dropdown('target_impact', $cboImpact, (empty($target_impact[$i-1])) ? '' : $target_impact[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
+                                            <?php echo form_dropdown('target_impact[]', $cboImpact, $selected_target_impact, 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
                                         </td>
                                         <td class="text-center">
                                             <span id="targetResidualLabel<?= $i ?>">

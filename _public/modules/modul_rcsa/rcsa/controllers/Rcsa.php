@@ -913,12 +913,13 @@ if($dtkri){
 		
 		$data['cboLike']=$cboLike;
 		$data['cboImpact']=$cboImpact;
-		$data['analisiData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->row_array();
-		$data['target_like']=json_decode($data['analisiData']['target_like']);
-		$data['target_impact']=json_decode($data['analisiData']['target_impact']);
+		$data['analisiData'] = $this->db->where('id', $id_edit)->get("bangga_view_rcsa_detail")->row_array();
+		// $data['targetData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->result_array();
+		// $data['target_like']=json_decode($data['analisiData']['target_like']);
+		// $data['target_impact']=json_decode($data['analisiData']['target_impact']);
 		$data['rcsa_treatment'] = $this->db->where('rcsa_detail_no', $id_edit)->get("bangga_rcsa_treatment")->result_array();
 
-
+		// doi::dump($data['targetData']);
 		$this->template->build('fom_peristiwa', $data);
 
 		// echo json_encode($result);
@@ -1748,16 +1749,18 @@ if($dtkri){
 		$result['combo'] = $this->load->view('tes', $data, true);
 		echo json_encode($result);
 	}
+
 	function simpan_level()
 	{
 
+
 		$post = $this->input->post();
 
-		// $id = $this->data->simpan_risk_level($post);
+		$id = $this->data->simpan_risk_level($post);
 		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
 		$data['field'] = $this->data->get_peristiwa($post['rcsa_no']);
 
-		$tab = 'Berhasil mengisi Analisis Risiko, lanjutkan ke risk evaluasi ?';
+		$tab = 'Berhasil mengisi risk evaluation, lanjutkan ke risk treatment ?';
 
 
 		$this->session->set_flashdata('tab', $tab);
@@ -2202,44 +2205,53 @@ if($dtkri){
 
 	public function simpan_analisis(){
 		$post = $this->input->post();
-		
-		$upd['analisis_like_inherent'] = $post['analisis_like_inherent'];
-		$upd['analisis_impact_inherent'] = $post['analisis_impact_inherent'];
-		$upd['analisis_like_residual'] = $post['analisis_like_residual'];
-		$upd['analisis_impact_residual'] = $post['analisis_impact_residual'];
-		$updPI['inherent_likelihood'] = $post['analisis_like_inherent'];
-		$updPI['inherent_impact'] 	= $post['analisis_impact_inherent'];
-		$updPI['residual_likelihood'] = $post['analisis_like_residual'];
-		$updPI['residual_impact'] = $post['analisis_impact_residual'];
-		$upd['target_impact'] = json_encode($post['target_impact']);
-		$upd['target_like'] = json_encode($post['target_like']);
-		$analisis = $this->db->where('id_detail', $post['id_detail'])->get('bangga_analisis_risiko')->row_array();
+		$updPI['inherent_likelihood'] 		= $post['analisis_like_inherent'];
+		$updPI['inherent_impact'] 			= $post['analisis_impact_inherent'];
+		$updPI['residual_likelihood'] 		= $post['analisis_like_residual'];
+		$updPI['residual_impact'] 			= $post['analisis_impact_residual'];
+		$updPI['inherent_level'] 			= $post['inherent_level'];
+		$updPI['residual_level'] 			= $post['residual_level'];
+		$updPI['update_user'] 				= $this->authentication->get_info_user('username');
 		$res=false;
 		$add=false;
- 		if ($analisis) {
- 			$upd['update_by'] = $this->authentication->get_info_user('username');
-			 $updPI['inherent_level'] = $post['inherent_level'];
-			 $updPI['residual_level'] = $post['residual_level'];
-			 $updPI['update_user'] = $this->authentication->get_info_user('username');
-			 $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updPI, 'where' => array('id' => $post['id_detail']), 'type' => 'update'));
-			 $res= $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $upd, 'where' => array('id_detail' => $post['id_detail']), 'type' => 'update'));
-		} else {
-			$updPI['pi'] = 3;
-			$updPI['inherent_level'] = $post['inherent_level'];
-			$updPI['residual_level'] = $post['residual_level'];
-			$updPI['update_user'] = $this->authentication->get_info_user('username');
- 			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updPI, 'where' => array('id' => $post['id_detail']), 'type' => 'update'));
-			$upd['id_detail'] = $post['id_detail'];
-			$upd['create_by'] = $this->authentication->get_info_user('username');
-			$res=$this->crud->crud_data(['table' => 'bangga_analisis_risiko', 'field' => $upd, 'type' => 'add']);
-			$add=true;
-		}
-		$result['sts'] = $res;
-		$result['add'] = $add;
 
-		$result['post'] = $post;
-		echo json_encode($result);
+			foreach ($post['month'] as $key => $month) {
+				$target_impact 	= isset($post['target_impact'][$key]) ? $post['target_impact'][$key] : null;
+				$target_like 	= isset($post['target_like'][$key]) ? $post['target_like'][$key] : null;
+		
+				// Memeriksa apakah data bulan sudah ada di tabel analisis_risiko
+				$cek_data = $this->db->where('id_detail', $post['id_detail'])
+									->where('bulan', $month)
+									->get('bangga_analisis_risiko')
+									->row_array();
+		
+				if ($cek_data) {
+					$update_bulan = [
+						'target_impact' => $target_impact,
+						'target_like' 	=> $target_like
+					];
+					$update_bulan['update_by'] = $this->authentication->get_info_user('username');
+					$res = $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $update_bulan, 'where' => array('id_detail' => $post['id_detail'], 'bulan' => $month), 'type' => 'update'));
+				} else {
+					$upd = [
+						'id_detail' 	=> $post['id_detail'],
+						'bulan' 		=> $month,
+						'target_impact' => $target_impact,
+						'target_like' 	=> $target_like
+					];
+					$updPI['pi'] = 3;
+					$upd['create_by'] 			= $this->authentication->get_info_user('username');
+					$res = $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $upd, 'type' => 'add'));
+				}
+			}
+			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updPI, 'where' => array('id' => $post['id_detail']), 'type' => 'update'));
+			$result['sts'] = $res;
+			$result['add'] = $add;
+
+			$result['post'] = $post;
+			echo json_encode($result);
 	}
+	
 	public function simpan_treatment(){
 		$post = $this->input->post();
 		

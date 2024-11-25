@@ -147,7 +147,7 @@ if ($parent['sts_propose'] == 5) {
                                 ->get('bangga_level')->row_array();
                                 // doi::dump($inherent_level);
 
-                            if ($ros['analisis_like_inherent'] > 0) : ?>
+                            if ($ros['inherent_level'] > 0) : ?>
 
                                 <span id="inherent_level_label">
                                     <span style="background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;">&nbsp; <?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;<?= $inherent_level['level_mapping']; ?>&nbsp;</span>
@@ -175,7 +175,7 @@ if ($parent['sts_propose'] == 5) {
                         </td>
                         <td class="edit text-center  pointer">
                             <?php
-                            if ($ros['analisis_like_residual'] > 0) : ?>
+                            if ($ros['residual_level'] > 0) : ?>
                                 <span id="residual_level_label">
                                     <span style="background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;">&nbsp; <?= $like['code']; ?> x <?= $impact['code']; ?>&nbsp;<?= $residual_level['level_mapping']; ?>&nbsp;</span>
                                 </span>
