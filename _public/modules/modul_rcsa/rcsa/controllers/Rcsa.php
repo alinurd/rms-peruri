@@ -888,6 +888,7 @@ if($dtkri){
 		$data['subkategori'] = [0=>lang('msg_cbo_select')];
 		$data['tema'] = $this->get_combo('library_t1');
 		$cbogroup = [0=>lang('msg_cbo_select')];
+		$cbogroup1 = [0=>lang('msg_cbo_select')];
 		if($detail['sub_kategori']){
 			$data['cboper'] = $this->get_combo('tasktonimi', 't4', $detail['sub_kategori']);
 		}
@@ -898,7 +899,8 @@ if($dtkri){
 			$data['subkategori'] = $this->get_combo('tasktonimi', 't3', $detail['kategori_no']);
 		}
 		if($detail['event_no']){
-			$cbogroup = $this->get_combo('tasktonimi', 't4', $detail['event_no']);
+ 			$cbogroup = $this->get_combo('tasktonimi',['t5', 'cause', $detail['event_no']] );
+			$cbogroup1 = $this->get_combo('tasktonimi',['t5', 'impact', $detail['event_no']] );
 		}
 
 		$data['satuan'] = $this->get_combo('data-combo', 'satuan');
@@ -909,8 +911,7 @@ if($dtkri){
 		$data['inp_couse'] = form_input('', '', ' id="new_cause[]" name="new_cause[]" class="form-control" placeholder="Input Risk Couse Baru"');
 		$data['lib_couse'] = form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="form-control select2" id="risk_couseno');
 
-		$cbogroup1 = $this->get_combo('library', 3);
-		$data['cbogroup1'] = $cbogroup1;
+ 		$data['cbogroup1'] = $cbogroup1;
 		$data['inp_impact'] = form_input('', '', ' id="new_impact[]" name="new_impact[]" class="form-control" placeholder="Input Risk Impact Baru"');
 		$data['cbbii'] = form_dropdown('new_impact_no[]', $cbogroup1, '', 'class="form-control select2"');
 		

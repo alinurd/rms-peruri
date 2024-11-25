@@ -100,6 +100,15 @@ class MX_Model extends CI_Model
 				}elseif($param=='t4'){
 					$tbl='library';
 					$param=1;
+				}elseif($param[0]=='t5'){
+					$where = "";
+					if($param[1]){
+						$where = "where child_type='" . $param[1] . "'";
+					}
+					if($param[2]){
+						$where.= "and event_no='" . $param[2] . "'";
+					}
+					$query = "SELECT  child_id as id, child_description as name FROM " . _TBL_VIEW_MAP_LIBRARY . " {$where} order by child_code";
 				}
 				if($tbl=="library"){
 					if($param2){
