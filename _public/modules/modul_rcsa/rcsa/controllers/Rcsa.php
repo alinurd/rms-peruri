@@ -887,7 +887,7 @@ if($dtkri){
 		$data['kategori'] = [0=>lang('msg_cbo_select')];
 		$data['subkategori'] = [0=>lang('msg_cbo_select')];
 		$data['tema'] = $this->get_combo('library_t1');
-
+		$cbogroup = [0=>lang('msg_cbo_select')];
 		if($detail['sub_kategori']){
 			$data['cboper'] = $this->get_combo('tasktonimi', 't4', $detail['sub_kategori']);
 		}
@@ -897,11 +897,14 @@ if($dtkri){
 		if($detail['kategori_no']){
 			$data['subkategori'] = $this->get_combo('tasktonimi', 't3', $detail['kategori_no']);
 		}
+		if($detail['event_no']){
+			$cbogroup = $this->get_combo('tasktonimi', 't4', $detail['event_no']);
+		}
 
 		$data['satuan'] = $this->get_combo('data-combo', 'satuan');
 	 
 
-		$cbogroup = $this->get_combo('library', 2);
+	
 		$data['cbogroup'] = $cbogroup;
 		$data['inp_couse'] = form_input('', '', ' id="new_cause[]" name="new_cause[]" class="form-control" placeholder="Input Risk Couse Baru"');
 		$data['lib_couse'] = form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="form-control select2" id="risk_couseno');
@@ -1719,8 +1722,7 @@ if($dtkri){
 
 
 			$id = $this->data->simpan_risk_event($post);
-			doi::dump($id);
-			$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
+ 			$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
 			$data['field'] = $this->data->get_peristiwa($post['rcsa_no']);
 
 

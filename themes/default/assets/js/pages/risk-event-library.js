@@ -17,7 +17,7 @@ $(function(){
 
 		var data = { 'type': type, 'id': nilai };
  		var url = "ajax/takstonomi";
-		cari_ajax_combo("post", parent, data, target_combo, url, 'takstonomi');
+		cari_ajax_combo("post", parent, data, target_combo, url);
 	});
 	
 

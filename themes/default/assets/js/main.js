@@ -596,7 +596,7 @@ function cari_ajax_combo(tipe, parent, data, target_combo, url, proses_result, s
 		data:data,
 		dataType: "json",
 		success:function(result){
-			if (proses_result.length==0 || proses_result.length>0)	
+			if (proses_result.length==0)	
 				target_combo.html(result.combo)
 			else
 				window[proses_result](result);

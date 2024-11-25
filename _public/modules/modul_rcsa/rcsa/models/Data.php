@@ -639,10 +639,10 @@ $msg="risk impcat yang anda masukan sudah ada";
 
 			// $rows = $this->db->where('rcsa_detail_no', $data['id_edit_baru'])->get('bangga_rcsa_event_sementara')->row_array();
 
-			doi::dump("save baru");
-			doi::dump($cek_error);
-			doi::dump('id_edit ' . $id);
-			doi::dump($upd);
+			// doi::dump("save baru");
+			// doi::dump($cek_error);
+			// doi::dump('id_edit ' . $id);
+			// doi::dump($upd);
 
 			// // Contoh:
 			// if ($id > 0
