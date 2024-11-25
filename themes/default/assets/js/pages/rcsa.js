@@ -80,10 +80,23 @@ $(function () {
     }
 
     var event_no = $("#event_no").val();
-    $("#add_cause_news").hide();
-    $("#add_impact_news").hide();
+     if(event_no>0){
+      $("#add_cause_newsx").hide();
+      $("#risk_cousenox").hide();
+      $("#add_impactx").hide();
+      $("#add_impact").hide();
+      $("#add_cause_news").show();
+      $("#add_impact_news").show();
+    }else{
+      $("#add_impactx").show();
+      $("#risk_cousenox").show();
+      $("#add_cause_newsx").show();
+      $("#add_cause_news").hide();
+      $("#add_impact_news").hide();
+    }
+   
 
-    $("#add_cause_newsx").show();
+   
 
     var parent = $(this).parent();
     var kategori = $("#kategori").val();
@@ -114,7 +127,7 @@ $(function () {
     $("#add_impactx").hide();
   });
   $(document).on("click", "#add_cause_newsx, #add_impactx", function () {
-    alert("Pilih Peristiwa (T3) Terlebih dahulu");
+    alert(" Pilih Sub-Kelompok Risiko (T4) Terlebih dahulu");
   });
 
   $(document).on("click", "#kriok", function () {

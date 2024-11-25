@@ -279,7 +279,11 @@ if ($field['iskri'] == 0) {
                                                 <tbody>
 
                                                     <?php
-                                                    $risk_couseno_array = explode(',', $risk_couseno1);
+                                                        $couse_lib='hide';
+                                                        if($detail['event_no']){
+                                                        $couse_lib='';
+                                                    }
+                                                     $risk_couseno_array = explode(',', $risk_couseno1);
 
                                                     // Menghapus spasi di sekitar angka
                                                     $risk_couseno_array = array_map('trim', $risk_couseno_array);
@@ -295,7 +299,7 @@ if ($field['iskri'] == 0) {
 
                                                     ?>
 
-                                                        <tr class="couse_lib">
+                                                        <tr class="couse_lib <?=$couse_lib?>">
                                                             <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
                                                             <td>
                                                                 <?= form_dropdown('risk_couse_no[]', $cbogroup, ($couseno) ? $couseno : '', 'class="select2 form-control" style="width:100%;" id="risk_cousenox"' . $disable); ?>
@@ -350,6 +354,10 @@ if ($field['iskri'] == 0) {
                                                 <tbody>
 
                                                     <?php
+                                                       $impect_lib='hide';
+                                                       if($detail['event_no']){
+                                                           $impect_lib='';
+                                                       }
                                                     $risk_impactno = explode(',', $risk_impectno1);
 
                                                     // Menghapus spasi di sekitar angka
@@ -369,7 +377,7 @@ if ($field['iskri'] == 0) {
                                                         // doi::dump($impactno);
                                                     ?>
 
-                                                        <tr class="impect_lib">
+                                                        <tr class="impect_lib <?=$impect_lib?>">
                                                             <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
                                                             <td><?= form_dropdown('risk_impact_no[]', $cbogroup1, ($impactno) ? $impactno : '', 'class="select2 form-control" style="width:100%;" id="impactnox"' . $disable); ?>
                                                             </td>
