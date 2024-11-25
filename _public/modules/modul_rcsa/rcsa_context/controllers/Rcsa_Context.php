@@ -67,7 +67,7 @@ class Rcsa_Context extends BackendController
 		$this->addField(array('field' => 'stakeholder_internal', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
 
-		$this->set_Open_Tab('Isu External');
+		$this->set_Open_Tab('Isu Eksternal');
 		$this->addField(array('field' => 'politics', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'economics', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'social', 'input' => 'multitext', 'size' => 10000));
