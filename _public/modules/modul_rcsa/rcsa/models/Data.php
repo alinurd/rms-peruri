@@ -401,6 +401,9 @@ class Data extends MX_Model
 				$updlib['type'] = 1;
 				$updlib['status'] = 1;
 				$updlib['kategori_risiko'] = $data['kategori'];
+				$updlib['t1'] = $data['tema'];
+				$updlib['t2'] = $data['kategori'];
+				$updlib['t3'] = $data['sub_kategori'];
 
 				$updlib['create_user'] = $this->authentication->get_info_user('username');
 
@@ -472,9 +475,9 @@ class Data extends MX_Model
 							$saveUpdx1 = $this->crud->crud_data(['table' => 'bangga_library_detail', 'field' => $updetail, 'type' => 'add']);
 							$error1 = $this->db->error();
 							// doi::dump('saveUpdx1' . $error1);
-							if (!empty($error)) {
-								echo "Error: " . $error['message'];
-							}
+							// if (!empty($error)) {
+							// 	echo "Error: " . $error['message'];
+							// }
 						}
 					} else {
 						$tab['id'] = 201;
