@@ -235,8 +235,7 @@ class Lost_Event_Database extends BackendController
     // Description: Saves loss event data to the database
     // ==========================================
     function simpan_lost_event() {
-        doi::dump('ok');
-        // $post = $this->input->post();
+        $post = $this->input->post();
         // $result[] = "";     
         // // Check if the data already exists in tbl_library
         // $this->db->select('id');
@@ -248,9 +247,9 @@ class Lost_Event_Database extends BackendController
         //     $result['status'] = 1;
         // } else{
         //     $this->data->simpan_lost_event($post,$_FILES);
-        //     $result['status'] = 0;
+            $result['status'] = 0;
         // }
-        // echo json_encode($result);
+        echo json_encode($result);
     } 
 
     public function get_mitigasi() {
