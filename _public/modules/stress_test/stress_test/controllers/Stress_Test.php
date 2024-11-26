@@ -61,67 +61,61 @@ class Stress_Test extends BackendController
 	}
 
 	public function get_warna()
-	{
-		// Ambil data dari POST
-		$post = $this->input->post();
+{
+    // Ambil data dari POST
+    $post = $this->input->post();
 
-		// Validasi input: pastikan 'id' dan salah satu dari 'best', 'base', atau 'worst' ada
-		if (!isset($post['id']) || (!isset($post['best']) && !isset($post['base']) && !isset($post['worst']))) {
-			echo json_encode(['status' => 'error', 'message' => 'Parameter tidak lengkap']);
-			return;
-		}
+    // Validasi input: pastikan 'id' dan salah satu dari 'best', 'base', atau 'worst' ada
+    if (!isset($post['id']) || (!isset($post['best']) && !isset($post['base']) && !isset($post['worst']))) {
+        echo json_encode(['status' => 'error', 'message' => 'Parameter tidak lengkap']);
+        return;
+    }
 
-		// Konversi tipe data input
-		$id     = intval($post['id']); // Pastikan 'id' menjadi integer
-		$type   = isset($post['best']) ? 'best' : (isset($post['base']) ? 'base' : 'worst'); // Tentukan tipe berdasarkan parameter yang ada
-		$value  = floatval($post[$type]); // Ambil nilai berdasarkan tipe yang ditentukan dan konversikan ke float
+    // Konversi tipe data input
+    $id     = intval($post['id']); // Pastikan 'id' menjadi integer
+    $type   = isset($post['best']) ? 'best' : (isset($post['base']) ? 'base' : 'worst'); // Tentukan tipe berdasarkan parameter yang ada
+    $value  = str_replace('.', '', $post[$type]); // Menghapus titik sebagai pemisah ribuan
+    $value  = str_replace(',', '.', $value); // Mengganti koma dengan titik desimal
+    $value  = floatval($value); // Konversikan menjadi float
 
-		// Ambil data dari database berdasarkan 'id'
-		$res = $this->db->where('id', $id)
-						->get('bangga_indikator_stress_test_detail')
-						->row_array();
+    // Ambil data dari database berdasarkan 'id'
+    $res = $this->db->where('id', $id)
+                    ->get('bangga_indikator_stress_test_detail')
+                    ->row_array();
 
-		// Periksa apakah data ditemukan
-		if (empty($res)) {
-			echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan']);
-			return;
-		}
+    // Periksa apakah data ditemukan
+    if (empty($res)) {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan']);
+        return;
+    }
 
-		
-		// Ambil nilai 'rkap' dari hasil query dan tentukan kondisi
-		$rkap = floatval($res['rkap']); // Ambil nilai rkap dan pastikan dalam bentuk float
+    // Ambil nilai 'rkap' dari hasil query dan tentukan kondisi
+    $rkap = str_replace('.', '', $res['rkap']); // Menghapus titik dari 'rkap'
+    $rkap = str_replace(',', '.', $rkap); // Mengganti koma dengan titik desimal
+    $rkap = floatval($rkap); // Konversikan menjadi float
 
+    // Tentukan hasil berdasarkan perbandingan antara $value dan $rkap
+    if ($value < $rkap) {
+        $result = $res['kurang']; // Ambil hasil jika value lebih kecil dari rkap
+        $warna  = $res['color_kurang']; // Ambil warna jika value lebih kecil dari rkap
+    } elseif ($value == $rkap) {
+        $result = $res['sama']; // Ambil hasil jika value sama dengan rkap
+        $warna  = $res['color_sama']; // Ambil warna jika value sama dengan rkap
+    } else {
+        $result = $res['lebih']; // Ambil hasil jika value lebih besar dari rkap
+        $warna  = $res['color_lebih']; // Ambil warna jika value lebih besar dari rkap
+    }
 
-		if (preg_match('/\d{1,3}(\.\d{3})+/', $rkap)) {
-			$rkap = str_replace('.','',$rkap);
-			if (preg_match('/\d{1,3}(\.\d{3})+/', $value)) {
-				$value = str_replace('.','',$value);
-			}
-		}
-		// Tentukan hasil berdasarkan perbandingan antara $value dan $rkap
-		if ($value < $rkap) {
-			$result = $res['kurang']; // Ambil hasil jika value lebih kecil dari rkap
-			$warna  = $res['color_kurang']; // Ambil warna jika value lebih kecil dari rkap
-		} elseif ($value == $rkap) {
-			$result = $res['sama']; // Ambil hasil jika value sama dengan rkap
-			$warna  = $res['color_sama']; // Ambil warna jika value sama dengan rkap
-		} else {
-			$result = $res['lebih']; // Ambil hasil jika value lebih besar dari rkap
-			$warna  = $res['color_lebih']; // Ambil warna jika value lebih besar dari rkap
-		}
+    // Format hasil sebagai respons JSON
+    echo json_encode([
+        'status' => 'success',
+        'result' => $result,  // Menambahkan hasil perbandingan
+        'warna'  => $warna,   // Menambahkan warna hasil perbandingan
+        'type'   => $type,    // Menambahkan tipe parameter (best, base, atau worst)
+        'id'     => $id       // Menambahkan id untuk referensi
+    ]);
+}
 
-		// Format hasil sebagai respons JSON
-		echo json_encode([
-			'status' => 'success',
-			'result' => $result,  // Menambahkan hasil perbandingan
-			'warna'  => $warna,   // Menambahkan warna hasil perbandingan
-			'type'   => $type,    // Menambahkan tipe parameter (best, base, atau worst)
-			'id'     => $id       // Menambahkan id untuk referensi
-		]);
-
-	
-
-	}
 
  
 
