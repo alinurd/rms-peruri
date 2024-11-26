@@ -236,19 +236,23 @@ class Lost_Event_Database extends BackendController
     // ==========================================
     function simpan_lost_event() {
         $post = $this->input->post();
-        // $result[] = "";     
-        // // Check if the data already exists in tbl_library
-        // $this->db->select('id');
-        // $this->db->from(_TBL_LIBRARY);
-        // $this->db->where('description', $post['nama_event']);
-        // $query = $this->db->get();
-        // $result = $query->result_array();
-        // if (count($result) > 0) {
-        //     $result['status'] = 1;
-        // } else{
-        //     $this->data->simpan_lost_event($post,$_FILES);
+        $result[] = "";     
+        // Check if the data already exists in tbl_library
+        $this->db->select('id');
+        $this->db->from(_TBL_LIBRARY);
+        $this->db->where('description', $post['nama_event']);
+        $query = $this->db->get();
+        $result = $query->result_array();
+        if (count($result) > 0) {
+            $result['status'] = 1;
+        } else{
+            $this->data->simpan_lost_event($post);
             $result['status'] = 0;
-        // }
+        }
+       
+            
+        
+        
         echo json_encode($result);
     } 
 
