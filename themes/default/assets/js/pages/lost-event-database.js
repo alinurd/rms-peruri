@@ -237,7 +237,7 @@ $(function () {
       }
 
       // Using cari_ajax_combo to send the FormData
-      const url = modul_name + "/simpan_lost_event";
+      const url = modul_name + "/simpan-lost-event";
       cari_ajax_combo_file(
         "post", // HTTP method
         $(this).parent(), // Context element
