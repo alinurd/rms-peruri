@@ -573,7 +573,7 @@ $msg="risk impcat yang anda masukan sudah ada";
 		}
 		// field baru
 		$upd['risk_asumsi_perhitungan_dampak'] = $data['risk_asumsi_perhitungan_dampak'];
-		$upd['rcm_id'] = $data['proses_bisnis'];
+		$upd['proses_bisnis'] = $data['proses_bisnis'];
 		// $upd['sts_heatmap'] = $data['sts_heatmap'];
 
 		$upd['risk_impact_kuantitatif'] = str_replace(',', '', $data['risk_impact_kuantitatif']);
@@ -679,7 +679,7 @@ $msg="risk impcat yang anda masukan sudah ada";
 		// $upd['residual_impact'] = $data['residual_impact'];
 		$upd['risk_level'] = $data['residual_impact'];
 		// $upd['residual_level'] = $data['residual_level'];
-		$upd['note_control'] = $data['note_control'];
+		$upd['note_control'] = json_encode($data['note_control']);
 		$upd['coa'] = str_replace(',', '', $data['coa']);
 
 		$upd['keterangan_coa'] = $data['keterangan_coa'];
@@ -692,8 +692,8 @@ $msg="risk impcat yang anda masukan sudah ada";
 				$check_item[] = $row;
 			}
 		}
-		$upd['control_no'] = json_encode($check_item);
-		doi::dump($data['id_edit_baru']);
+		// $upd['control_no'] = json_encode($check_item);
+		// doi::dump($data['id_edit_baru']);
 		if (intval($data['id_edit_baru']) != 0) {
 			$upd['update_user'] = $this->authentication->get_info_user('username');
 			$where['id'] = $data['id_edit'];
@@ -701,99 +701,232 @@ $msg="risk impcat yang anda masukan sudah ada";
 			$id = intval($data['id_edit_baru']);
 			$cek_error = $this->db->error();
 
-			// $updkri['update_user'] = $this->authentication->get_info_user('username');
-			// $wherekri['rcsa_detail']=$data['id_edit'];
-			// $result=$this->crud->crud_data(array('table'=> 'bangga_kri', 'field'=> $updkri,'where'=>array('rcsa_detail'=>$data['id_edit']),'type'=>'update'));
-
-			// doi::dump($cek_error);
-			// doi::dump('id_edit ' . $id);
 		}
 
 		// die('cek');
 		return $id;
 	}
 
-	function simpan_mitigasi($data) {
+	// function simpan_mitigasi($data) {
 
-		$upd = [];
-		$updx['pi'] = 6;
-		$upd['iskri'] = 1;
-		$upd['rcsa_detail_no'] = $data['id_detail'];
-		$upd['proaktif'] = $data['proaktif'];
+	// 	$upd = [];
+	// 	$updx['pi'] = 6;
+	// 	$upd['iskri'] = 1;
+	// 	$upd['rcsa_detail_no'] = $data['id_detail'];
+	// 	$upd['proaktif'] = $data['proaktif'];
 	
-		// Cek kondisi edit atau add
-		if ((int)$data['id_edit_mitigasi'] > 0) {
-			// Jika edit, tambahkan informasi pengguna yang melakukan update
-			$upd['update_user'] = $this->authentication->get_info_user('username');
-			$upd['update_date'] = Doi::now();
-			$where = ['id' => $data['id_edit_mitigasi']];
-			$kri['aktif'] = 1;
-			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updx, 'where' => array('id' => $data['id_detail']), 'type' => 'update'));
-			$this->crud->crud_data(array('table' => _TBL_KRI, 'field' => $kri, 'where' => array('rcsa_detail' => $data['id_detail']), 'type' => 'update'));
+	// 	// Cek kondisi edit atau add
+	// 	if ((int)$data['id_edit_mitigasi'] > 0) {
+	// 		// Jika edit, tambahkan informasi pengguna yang melakukan update
+	// 		$upd['update_user'] = $this->authentication->get_info_user('username');
+	// 		$upd['update_date'] = Doi::now();
+	// 		$where = ['id' => $data['id_edit_mitigasi']];
+	// 		$kri['aktif'] = 1;
+	// 		$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updx, 'where' => array('id' => $data['id_detail']), 'type' => 'update'));
+	// 		$this->crud->crud_data(array('table' => _TBL_KRI, 'field' => $kri, 'where' => array('rcsa_detail' => $data['id_detail']), 'type' => 'update'));
 			
-			// Update data utama mitigasi
-			$result = $this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upd, 'where' => $where, 'type' => 'update']);
-			$id = intval($data['id_edit_mitigasi']);
-			$type = "edit";
-		} else {
-			// Jika add, tambahkan informasi pengguna yang membuat data baru
-			$upd['create_user'] = $this->authentication->get_info_user('username');
-			// Insert data utama mitigasi
-			$id = $this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upd, 'type' => 'add']);
-			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updx, 'where' => array('id' => $data['id_detail']), 'type' => 'update'));
-			$id = $this->db->insert_id();
-			$type = "add";
-		}
+	// 		// Update data utama mitigasi
+	// 		$result = $this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upd, 'where' => $where, 'type' => 'update']);
+	// 		$id = intval($data['id_edit_mitigasi']);
+	// 		$type = "edit";
+	// 	} else {
+	// 		// Jika add, tambahkan informasi pengguna yang membuat data baru
+	// 		$upd['create_user'] = $this->authentication->get_info_user('username');
+	// 		// Insert data utama mitigasi
+	// 		$id = $this->crud->crud_data(['table' => _TBL_RCSA_ACTION, 'field' => $upd, 'type' => 'add']);
+	// 		$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updx, 'where' => array('id' => $data['id_detail']), 'type' => 'update'));
+	// 		$id = $this->db->insert_id();
+	// 		$type = "add";
+	// 	}
 	
-		// Insert atau update data bulanan satu per satu
-		$bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-		foreach ($bulan as $key => $nama_bulan) {
-			$index = $key + 1;
+	// 	// Insert atau update data bulanan satu per satu
+	// 	$bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+	// 	foreach ($bulan as $key => $nama_bulan) {
+	// 		$index = $key + 1;
 	
-			// Mengambil nilai progress dan damp loss atau memberikan nilai default
-			$target_progress = isset($data["target_progress{$index}"]) ? (int) $data["target_progress{$index}"] : 0;
-			$target_damp_loss = isset($data["target_damp_loss{$index}"]) ? str_replace(',', '', $data["target_damp_loss{$index}"]) : 0;
+	// 		// Mengambil nilai progress dan damp loss atau memberikan nilai default
+	// 		$target_progress = isset($data["target_progress{$index}"]) ? (int) $data["target_progress{$index}"] : 0;
+	// 		$target_damp_loss = isset($data["target_damp_loss{$index}"]) ? str_replace(',', '', $data["target_damp_loss{$index}"]) : 0;
 	
-			// Hanya insert atau update jika salah satu nilai diisi
-			if ($target_progress || $target_damp_loss) {
-				$data_bulanan = [
-					'bulan'                => $index,
-					'target_progress_detail' => $target_progress,
-					'target_damp_loss'     => $target_damp_loss,
-					'rcsa_detail_no'       => $data['id_detail'],
-					'rcsa_no'              => $data['rcsa_no'],
-					'update_user'          => $this->authentication->get_info_user('username')
-				];
+	// 		// Hanya insert atau update jika salah satu nilai diisi
+	// 		if ($target_progress || $target_damp_loss) {
+	// 			$data_bulanan = [
+	// 				'bulan'                => $index,
+	// 				'target_progress_detail' => $target_progress,
+	// 				'target_damp_loss'     => $target_damp_loss,
+	// 				'rcsa_detail_no'       => $data['id_detail'],
+	// 				'rcsa_no'              => $data['rcsa_no'],
+	// 				'update_user'          => $this->authentication->get_info_user('username')
+	// 			];
 	
-				// Cek apakah data bulanan untuk bulan ini sudah ada
-				$existing_data = $this->db->get_where('bangga_rcsa_treatment', [
-					'rcsa_detail_no' => $data['id_detail'],
-					'bulan' => $index
-				])->row();
+	// 			// Cek apakah data bulanan untuk bulan ini sudah ada
+	// 			$existing_data = $this->db->get_where('bangga_rcsa_treatment', [
+	// 				'rcsa_detail_no' => $data['id_detail'],
+	// 				'bulan' => $index
+	// 			])->row();
 	
-				if ($existing_data) {
-					// Jika data bulan sudah ada, lakukan update
-					$this->crud->crud_data([
-						'table' => 'bangga_rcsa_treatment',
-						'field' => $data_bulanan,
-						'where' => ['id' => $existing_data->id],
-						'type' => 'update'
-					]);
-				} else {
-					// Jika data bulan belum ada, lakukan insert
-					$data_bulanan['create_user'] = $this->authentication->get_info_user('username');
-					$this->crud->crud_data([
-						'table' => 'bangga_rcsa_treatment',
-						'field' => $data_bulanan,
-						'type' => 'add'
-					]);
+	// 			if ($existing_data) {
+	// 				// Jika data bulan sudah ada, lakukan update
+	// 				$this->crud->crud_data([
+	// 					'table' => 'bangga_rcsa_treatment',
+	// 					'field' => $data_bulanan,
+	// 					'where' => ['id' => $existing_data->id],
+	// 					'type' => 'update'
+	// 				]);
+	// 			} else {
+	// 				// Jika data bulan belum ada, lakukan insert
+	// 				$data_bulanan['create_user'] = $this->authentication->get_info_user('username');
+	// 				$this->crud->crud_data([
+	// 					'table' => 'bangga_rcsa_treatment',
+	// 					'field' => $data_bulanan,
+	// 					'type' => 'add'
+	// 				]);
+	// 			}
+	// 		}
+	// 	}
+		
+	// 	// Doi::dump($id)
+	// 	return $id;
+	// }
+
+	function simpan_mitigasi($data) {
+		// Data utama untuk update RCSA detail
+		$updx = [
+			'pi' => 6
+		];
+	
+		// Data umum mitigasi
+		$upd = [
+			'iskri' => 1,
+			'rcsa_detail_no' => $data['id_detail'],
+			'update_user' => $this->authentication->get_info_user('username'),
+			'update_date' => Doi::now(),
+		];
+	
+		// Proses data per baris
+		foreach ($data['target_progress'] as $row_index => $progress_row) {
+			$rencana_value = isset($data['rencana'][$row_index]) ? strtolower($data['rencana'][$row_index]) : '';
+	
+			// Set nilai proaktif dan reaktif berdasarkan rencana
+			if ($rencana_value === 'proaktif') {
+				$upd['proaktif'] = $data['proaktif'][$row_index];
+				$upd['reaktif'] = '';
+			} elseif ($rencana_value === 'reaktif') {
+				$upd['proaktif'] = '';
+				$upd['reaktif'] = $data['reaktif'][$row_index]; // Ganti dengan 'reaktif' jika ada
+			} else {
+				$upd['proaktif'] = $data['proaktif'][$row_index];
+				$upd['reaktif'] = $data['reaktif'][$row_index]; // Ganti dengan 'reaktif' jika ada
+			}
+	
+			// Update atau tambah data mitigasi untuk baris ini
+			if ((int)$data['id_edit_mitigasi'] > 0 && isset($data['id_action'][$row_index])) {
+				// Jika mode edit
+				$where = ['id' => $data['id_action'][$row_index]];
+				$kri = ['aktif' => 1];
+	
+				// Update data utama mitigasi
+				$this->crud->crud_data([
+					'table' => _TBL_RCSA_DETAIL,
+					'field' => $updx,
+					'where' => ['id' => $data['id_detail']],
+					'type' => 'update'
+				]);
+	
+				$this->crud->crud_data([
+					'table' => _TBL_KRI,
+					'field' => $kri,
+					'where' => ['rcsa_detail' => $data['id_detail']],
+					'type' => 'update'
+				]);
+	
+				// Hapus data yang tidak ada dalam array $ids_to_keep
+				$this->db->where('rcsa_detail_no', $data['id_detail']);
+				$this->db->where_not_in('id', $data['id_action']);
+				$ids_to_delete = $this->db->select('id')->get(_TBL_RCSA_ACTION)->result_array();
+	
+				// Lakukan operasi delete
+				if (!empty($ids_to_delete)) {
+					$this->db->where_in('id', array_column($ids_to_delete, 'id'));
+					$this->db->delete(_TBL_RCSA_ACTION);
+	
+					// Hapus dari tabel bangga_rcsa_treatment
+					$this->db->where_in('id_rcsa_action', array_column($ids_to_delete, 'id'));
+					$this->db->delete('bangga_rcsa_treatment');
+				}
+	
+				// Update mitigasi
+				$this->crud->crud_data([
+					'table' => _TBL_RCSA_ACTION,
+					'field' => $upd,
+					'where' => $where,
+					'type' => 'update'
+				]);
+				$id = intval($data['id_action'][$row_index]);
+				$type = "edit";
+			} else {
+				$upd['create_user'] = $this->authentication->get_info_user('username');
+				$this->crud->crud_data([
+					'table' => _TBL_RCSA_DETAIL,
+					'field' => $updx,
+					'where' => ['id' => $data['id_detail']],
+					'type' => 'update'
+				]);
+				$this->crud->crud_data([
+					'table' => _TBL_RCSA_ACTION,
+					'field' => $upd,
+					'type' => 'add'
+				]);
+				$id = $this->db->insert_id();
+				$type = "add";
+			}
+	
+			// Proses data bulanan
+			foreach ($progress_row as $bulan_index => $progress_value) {
+				$target_progress = (int)$progress_value;
+				$target_damp_loss = str_replace(',', '', $data['target_damp_loss'][$row_index][$bulan_index]);
+	
+				if ($target_progress || $target_damp_loss) {
+					$data_bulanan = [
+						'bulan' => $bulan_index,
+						'target_progress_detail' => $target_progress,
+						'target_damp_loss' => $target_damp_loss,
+						'rcsa_detail_no' => $data['id_detail'],
+						'rcsa_no' => $data['rcsa_no'],
+						'id_rcsa_action' => $id,
+					];
+	
+					$existing_data = $this->db->get_where('bangga_rcsa_treatment', [
+						'id_rcsa_action' => $id,
+						'bulan' => $bulan_index
+					])->row();
+	
+					if ($existing_data) {
+						// Jika data bulan sudah ada, lakukan update
+						$this->crud->crud_data([
+							'table' => 'bangga_rcsa_treatment',
+							'field' => $data_bulanan,
+							'where' => ['id' => $existing_data->id],
+							'type' => 'update'
+						]);
+					} else {
+						// Jika data bulan belum ada, lakukan insert
+						$data_bulanan['create_user'] = $this->authentication->get_info_user('username');
+						$this->crud->crud_data([
+							'table' => 'bangga_rcsa_treatment',
+							'field' => $data_bulanan,
+							'type' => 'add'
+						]);
+					}
 				}
 			}
 		}
-		
-		// Doi::dump($id)
+	
 		return $id;
 	}
+	
+	
+	
 	
 	
 

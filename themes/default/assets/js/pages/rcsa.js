@@ -1,26 +1,26 @@
 var asal_event;
 $(function () {
   $("#tema, #kategori, #sub_kategori").change(function () {
-		var parent = $(this).parent();
-		var id = $(this).attr('id');
-		var nilai = $(this).val();
-		var type = 0;
-		var target_combo='';
- 		if (id === 'tema') {
-			type = 1;
-			target_combo = $("#kategori");
-		} else if (id === 'kategori') {
-			type = 2;
-			target_combo = $("#sub_kategori");
-		}else if (id === 'sub_kategori') {
-			type = 3;
-			target_combo = $("#event_no");
-		}
+    var parent = $(this).parent();
+    var id = $(this).attr("id");
+    var nilai = $(this).val();
+    var type = 0;
+    var target_combo = "";
+    if (id === "tema") {
+      type = 1;
+      target_combo = $("#kategori");
+    } else if (id === "kategori") {
+      type = 2;
+      target_combo = $("#sub_kategori");
+    } else if (id === "sub_kategori") {
+      type = 3;
+      target_combo = $("#event_no");
+    }
 
-		var data = { 'type': type, 'id': nilai };
- 		var url = "ajax/takstonomi";
-		cari_ajax_combo("post", parent, data, target_combo, url);
-	});
+    var data = { type: type, id: nilai };
+    var url = "ajax/takstonomi";
+    cari_ajax_combo("post", parent, data, target_combo, url);
+  });
 
   $(document).on("ready", function () {
     //update level analisis Inherent
@@ -37,7 +37,7 @@ $(function () {
     };
     var parent = $(this).parent();
     var url = modul_name + "/cek-level";
-    // cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
+    cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
 
     //update level analisis Residual
     var likelihood = $("#likeAnalisisResidual").val();
@@ -52,7 +52,7 @@ $(function () {
     };
     var parent = $(this).parent();
     var url = modul_name + "/cek-level";
-    // cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
+    cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
 
     //update level Target
     for (var i = 1; i <= 12; i++) {
@@ -71,7 +71,7 @@ $(function () {
         var parent = $(this).parent();
         var url = modul_name + "/cek-level";
 
-        // cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
+        cari_ajax_combo("post", parent, data, "", url, "LevelAnalisisInheren");
       } else {
         console.error(
           "Error: Nilai mode, month, atau impact tidak terdefinisi dengan benar."
@@ -80,23 +80,20 @@ $(function () {
     }
 
     var event_no = $("#event_no").val();
-     if(event_no>0){
+    if (event_no > 0) {
       $("#add_cause_newsx").hide();
       $("#risk_cousenox").hide();
       $("#add_impactx").hide();
       $("#add_impact").hide();
       $("#add_cause_news").show();
       $("#add_impact_news").show();
-    }else{
+    } else {
       $("#add_impactx").show();
       $("#risk_cousenox").show();
       $("#add_cause_newsx").show();
       $("#add_cause_news").hide();
       $("#add_impact_news").hide();
     }
-   
-
-   
 
     var parent = $(this).parent();
     var kategori = $("#kategori").val();
@@ -1166,38 +1163,38 @@ $(function () {
 
     // Loop untuk 12 bulan
     for (var i = 1; i <= 12; i++) {
-        var like_value = $("#likeTargetResidual" + i).val();
-        var impact_value = $("#impactTargetResidual" + i).val();
-        var month_value = $("#likeTargetResidual" + i).data("month"); // Mengambil data-month
+      var like_value = $("#likeTargetResidual" + i).val();
+      var impact_value = $("#impactTargetResidual" + i).val();
+      var month_value = $("#likeTargetResidual" + i).data("month"); // Mengambil data-month
 
-        // Hanya tambahkan bulan jika ada nilai pada target_like atau target_impact
-        if (like_value !== "" || impact_value !== "") {
-            month.push(month_value); // Menyimpan bulan yang terisi
-        }
+      // Hanya tambahkan bulan jika ada nilai pada target_like atau target_impact
+      if (like_value !== "" || impact_value !== "") {
+        month.push(month_value); // Menyimpan bulan yang terisi
+      }
 
-        // Menambahkan target_like jika terisi
-        if (like_value !== "") {
-            target_like.push(like_value); // Menambahkan target_like
-        }
+      // Menambahkan target_like jika terisi
+      if (like_value !== "") {
+        target_like.push(like_value); // Menambahkan target_like
+      }
 
-        // Menambahkan target_impact jika terisi
-        if (impact_value !== "") {
-            target_impact.push(impact_value); // Menambahkan target_impact
-        }
+      // Menambahkan target_impact jika terisi
+      if (impact_value !== "") {
+        target_impact.push(impact_value); // Menambahkan target_impact
+      }
     }
 
     // Siapkan data yang akan dikirimkan
     var data = {
-        id_detail: id_detail,
-        analisis_like_inherent: analisis_like_inherent,
-        analisis_impact_inherent: analisis_impact_inherent,
-        analisis_like_residual: analisis_like_residual,
-        analisis_impact_residual: analisis_impact_residual,
-        inherent_level: inherent_level,
-        residual_level: residual_level,
-        target_impact: target_impact,
-        target_like: target_like,
-        month: month // Menambahkan array month yang sudah terisi dengan bulan yang sesuai
+      id_detail: id_detail,
+      analisis_like_inherent: analisis_like_inherent,
+      analisis_impact_inherent: analisis_impact_inherent,
+      analisis_like_residual: analisis_like_residual,
+      analisis_impact_residual: analisis_impact_residual,
+      inherent_level: inherent_level,
+      residual_level: residual_level,
+      target_impact: target_impact,
+      target_like: target_like,
+      month: month, // Menambahkan array month yang sudah terisi dengan bulan yang sesuai
     };
 
     // Kirim data dengan ajax
@@ -1205,8 +1202,7 @@ $(function () {
     var url = modul_name + "/simpan-analisis";
 
     cari_ajax_combo("post", parent, data, parent, url, "simpan_analisis");
-});
-
+  });
 });
 
 function simpan_analisis(hasil) {
@@ -1219,6 +1215,7 @@ function simpan_analisis(hasil) {
         "toast-top-center",
         true
       );
+      // Reload halaman dengan memastikan cache di-refresh
       location.reload(true);
     } else {
       pesan_toastr(
@@ -1228,6 +1225,8 @@ function simpan_analisis(hasil) {
         "toast-top-center",
         true
       );
+      // Reload halaman tanpa memuat ulang cache
+      location.reload(false);
     }
   } else {
     pesan_toastr(
@@ -1239,6 +1238,7 @@ function simpan_analisis(hasil) {
     );
   }
 }
+
 function LevelAnalisisInheren(hasil) {
   if (hasil.mode == 1) {
     $("#likeAnalisisInherenLabel").html(hasil.level_text);

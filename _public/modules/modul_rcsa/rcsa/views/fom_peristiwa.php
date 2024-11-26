@@ -237,7 +237,7 @@ if ($field['iskri'] == 0) {
 
                                         <tr>
                                             <td width="20%">Proses Bisnis</td>
-                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_input('proses_bisnis', ($detail) ? ($detail['proses_bisnis']) : '', 'class="form-control" placeholder="Input Proses Bisnis" id="proses_bisnis"'); ?></td>
                                         </tr>
 
                                         <tr>
@@ -660,14 +660,120 @@ if ($field['iskri'] == 0) {
                         <section class="x_panel">
                             <div class="x_content">
                                 <div class="table-responsive">
-                                    <?php
-                                    foreach ($level_resiko as $row) { ?>
-                                        <div class="col-md-3 col-sm-3 col-xs-3"><?= $row['label'] ?></div>
-                                        <div class="col-md-9 col-sm-9 col-xs-9">
-                                            <div class="form-group form-inline"><?= $row['isi'] ?></div>
+                                <?php
+                                    // Contoh data JSON dari database
+                                    $note_control_json = $detail['note_control'] ?? '[]'; // Pastikan default adalah array kosong
+                                    $note_control_array = json_decode($note_control_json, true); // Decode JSON ke array
+
+                                    // Jika decoding gagal atau data bukan array, gunakan array kosong
+                                    if (!is_array($note_control_array)) {
+                                        $note_control_array = [];
+                                    }
+                                ?>
+                                   <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="note_control"><?= lang('msg_field_existing_control'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div id="note_control_wrapper">
+                                            <?php foreach ($note_control_array as $note) : ?>
+                                                <div class="form-group note-control-group" style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                                    <textarea id="note_control" name="note_control[]" class="form-control" style="width:100%; height:150px; text-align:left; padding:10px;" <?= $readonly ?>><?= htmlspecialchars($note, ENT_QUOTES, 'UTF-8') ?></textarea>
+                                                    <button type="button" class="btn btn-danger btn-sm remove-note-control">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            <?php endforeach; ?>
+                                            <!-- Jika tidak ada data, tambahkan textarea default -->
+                                            <?php if (empty($note_control_array)) : ?>
+                                                <div class="form-group note-control-group" style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                                    <textarea id="note_control" name="note_control[]" class="form-control" style="width:100%; height:150px; text-align:left; padding:10px;" <?= $readonly ?>></textarea>
+                                                    <button type="button" class="btn btn-danger btn-sm remove-note-control">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
-                                    <?php } ?>
-                                </div>
+                                        <button type="button" class="btn btn-info btn-sm" id="add_note_control_button">
+                                            <i class="fa fa-plus"></i> Tambah Note
+                                        </button>
+                                    </div>
+
+
+                               
+
+                                
+                                    <!-- COA -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="coa"><?= lang('msg_field_coa'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="input-group">
+                                            <span id="span_dampak" class="input-group-addon">Rp.</span>
+                                            <input type="text" id="coa" name="coa" class="form-control rupiah text-right" style="width:100%;" 
+                                                value="<?= ($detail) ? number_format($detail['coa'], 0, ',', ',') : '' ?>">
+                                        </div>
+                                    </div>
+                              
+
+                                
+                                    <!-- Kode Jasa -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="kode_jasa"><?= lang('msg_field_kode_jasa'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="form-group">
+                                            <input type="text" id="kode_jasa" name="kode_jasa" class="form-control" style="width:100%;" 
+                                                value="<?= ($detail) ? $detail['kode_jasa'] : '' ?>">
+                                        </div>
+                                    </div>
+                                
+
+                                
+                                    <!-- Keterangan COA -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="keterangan_coa"><?= lang('msg_field_ket_coa'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="form-group">
+                                            <textarea id="keterangan_coa" name="keterangan_coa" class="form-control" style="width:100%;height:150px" <?= $readonly ?>><?= ($detail) ? $detail['keterangan_coa'] : '' ?></textarea>
+                                        </div>
+                                    </div>
+                                
+
+                                
+                                    <!-- Risk Control Assessment -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="risk_control_assessment"><?= lang('msg_field_risk_control_assessment'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="form-group">
+                                            <select id="risk_control_assessment" name="risk_control_assessment" class="form-control select2" style="width:100%;" <?= $disabled ?>>
+                                                <?php foreach ($cboRiskControl as $key => $value) : ?>
+                                                    <option value="<?= $key ?>" <?= ($detail && $detail['risk_control_assessment'] == $key) ? 'selected' : '' ?>><?= $value ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                
+
+                                
+                                    <!-- Treatment -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="treatment_no">Treatment:</label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="form-group">
+                                            <select id="treatment_no" name="treatment_no" class="form-control select2" style="width:100%;" <?= $disabled ?>>
+                                                <?php 
+                                                $treatmentOptions = ($a == "Ekstrem") ? $cboTreatment1 : (($a == "Low") ? $cboTreatment2 : $cboTreatment);
+                                                foreach ($treatmentOptions as $key => $value) : ?>
+                                                    <option value="<?= $key ?>" <?= ($detail && $detail['treatment_no'] == $key) ? 'selected' : '' ?>><?= $value ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                
+
                             </div>
                             <div class="x_footer <?= $evaluasiacthide ?>">
                                 <ul class="nav navbar-right panel_toolbox ">
@@ -697,7 +803,7 @@ if ($field['iskri'] == 0) {
                             $isi_owner_no_action_accountable[] = $owner['rcsa_owner_no'];
                         }
 
-
+                            // doi::dump($rcsa_action);
                         ?>
 
                         <?= form_open_multipart(base_url('rcsa/simpan_mitigasi'), array('id' => 'form_mitigasi'), ['id_detail' => $id_edit, 'id_edit_mitigasi' => $id_edit_mitigasi, 'rcsa_no' => $rcsa_no, 'rcsa_no_1' => $rcsa_no_1]); ?>
@@ -705,56 +811,132 @@ if ($field['iskri'] == 0) {
                         <section class="x_panel">
                             <div class="row">
                                 <div class="x_content table-responsive" style="overflow-x: auto;">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <!-- Kolom Treatment dengan posisi sticky di sebelah kiri -->
-                                                <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 0; background: white; width: 15%; z-index: 2;">
-                                                    Treatment
-                                                </th>
-                                                <?php
-                                                    $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                                                    foreach ($bulan as $bulanItem) { ?>
-                                                        <!-- Kolom Bulan (satu kolom per bulan) -->
-                                                        <th class="text-center"><?= $bulanItem ?></th>
-                                                    <?php } ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody><tr>
-                                                <!-- Konten Kolom Treatment -->
-                                                <td style="position: sticky; left: 0; background: white; width: 15%; z-index: 1000;">
-                                                    <?= form_textarea('proaktif', ($field) ? $field['proaktif'] : '', " id='proaktif' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 250px; height: 104px;'" . $readonly); ?>
-                                                </td>
-                                                <?php
-                                                    // Loop untuk setiap bulan, menambahkan satu kolom <td> per bulan
-                                                    for ($i = 1; $i <= 12; $i++):
-                                                         // Cek apakah data bulan tertentu ada dalam array $rcsa_treatment
-                                                        $target_progress = isset($rcsa_treatment[$i - 1]['target_progress_detail']) ? $rcsa_treatment[$i - 1]['target_progress_detail'] : '';
-                                                        $target_damp_loss = isset($rcsa_treatment[$i - 1]['target_damp_loss']) ? $rcsa_treatment[$i - 1]['target_damp_loss'] : '';
-                                                        $data['id']      = $field['rcsa_detail_no'];
-                                                        $data['rcsa_no'] = $rcsa_no;
-                                                        echo '<td>      
-                                                            <div class="input-group">
-                                                                <input style="width:100px !important;" type="number" name="target_progress'.$i.'" id="target_progress'.$i.'" class="form-control" placeholder="Progress %" value="'.$target_progress.'" aria-describedby="basic-addon2">
-                                                                <span class="input-group-addon" id="basic-addon2">%</span>
-                                                            </div>
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                                <input style="width:100px !important;" type="text" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
-                                                                value="'.number_format($target_damp_loss, 0, ',', ',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
-                                                            </div>
-                                                        </td>';
-                                                    endfor;
-                                                ?>
-                                            </tr>
-                                            
-                                        </tbody>
-                                    </table>
+                                <table class="table table-striped table-bordered table-hover" id="dynamic_table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 50px; position: sticky; left: 0; background: white; z-index: 2;">Hapus</th>
+                                            <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 58px; background: white; width: 100px !important; z-index: 2;">
+                                                Treatment
+                                            </th>
+                                            <th class="text-center rencana-col" rowspan="2" style="position: sticky; left: 325px; background: white; width: 100px !important; z-index: 2;">
+                                                Rencana
+                                            </th>
+                                            <?php
+                                            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                                            foreach ($bulan as $bulanItem) { ?>
+                                                <th class="text-center"><?= $bulanItem ?></th>
+                                            <?php } ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Baris awal tanpa tombol hapus -->
+                                        <?php $index = 0; ?>
 
+                                        <!-- Cek apakah $rcsa_action kosong -->
+                                        <?php if (empty($rcsa_action)) : ?>
+                                            <tr class="data-row">
+                                                <td class="text-center" style="width: 50px !important; position: sticky; left: 0; background: white; z-index: 1000;">
+                                                    <button type="button" class="btn btn-danger btn-sm delete-row-button">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                                <td style="position: sticky; left: 58px; background: white; width: 100px !important; z-index: 1000;">
+                                                    <?= form_textarea('proaktif[' . $index . ']', '', "maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 250px; height: 104px;'"); ?>
+                                                </td>
+                                                <td style="position: sticky; left: 325px; background: white; width: 100px!important; z-index: 1000;">
+                                                    <select name="rencana[<?= $index; ?>]" class="form-control" style="width:100px !important;">
+                                                        <option value="proaktif">Proaktif</option>
+                                                        <option value="reaktif">Reaktif</option>
+                                                        <option value="keduanya">Keduanya</option>
+                                                    </select>
+                                                </td>
+                                                <?php for ($i = 1; $i <= 12; $i++) : ?>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input style="width:100px !important;" type="number" name="target_progress[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_progress, 0, ',', '.')); ?>" class="form-control" placeholder="Progress %" aria-describedby="basic-addon2">
+                                                            <span class="input-group-addon" id="basic-addon2">%</span>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                            <input style="width:100px !important;" type="text" name="target_damp_loss[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_damp_loss, 0, ',', '.')); ?>" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                                        </div>
+                                                        
+                                                    </td>
+                                                <?php endfor; ?>
+                                            </tr>
+                                        <?php else : ?>
+                                            <?php foreach($rcsa_action as $row_action) { ?>
+                                         
+                                                <tr class="data-row">
+                                                    <td class="text-center" style="width: 50px !important; position: sticky; left: 0; background: white; z-index: 1000;"><button type="button" class="btn btn-danger btn-sm delete-row-button">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button></td>
+                                                    <td style="position: sticky; left: 58px; background: white; width: 100px !important; z-index: 1000;">
+                                                        <?= form_textarea('proaktif['.$index.']', ($row_action['proaktif']) ? $row_action['proaktif'] : $row_action['reaktif'], "maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 250px; height: 104px;'"); ?>
+                                                    </td>
+                                                    <td style="position: sticky; left: 325px; background: white; width: 100px!important; z-index: 1000;">
+                                                        <select name="rencana[<?= $index;?>]" class="form-control" style="width:100px !important;">
+                                                            <option value="proaktif" <?= ($row_action['proaktif']) ? 'selected' :'';?>>Proaktif</option>
+                                                            <option value="reaktif" <?= ($row_action['reaktif']) ? 'selected' :'';?>>Reaktif</option>
+                                                            <option value="keduanya" <?= ($row_action['proaktif'] && $row_action['reaktif']) ? 'selected' :'';?>>Keduanya</option>
+                                                        </select>
+                                                        <input type="hidden" name="id_action[<?= $index;?>]" value="<?=$row_action['id'];?>">
+                                                    </td>
+                                                    <?php 
+
+                                                for ($i = 1; $i <= 12; $i++) : 
+                                                    // Ambil data dari database berdasarkan id_rcsa_action
+                                                    $rcsa_treatment = $this->db->where('id_rcsa_action', $row_action['id'])->get("bangga_rcsa_treatment")->result_array();
+
+                                                    // Inisialisasi variabel untuk menyimpan target_progress dan target_damp_loss
+                                                    $target_progress = '';
+                                                    $target_damp_loss = '';
+                                                    $id_treatment = '';
+
+                                                    // Cek apakah ada data dan cari nilai berdasarkan bulan
+                                                    if (!empty($rcsa_treatment)) {
+                                                        foreach ($rcsa_treatment as $treatment) {
+                                                            // Misalkan kolom 'bulan' ada dalam tabel bangga_rcsa_treatment
+                                                            if ($treatment['bulan'] == $i) {
+                                                                $id_treatment = $treatment['id'];
+                                                                $target_progress = $treatment['target_progress_detail'];
+                                                                $target_damp_loss = $treatment['target_damp_loss']; // Pastikan kolom ini ada
+                                                                break; // Hentikan loop jika sudah ditemukan
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input style="width:100px !important;" type="number" name="target_progress[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_progress, 0)); ?>" class="form-control" placeholder="Progress %" aria-describedby="basic-addon2">
+                                                            <span class="input-group-addon" id="basic-addon2">%</span>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                            <input style="width:100px !important;" type="text" name="target_damp_loss[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_damp_loss, 0)); ?>" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                                        </div>
+                                                        <!-- Input hidden untuk menyimpan ID -->
+                                                        <input type="hidden" name="id[<?= $index; ?>]" value="<?= $id_treatment; ?>">
+                                                    </td>
+                                                <?php endfor; ?>
+                                                </tr>
+                                                <?php $index++;} ?>
+                                        <?php endif;?>
+                                    </tbody>
+                                </table>
+
+                                    <!-- Tombol Tambah Row -->
+                                    <div class="add-button-wrapper" style="position: sticky; left: 0; background: white; width: 15%; z-index: 1000;">
+                                        <button type="button" class="btn btn-success btn-sm" id="add_row_button">
+                                            <i class="fa fa-plus"></i> Tambah Row
+                                        </button>
+                                    </div>
 
                                 </div>
                             </div>
                             <div class="clearfix"></div>
+                            <!-- Tombol Tambah Row -->
+                            
                             <div class="x_footer mt-5">
                                 <ul class="nav navbar-right panel_toolbox">
                                     <input class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_mitigasi" value="Simpan" />
@@ -762,6 +944,8 @@ if ($field['iskri'] == 0) {
                                 <div class="clearfix"></div>
                             </div>
                         </section>
+
+
                         <?= form_close(); ?>
                     </div>
                 </div>
@@ -969,4 +1153,111 @@ if ($field['iskri'] == 0) {
         });
 
     });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const wrapper = document.getElementById('note_control_wrapper');
+    const addButton = document.getElementById('add_note_control_button');
+
+    // Event Listener untuk Menambah Textarea
+    addButton.addEventListener('click', function () {
+        // Buat grup baru untuk textarea dan tombol hapus
+        const newGroup = document.createElement('div');
+        newGroup.className = 'form-group note-control-group';
+        newGroup.style.marginBottom = '10px';
+        newGroup.style.display = 'flex';
+        newGroup.style.alignItems = 'flex-start';
+        newGroup.style.gap = '10px';
+
+        // Buat textarea baru
+        const newTextarea = document.createElement('textarea');
+        newTextarea.name = 'note_control[]';
+        newTextarea.className = 'form-control';
+        newTextarea.style.width = '100%';
+        newTextarea.style.height = '150px';
+        newTextarea.style.textAlign = 'left';
+        newTextarea.style.padding = '10px';
+
+        // Buat tombol hapus
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'btn btn-danger btn-sm remove-note-control';
+        deleteButton.innerHTML = '<i class="fa fa-trash"></i>';
+
+        // Tambahkan textarea dan tombol hapus ke grup
+        newGroup.appendChild(newTextarea);
+        newGroup.appendChild(deleteButton);
+
+        // Tambahkan grup ke wrapper
+        wrapper.appendChild(newGroup);
+    });
+
+    // Event Delegation untuk Fungsi Hapus
+    wrapper.addEventListener('click', function (event) {
+        if (event.target.classList.contains('remove-note-control') || event.target.closest('.remove-note-control')) {
+            const groupToRemove = event.target.closest('.note-control-group');
+            wrapper.removeChild(groupToRemove); // Hapus grup textarea
+        }
+    });
+});
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tableBody = document.querySelector('#dynamic_table tbody');
+    const addRowButton = document.getElementById('add_row_button');
+    let rowIndex = tableBody.querySelectorAll('.data-row').length; // Hitung jumlah baris awal
+
+    addRowButton.addEventListener('click', function () {
+        const newRow = document.createElement('tr');
+        newRow.classList.add('data-row');
+
+        // Tambahkan kolom dengan indeks rowIndex
+        newRow.innerHTML = `
+            <td class="text-center" style="width: 50px !important; position: sticky; left: 0; background: white; z-index: 3;">
+                <button type="button" class="btn btn-danger btn-sm delete-row-button">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+            <td style="position: sticky; left: 58px; background: white; width: 100px !important; z-index: 1000;">
+                <textarea name="proaktif[${rowIndex}]" class="form-control" rows="2" cols="5" style="overflow: hidden; width: 100%; height: 104px;"></textarea>
+            </td>
+            <td style="position: sticky; left: 325px; background: white; width: 100px !important; z-index: 1000;">
+                <select name="rencana[${rowIndex}]" class="form-control" style="width:100px !important;">
+                    <option value="proaktif">Proaktif</option>
+                    <option value="reaktif">Reaktif</option>
+                    <option value="keduanya">Keduanya</option>
+                </select>
+            </td>
+            ${[...Array(12)].map((_, i) => `
+                <td>
+                    <div class="input-group">
+                        <input style="width:100px !important;" type="number" name="target_progress[${rowIndex}][${i + 1}]" class="form-control" placeholder="Progress %" aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2">%</span>
+                    </div>
+                    <div class="input-group">
+                        <span  class="input-group-addon" id="basic-addon1">Rp.</span>
+                        <input style="width:100px !important;" type="text" name="target_damp_loss[${rowIndex}][${i + 1}]" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                    </div>
+                </td>
+            `).join('')}
+        `;
+
+        // Tambahkan row baru ke tabel
+        tableBody.appendChild(newRow);
+        rowIndex++; // Tambahkan indeks untuk row berikutnya
+    });
+
+    tableBody.addEventListener('click', function (event) {
+        if (event.target.closest('.delete-row-button')) {
+            const rowToDelete = event.target.closest('.data-row');
+            rowToDelete.remove();
+        }
+    });
+});
+
+
+
 </script>

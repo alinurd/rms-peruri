@@ -138,8 +138,8 @@
                 <th colspan="2"><label>Dampak</label></th>
                 <th colspan="2"><label> Level</label></th>
 
-                <th><label>Rencana Proaktif</label></th>
-                <th><label>Rencana Reaktif</label></th>
+                <th><label>Rencana Treatment</label></th>
+                <th><label>Rencana</label></th>
                 <th><label>Target Waktu</label></th>
                 <th><label>Risk Treatment Owner</label></th>
             </tr>
@@ -147,7 +147,7 @@
         <tbody>
             <?php
             $no = 1;
-            $groupedRows = array(); // Associative array to group rows by 'sasaran'
+            $groupedRows = array(); 
             foreach ($field as $key => $row) :
                 // doi::dump($row);
                 $sasaranKey = $row['sasaran'];
