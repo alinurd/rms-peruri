@@ -65,11 +65,6 @@ class Stress_Test extends BackendController
     // Ambil data dari POST
     $post = $this->input->post();
 
-    // Validasi input: pastikan 'id' dan salah satu dari 'best', 'base', atau 'worst' ada
-    if (!isset($post['id']) || (!isset($post['best']) && !isset($post['base']) && !isset($post['worst']))) {
-        echo json_encode(['status' => 'error', 'message' => 'Parameter tidak lengkap']);
-        return;
-    }
 
     // Konversi tipe data input
     $id     = intval($post['id']); // Pastikan 'id' menjadi integer
