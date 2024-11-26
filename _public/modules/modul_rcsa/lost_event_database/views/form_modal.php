@@ -13,7 +13,7 @@ if(!$lost_event){
 
 
 ?>
-
+<form method="POST" id='form-lost' enctype="multipart/form-data">
 <!-- ================ KEJADIAN RISIKO ====================== -->
 <div class="row">
     <div style="background-color: white; padding: 10px; border-radius: 10px;">
@@ -147,11 +147,11 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Target Residual</th>
                     <td>
-                        <?= form_dropdown('Target_Res_dampak', $cboLike, (empty($lost_event['target_res_dampak'])) ? '' : $lost_event['target_res_dampak'], 'class="form-control" id="Target_Res_dampak"'); ?>
+                        <?= form_dropdown('target_res_dampak', $cboLike, (empty($lost_event['target_res_dampak'])) ? '' : $lost_event['target_res_dampak'], 'class="form-control" id="target_res_dampak"'); ?>
                         <div class="text-danger" id="error-Target_Res_dampak"></div>
                     </td>
                     <td>
-                        <?= form_dropdown('Target_Res_prob', $cboImpact, (empty($lost_event['target_res_prob'])) ? '' : $lost_event['target_res_prob'], 'class="form-control" id="Target_Res_prob"'); ?>
+                        <?= form_dropdown('target_res_prob', $cboImpact, (empty($lost_event['target_res_prob'])) ? '' : $lost_event['target_res_prob'], 'class="form-control" id="target_res_prob"'); ?>
                         <div class="text-danger" id="error-Target_Res_prob"></div>
                     </td>
                     <td align="center">
@@ -301,6 +301,13 @@ if(!$lost_event){
                     <td>
                     <?= form_dropdown('frekuensi_kejadian', $frekuensi_kejadian, ($lost_event) ? $lost_event['frekuensi_kejadian'] : '', 'class="select2 form-control" style="width:100%;" id="frekuensi_kejadian"' . $disable); ?>
                         <div class="text-danger" id="error-frekuensi_kejadian"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="20%">Upload File</th>
+                    <td>
+                        <input type="hidden" name="file_upload_lama" class="form-control" id="file_upload_lama" style="width:100%;" value="<?=$lost_event['file_path'];?>" />
+                        <input type="file" name="file_upload" class="form-control" id="file_upload" style="width:100%;"   />
                     </td>
                 </tr>
             </thead>

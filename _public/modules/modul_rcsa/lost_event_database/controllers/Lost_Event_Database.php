@@ -246,13 +246,9 @@ class Lost_Event_Database extends BackendController
         if (count($result) > 0) {
             $result['status'] = 1;
         } else{
-            $this->data->simpan_lost_event($post);
+            $this->data->simpan_lost_event($post,$_FILES);
             $result['status'] = 0;
         }
-       
-            
-        
-        
         echo json_encode($result);
     } 
 

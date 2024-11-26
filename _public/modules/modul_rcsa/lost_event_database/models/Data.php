@@ -65,10 +65,8 @@ class Data extends MX_Model {
     // Method: simpan_lost_event
     // Description: Adds or updates a loss event entry
     // ==========================================
-    public function simpan_lost_event($data) {
-
-
-        // Data preparation for insertion or update
+    public function simpan_lost_event($data, $files) {
+        // Prepare the data for insertion or update
         $upd = [
             'rcsa_no'                     => $data['rcsa_no'],
             'event_no'                    => $data['event_no'],
@@ -88,7 +86,7 @@ class Data extends MX_Model {
             'rencana_perbaikan_mendatang' => $data['rencana_perbaikan_mendatang'],
             'pihak_terkait'               => $data['pihak_terkait'],
             'penjelasan_kerugian'         => $data['penjelasan_kerugian'],
-            'nilai_kerugian'              => str_replace(",", "",$data['nilai_kerugian']),
+            'nilai_kerugian'              => str_replace(",", "", $data['nilai_kerugian']),
             'kejadian_berulang'           => $data['kejadian_berulang'],
             'frekuensi_kejadian'          => $data['frekuensi_kejadian'],
             'skal_dampak_in'              => $data['skal_dampak_in'],
@@ -96,27 +94,32 @@ class Data extends MX_Model {
             'target_res_dampak'           => $data['target_res_dampak'],
             'target_res_prob'             => $data['target_res_prob'],
         ];
-
-        if($data['nama_event'] != ""){
-
-            $lib['description'] = $data['nama_event'];
-            $lib['risk_type_no'] = 0;
-            $lib['type'] = 1;
-            $lib['jenis_lib'] = "new";
-            $lib['code'] = $this->cari_code_library($data, 1);
-            $lib['create_user'] = $this->authentication->get_info_user('username');
-
-            $newId =  $this->crud->crud_data([
+    
+        
+    
+        // If event name is provided, insert into the library table
+        if (!empty($data['nama_event'])) {
+            $lib = [
+                'description' => $data['nama_event'],
+                'risk_type_no' => 0,
+                'type' => 1,
+                'jenis_lib' => "new",
+                'code' => $this->cari_code_library($data, 1),
+                'create_user' => $this->authentication->get_info_user('username'),
+            ];
+    
+            // Insert the event into the library table
+            $newId = $this->crud->crud_data([
                 'table' => _TBL_LIBRARY,
                 'field' => $lib,
-                'type' => 'add'
+                'type' => 'add',
             ]);
-
+    
+            // Store the new event number in the update data
             $upd['event_no'] = $newId;
-
         }
-
-        // Determine whether to add or update data based on type
+    
+        // Check if we are in "edit" mode
         if ($data['type'] == "edit") {
             $updxx = [
                 'rcsa_no'                     => $data['rcsa_no'],
@@ -143,31 +146,89 @@ class Data extends MX_Model {
                 'target_res_dampak'           => $data['target_res_dampak'],
                 'target_res_prob'             => $data['target_res_prob'],
             ];
-            // Update mode
+            // If a new file is uploaded, handle the replacement of the old file
+            if (isset($files['file_upload']) && $files['file_upload']['error'] == 0) {
+                $file = $files['file_upload'];
+                $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded files
+                // If an old file exists, delete it before uploading the new one
+                if (!empty($data['file_upload_lama'])) {
+                    $fileLama = $data['file_upload_lama'];
+                    $oldFilePath = $uploadDir . $fileLama;
+    
+                    // Check if the old file exists and delete it
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+    
+                $fileBaru = time() . '_' . basename($file['name']);
+                $uploadFilePath = $uploadDir . $fileBaru;
+    
+                // Validate file type and size (same as above)
+                if (move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+                    // Update the file path in the update data
+                    $updxx['file_path'] = $fileBaru;
+                } else {
+                    return 'File upload failed. Please try again.';
+                }
+            }
+    
+            // Update fields for the existing event
             $updxx['update_user'] = $this->authentication->get_info_user('username');
             $updxx['update_date'] = date('Y-m-d H:i:s');
             $where = ['id' => $data['id_edit']];
-
-            // Execute update
+    
+            // Execute the update
             return $this->crud->crud_data([
                 'table' => _TBL_RCSA_LOST_EVENT,
                 'field' => $updxx,
                 'where' => $where,
-                'type' => 'update'
+                'type' => 'update',
             ]);
         } else {
-            // Insert mode
+            
+            // Handle file upload only if a file is uploaded
+            if (isset($files['file_upload']) && $files['file_upload']['error'] == 0) {
+                // File upload processing
+                $file = $files['file_upload'];
+                $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded files
+                $fileName = time() . '_' . basename($file['name']); // Generate a unique file name
+                $uploadFilePath = $uploadDir . $fileName;
+        
+                // Validate file type (only allow PDFs)
+                $allowedTypes = ['application/pdf'];
+                if (!in_array($file['type'], $allowedTypes)) {
+                    return 'Invalid file type. Only PDF files are allowed.';
+                }
+        
+                // Validate file size (5MB max)
+                if ($file['size'] > 5 * 1024 * 1024) { // 5MB limit
+                    return 'File size exceeds the maximum limit of 5MB.';
+                }
+        
+                // Move the uploaded file to the desired directory
+                if (move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+                    // Update the file path in the data array
+                    $upd['file_path'] = $fileName;
+                } else {
+                    return 'File upload failed. Please try again.';
+                }
+            }
+
+            // Insert new event if it's not in edit mode
             $upd['create_user'] = $this->authentication->get_info_user('username');
             $upd['create_date'] = date('Y-m-d H:i:s');
-
-            // Execute insertion
+    
+            // Execute the insertion
             return $this->crud->crud_data([
                 'table' => _TBL_RCSA_LOST_EVENT,
                 'field' => $upd,
-                'type' => 'add'
+                'type' => 'add',
             ]);
         }
     }
+    
+    
 
     // ==========================================
     // Method: level_action
