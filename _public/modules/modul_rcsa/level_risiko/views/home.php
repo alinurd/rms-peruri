@@ -155,8 +155,6 @@
                             <?php } ?>
                         </tbody>
                     </table>
-                    </form>
-                    <!-- Submit Buttons Positioned Outside of Table -->
                     <div class="add-button-wrapper" style="position: sticky; left: 82%; background: white; width: 15%; z-index: 1000; display: flex; justify-content: space-between; padding: 10px;">
                         <button type="submit" class="btn btn-success btn-sm" id="simpan_validasi">
                             Validasi
@@ -165,6 +163,8 @@
                             Log Validasi
                         </button> -->
                     </div>
+                    </form>
+                    <!-- Submit Buttons Positioned Outside of Table -->
                 
 
             <div class="row">
