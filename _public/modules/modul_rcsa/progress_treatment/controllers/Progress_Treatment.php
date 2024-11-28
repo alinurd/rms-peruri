@@ -229,7 +229,7 @@ class Progress_Treatment extends BackendController
 	
 	public function save(){
 		$post 	= $this->input->post();
-		// die;
+		die;
 		$id = $this->data->simpan_tritment($post);
 		echo json_encode($id);
 
