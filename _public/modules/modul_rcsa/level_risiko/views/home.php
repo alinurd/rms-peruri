@@ -68,104 +68,113 @@
             <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                 <div class="x_panel">
                     <div class="x_content table-responsive" style="overflow-x: auto;">
-                        <table class="table table-striped table-bordered table-hover" style="table-layout: fixed;">
-                            <thead>
+                    <form id="level" method="POST">
+                    <table class="table table-striped table-bordered table-hover" style="table-layout: fixed;">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="position: sticky; left: 0; background: white; z-index: 99; width: 30px;">No</th>
+                                <th class="text-center" style="position: sticky; left: 30px; background: white; z-index: 99; width: 150px;">Risk Owner</th>
+                                <th class="text-center" style="position: sticky; left: 150px; background: white; z-index: 99; width: 150px;">Peristiwa Risiko</th>
+                                <th class="text-center" style="width: 100px;">Tahun</th>
+                                <th class="text-center" style="width: 200px;">Level Risiko Inheren</th>
+                                <th class="text-center" style="width: 200px;">Level Risiko Target Desember</th>
+                                <?php if ($triwulan == 1): ?>
+                                    <th class="text-center" style="width: 200px;">Januari</th>
+                                    <th class="text-center" style="width: 200px;">Februari</th>
+                                    <th class="text-center" style="width: 200px;">Maret</th>
+                                <?php elseif ($triwulan == 2): ?>
+                                    <th class="text-center" style="width: 200px;">April</th>
+                                    <th class="text-center" style="width: 200px;">Mei</th>
+                                    <th class="text-center" style="width: 200px;">Juni</th>
+                                <?php elseif ($triwulan == 3): ?>
+                                    <th class="text-center" style="width: 200px;">Juli</th>
+                                    <th class="text-center" style="width: 200px;">Agustus</th>
+                                    <th class="text-center" style="width: 200px;">September</th>
+                                <?php elseif ($triwulan == 4): ?>
+                                    <th class="text-center" style="width: 200px;">Oktober</th>
+                                    <th class="text-center" style="width: 200px;">November</th>
+                                    <th class="text-center" style="width: 200px;">Desember</th>
+                                <?php endif; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $no = 1;
+                            foreach ($field as $q) {
+                                $residual_level = $this->data->get_master_level(true,  $q['inherent_level']);
+                                $inherent = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">' . $residual_level['level_mapping'] . '</span>';
+                                $target_desember = $this->db->where('id_detail', $q['id'])->where('bulan', 12)->get(_TBL_ANALISIS_RISIKO)->row_array();
+                                $cek_score1 = $this->data->cek_level_new($target_desember['target_like'], $target_desember['target_impact']);
+                                $residual_level1 = $this->data->get_master_level(true,$cek_score1['id']);
+                                $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level1['color'] . ';color:' . $residual_level1['color_text'] . ';">' . $residual_level1['level_mapping'] . '</span>';
+                            ?>
                                 <tr>
-                                    <th class="text-center" style="position: sticky; left: 0; background: white; z-index: 99; width: 30px;">No</th>
-                                    <th class="text-center" style="position: sticky; left: 30px; background: white; z-index: 99; width: 150px;">Risk Owner</th>
-                                    <th class="text-center" style="position: sticky; left: 150px; background: white; z-index: 99; width: 150px;">Peristiwa Risiko</th>
-                                    <th class="text-center" style="width: 100px;">Tahun</th>
-                                    <th class="text-center" style="width: 200px;">Level Risiko Inheren</th>
-                                    <th class="text-center" style="width: 200px;">Level Risiko Target</th>
-                                    <?php if ($triwulan == 1): ?>
-                                        <th class="text-center" style="width: 200px;">Januari</th>
-                                        <th class="text-center" style="width: 200px;">Februari</th>
-                                        <th class="text-center" style="width: 200px;">Maret</th>
-                                    <?php elseif ($triwulan == 2): ?>
-                                        <th class="text-center" style="width: 200px;">April</th>
-                                        <th class="text-center" style="width: 200px;">Mei</th>
-                                        <th class="text-center" style="width: 200px;">Juni</th>
-                                    <?php elseif ($triwulan == 3): ?>
-                                        <th class="text-center" style="width: 200px;">Juli</th>
-                                        <th class="text-center" style="width: 200px;">Agustus</th>
-                                        <th class="text-center" style="width: 200px;">September</th>
-                                    <?php elseif ($triwulan == 4): ?>
-                                        <th class="text-center" style="width: 200px;">Oktober</th>
-                                        <th class="text-center" style="width: 200px;">November</th>
-                                        <th class="text-center" style="width: 200px;">Desember</th>
-                                    <?php endif; ?>
+                                    <td class="text-center" style="position: sticky; left: 0; background: white; z-index: 99;"><?= $no++ ?></td>
+                                    <td style="position: sticky; left: 30px; background: white; z-index: 99;"><?= $q['name'] ?></td>
+                                    <td style="position: sticky; left: 180px; background: white; z-index: 99;"><?= $q['event_name'] ?></td>
+                                    <td class="text-center"><?= $q['tahun'] ?></td>
+                                    <td><?php echo $inherent ?></td>
+                                    <td style="text-align: center; color: red;">
+                                        <?= ($target_desember) ? $target : '<span style="color: red;">Target risiko desember belum di input</span>' ?>
+                                    </td>
+                                    <?php
+                                    // Determine the correct start and end months based on the triwulan
+                                    switch ($triwulan) {
+                                        case 1:
+                                            $start = 1;
+                                            $end = 4;
+                                            break;
+                                        case 2:
+                                            $start = 4;
+                                            $end = 7;
+                                            break;
+                                        case 3:
+                                            $start = 7;
+                                            $end = 10;
+                                            break;
+                                        case 4:
+                                            $start = 10;
+                                            $end = 13;
+                                            break;
+                                    }
+
+                                    // Loop through the months for the current triwulan
+                                    for ($i = $start; $i < $end; $i++): ?>
+                                        <td class="text-center">
+                                            <?php
+                                            $data['id'] = $q['id'];
+                                            $data['rcsa_no'] = $q['rcsa_no'];
+                                            $data['cb_like'] = $cb_like;
+                                            $data['cb_impact'] = $cb_impact;
+                                            // Output the data for each month
+                                            echo $this->data->getMonthlyMonitoringGlobal($data, $i);
+                                            ?>
+                                        </td>
+                                    <?php endfor; ?>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $no = 1;
-                                foreach ($field as $q) {
-                                    // $cek_score = $this->data->cek_level_new($q['analisis_like_inherent'], $q['analisis_impact_inherent']);
-                                    $residual_level = $this->data->get_master_level(true,  $q['inherent_level']);
-                                    // doi::dump($residual_level);
-                                    $inherent = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">' . $residual_level['level_mapping'] . '</span>';
-
-                                    // $cek_score1 = $this->data->cek_level_new($q['analisis_like_residual'], $q['analisis_impact_residual']);
-                                    $residual_level1 = $this->data->get_master_level(true,$q['residual_level']);
-                                    $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level1['color'] . ';color:' . $residual_level1['color_text'] . ';">' . $residual_level1['level_mapping'] . '</span>';
-                                ?>
-                                    <tr>
-                                        <td class="text-center" style="position: sticky; left: 0; background: white;z-index: 99;"><?= $no++ ?></td>
-                                        <td style="position: sticky; left: 30px; background: white;z-index: 99;"><?= $q['name'] ?></td>
-                                        <td style="position: sticky; left: 180px; background: white;z-index: 99;"><?= $q['event_name'] ?></td>
-                                        <td  class="text-center"><?= $q['tahun'] ?></td>
-                                        <td><?php echo $inherent ?></td>
-                                        <td><?php echo $target ?></td>
-                                        <?php
-                                        switch ($triwulan) {
-                                            case 1:
-                                                $start = 1;
-                                                $end = 4;
-                                                break;
-                                            case 2:
-                                                $start = 4;
-                                                $end = 7;
-                                                break;
-                                            case 3:
-                                                $start = 7;
-                                                $end = 10;
-                                                break;
-                                            case 4:
-                                                $start = 10;
-                                                $end = 13;
-                                                break;
-                                        }
-
-                                        for ($i = $start; $i < $end; $i++): ?>
-                                            <td class="text-center">
-                                                <?php
-                                                // var_dump($field);
-                                                $data['id']         = $q['id'];
-                                                $data['rcsa_no']    = $q['rcsa_no'];
-                                                $data['cb_like']    = $cb_like;
-                                                $data['cb_impact']  = $cb_impact;
-                                                // var_dump($data['id'] );
-                                                echo $this->data->getMonthlyMonitoringGlobal($data, $i);
-                                                ?>
-                                            </td>
-                                        <?php endfor; ?>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                    </form>
+                    <!-- Submit Buttons Positioned Outside of Table -->
+                    <div class="add-button-wrapper" style="position: sticky; left: 82%; background: white; width: 15%; z-index: 1000; display: flex; justify-content: space-between; padding: 10px;">
+                        <button type="button" class="btn btn-success btn-sm" id="simpan_validasi">
+                            Validasi
+                        </button>
+                        <!-- <button type="button" class="btn btn-primary btn-sm" id="log_validasi">
+                            Log Validasi
+                        </button> -->
                     </div>
+                
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="clearfix"></div>
+                    <?= $pagination; ?>
+                    <p>Menampilkan <?= $start_data; ?> - <?= $end_data; ?> dari total <?= $total_data; ?> data</p>
+                    <i><?= $timeLoad ?> second</i>
                 </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <div class="clearfix"></div>
-                <?= $pagination; ?>
-                <p>Menampilkan <?= $start_data; ?> - <?= $end_data; ?> dari total <?= $total_data; ?> data</p>
-                <i><?= $timeLoad ?> second</i>
-            </div>
-        </div
     </div>
 </section>
 

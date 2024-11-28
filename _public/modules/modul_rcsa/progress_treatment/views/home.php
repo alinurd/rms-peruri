@@ -24,6 +24,7 @@
     }
 </style>
 
+
 <div class="row">
     <div class="col-md-12">
         <div class="row">
@@ -87,6 +88,7 @@
 
     <div class="x_content table-responsive" style="overflow-x: auto;">
         <div style="overflow-x: auto;">
+        <form id="level" method="POST">
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>
@@ -126,13 +128,13 @@
                     <?php
                     $no = 1;
                     foreach ($field as $q) {
-                        $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
+                        // $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
                     ?>
                         <tr>
                             <td style="position: sticky; left: 0; background: white; min-width: 50px;"><?= $no++ ?></td>
                             <td style="position: sticky; left: 50px; background: white; min-width: 150px; z-index: 1000;"><?= $q['name'] ?></td>
-                            <td style="position: sticky; left: 200px; background: white; min-width: 200px; z-index: 1000;"><?= $act['event_name'] ?></td>
-                            <td style="position: sticky; left: 400px; background: white; min-width: 200px; z-index: 1000;"><?= $act['proaktif'] ?></td>
+                            <td style="position: sticky; left: 200px; background: white; min-width: 200px; z-index: 1000;"><?= $q['event_name'] ?></td>
+                            <td style="position: sticky; left: 400px; background: white; min-width: 200px; z-index: 1000;"><?= ($q['proaktif']) ? $q['proaktif'] : $q['reaktif']; ?></td>
                             <td style="min-width: 100px;"><?= $q['tahun'] ?></td>
                             <?php
                             $start = ($triwulan - 1) * 3 + 1;
@@ -147,6 +149,16 @@
                     <?php } ?>
                 </tbody>
             </table>
+            </form>
+            <!-- Submit Buttons Positioned Outside of Table -->
+            <div class="add-button-wrapper" style="position: sticky; left: 82%; background: white; width: 15%; z-index: 1000; display: flex; justify-content: space-between; padding: 10px;">
+                <button type="button" class="btn btn-success btn-sm" id="simpan_validasi">
+                    Validasi
+                </button>
+                <!-- <button type="button" class="btn btn-primary btn-sm" id="log_validasi">
+                    Log Validasi
+                </button> -->
+            </div>
         </div>
 
     </div>

@@ -617,6 +617,55 @@ function cari_ajax_combo(tipe, parent, data, target_combo, url, proses_result, s
 		}
 	})
 }
+function cari_ajax_combo_new(tipe, parent, data, target_combo, url, proses_result, sts_loading, pesan, title_msg){
+	url = base_url + url;
+	
+	if(typeof(pesan) == "undefined")
+		pesan='Error Load Database';
+	if(typeof(title_msg) == "undefined")
+		title_msg='Error';
+	
+	if(typeof(sts_loading) == "undefined")
+		sts_loading=true;
+	
+	if (sts_loading)
+		looding('light',parent);
+	// looding('light',parent);
+	if(typeof(proses_result) == "undefined")
+		proses_result="";
+	else if(proses_result.length==0){
+		proses_result="";
+	}
+	$.ajax({
+		type:tipe,
+		url:url,
+		data:data,
+		processData: false,
+    	contentType: false,
+		dataType: "json",
+		success:function(result){
+			if (proses_result.length==0)	
+				target_combo.html(result.combo)
+			else
+				window[proses_result](result);
+			
+			if (sts_loading)
+				stopLooding(parent);
+		},
+			error:function(msg){
+			console.log(msg);
+			// alert('Season anda')
+			// location.reload();
+			// if (sts_loading)
+
+				stopLooding(parent);
+		  pesan_toastr(pesan, 'err', title_msg, 'toast-top-center');
+		},
+		complate:function(){
+		}
+	})
+}
+
 function cari_ajax_singgle(tipe, data, url) {
 	url = base_url + url;
 

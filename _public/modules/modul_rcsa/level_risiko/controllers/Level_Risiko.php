@@ -59,19 +59,11 @@ class Level_Risiko extends BackendController
 
 		$this->set_Bid(array('nmtbl' => $this->tbl_master, 'field' => 'progress_detail', 'span_left_addon' => ' %'));
 		$this->set_Sort_Table($this->tbl_master, 'inherent_analisis_id', "DESC", 'residual_analisis_id', "DESC");
-		// $this->set_Sort_Table($this->tbl_master, 'id', 'desc');
-
 		$this->set_Table_List($this->tbl_master, 'name', 'Risk Owner');
 		$this->set_Table_List($this->tbl_master, 'period_no', 'Tahun');
 		$this->set_Table_List($this->tbl_master, 'event_name', 'Peristiwa Risiko');
-		// $this->set_Table_List($this->tbl_master,'reaktif','Treatment');
-		// $this->set_Table_List($this->tbl_master,'progress_date','Due Date');
 		$this->set_Table_List($this->tbl_master, 'inherent_analisis', 'Level Risiko Inheren');
-		// $this->set_Table_List($this->tbl_master,'status_no','Pelaksanaan Treatment',10);
 		$this->set_Table_List($this->tbl_master, 'residual_analisis', 'Level Risiko Residual');
-
-		// $this->set_Table_List($this->tbl_master,'keterangan','Loss Event');
-		// $this->set_Table_List($this->tbl_master,'progress_detail','Progress');
 		$bulan = [
 			1 => 'Jan',
 			2 => 'Feb',
@@ -94,10 +86,8 @@ class Level_Risiko extends BackendController
 
 
 		$this->_SET_PRIVILEGE('add', false);
-		// $this->_SET_PRIVILEGE('edit', false);
 		$this->_SET_PRIVILEGE('delete', false);
 		$this->_SET_PRIVILEGE('view', false);
-		// $this->tmp_data['setActionprivilege']=false;
 
 		$this->_SET_ACTION_WIDTH('size', 15);
 		$this->_SET_ACTION_WIDTH('align', 'center');
@@ -165,25 +155,12 @@ class Level_Risiko extends BackendController
 
 	public function save(){
 		$post 	= $this->input->post();
-
+		// die;
 		$id = $this->data->simpan_realisasi($post);
-		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
-		$data['detail'] = $this->db->where('id', $post['detail_rcsa_no'])->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
-		$data['realisasi'] = $this->data->get_realisasi($post['detail_rcsa_no'], $post['bulan']);
-		// $result['combo'] = $this->load->view('list-realisasi', $data, true);
-		echo json_encode($data);
-
-
-		
-		// 	var_dump($simpan);
-		// exit;
-		// echo "<script>
-		// 	alert('Berhasil proses data!');
-		// 	window.location.href = '" . base_url("level_risiko/index") . "';
-		// </script>";
+		echo json_encode($id);
 
 	}
-	
+
 	
 	function pagination($data, $total_pages, $page){
 		$pagination = '';
@@ -241,46 +218,7 @@ class Level_Risiko extends BackendController
 		return $result;
 
 	}
-	public function getMonthlyMonitoring($id, $month)
-	{
-		$act = $this->db
-			->select('id')
-			->where('rcsa_detail_no', $id)
-			// ->where('bulan', $month)
-			->get('bangga_rcsa_action')->row_array();
-		// doi::dump($act);
-
-
-		$result['data'] = $this->db
-			->where('rcsa_action_no', $act['id'])
-			->where('bulan', $month)
-			->get('bangga_view_rcsa_action_detail')->row_array();
-
-
-			$detail = $this->db
-			->select('periode_name')
-			->where('id', $id)
- 			->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
-			
-		$blnnow = date('m');
-		$thnRcsa   = substr( $detail['periode_name'], 0, 4 );
-		$tgl           = 01;
-
-		$dateRcsa  = new DateTime( $thnRcsa . '-' . $month . '-' . $tgl );
-		$hariIni   = new DateTime();
-		// doi::dump($dateRcsa);
-		// doi::dump($hariIni);
-		if($hariIni >= $dateRcsa ){
-		
-			$result['before'] = $this->db
-				->where('rcsa_action_no', $act['id'])
-				->where('bulan', $month - 1)
-				->get('bangga_view_rcsa_action_detail')->row_array();
-		}
-		return $result;
-	}
-
-
+	
 	
 	function cek_level()
 	{
@@ -315,6 +253,53 @@ class Level_Risiko extends BackendController
 
 		echo json_encode($result);
 	}
+
+	public function get_log_modal() {
+		
+ 		$data['periode'] = $this->input->get('periode');
+		$x=$this->authentication->get_info_user();
+		$own=$x['group']['owner']['owner_no'];
+ 		if($this->input->get('owner')){
+			$own= $this->input->get('owner');
+		}
+		$twD = date('n'); 
+
+		if ($twD >= 1 && $twD <= 3) {
+			$tw = 1; 
+		} elseif ($twD >= 4 && $twD <= 6) {
+			$tw = 2; 
+		} elseif ($twD >= 7 && $twD <= 9) {
+			$tw = 3;
+		} elseif ($twD >= 10 && $twD <= 12) {
+			$tw = 4;
+		} else {
+			$tw = 0;
+		}
+		
+		// Cek apakah ada input triwulan dari form, jika ada, gunakan triwulan dari input
+		if ($this->input->get('triwulan')) {
+			$tw = $this->input->get('triwulan');
+		}
+
+		$data['triwulan'] = $tw;
+
+		$data['owner'] =$own;
+		$x['cboPeriod'] = $this->cbo_periode;
+		$x['triwulan'] = $tw;
+		$x['cboOwner'] = $this->cbo_parent;
+		$x['field'] = $this->data->getDetail_modal($data);
+		// $x['cb_like'] = $this->get_combo('likelihood');
+		// $x['cb_impact'] = $this->get_combo('impact');
+		
+	
+		// Jika Anda perlu mengembalikan tampilan 'log_modal'
+		$result['register'] = $this->load->view('log_modal', $x, true);
+	
+		// Mengembalikan hasil dalam format JSON
+		echo json_encode($result);
+	}
+	
+	
 
 	
 
