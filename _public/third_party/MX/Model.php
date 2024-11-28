@@ -181,7 +181,7 @@ class MX_Model extends CI_Model
 							  LEFT JOIN bangga_library ON bangga_library.id = bangga_rcsa_detail.event_no 
 							  WHERE {$where}
 							  ORDER BY description";
-				break;
+ 				break;
 
 			case 'judul_assesment':
 				$query = "SELECT id, judul_assesment AS name 
