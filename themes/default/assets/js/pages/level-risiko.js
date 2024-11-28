@@ -44,30 +44,30 @@ $(function () {
     cari_ajax_combo("get", parent, data, "", url, "result_show_model");
   });
 
-  // $("#simpan_validasi").on("click", function () {
-  //   // Ambil nilai dari elemen input
-  //   var owner = $("#filter_owner").val();
-  //   var periode = $("#filter_periode").val();
+  $("#simpan_validasi").on("click", function () {
+    // Ambil nilai dari elemen input
+    var owner = $("#filter_owner").val();
+    var periode = $("#filter_periode").val();
 
-  //   // Ambil elemen parent untuk digunakan dalam proses ajax
-  //   var parent = $(this).parent();
+    // Ambil elemen parent untuk digunakan dalam proses ajax
+    var parent = $(this).parent();
 
-  //   // URL untuk mengirimkan data
-  //   var url = modul_name + "/save";
+    // URL untuk mengirimkan data
+    var url = modul_name + "/save";
 
-  //   // Ambil form berdasarkan ID
-  //   var form = document.querySelector("#level"); // Mengambil form dengan ID 'level'
+    // Ambil form berdasarkan ID
+    var form = document.querySelector("#level"); // Mengambil form dengan ID 'level'
 
-  //   // Membuat objek FormData dari form yang dipilih
-  //   var formData = new FormData(form);
+    // Membuat objek FormData dari form yang dipilih
+    var formData = new FormData(form);
 
-  //   // Menambahkan data tambahan ke FormData
-  //   formData.append("owner", owner); // Menambahkan data owner
-  //   formData.append("periode", periode); // Menambahkan data periode
+    // Menambahkan data tambahan ke FormData
+    formData.append("owner", owner); // Menambahkan data owner
+    formData.append("periode", periode); // Menambahkan data periode
 
-  //   // Panggil fungsi cari_ajax_combo_new untuk mengirimkan data
-  //   cari_ajax_combo_new("post", parent, formData, "", url, "result_realisasi");
-  // });
+    // Panggil fungsi cari_ajax_combo_new untuk mengirimkan data
+    cari_ajax_combo_new("post", parent, formData, "", url, "result_realisasi");
+  });
 
   //
 });
