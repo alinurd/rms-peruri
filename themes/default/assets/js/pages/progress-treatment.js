@@ -1,7 +1,5 @@
 var asal_event;
 $(function () {
-
-
   // $(document).on("click", "[id^=simpan_realisasi_]", function () {
   //   var id = $(this).data("id");
   //   var month = $(this).data("month");
@@ -25,7 +23,6 @@ $(function () {
   //     damp_loss: damp_loss,
   //   };
 
-
   //   var parent = $(this).parent();
   //   var target_combo = "";
   //   var url = modul_name + "/simpan-realisasi";
@@ -45,7 +42,7 @@ $(function () {
   $("#simpan_validasi").on("click", function () {
     var target_combo = "";
     var parent = $(this).parent();
-    var url = modul_name + "/save"; // URL untuk mengirimkan data
+    var url = "Progress_Treatment" + "/save"; // URL untuk mengirimkan data
 
     // Ambil elemen form berdasarkan ID
     var form = document.querySelector("#level"); // Mengambil form dengan ID 'myForm'
@@ -54,7 +51,6 @@ $(function () {
 
     cari_ajax_combo_new("post", parent, formData, "", url, "result_realisasi");
   });
-
 });
 
 function result_realisasi(hasil) {
@@ -67,5 +63,3 @@ function result_realisasi(hasil) {
   );
   location.reload();
 }
-
-
