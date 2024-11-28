@@ -669,7 +669,7 @@ function cari_ajax_combo_new(
     },
     error: function (msg) {
       console.log(msg);
-      alert('Season anda')
+      // alert('Season anda')
       location.reload();
       if (sts_loading)
 
