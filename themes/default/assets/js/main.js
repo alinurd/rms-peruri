@@ -620,9 +620,9 @@ function cari_ajax_combo(
     },
     error: function (msg) {
       console.log(msg);
-      // alert('Season anda')
-      // location.reload();
-      // if (sts_loading)
+      alert('Season anda')
+      location.reload();
+      if (sts_loading)
 
       stopLooding(parent);
       pesan_toastr(pesan, "err", title_msg, "toast-top-center");
@@ -669,9 +669,9 @@ function cari_ajax_combo_new(
     },
     error: function (msg) {
       console.log(msg);
-      // alert('Season anda')
-      // location.reload();
-      // if (sts_loading)
+      alert('Season anda')
+      location.reload();
+      if (sts_loading)
 
       stopLooding(parent);
       pesan_toastr(pesan, "err", title_msg, "toast-top-center");
