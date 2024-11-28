@@ -56,10 +56,11 @@ $(function () {
     var url = modul_name + "/save";
 
     // Ambil form berdasarkan ID
-    var form = document.querySelector("#level"); // Mengambil form dengan ID 'level'
+    // var form = document.querySelector("#level"); // Mengambil form dengan ID 'level'
 
-    // Membuat objek FormData dari form yang dipilih
-    var formData = new FormData(form);
+    // // Membuat objek FormData dari form yang dipilih
+    // var formData = new FormData(form);
+    var formData = new FormData($("#level")[0]);
 
     // Menambahkan data tambahan ke FormData
     formData.append("owner", owner); // Menambahkan data owner
