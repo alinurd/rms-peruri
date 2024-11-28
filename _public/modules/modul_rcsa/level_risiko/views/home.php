@@ -68,7 +68,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                 <div class="x_panel">
                     <div class="x_content table-responsive" style="overflow-x: auto;">
-                    <form id="level" method="POST">
+                    <form id="level" method="POST" action="<?= site_url(_MODULE_NAME_REAL_.'/save'); ?>">
                     <table class="table table-striped table-bordered table-hover" style="table-layout: fixed;">
                         <thead>
                             <tr>
@@ -158,12 +158,12 @@
                     </form>
                     <!-- Submit Buttons Positioned Outside of Table -->
                     <div class="add-button-wrapper" style="position: sticky; left: 82%; background: white; width: 15%; z-index: 1000; display: flex; justify-content: space-between; padding: 10px;">
-                        <button type="button" class="btn btn-success btn-sm" id="simpan_validasi">
+                        <button type="submit" class="btn btn-success btn-sm" id="simpan_validasi">
                             Validasi
                         </button>
-                        <!-- <button type="button" class="btn btn-primary btn-sm" id="log_validasi">
+                        <button type="button" class="btn btn-primary btn-sm" id="log_validasi">
                             Log Validasi
-                        </button> -->
+                        </button>
                     </div>
                 
 
