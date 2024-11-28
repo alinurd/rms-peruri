@@ -138,8 +138,8 @@
                 <th colspan="2"><label>Dampak</label></th>
                 <th colspan="2"><label> Level</label></th>
 
-                <th><label>Rencana Treatment</label></th>
-                <th><label>Rencana</label></th>
+                <th><label>Rencana Proaktif</label></th>
+                <th><label>Rencana Reaktif</label></th>
                 <th><label>Target Waktu</label></th>
                 <th><label>Risk Treatment Owner</label></th>
             </tr>
@@ -147,7 +147,7 @@
         <tbody>
             <?php
             $no = 1;
-            $groupedRows = array(); 
+            $groupedRows = array(); // Associative array to group rows by 'sasaran'
             foreach ($field as $key => $row) :
                 // doi::dump($row);
                 $sasaranKey = $row['sasaran'];
@@ -194,7 +194,7 @@ $groupedRows[$sasaranKey][] = $row;
                 $act = $this->db
                 ->where('rcsa_detail_no', $row['id'])
                 ->get('bangga_rcsa_action')->row_array();
-$tema = $this->db->where('id', $row['tema'])->get(_TBL_LIBRARY)->row_array();
+                $tema = $this->db->where('id', $row['tema'])->get(_TBL_LIBRARY)->row_array();
                $control_as = $this->db->where('id', $row['risk_control_assessment'])->get('bangga_data_combo')->row_array();
                $pic = $this->db->where('id', $row['pic'])->get('bangga_owner')->row_array();
             $residual_level = $this->data->get_master_level(true, $row['residual_level']);

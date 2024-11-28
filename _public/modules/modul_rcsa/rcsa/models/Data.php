@@ -195,7 +195,7 @@ class Data extends MX_Model
 			$rows_couse = array();
 			if ($arrCouse)
 				$arrCouse_implode = implode(", ", $arrCouse);
-			$rows_couse  = $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array(); //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+			$rows_couse  = $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array()->group; //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
 			$arrCouse = array();
 			foreach ($rows_couse as $rc) {
 				$arrCouse[] = $rc['description'];
@@ -802,10 +802,10 @@ $msg="risk impcat yang anda masukan sudah ada";
 			'update_user' => $this->authentication->get_info_user('username'),
 			'update_date' => Doi::now(),
 		];
-	
+		
 		// Proses data per baris
 		foreach ($data['target_progress'] as $row_index => $progress_row) {
-			$rencana_value = isset($data['rencana'][$row_index]) ? strtolower($data['rencana'][$row_index]) : '';
+			$rencana_value = $data['rencana'][$row_index];
 	
 			// Set nilai proaktif dan reaktif berdasarkan rencana
 			if ($rencana_value === 'proaktif') {
@@ -813,10 +813,10 @@ $msg="risk impcat yang anda masukan sudah ada";
 				$upd['reaktif'] = '';
 			} elseif ($rencana_value === 'reaktif') {
 				$upd['proaktif'] = '';
-				$upd['reaktif'] = $data['reaktif'][$row_index]; // Ganti dengan 'reaktif' jika ada
+				$upd['reaktif'] = $data['proaktif'][$row_index]; // Ganti dengan 'reaktif' jika ada
 			} else {
 				$upd['proaktif'] = $data['proaktif'][$row_index];
-				$upd['reaktif'] = $data['reaktif'][$row_index]; // Ganti dengan 'reaktif' jika ada
+				$upd['reaktif'] = $data['proaktif'][$row_index]; // Ganti dengan 'reaktif' jika ada
 			}
 	
 			// Update atau tambah data mitigasi untuk baris ini

@@ -1893,6 +1893,7 @@ if($dtkri){
 
 		
  		$data['log'] = $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_LOG_PROPOSE)->result_array();
+		
 		$result['register'] = $this->load->view('list_risk_register', $data, true);
 		echo json_encode($result);
 	}
