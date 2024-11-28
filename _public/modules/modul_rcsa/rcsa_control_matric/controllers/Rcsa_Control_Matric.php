@@ -552,6 +552,17 @@ class Rcsa_Control_Matric extends BackendController
 		$id = $this->uri->segment(3);
 		// $data['field'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCSA_SASARAN)->result_array();
 		$data['bisnis_proses'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCM)->result_array();
+		$data['test'] = $this->db->select([
+			'proses_bisnis',
+			'note_control',
+			'JSON_LENGTH(note_control) as note_count'  // Menghitung jumlah elemen dalam array JSON
+		])
+		->where('rcsa_no', $id)  // Pastikan $id adalah nilai yang valid
+		->get(_TBL_RCSA_DETAIL)  // Mengambil data dari tabel
+		->result_array();  // Mengambil hasil sebagai array
+
+
+
 		$result = $this->load->view('crm', $data, true);
 		return $result;
 	}

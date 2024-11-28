@@ -24,6 +24,8 @@ class Data extends MX_Model {
 	}
 
 	function save_detail($newid, $data, $mode, $old = []) {
+		// doi::dump($_FILES);
+		// die;
 
 		$rcsa_no            = $newid;
 		$bisnisProses       = $data['bisnisProses'];
@@ -155,10 +157,10 @@ class Data extends MX_Model {
 					$data_existing_cont['update_user'] = $this->authentication->get_info_user('username');
 					$result = $this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => $data_existing_cont, 'where' => ['id' => $exixtingControllama[$i][$j]], 'type' => 'update']);
 				}
-	
+
 				// Mengelola file upload jika ada
 				if (!empty($_FILES['fileupload']['name'][$i])) {
-					foreach ($_FILES['fileupload']['name'][$i] as $key => $file) {
+					foreach ($_FILES['fileupload']['name'][$i] as $key => $file) {						
 						if (!empty($file)) {
 							// Mengambil file dokumen lama dari database
 							$existing_file = $this->db->select('dokumen')
@@ -179,6 +181,7 @@ class Data extends MX_Model {
 								'error' => $_FILES['fileupload']['error'][$i][$key],
 								'size' => $_FILES['fileupload']['size'][$i][$key],
 							];
+
 							$upload = upload_file_new([
 								'nm_file' => 'userfile',
 								'size' => 10000000,
@@ -186,6 +189,8 @@ class Data extends MX_Model {
 								'thumb' => false,
 								'type' => 'pdf|doc|docx',
 							], true, $i);
+
+
 							if ($upload) {
 								$data_existing_cont['dokumen'] = $upload['file_name'];
 								$this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => ['dokumen' => $upload['file_name']], 'where' => ['rcm_id' => $bisnis_id, 'component' => $control], 'type' => 'update']);
