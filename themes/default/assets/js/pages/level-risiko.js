@@ -57,17 +57,19 @@ $(function () {
 
     // Ambil form berdasarkan ID
     // var form = document.querySelector("#level"); // Mengambil form dengan ID 'level'
+    // var formData = new FormData($("#level")[0]);
+    var form = $("#level").get(0);
+    var data = new FormData(form);
 
-    // // Membuat objek FormData dari form yang dipilih
+    // Membuat objek FormData dari form yang dipilih
     // var formData = new FormData(form);
-    var formData = new FormData($("#level")[0]);
 
     // Menambahkan data tambahan ke FormData
-    formData.append("owner", owner); // Menambahkan data owner
-    formData.append("periode", periode); // Menambahkan data periode
+    data.append("owner", owner); // Menambahkan data owner
+    data.append("periode", periode); // Menambahkan data periode
 
     // Panggil fungsi cari_ajax_combo_new untuk mengirimkan data
-    cari_ajax_combo_new("post", parent, formData, "", url, "result_realisasi");
+    cari_ajax_combo_new("post", parent, data, "", url, "result_realisasi");
   });
 
   //
