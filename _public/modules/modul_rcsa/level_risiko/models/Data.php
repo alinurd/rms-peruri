@@ -207,8 +207,10 @@ class Data extends MX_Model {
 				$id = intval($result);
 				$type = 'edit';
 
-				$upd_log['create_user'] = $this->authentication->get_info_user('username');
-				$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'type' => 'add']);
+				$upd_log['update_user'] = $this->authentication->get_info_user('username');
+				$where['id_action_detail'] = $rcsa_action_no[$i];
+				$where['bulan'] = $month[$i];
+				$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log , 'where' => $where,'type' => 'update']);
 				
 			} else {
 				$upd['create_user'] = $this->authentication->get_info_user('username');
@@ -218,6 +220,7 @@ class Data extends MX_Model {
 				
 				$upd_log['create_user'] = $this->authentication->get_info_user('username');
 				$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'type' => 'add']);
+				
 				
 			}
 	
