@@ -659,7 +659,7 @@ function cari_ajax_combo_new(
     url: url,
     data: data,
     processData: false,
-    contentType: false,
+    contentType: "application/json';charset=utf-8",
     dataType: "json",
     success: function (result) {
       if (proses_result.length == 0) target_combo.html(result.combo);
