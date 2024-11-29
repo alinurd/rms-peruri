@@ -201,10 +201,20 @@ class Data extends MX_Model {
 				$id = $id_edit[$i];
 				$type = 'edit';
 
-				$upd_log['update_user'] = $this->authentication->get_info_user('username');
-				$where_log['id_action_detail'] = $id;
-				$where_log['bulan'] = $month[$i];
-				$result_log = $this->crud->crud_data(array('table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'where' => $where_log, 'type' => 'update'));
+				$cek_log = $this->db->get_where(_TBL_RCSA_LOG_LEVEL_RISIKO, [
+					'id_action_detail' => $id_edit[$i],
+					'bulan' => $month[$i]
+				])->row();
+				if($cek_log){
+					$upd_log['update_user'] = $this->authentication->get_info_user('username');
+					$where_log['id_action_detail'] = $id;
+					$where_log['bulan'] = $month[$i];
+					$result_log = $this->crud->crud_data(array('table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'where' => $where_log, 'type' => 'update'));
+				}else{
+					$upd_log['id_action_detail'] = $id;
+					$upd_log['create_user'] = $this->authentication->get_info_user('username');
+					$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'type' => 'add']);
+				}
 				
 			} else {
 				$upd['create_user'] = $this->authentication->get_info_user('username');
