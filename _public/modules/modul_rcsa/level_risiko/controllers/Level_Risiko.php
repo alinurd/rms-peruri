@@ -154,11 +154,10 @@ class Level_Risiko extends BackendController
 	}
 
 	public function save(){
-		// $post 	= $this->input->post();
-		echo "test";
-		die;
-		// $id = $this->data->simpan_realisasi($post);
-		// echo json_encode($id);
+		$post 	= $this->input->post();
+		// die;
+		$id = $this->data->simpan_realisasi($post);
+		echo json_encode($id);
 
 	}
 
