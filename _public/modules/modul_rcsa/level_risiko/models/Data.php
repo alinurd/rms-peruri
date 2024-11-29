@@ -173,7 +173,7 @@ class Data extends MX_Model {
 
 			$upd_log = [
 				'id_detail' 		=> $id,
-				'id_action_detail' 	=> $rcsa_action_no[$i],
+				// 'id_action_detail' 	=> $rcsa_action_no[$i],
 				'bulan' 			=> $month[$i],
 				'tanggal_validasi' 	=> date('Y-m-d H:i:s')
 			];
@@ -195,14 +195,14 @@ class Data extends MX_Model {
 		
 			if ($existing_data) {
 				$upd['update_user'] = $this->authentication->get_info_user('username');
-				$where['rcsa_detail'] = $id;
+				$where['id'] = $id_edit[$i];
 				$where['bulan'] = $month[$i];
 				$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-				$id = intval($result);
+				$id = $id_edit[$i];
 				$type = 'edit';
 
 				$upd_log['update_user'] = $this->authentication->get_info_user('username');
-				$where_log['rcsa_action_detail'] = $rcsa_action_no[$i];
+				$where_log['id_action_detail'] = $id;
 				$where_log['bulan'] = $month[$i];
 				$result_log = $this->crud->crud_data(array('table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'where' => $where_log, 'type' => 'update'));
 				
@@ -212,6 +212,7 @@ class Data extends MX_Model {
 				$id = $this->db->insert_id();
 				$type = "add";
 				
+				$upd_log['id_action_detail'] = $id;
 				$upd_log['create_user'] = $this->authentication->get_info_user('username');
 				$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'type' => 'add']);
 				
