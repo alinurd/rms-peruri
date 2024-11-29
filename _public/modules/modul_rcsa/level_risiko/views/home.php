@@ -68,7 +68,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12" id="input_level">
                 <div class="x_panel">
                     <div class="x_content table-responsive" style="overflow-x: auto;">
-                    <form id="level" method="POST" >
+                    <form id="level" method="POST" enctype="multipart/form-data">
                     <table class="table table-striped table-bordered table-hover" style="table-layout: fixed;">
                         <thead>
                             <tr>
