@@ -206,6 +206,9 @@ class Data extends MX_Model {
 				$result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
 				$id = intval($result);
 				$type = 'edit';
+
+				$upd_log['create_user'] = $this->authentication->get_info_user('username');
+				$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'type' => 'add']);
 				
 			} else {
 				$upd['create_user'] = $this->authentication->get_info_user('username');
