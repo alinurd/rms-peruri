@@ -622,9 +622,7 @@ function cari_ajax_combo(
       console.log(msg);
       // alert('Season anda')
       location.reload();
-      if (sts_loading)
-
-      stopLooding(parent);
+      if (sts_loading) stopLooding(parent);
       pesan_toastr(pesan, "err", title_msg, "toast-top-center");
     },
     complate: function () {},
@@ -658,9 +656,10 @@ function cari_ajax_combo_new(
     type: tipe,
     url: url,
     data: data,
-    processData: false,
-    contentType: "application/json';charset=utf-8",
+    cache: false,
     dataType: "json",
+    processData: false,
+    contentType: false,
     success: function (result) {
       if (proses_result.length == 0) target_combo.html(result.combo);
       else window[proses_result](result);
