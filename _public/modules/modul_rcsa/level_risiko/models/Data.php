@@ -166,11 +166,7 @@ class Data extends MX_Model {
 		$likehold 		= $data['likehold'];
 		$impact 		= $data['impact'];
 		$id_edit 		= $data['id_edit'];
-		$inherent_level = $data['inherent_level'];
 		$rcsa_action_no = $data['rcsa_action_no'];
-		$owner 			= $data['owner'];
-		$periode 		= $data['periode'];
-	
 		
 		// Iterasi untuk setiap item dalam array
 		foreach ($rcsa_detail_no as $i => $id) {
@@ -179,8 +175,6 @@ class Data extends MX_Model {
 				'id_detail' 		=> $id,
 				'id_action_detail' 	=> $rcsa_action_no[$i],
 				'bulan' 			=> $month[$i],
-				'owner_no' 			=> $owner,  // Handle empty values
-				'period_no' 		=> $periode,  // Handle empty values
 				'tanggal_validasi' 	=> date('Y-m-d H:i:s')
 			];
 
@@ -208,9 +202,9 @@ class Data extends MX_Model {
 				$type = 'edit';
 
 				$upd_log['update_user'] = $this->authentication->get_info_user('username');
-				$where['id_action_detail'] = $rcsa_action_no[$i];
-				$where['bulan'] = $month[$i];
-				$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log , 'where' => $where,'type' => 'update']);
+				$where_log['rcsa_action_detail'] = $rcsa_action_no[$i];
+				$where_log['bulan'] = $month[$i];
+				$result_log = $this->crud->crud_data(array('table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'where' => $where_log, 'type' => 'update'));
 				
 			} else {
 				$upd['create_user'] = $this->authentication->get_info_user('username');
@@ -220,7 +214,6 @@ class Data extends MX_Model {
 				
 				$upd_log['create_user'] = $this->authentication->get_info_user('username');
 				$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'type' => 'add']);
-				
 				
 			}
 	

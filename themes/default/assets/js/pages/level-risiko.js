@@ -46,7 +46,8 @@ $(function () {
 
   $("#simpan_validasi").on("click", function () {
     var owner = $('select[name="owner"]').val(); // Semester
-    var periode = $('select[name="periode"]').val(); // Periode
+    var periode = $('select[name="periode"]').val(); // Get selected value from 'periode' dropdown
+    
 
     // Arrays untuk menyimpan nilai dari input yang diambil
     var rcsa_detail_no = [];
