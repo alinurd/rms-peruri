@@ -157,9 +157,7 @@ class Level_Risiko extends BackendController
 		$post 	= $this->input->post();
 		// die;
 		$id = $this->data->simpan_realisasi($post);
-		doi::dump($id);
-		die;
-		// echo json_encode($id);
+		echo json_encode($id);
 
 	}
 
