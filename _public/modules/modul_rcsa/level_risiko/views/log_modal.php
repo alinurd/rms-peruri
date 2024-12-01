@@ -15,27 +15,13 @@
         <?php $no = 1; foreach ($field as $row) : ?>
 
             <?php 
-                // Ambil detail untuk Risk Owner dan Event Name
-                $detail = $this->db->where('id_action_detail', $row['id'])
-                                   ->get(_TBL_RCSA_LOG_LEVEL_RISIKO)
-                                   ->row_array();
 
                 
-
-                // Ambil detail dari tabel action dan analisis
-                $data_action_detail = $this->db->where('id',$detail['id_action_detail'])->where('bulan', $detail['bulan'])
-                                               ->get(_TBL_RCSA_ACTION_DETAIL)
-                                               ->row_array();
-
-                
-                $data_analisis = $this->db->where('id_detail', $data_action_detail['rcsa_detail'])->where('bulan', $data_action_detail['bulan'])
+                $data_analisis = $this->db->where('id_detail', $row['rcsa_detail_no'])->where('bulan', $row['bulan'])
                                          ->get(_TBL_ANALISIS_RISIKO)
                                          ->row_array();
 
-                // // Target risiko untuk analisis
-                // $target = $this->db->where('id_detail', $data_analisis['id_detail'])->where('bulan', $row['bulan'])
-                //                    ->get('bangga_analisis_risiko')
-                //                    ->row_array();
+
                                    
                 $like = $data_analisis['target_like'];
                 $impact = $data_analisis['target_impact'];
@@ -47,7 +33,7 @@
 
                 $status = '';
                 $class_text = '';
-                if ($data_action_detail['residual_likelihood_action'] === $data_analisis['target_like'] && $data_action_detail['residual_impact_action'] === $data_analisis['target_impact']) {
+                if ($row['residual_likelihood_action'] === $data_analisis['target_like'] && $row['residual_impact_action'] === $data_analisis['target_impact']) {
                     $status = 'Sesuai';
                     $class_text = 'text-success';
                 } else {
@@ -78,7 +64,7 @@
                 <td><?= $row['owner_name'] ?></td>
                 <td><?= $row['event_name'] ?></td>
                 <td><?= $row['tahun'] ?></td>
-                <td><?= $detail['tanggal_validasi'] ?></td>
+                <td><?= $row['tanggal_validasi'] ?></td>
                 <td><?= isset($bulan_names[$bulan]) ? $bulan_names[$bulan] : 'Unknown' ?></td>
                 <td><span class="<?= $class_text; ?>"><?= $status; ?></span></td>
                 <td>

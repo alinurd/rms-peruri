@@ -42,41 +42,43 @@ class Data extends MX_Model {
 			$this->get_owner_child($data['owner']);
 			$this->owner_child[] = $data['owner'];
 			// Filter berdasarkan owner_no
-			$this->db->where_in('owner_no', $this->owner_child);     
+			$this->db->where_in('bangga_view_rcsa_action_detail.owner_no', $this->owner_child);
 		}
-	
+
 		// Cek apakah ada periode pada $data
 		if ($data['periode']) {
-			$this->db->where('tahun', $data['periode']);
+			$this->db->where('bangga_view_rcsa_action_detail.tahun', $data['periode']);
 		}
-	
+
 		// Filter berdasarkan triwulan (bulan)
 		if (!empty($data['triwulan'])) {
 			switch ($data['triwulan']) {
 				case 1: // Triwulan 1: Januari - Maret (Bulan 1 - 3)
-					$this->db->where('bulan >=', 1);
-					$this->db->where('bulan <=', 3);
+					$this->db->where('bangga_view_rcsa_action_detail.bulan >=', 1);
+					$this->db->where('bangga_view_rcsa_action_detail.bulan <=', 3);
 					break;
 				case 2: // Triwulan 2: April - Juni (Bulan 4 - 6)
-					$this->db->where('bulan >=', 4);
-					$this->db->where('bulan <=', 6);
+					$this->db->where('bangga_view_rcsa_action_detail.bulan >=', 4);
+					$this->db->where('bangga_view_rcsa_action_detail.bulan <=', 6);
 					break;
 				case 3: // Triwulan 3: Juli - September (Bulan 7 - 9)
-					$this->db->where('bulan >=', 7);
-					$this->db->where('bulan <=', 9);
+					$this->db->where('bangga_view_rcsa_action_detail.bulan >=', 7);
+					$this->db->where('bangga_view_rcsa_action_detail.bulan <=', 9);
 					break;
 				case 4: // Triwulan 4: Oktober - Desember (Bulan 10 - 12)
-					$this->db->where('bulan >=', 10);
-					$this->db->where('bulan <=', 12);
+					$this->db->where('bangga_view_rcsa_action_detail.bulan >=', 10);
+					$this->db->where('bangga_view_rcsa_action_detail.bulan <=', 12);
 					break;
 			}
 		}
-	
-		$this->db->order_by('bulan', 'ASC');
- 
-	
+
+		$this->db->join('bangga_rcsa_log_level_risiko', 'bangga_rcsa_log_level_risiko.id_action_detail = bangga_view_rcsa_action_detail.id', 'left'); // Ganti dengan nama tabel yang sesuai
+
+		$this->db->order_by('bangga_view_rcsa_action_detail.bulan', 'ASC');
+
 		// Ambil data setelah join dan filter
 		$query = $this->db->get('bangga_view_rcsa_action_detail');
+
 	
 		// Kembalikan hasil dalam bentuk array
 		return $query->result_array();
