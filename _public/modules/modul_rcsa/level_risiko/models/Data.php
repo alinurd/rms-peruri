@@ -47,27 +47,27 @@ class Data extends MX_Model {
 	
 		// Cek apakah ada periode pada $data
 		if ($data['periode']) {
-			$this->db->where('period_no', $data['periode']);
+			$this->db->where('tahun', $data['periode']);
 		}
 	
 		// Filter berdasarkan triwulan (bulan)
 		if (!empty($data['triwulan'])) {
 			switch ($data['triwulan']) {
 				case 1: // Triwulan 1: Januari - Maret (Bulan 1 - 3)
-					$this->db->where('bangga_rcsa_log_level_risiko.bulan >=', 1);
-					$this->db->where('bangga_rcsa_log_level_risiko.bulan <=', 3);
+					$this->db->where('bulan >=', 1);
+					$this->db->where('bulan <=', 3);
 					break;
 				case 2: // Triwulan 2: April - Juni (Bulan 4 - 6)
-					$this->db->where('bangga_rcsa_log_level_risiko.bulan >=', 4);
-					$this->db->where('bangga_rcsa_log_level_risiko.bulan <=', 6);
+					$this->db->where('bulan >=', 4);
+					$this->db->where('bulan <=', 6);
 					break;
 				case 3: // Triwulan 3: Juli - September (Bulan 7 - 9)
-					$this->db->where('bangga_rcsa_log_level_risiko.bulan >=', 7);
-					$this->db->where('bangga_rcsa_log_level_risiko.bulan <=', 9);
+					$this->db->where('bulan >=', 7);
+					$this->db->where('bulan <=', 9);
 					break;
 				case 4: // Triwulan 4: Oktober - Desember (Bulan 10 - 12)
-					$this->db->where('bangga_rcsa_log_level_risiko.bulan >=', 10);
-					$this->db->where('bangga_rcsa_log_level_risiko.bulan <=', 12);
+					$this->db->where('bulan >=', 10);
+					$this->db->where('bulan <=', 12);
 					break;
 			}
 		}
@@ -76,7 +76,7 @@ class Data extends MX_Model {
  
 	
 		// Ambil data setelah join dan filter
-		$query = $this->db->get('bangga_rcsa_log_level_risiko');
+		$query = $this->db->get('bangga_view_rcsa_action_detail');
 	
 		// Kembalikan hasil dalam bentuk array
 		return $query->result_array();
@@ -205,6 +205,7 @@ class Data extends MX_Model {
 					'id_action_detail' => $id_edit[$i],
 					'bulan' => $month[$i]
 				])->row();
+
 				if($cek_log){
 					$upd_log['update_user'] = $this->authentication->get_info_user('username');
 					$where_log['id_action_detail'] = $id;
@@ -215,6 +216,8 @@ class Data extends MX_Model {
 					$upd_log['create_user'] = $this->authentication->get_info_user('username');
 					$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_LEVEL_RISIKO, 'field' => $upd_log, 'type' => 'add']);
 				}
+
+				
 				
 			} else {
 				$upd['create_user'] = $this->authentication->get_info_user('username');

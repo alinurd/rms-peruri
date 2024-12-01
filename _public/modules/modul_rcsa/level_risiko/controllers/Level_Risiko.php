@@ -255,7 +255,9 @@ class Level_Risiko extends BackendController
 	}
 
 	public function get_log_modal() {
-		
+		// $x=$this->authentication->get_info_user();
+		// doi::dump($x);
+		// die;
  		$data['periode'] = $this->input->get('periode');
 		$x=$this->authentication->get_info_user();
 		$own=$x['group']['owner']['owner_no'];
