@@ -249,10 +249,6 @@ class Lost_Event_Database extends BackendController
             $this->data->simpan_lost_event($post,$_FILES);
             $result['status'] = 0;
         }
-       
-            
-        
-        
         echo json_encode($result);
     } 
 

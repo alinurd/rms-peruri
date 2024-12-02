@@ -181,70 +181,24 @@ $(function () {
         return;
       }
 
-      // Collect values from modal inputs into FormData
-      const formData = new FormData();
-      formData.append("id_edit", id_edit);
-      formData.append("type", type);
-      formData.append(
+      var data = new FormData($("#form-lost")[0]);
+      data.append("id_edit", id_edit);
+      data.append("type", type);
+      data.append(
         "rcsa_no",
         type === "edit"
           ? $("#rcsa_no_e").val()
           : $("#filter_judul_assesment").val()
       );
-      formData.append("event_no", $("#event_no").val());
-      formData.append("nama_event", $("#peristiwabaru").val());
-      formData.append("id_detail", $("#id_detail").val());
-      formData.append(
-        "identifikasi_kejadian",
-        $("#identifikasi_kejadian").val()
-      );
-      formData.append("kategori", $("#kategori").val());
-      formData.append("sumber_penyebab", $("#sumber_penyebab").val());
-      formData.append("penyebab_kejadian", $("#penyebab_kejadian").val());
-      formData.append("penanganan", $("#penanganan").val());
-      formData.append("kat_risiko", $("#kat_risiko").val());
-      formData.append(
-        "hub_kejadian_risk_event",
-        $("#hub_kejadian_risk_event").val()
-      );
-      formData.append("skal_dampak_in", $("#skal_dampak_in").val());
-      formData.append("skal_prob_in", $("#skal_prob_in").val());
-      formData.append("target_res_dampak", $("#target_res_dampak").val());
-      formData.append("target_res_prob", $("#target_res_prob").val());
-      formData.append("status_asuransi", $("#status_asuransi").val());
-      formData.append("nilai_premi", $("#nilai_premi").val());
-      formData.append("nilai_klaim", $("#nilai_klaim").val());
-      formData.append("mitigasi_rencana", $("#mitigasi_rencana").val());
-      formData.append("mitigasi_realisasi", $("#mitigasi_realisasi").val());
-      formData.append(
-        "rencana_perbaikan_mendatang",
-        $("#rencana_perbaikan_mendatang").val()
-      );
-      formData.append("pihak_terkait", $("#pihak_terkait").val());
-      formData.append("penjelasan_kerugian", $("#penjelasan_kerugian").val());
-      formData.append("nilai_kerugian", $("#nilai_kerugian").val());
-      formData.append(
-        "kejadian_berulang",
-        $('input[name="kejadian_berulang"]:checked').val()
-      );
-      formData.append("frekuensi_kejadian", $("#frekuensi_kejadian").val());
-      formData.append("file_upload_lama", $("#file_upload_lama").val());
-
-      // Append file data
-      const fileInput = $("#file_upload")[0];
-      if (fileInput.files.length > 0) {
-        formData.append("file_upload", fileInput.files[0]);
-      }
-
-      // Using cari_ajax_combo to send the FormData
+      // Using cari_ajax_combo to send the data object
       const url = modul_name + "/simpan-lost-event";
       cari_ajax_combo_file(
         "post", // HTTP method
         $(this).parent(), // Context element
-        formData, // Data to send
-        "", // Any additional settings (empty for now)
+        data, // Data to send
+        "", // Additional settings
         url, // The target URL
-        "result_simpan_lost_event" // The callback to handle the result
+        "result_simpan_lost_event" // Callback function
       );
     });
 

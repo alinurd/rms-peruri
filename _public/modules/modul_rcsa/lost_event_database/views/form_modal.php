@@ -61,7 +61,7 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Identifikasi Kejadian</th>
                     <td colspan="2">
-                        <textarea class="form-control" id="identifikasi_kejadian" cols="30" rows="5" required><?= $lost_event['identifikasi_kejadian'];?></textarea>
+                        <textarea name="identifikasi_kejadian" class="form-control" id="identifikasi_kejadian" cols="30" rows="5" required><?= $lost_event['identifikasi_kejadian'];?></textarea>
                         <div class="text-danger" id="error-identifikasi_kejadian"></div>
                     </td>
                 </tr>
@@ -82,14 +82,14 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Penyebab Kejadian</th>
                     <td colspan="2">
-                        <textarea class="form-control" id="penyebab_kejadian" cols="30" rows="5" required><?= $lost_event['penyebab_kejadian'];?></textarea>
+                        <textarea class="form-control" name="penyebab_kejadian" id="penyebab_kejadian" cols="30" rows="5" required><?= $lost_event['penyebab_kejadian'];?></textarea>
                         <div class="text-danger" id="error-penyebab_kejadian"></div>
                     </td>
                 </tr>
                 <tr>
                     <th width="20%">Penanganan Saat Kejadian</th>
                     <td colspan="2">
-                        <textarea class="form-control" id="penanganan" cols="30" rows="5" required><?= $lost_event['penanganan'];?></textarea>
+                        <textarea class="form-control" name="penanganan" id="penanganan" cols="30" rows="5" required><?= $lost_event['penanganan'];?></textarea>
                         <div class="text-danger" id="error-penanganan"></div>
                     </td>
                 </tr>
@@ -252,7 +252,7 @@ if(!$lost_event){
             <tbody>
                 <tr>
                     <td>
-                        <textarea class="form-control" id="rencana_perbaikan_mendatang" cols="30" rows="5" required><?= $lost_event['rencana_perbaikan_mendatang'];?></textarea>
+                        <textarea class="form-control" name="rencana_perbaikan_mendatang" id="rencana_perbaikan_mendatang" cols="30" rows="5" required><?= $lost_event['rencana_perbaikan_mendatang'];?></textarea>
                         <div class="text-danger" id="error-rencana_perbaikan_mendatang"></div>
                     </td>
                     <td>
@@ -274,7 +274,7 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Penjelasan Kerugian</th>
                     <td>
-                        <textarea class="form-control" id="penjelasan_kerugian" cols="30" rows="5" required><?= $lost_event['penjelasan_kerugian'];?></textarea>
+                        <textarea class="form-control" name="penjelasan_kerugian" id="penjelasan_kerugian" cols="30" rows="5" required><?= $lost_event['penjelasan_kerugian'];?></textarea>
                         <div class="text-danger" id="error-penjelasan_kerugian"></div>
                     </td>
                 </tr>
