@@ -48,6 +48,8 @@ class Data extends MX_Model {
 
 
     public function getDetail_modal($data) {
+		doi::dump($data['offset']);
+		die;
 		// Cek apakah ada 'owner' pada $data
 		if ($data['owner']) {
 			// Ambil anak-anak dari owner
