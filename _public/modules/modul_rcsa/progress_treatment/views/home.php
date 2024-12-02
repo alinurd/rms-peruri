@@ -128,6 +128,7 @@
                     <?php
                     $no = 1;
                     foreach ($field as $q) {
+                        // doi::dump($q);
                         // $act = $this->db->where('rcsa_detail_no', $q['id'])->get(_TBL_VIEW_RCSA_MITIGASI)->row_array();
                     ?>
                         <tr>
@@ -141,6 +142,7 @@
                             $end = $start + 3;
                             for ($i = $start; $i < $end; $i++):
                                 $data['id'] = $q['id'];
+                                $data['id_action'] = $q['id_action'];
                                 $data['rcsa_no'] = $q['rcsa_no'];
                                 echo $this->data->getMonthlyMonitoringGlobal($data, $i);
                             endfor;
@@ -155,9 +157,9 @@
                 <button type="button" class="btn btn-success btn-sm" id="simpan_validasi">
                     Validasi
                 </button>
-                <!-- <button type="button" class="btn btn-primary btn-sm" id="log_validasi">
+                <button type="button" class="btn btn-primary btn-sm" id="log_validasi">
                     Log Validasi
-                </button> -->
+                </button>
             </div>
         </div>
 

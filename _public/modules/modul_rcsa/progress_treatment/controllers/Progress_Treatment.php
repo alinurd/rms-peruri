@@ -229,6 +229,7 @@ class Progress_Treatment extends BackendController
 	
 	public function save(){
 		$post 	= $this->input->post();
+		// doi::dump($post);
 		// die;
 		$id = $this->data->simpan_tritment($post);
 		echo json_encode($id);
@@ -277,6 +278,52 @@ class Progress_Treatment extends BackendController
 			}
 		}
 
+		echo json_encode($result);
+	}
+
+
+
+	public function get_log_modal() {
+		// $x=$this->authentication->get_info_user();
+		// doi::dump($x);
+		// die;
+ 		$data['periode'] = $this->input->get('periode');
+		$x=$this->authentication->get_info_user();
+		$own=$x['group']['owner']['owner_no'];
+ 		if($this->input->get('owner')){
+			$own= $this->input->get('owner');
+		}
+		$twD = date('n'); 
+
+		if ($twD >= 1 && $twD <= 3) {
+			$tw = 1; 
+		} elseif ($twD >= 4 && $twD <= 6) {
+			$tw = 2; 
+		} elseif ($twD >= 7 && $twD <= 9) {
+			$tw = 3;
+		} elseif ($twD >= 10 && $twD <= 12) {
+			$tw = 4;
+		} else {
+			$tw = 0;
+		}
+		
+		// Cek apakah ada input triwulan dari form, jika ada, gunakan triwulan dari input
+		if ($this->input->get('triwulan')) {
+			$tw = $this->input->get('triwulan');
+		}
+
+		$data['triwulan'] = $tw;
+
+		$data['owner'] =$own;
+		$x['cboPeriod'] = $this->cbo_periode;
+		$x['triwulan'] = $tw;
+		$x['cboOwner'] = $this->cbo_parent;
+		$x['field'] = $this->data->getDetail_modal($data);		
+	
+		// Jika Anda perlu mengembalikan tampilan 'log_modal'
+		$result['register'] = $this->load->view('log_modal', $x, true);
+	
+		// Mengembalikan hasil dalam format JSON
 		echo json_encode($result);
 	}
 
