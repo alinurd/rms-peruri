@@ -138,20 +138,30 @@ $(function () {
     cari_ajax_combo("post", parent, data, "", url, "result_realisasi");
   });
 
+  // Fungsi ketika tombol log_validasi diklik
   $("#log_validasi").click(function () {
+    // Mengambil nilai filter yang ada di form
     var periode = $("#filter_periode").val();
     var owner = $("#filter_owner").val();
     var triwulan = $("#filter_triwulan").val();
+
+    // Mendapatkan parameter 'page' dari URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var page = urlParams.get("page") || 1; // Jika tidak ada, set halaman default ke 1
+
     var url = modul_name + "/get_log_modal";
 
+    // Menyiapkan data yang akan dikirim ke server
     var data = {
       periode: periode,
       owner: owner,
       triwulan: triwulan,
+      page: page, // Menambahkan page dari URL
     };
+
     var parent = $(this).parent();
 
-    // // Trigger AJAX function to retrieve modal content
+    // Trigger AJAX untuk mengambil konten modal berdasarkan filter dan page
     cari_ajax_combo("get", parent, data, "", url, "result_show_model");
   });
 });
