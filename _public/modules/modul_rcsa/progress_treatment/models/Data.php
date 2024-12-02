@@ -48,8 +48,8 @@ class Data extends MX_Model {
 
 
     public function getDetail_modal($data) {
-		doi::dump($data['offset']);
-		die;
+		// doi::dump($data['offset']);
+		// die;
 		// Cek apakah ada 'owner' pada $data
 		if ($data['owner']) {
 			// Ambil anak-anak dari owner
@@ -94,12 +94,13 @@ class Data extends MX_Model {
 		$this->db->join('bangga_rcsa_monitoring_treatment', 'bangga_rcsa_monitoring_treatment.rcsa_action_no = bangga_rcsa_action.id', 'left');
 		$this->db->join('bangga_rcsa_log_treatment', 'bangga_rcsa_log_treatment.id_treatment_monitoring = bangga_rcsa_monitoring_treatment.id', 'left');
 	
-		if (isset($data['offset'])) {
-			$this->db->offset($data['offset']);
-		}
-	
 		// Menambahkan pengurutan berdasarkan bulan
 		$this->db->order_by('bangga_rcsa_monitoring_treatment.bulan', 'ASC');
+		 // Menghitung total data yang tersedia
+		 $query_count 	= $this->db->get('bangga_rcsa_action');
+		 $total_rows 	= $query_count->num_rows();
+
+		 $this->db->limit($total_rows,$data['offset']);
 	
 		// Eksekusi query
 		$query = $this->db->get('bangga_rcsa_action');
