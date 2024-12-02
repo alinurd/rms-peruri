@@ -315,7 +315,8 @@ class Progress_Treatment extends BackendController
 		}
 
 		$data['triwulan'] = $tw;
-		$offset = ($page - 1) * $limit;
+		$total_data = $this->data->count_all_data($data);
+		$offset = ($total_data > $limit) ? ($page - 1) * $limit : 0 ;
 		$data['owner'] =$own;
 		$x['cboPeriod'] = $this->cbo_periode;
 		$x['triwulan'] = $tw;
