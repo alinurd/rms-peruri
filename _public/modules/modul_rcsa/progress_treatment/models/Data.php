@@ -48,25 +48,23 @@ class Data extends MX_Model {
 
 
     public function getDetail_modal($data) {
-		// doi::dump($data);
-		// exit;
 		// Cek apakah ada 'owner' pada $data
 		if ($data['owner']) {
 			// Ambil anak-anak dari owner
 			$this->get_owner_child($data['owner']);
-			$this->owner_child[] = $data['owner'];
+			$this->owner_child[] = $data['owner'];  // Tambahkan 'owner' ke dalam array owner_child
 			// Filter berdasarkan owner_no
 			$this->db->where_in('bangga_view_rcsa_detail.owner_no', $this->owner_child);
 		}
-
+	
 		// Cek apakah ada periode pada $data
 		if ($data['periode']) {
 			$this->db->where('bangga_view_rcsa_detail.tahun', $data['periode']);
 		}
-
-		// Filter on 'sts_propose' value
-        $this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
-
+	
+		// Filter berdasarkan status 'sts_propose'
+		$this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
+	
 		// Filter berdasarkan triwulan (bulan)
 		if (!empty($data['triwulan'])) {
 			switch ($data['triwulan']) {
@@ -88,20 +86,26 @@ class Data extends MX_Model {
 					break;
 			}
 		}
-
-		// $this->db->join('bangga_rcsa_log_level_risiko', 'bangga_rcsa_log_level_risiko.id_action_detail = bangga_view_rcsa_action_detail.id', 'left'); // Ganti dengan nama tabel yang sesuai
-		$this->db->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_rcsa_action.rcsa_detail_no', 'left'); 
-		$this->db->join('bangga_rcsa_monitoring_treatment', 'bangga_rcsa_monitoring_treatment.rcsa_action_no = bangga_rcsa_action.id', 'left'); 
-		$this->db->join('bangga_rcsa_log_treatment', 'bangga_rcsa_log_treatment.id_treatment_monitoring = bangga_rcsa_monitoring_treatment.id', 'left'); 
-		$this->db->order_by('bangga_rcsa_monitoring_treatment.bulan', 'ASC');
-
-		// Ambil data setelah join dan filter
-		$query = $this->db->get('bangga_rcsa_action');
-
 	
-		// Kembalikan hasil dalam bentuk array
+		// Menggunakan join untuk mendapatkan data terkait
+		$this->db->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_rcsa_action.rcsa_detail_no', 'left');
+		$this->db->join('bangga_rcsa_monitoring_treatment', 'bangga_rcsa_monitoring_treatment.rcsa_action_no = bangga_rcsa_action.id', 'left');
+		$this->db->join('bangga_rcsa_log_treatment', 'bangga_rcsa_log_treatment.id_treatment_monitoring = bangga_rcsa_monitoring_treatment.id', 'left');
+	
+		if (isset($data['offset'])) {
+			$this->db->offset($data['offset']);
+		}
+	
+		// Menambahkan pengurutan berdasarkan bulan
+		$this->db->order_by('bangga_rcsa_monitoring_treatment.bulan', 'ASC');
+	
+		// Eksekusi query
+		$query = $this->db->get('bangga_rcsa_action');
+	
+		// Kembalikan hasil query dalam bentuk array
 		return $query->result_array();
 	}
+	
     
      
     public function count_all_data($data) {

@@ -284,17 +284,22 @@ class Progress_Treatment extends BackendController
 
 
 	public function get_log_modal() {
-		// $x=$this->authentication->get_info_user();
-		// doi::dump($x);
-		// die;
- 		$data['periode'] = $this->input->get('periode');
-		$x=$this->authentication->get_info_user();
-		$own=$x['group']['owner']['owner_no'];
- 		if($this->input->get('owner')){
-			$own= $this->input->get('owner');
+		// Mendapatkan periode dari parameter GET
+		$data['periode'] = $this->input->get('periode');
+	
+		// Mendapatkan informasi user yang sedang login
+		$x = $this->authentication->get_info_user();
+		$own = $x['group']['owner']['owner_no']; // Mendapatkan 'owner_no' dari grup user
+	
+		// Mengecek apakah ada input 'owner' dari form, jika ada, maka mengganti nilai 'own' dengan input tersebut
+		if ($this->input->get('owner')) {
+			$own = $this->input->get('owner');
 		}
+	
+		// Mendapatkan bulan saat ini
 		$twD = date('n'); 
-
+	
+		// Menentukan triwulan (1-4) berdasarkan bulan
 		if ($twD >= 1 && $twD <= 3) {
 			$tw = 1; 
 		} elseif ($twD >= 4 && $twD <= 6) {
@@ -304,28 +309,40 @@ class Progress_Treatment extends BackendController
 		} elseif ($twD >= 10 && $twD <= 12) {
 			$tw = 4;
 		} else {
-			$tw = 0;
+			$tw = 0; // Jika tidak ada triwulan yang valid, default ke 0
 		}
-		
-		// Cek apakah ada input triwulan dari form, jika ada, gunakan triwulan dari input
+	
+		// Cek apakah ada input triwulan dari form, jika ada, gunakan triwulan yang dimasukkan
 		if ($this->input->get('triwulan')) {
 			$tw = $this->input->get('triwulan');
 		}
-
+		
+		// Menambahkan informasi pagination jika diperlukan
+		$page = $this->input->get('page') ? $this->input->get('page') : 1; // Mendapatkan nomor halaman
+		$offset = ($page - 1) * 10;  // Menentukan offset berdasarkan halaman, 10 data per halaman (ubah sesuai kebutuhan)
+		$data['offset'] = $offset;
+		
+		// Menambahkan nilai triwulan ke dalam data
 		$data['triwulan'] = $tw;
-
-		$data['owner'] =$own;
+		$data['owner'] = $own; // Menambahkan owner ke dalam data
+	
+		// Menyiapkan combo box periode, owner, dan triwulan
 		$x['cboPeriod'] = $this->cbo_periode;
 		$x['triwulan'] = $tw;
 		$x['cboOwner'] = $this->cbo_parent;
-		$x['field'] = $this->data->getDetail_modal($data);		
 	
-		// Jika Anda perlu mengembalikan tampilan 'log_modal'
+		// Mendapatkan detail data berdasarkan filter yang diterapkan
+		$x['field'] = $this->data->getDetail_modal($data);
+	
+		
+	
+				// Jika Anda perlu mengembalikan tampilan 'log_modal'
 		$result['register'] = $this->load->view('log_modal', $x, true);
 	
 		// Mengembalikan hasil dalam format JSON
 		echo json_encode($result);
 	}
+	
 
 	
 }
