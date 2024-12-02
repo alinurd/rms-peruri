@@ -287,7 +287,7 @@ class Progress_Treatment extends BackendController
 		// $x=$this->authentication->get_info_user();
 		// doi::dump($x);
 		// die;
-		$limit = 10; 
+		$limit = 30; 
 		$page = $this->input->get('page') ? $this->input->get('page') : 1;
  		$data['periode'] = $this->input->get('periode');
 		$x=$this->authentication->get_info_user();
