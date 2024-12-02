@@ -622,8 +622,8 @@ function cari_ajax_combo(
       console.log(msg);
       // alert('Season anda')
       // location.reload();
-      // if (sts_loading) stopLooding(parent);
-      // pesan_toastr(pesan, "err", title_msg, "toast-top-center");
+      if (sts_loading) stopLooding(parent);
+      pesan_toastr(pesan, "err", title_msg, "toast-top-center");
     },
     complate: function () {},
   });
