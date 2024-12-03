@@ -236,21 +236,27 @@ class Lost_Event_Database extends BackendController
     // ==========================================
     function simpan_lost_event() {
         $post = $this->input->post();
-        $result[] = "";     
-        // Check if the data already exists in tbl_library
+        $result = []; // Pastikan ini adalah array kosong
+    
+        // Cek apakah data sudah ada di tbl_library
         $this->db->select('id');
         $this->db->from(_TBL_LIBRARY);
-        $this->db->where('description', $post['nama_event']);
+        $this->db->where('description', $post['peristiwabaru']);
         $query = $this->db->get();
-        $result = $query->result_array();
+        $result = $query->result_array();  // Ambil hasil query sebagai array
+       
+        // Jika data sudah ada
         if (count($result) > 0) {
-            $result['status'] = 1;
-        } else{
-            $this->data->simpan_lost_event($post,$_FILES);
-            $result['status'] = 0;
+            $this->session->set_userdata('result_proses_error', 'Data sudah ada di database');
+            redirect(base_url('Lost_Event_Database'));
+        } else {
+            // Simpan data ke database
+            $this->data->simpan_lost_event($post);
+            $this->session->set_userdata('result_proses',' Data berhasil disimpan');
+            redirect(base_url('Lost_Event_Database'));
         }
-        echo json_encode($result);
-    } 
+    }
+    
 
     public function get_mitigasi() {
         $post   = $this->input->post("id_detail"); 

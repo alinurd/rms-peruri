@@ -42,165 +42,6 @@ $(function () {
       ).val("");
     });
 
-    // ==========================================
-    // Save Button - Data Validation & Submission
-    // ==========================================
-    $(document).on("click", "#btn-simpan", function () {
-      const type = $(this).attr("data-type");
-      const id_edit = $(this).attr("data-edit");
-
-      // Validasi form
-      let isValid = true;
-
-      // Array of required fields with error messages
-      const requiredFields = [
-        {
-          id: "#identifikasi_kejadian",
-          errorId: "#error-identifikasi_kejadian",
-          message: "Identifikasi Kejadian wajib diisi.",
-        },
-        {
-          id: "#kategori",
-          errorId: "#error-kategori",
-          message: "Pilih kategori kejadian.",
-        },
-        {
-          id: "#sumber_penyebab",
-          errorId: "#error-sumber_penyebab",
-          message: "Sumber penyebab wajib diisi.",
-        },
-        {
-          id: "#penyebab_kejadian",
-          errorId: "#error-penyebab_kejadian",
-          message: "Penyebab kejadian wajib diisi.",
-        },
-        {
-          id: "#penanganan",
-          errorId: "#error-penanganan",
-          message: "Penanganan wajib diisi.",
-        },
-        {
-          id: "#kat_risiko",
-          errorId: "#error-kat_risiko",
-          message: "Pilih kategori risiko.",
-        },
-        {
-          id: "#hub_kejadian_risk_event",
-          errorId: "#error-hub_kejadian_risk_event",
-          message: "Hubungan kejadian wajib diisi.",
-        },
-        {
-          id: "#skal_dampak_in",
-          errorId: "#error-skal_dampak_in",
-          message: "Pilih skala dampak inheren.",
-        },
-        {
-          id: "#skal_prob_in",
-          errorId: "#error-skal_prob_in",
-          message: "Pilih skala probabilitas inheren.",
-        },
-        {
-          id: "#target_res_dampak",
-          errorId: "#error-Target_Res_dampak",
-          message: "Pilih skala dampak target residual.",
-        },
-        {
-          id: "#target_res_prob",
-          errorId: "#error-Target_Res_prob",
-          message: "Pilih skala probabilitas target residual.",
-        },
-        {
-          id: "#mitigasi_rencana",
-          errorId: "#error-mitigasi_rencana",
-          message: "Mitigasi yang direncanakan wajib diisi.",
-        },
-        {
-          id: "#mitigasi_realisasi",
-          errorId: "#error-mitigasi_realisasi",
-          message: "Mitigasi realisasi wajib diisi.",
-        },
-        {
-          id: "#status_asuransi",
-          errorId: "#error-status_asuransi",
-          message: "Status asuransi wajib diisi.",
-        },
-        {
-          id: "#nilai_premi",
-          errorId: "#error-nilai_premi",
-          message: "Nilai premi wajib diisi.",
-        },
-        {
-          id: "#nilai_klaim",
-          errorId: "#error-nilai_klaim",
-          message: "Nilai klaim wajib diisi.",
-        },
-        {
-          id: "#rencana_perbaikan_mendatang",
-          errorId: "#error-rencana_perbaikan_mendatang",
-          message: "Rencana perbaikan wajib diisi.",
-        },
-        {
-          id: "#pihak_terkait",
-          errorId: "#error-pihak_terkait",
-          message: "Pihak terkait wajib diisi.",
-        },
-        {
-          id: "#penjelasan_kerugian",
-          errorId: "#error-penjelasan_kerugian",
-          message: "Penjelasan kerugian wajib diisi.",
-        },
-        {
-          id: "#nilai_kerugian",
-          errorId: "#error-nilai_kerugian",
-          message: "Nilai kerugian wajib diisi.",
-        },
-        {
-          id: "#frekuensi_kejadian",
-          errorId: "#error-frekuensi_kejadian",
-          message: "Pilih frekuensi kejadian.",
-        },
-      ];
-
-      // Validate required fields
-      requiredFields.forEach((field) => {
-        const input = $(field.id);
-        const errorDiv = $(field.errorId);
-
-        if (input.val().trim() === "") {
-          errorDiv.text(field.message); // Show error message
-          input.addClass("is-invalid"); // Add invalid class
-          isValid = false; // Mark as invalid
-        } else {
-          errorDiv.text(""); // Clear error message
-          input.removeClass("is-invalid"); // Remove invalid class
-        }
-      });
-
-      // Stop submission if validation fails
-      if (!isValid) {
-        return;
-      }
-
-      var data = new FormData($("#form-lost")[0]);
-      data.append("id_edit", id_edit);
-      data.append("type", type);
-      data.append(
-        "rcsa_no",
-        type === "edit"
-          ? $("#rcsa_no_e").val()
-          : $("#filter_judul_assesment").val()
-      );
-      // Using cari_ajax_combo to send the data object
-      const url = modul_name + "/simpan-lost-event";
-      cari_ajax_combo_file(
-        "post", // HTTP method
-        $(this).parent(), // Context element
-        data, // Data to send
-        "", // Additional settings
-        url, // The target URL
-        "result_simpan_lost_event" // Callback function
-      );
-    });
 
     // ==========================================
     // Update Risk Level Analysis on Change
@@ -357,29 +198,29 @@ function resultDelete(hasil) {
 // ==========================================
 // Result Display Functions
 // ==========================================
-function result_simpan_lost_event(hasil) {
-  if (hasil.status == 0) {
-    pesan_toastr(
-      "Berhasil disimpan...",
-      "success",
-      "Success",
-      "toast-top-center",
-      true
-    );
-    // Tambahkan waktu penundaan sebelum halaman di-reload
-    setTimeout(function () {
-      location.reload();
-    }, 5000); // 3000 ms = 3 detik (sesuaikan sesuai kebutuhan)
-  } else {
-    pesan_toastr(
-      "Data Peristiwa sudah terdaftar...",
-      "error",
-      "error",
-      "toast-top-center",
-      true
-    );
-  }
-}
+// function result_simpan_lost_event(hasil) {
+//   if (hasil.status == 0) {
+//     pesan_toastr(
+//       "Berhasil disimpan...",
+//       "success",
+//       "Success",
+//       "toast-top-center",
+//       true
+//     );
+//     // Tambahkan waktu penundaan sebelum halaman di-reload
+//     setTimeout(function () {
+//       location.reload();
+//     }, 5000); // 3000 ms = 3 detik (sesuaikan sesuai kebutuhan)
+//   } else {
+//     pesan_toastr(
+//       "Data Peristiwa sudah terdaftar...",
+//       "error",
+//       "error",
+//       "toast-top-center",
+//       true
+//     );
+//   }
+// }
 
 function result_show_model(hasil) {
   $("#modal_general .modal-body").html(hasil.register);

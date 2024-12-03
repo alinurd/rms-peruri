@@ -65,10 +65,10 @@ class Data extends MX_Model {
     // Method: simpan_lost_event
     // Description: Adds or updates a loss event entry
     // ==========================================
-    public function simpan_lost_event($data, $files) {
+    public function simpan_lost_event($data) {
         // Prepare the data for insertion or update
         $upd = [
-            'rcsa_no'                     => $data['rcsa_no'],
+            'rcsa_no'                     => $data['rcsa_no_e'],
             'event_no'                    => $data['event_no'],
             'rcsa_detail_id'              => $data['id_detail'],
             'identifikasi_kejadian'       => $data['identifikasi_kejadian'],
@@ -94,9 +94,6 @@ class Data extends MX_Model {
             'target_res_dampak'           => $data['target_res_dampak'],
             'target_res_prob'             => $data['target_res_prob'],
         ];
-
-        doi::dump($upd);
-        die;
     
         
     
@@ -124,9 +121,8 @@ class Data extends MX_Model {
     
         // Check if we are in "edit" mode
         if ($data['type'] == "edit") {
-
             $updxx = [
-                'rcsa_no'                     => $data['rcsa_no'],
+                'rcsa_no'                     => $data['rcsa_no_e'],
                 'identifikasi_kejadian'       => $data['identifikasi_kejadian'],
                 'kategori'                    => $data['kategori'],
                 'sumber_penyebab'             => $data['sumber_penyebab'],
@@ -150,10 +146,12 @@ class Data extends MX_Model {
                 'target_res_dampak'           => $data['target_res_dampak'],
                 'target_res_prob'             => $data['target_res_prob'],
             ];
+
+            // doi::dump($upd);
             // If a new file is uploaded, handle the replacement of the old file
-            if (isset($files['file_upload']) && $files['file_upload']['error'] == 0) {
-                $file = $files['file_upload'];
-                $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded files
+            if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] == 0) {
+                $file = $_FILES['file_upload'];
+                $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded _FILES
                 // If an old file exists, delete it before uploading the new one
                 if (!empty($data['file_upload_lama'])) {
                     $fileLama = $data['file_upload_lama'];
@@ -192,17 +190,17 @@ class Data extends MX_Model {
         } else {
             
             // Handle file upload only if a file is uploaded
-            if (isset($files['file_upload']) && $files['file_upload']['error'] == 0) {
+            if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] == 0) {
                 // File upload processing
-                $file = $files['file_upload'];
-                $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded files
+                $file = $_FILES['file_upload'];
+                $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded _FILES
                 $fileName = time() . '_' . basename($file['name']); // Generate a unique file name
                 $uploadFilePath = $uploadDir . $fileName;
         
                 // Validate file type (only allow PDFs)
                 $allowedTypes = ['application/pdf'];
                 if (!in_array($file['type'], $allowedTypes)) {
-                    return 'Invalid file type. Only PDF files are allowed.';
+                    return 'Invalid file type. Only PDF _FILES are allowed.';
                 }
         
                 // Validate file size (5MB max)
