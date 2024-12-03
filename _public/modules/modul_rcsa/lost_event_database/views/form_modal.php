@@ -13,7 +13,7 @@ if(!$lost_event){
 
 
 ?>
-<form method="POST" id='form-lost' enctype="multipart/form-data" action="<?= base_url('Lost_Event_Database/simpan_lost_event');?>">
+<form method="POST" id='form-lost' enctype="multipart/form-data"  action="<?= base_url(_MODULE_NAME_REAL_ . '/simpan_lost_event');?>">
 <!-- ================ KEJADIAN RISIKO ====================== -->
 <div class="row">
     <div style="background-color: white; padding: 10px; border-radius: 10px;">
