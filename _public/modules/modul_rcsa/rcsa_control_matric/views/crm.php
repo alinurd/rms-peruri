@@ -93,9 +93,11 @@
                 $options[$row['proses_bisnis']] = $row['proses_bisnis'];
             }
             $i = 0;
+            
 
             foreach ($bisnis_proses as $key => $row): $i++; 
                 $exiting_control = $this->db->where('rcm_id', $row['id'])->get(_TBL_EXISTING_CONTROL)->result_array();
+                // doi::dump($row['bussines_process']);
         ?>
         
         <tr id="rcm_<?= $i; ?>">
@@ -104,17 +106,30 @@
 
             <td>
                 <input type="hidden" name="bisnisProseslama[<?=$i;?>]" value="<?= $row['id']?>">
-                <?= form_dropdown("bisnisProses[{$i}]", $options, $row['bussines_process'], [
+                <!-- <?= form_dropdown("bisnisProses[{$i}]", $options, $row['bussines_process'], [
                     'class'     => 'form-control',
-                    'required'  => 'required'
+                    'required'  => 'required',
+                    'readonly' => true
+                ]); ?> -->
+                 <?= form_textarea("bisnisProses[{$i}]", $row['bussines_process'], [
+                    'maxlength' => '10000',
+                    'class'     => 'form-control',
+                    'rows'      => '2',
+                    'style'     => 'overflow: hidden; height: 104px;', 'required' => 'required','readonly' => true
                 ]); ?>
+                
             </td>
             
             <td colspan="6" style="padding: 0px;">
 
                 <table class="table table-borderless">    
                     <tbody id="metode_<?= $i; ?>">
-                    <?php foreach ($exiting_control as $ex): ?>
+                    <?php 
+                        $j = 0;
+                        foreach ($exiting_control as $ex): 
+                            $j++; 
+                        
+                    ?>
                         <tr>
                             <td>
                                 <input type="hidden" name="exixtingControllama[<?=$i;?>][]" value="<?= $ex['id']?>">
@@ -170,24 +185,47 @@
                             <td style="vertical-align: middle; text-align: center;">
                                 <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?= $ex['dokumen'] ?>" multiple />
                                 
-                                <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                    <?php $filePath = './themes/upload/crm/' . htmlspecialchars($ex['dokumen']);?>
-                                    <?php if (empty($ex['dokumen']) || !file_exists($filePath)) : ?>
-                                        <label class="file_upload" style="margin: 0;">
-                                            <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" style="display: none;" accept=".pdf"/>
-                                            <a class="btn btn-warning btn-xs" rel="nofollow">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
+                                    <?php $filePath = './themes/upload/crm/' . htmlspecialchars($ex['dokumen']); ?>
+                                    
+                                    <!-- Label untuk Menampilkan Nama File -->
+                                    <label id="file-name-label-<?= $i; ?>-<?= $j; ?>" style="margin-bottom: 10px; color: #555; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        
+                                    </label>
+                                    
+                                    <!-- Tombol Upload dan Download Sejajar -->
+                                    <div style="display: flex; justify-content: center; width: 100%; gap: 10px;">
+                                        
+                                        <!-- File Upload -->
+                                        <label class="file_upload" style="margin: 0; text-align: center;">
+                                            <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>_<?= $j; ?>" style="display: none;" accept=".pdf" onchange="updateFileNameLabel(<?= $i; ?>,<?= $j; ?>)"/>
+                                            <a class="btn btn-warning btn-xs" rel="nofollow" style="display: inline-block; text-align: center;">
                                                 <i class="fa fa-upload"></i>
                                             </a>
                                         </label>
-                                    <?php else : ?>
-                                        <a href="<?= base_url('rcsa_control_matric/download/'.$ex['dokumen']) ?>" class="btn btn-success btn-xs" rel="nofollow">
-                                            <i class="fa fa-download"></i>
-                                        </a>
-                                    <?php endif; ?>
+                                        
+                                        <?php if (isset($ex['dokumen']) && file_exists($filePath)): ?>
+                                            <!-- Download Link -->
+                                            <a href="<?= base_url('rcsa_control_matric/download/'.$ex['dokumen']) ?>" class="btn btn-success btn-xs" rel="nofollow" style="text-align: center;">
+                                                <i class="fa fa-download"></i>
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
 
+                                    <!-- Tombol Preview (Jika File Ada) -->
+                                    <div style="display: flex; justify-content: center; width: 100%; gap: 10px;">
+                                        <?php if (isset($ex['dokumen']) && file_exists($filePath)): ?>
+                                            <!-- Preview Link -->
+                                            <a href="<?= base_url('themes/upload/crm/'.$ex['dokumen']) ?>" target="_blank" class="btn btn-info btn-xs" style="text-align: center;">
+                                                <i class="fa fa-eye"></i> Preview
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
 
+        
                             </td>
+
 
                         </tr>
                     <?php endforeach; ?>
@@ -240,6 +278,9 @@
                 <td>
                     <input type="hidden" name="bisnisProseslama[${rcmCount}]">
                     <select name="bisnisProses[${rcmCount}]" class="form-control" required="required" onchange="updateNoteControl(${rcmCount});">
+                    <option>
+                        --Pilih--
+                    </option>
                         ${optionsHTML}
                     </select>
                 </td>
@@ -304,13 +345,17 @@
                         <textarea name="tindakLanjut[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
                     </td>
                     <td style="vertical-align: middle;padding-bottom:10px;padding-right:10px;">
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                            <label class="file_upload" style="margin: 0;">
-                                <input type="file" name="fileupload[${rcmIndex}][]" id="userfile_${rcmIndex}" style="display: none;" accept=".pdf" />
-                                <a class="btn btn-warning btn-xs" rel="nofollow">
-                                    <i class="fa fa-upload"></i>
-                                </a>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
+                            <label id="file-name-label-${rcmIndex}-${index+1}" style="margin-bottom: 10px; color: #555; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                             </label>
+                            <div style="display: flex; justify-content: center; width: 100%; gap: 10px;">
+                                <label class="file_upload" style="margin: 0;">
+                                    <input type="file" name="fileupload[${rcmIndex}][]" id="userfile_${rcmIndex}_${index+1}" style="display: none;" accept=".pdf" onchange="updateFileNameLabel(${rcmIndex},${index+1})" />
+                                    <a class="btn btn-warning btn-xs" rel="nofollow">
+                                        <i class="fa fa-upload"></i>
+                                    </a>
+                                </label>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -324,6 +369,14 @@
     // Function to remove RCM row
     function removeRCM(rcmIndex) {
         $(`#rcm_${rcmIndex}`).remove();
+    }
+
+    // Fungsi untuk memperbarui label nama file ketika file dipilih
+    function updateFileNameLabel(i,index) {
+        var fileInput = document.getElementById('userfile_'+ i + '_' + index);
+        var fileName = fileInput.files[0] ? fileInput.files[0].name : 'No file selected';
+        var label = document.getElementById('file-name-label-'+ i + '-' + index);
+        label.textContent = fileName;
     }
 
     // Initialize selectpicker
