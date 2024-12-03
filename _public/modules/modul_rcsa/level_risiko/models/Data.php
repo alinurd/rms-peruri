@@ -34,7 +34,7 @@ class Data extends MX_Model {
         return $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
     }
 
-    public function getDetail_modal($data) {
+    public function getDetail_modal($data, $limit, $offset) {
 
 		// Cek apakah ada 'owner' pada $data
 		if ($data['owner']) {
@@ -49,6 +49,9 @@ class Data extends MX_Model {
 		if ($data['periode']) {
 			$this->db->where('bangga_view_rcsa_action_detail.tahun', $data['periode']);
 		}
+
+		// Filter on 'sts_propose' value
+        $this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
 
 		// Filter berdasarkan triwulan (bulan)
 		if (!empty($data['triwulan'])) {
@@ -73,7 +76,7 @@ class Data extends MX_Model {
 		}
 
 		$this->db->join('bangga_rcsa_log_level_risiko', 'bangga_rcsa_log_level_risiko.id_action_detail = bangga_view_rcsa_action_detail.id', 'left'); // Ganti dengan nama tabel yang sesuai
-
+		$this->db->limit($limit, $offset);
 		$this->db->order_by('bangga_view_rcsa_action_detail.bulan', 'ASC');
 
 		// Ambil data setelah join dan filter

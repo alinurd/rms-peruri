@@ -31,13 +31,21 @@ $(function () {
     var periode = $("#filter_periode").val();
     var owner = $("#filter_owner").val();
     var triwulan = $("#filter_triwulan").val();
+
+    // Mendapatkan parameter 'page' dari URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var page = urlParams.get("page") || 1; // Jika tidak ada, set halaman default ke 1
+
     var url = modul_name + "/get_log_modal";
 
+    // Menyiapkan data yang akan dikirim ke server
     var data = {
       periode: periode,
       owner: owner,
       triwulan: triwulan,
+      page: page, // Menambahkan page dari URL
     };
+
     var parent = $(this).parent();
 
     // // Trigger AJAX function to retrieve modal content
@@ -47,7 +55,6 @@ $(function () {
   $("#simpan_validasi").on("click", function () {
     var owner = $('select[name="owner"]').val(); // Semester
     var periode = $('select[name="periode"]').val(); // Get selected value from 'periode' dropdown
-    
 
     // Arrays untuk menyimpan nilai dari input yang diambil
     var rcsa_detail_no = [];

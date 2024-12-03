@@ -258,6 +258,8 @@ class Level_Risiko extends BackendController
 		// $x=$this->authentication->get_info_user();
 		// doi::dump($x);
 		// die;
+		$limit = 30; 
+		$page = $this->input->get('page') ? $this->input->get('page') : 1;
  		$data['periode'] = $this->input->get('periode');
 		$x=$this->authentication->get_info_user();
 		$own=$x['group']['owner']['owner_no'];
@@ -284,15 +286,13 @@ class Level_Risiko extends BackendController
 		}
 
 		$data['triwulan'] = $tw;
-
+		$total_data = $this->data->count_all_data($data);
+		$offset = ($total_data > $limit) ? ($page - 1) * $limit : 0 ;
 		$data['owner'] =$own;
 		$x['cboPeriod'] = $this->cbo_periode;
 		$x['triwulan'] = $tw;
 		$x['cboOwner'] = $this->cbo_parent;
-		$x['field'] = $this->data->getDetail_modal($data);
-		// $x['cb_like'] = $this->get_combo('likelihood');
-		// $x['cb_impact'] = $this->get_combo('impact');
-		
+		$x['field'] = $this->data->getDetail_modal($data, $limit, $offset);		
 	
 		// Jika Anda perlu mengembalikan tampilan 'log_modal'
 		$result['register'] = $this->load->view('log_modal', $x, true);
