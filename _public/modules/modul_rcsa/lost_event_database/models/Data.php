@@ -94,6 +94,9 @@ class Data extends MX_Model {
             'target_res_dampak'           => $data['target_res_dampak'],
             'target_res_prob'             => $data['target_res_prob'],
         ];
+
+        doi::dump($upd);
+        die;
     
         
     
@@ -121,6 +124,7 @@ class Data extends MX_Model {
     
         // Check if we are in "edit" mode
         if ($data['type'] == "edit") {
+
             $updxx = [
                 'rcsa_no'                     => $data['rcsa_no'],
                 'identifikasi_kejadian'       => $data['identifikasi_kejadian'],
