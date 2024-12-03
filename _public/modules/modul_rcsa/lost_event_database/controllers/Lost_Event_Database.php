@@ -234,7 +234,7 @@ class Lost_Event_Database extends BackendController
     // Method: simpan_lost_event
     // Description: Saves loss event data to the database
     // ==========================================
-    function simpan_lost_event() {
+    public function simpan_lost_event() {
         $post = $this->input->post();
         $result = []; // Pastikan ini adalah array kosong
     
