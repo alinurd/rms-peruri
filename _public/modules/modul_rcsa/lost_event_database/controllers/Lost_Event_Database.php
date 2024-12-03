@@ -248,12 +248,12 @@ class Lost_Event_Database extends BackendController
         // Jika data sudah ada
         if (count($result) > 0) {
             $this->session->set_userdata('result_proses_error', 'Data sudah ada di database');
-            redirect(base_url('Lost_Event_Database'));
+            redirect(base_url(_MODULE_NAME_REAL_));
         } else {
             // Simpan data ke database
             $this->data->simpan_lost_event($post);
             $this->session->set_userdata('result_proses',' Data berhasil disimpan');
-            redirect(base_url('Lost_Event_Database'));
+            redirect(base_url(_MODULE_NAME_REAL_));
         }
     }
     
