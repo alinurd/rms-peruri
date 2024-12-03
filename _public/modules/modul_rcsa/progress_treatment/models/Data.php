@@ -65,7 +65,7 @@ class Data extends MX_Model {
 		}
 
 		// Filter on 'sts_propose' value
-        $this->db->where('bangga_view_rcsa_action_detail.sts_propose', 4);
+        $this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
 
 		// Filter berdasarkan triwulan (bulan)
 		if (!empty($data['triwulan'])) {
