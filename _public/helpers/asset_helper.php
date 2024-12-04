@@ -790,6 +790,16 @@ if ( ! function_exists('buku_path_relative'))
         return './' . 'themes/upload/crm/'. $value;
     }
 }
+ if ( ! function_exists('lost_events_relative'))
+{
+    function lost_events_relative($value='')
+    {
+        $CI =& get_instance();
+        // doi::dump($CI);
+        
+        return './' . 'themes/upload/lost_events/'. $value;
+    }
+}
 
  if ( ! function_exists('slide_path_relative'))
 {

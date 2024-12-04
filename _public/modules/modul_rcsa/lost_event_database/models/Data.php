@@ -66,7 +66,6 @@ class Data extends MX_Model {
     // Description: Adds or updates a loss event entry
     // ==========================================
     public function simpan_lost_event($data) {
-        
         // Prepare the data for insertion or update
         $upd = [
             'rcsa_no'                     => $data['rcsa_no_e'],
@@ -189,31 +188,34 @@ class Data extends MX_Model {
                 'type' => 'update',
             ]);
         } else {
+
+            
             
             // Handle file upload only if a file is uploaded
-            if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] == 0) {
+            if ($_FILES['file_upload']['error'] == 0) {
+                $_FILES['userfile'] = [
+                    'name'      => $_FILES['file_upload']['name'],
+                    'type'      => $_FILES['file_upload']['type'],
+                    'tmp_name'  => $_FILES['file_upload']['tmp_name'],
+                    'error'     => $_FILES['file_upload']['error'],
+                    'size'      => $_FILES['file_upload']['size'],
+                ];
+
                 
-                // File upload processing
-                $file = $_FILES['file_upload'];
-                $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded _FILES
-                $fileName = time() . '_' . basename($file['name']); // Generate a unique file name
-                $uploadFilePath = $uploadDir . $fileName;
-        
-                // Validate file type (only allow PDFs)
-                $allowedTypes = ['application/pdf'];
-                if (!in_array($file['type'], $allowedTypes)) {
-                    return 'Invalid file type. Only PDF _FILES are allowed.';
-                }
-        
-                // Validate file size (5MB max)
-                if ($file['size'] > 5 * 1024 * 1024) { // 5MB limit
-                    return 'File size exceeds the maximum limit of 5MB.';
-                }
+
+                // Upload new file
+                $upload = upload_file_new([
+                    'nm_file' => 'userfile',
+                    'size' => 10000000,
+                    'path' => 'lost_event_database',
+                    'thumb' => false,
+                    'type' => 'pdf|doc|docx',
+                ]);      
         
                 // Move the uploaded file to the desired directory
-                if (move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+                if ($upload) {
                     // Update the file path in the data array
-                    $upd['file_path'] = $fileName;
+                    $upd['file_path'] = $upload['file_name'];
                 } else {
                     return 'File upload failed. Please try again.';
                 }

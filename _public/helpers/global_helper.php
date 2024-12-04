@@ -438,6 +438,9 @@ if (!function_exists('upload_file_new')) {
 			case 'crm':
 				$path = crm_path_relative();
 				break;
+			case 'lost_event_database':
+				$path = lost_events_relative();
+			break;
 			default:
 				$path = upload_path_relative();
 				break;
@@ -474,11 +477,14 @@ if (!function_exists('upload_file_new')) {
 		} else {
 			$ci->upload->initialize($config, true);
 		}
-
+		
+		
 		if (!$ci->upload->do_upload($data['nm_file'],$data)) {
+			
 			$ci->session->set_userdata(array('result_proses_error' => $ci->upload->display_errors()));
 			return false;
 		} else {
+			
 			$result = $ci->upload->data();
 		}
 
