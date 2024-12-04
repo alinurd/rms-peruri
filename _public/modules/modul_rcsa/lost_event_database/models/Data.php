@@ -98,9 +98,9 @@ class Data extends MX_Model {
         
     
         // If event name is provided, insert into the library table
-        if (!empty($data['nama_event'])) {
+        if (!empty($data['peristiwabaru'])) {
             $lib = [
-                'description' => $data['nama_event'],
+                'description' => $data['peristiwabaru'],
                 'risk_type_no' => 0,
                 'type' => 1,
                 'jenis_lib' => "new",
