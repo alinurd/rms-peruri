@@ -309,7 +309,7 @@ if(!$lost_event){
                     <th width="20%">Upload File</th>
                     <td>
                         <input type="hidden" name="file_upload_lama" class="form-control" id="file_upload_lama" style="width:100%;" value="<?=$lost_event['file_path'];?>" />
-                        <input type="file" name="file_upload" class="form-control" id="file_upload" style="width:100%;"   />
+                        <input type="file" name="file_upload" class="form-control" id="userfile" style="width:100%;"   />
                     </td>
                 </tr>
             </thead>

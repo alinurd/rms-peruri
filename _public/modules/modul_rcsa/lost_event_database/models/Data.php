@@ -150,8 +150,7 @@ class Data extends MX_Model {
             // doi::dump($upd);
             // If a new file is uploaded, handle the replacement of the old file
             if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] == 0) {
-                $file = $_FILES['file_upload'];
-                $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded _FILES
+                $uploadDir = 'themes/upload/lost_event/'; // Directory to store uploaded _FILES
                 // If an old file exists, delete it before uploading the new one
                 if (!empty($data['file_upload_lama'])) {
                     $fileLama = $data['file_upload_lama'];
@@ -163,16 +162,35 @@ class Data extends MX_Model {
                     }
                 }
     
-                $fileBaru = time() . '_' . basename($file['name']);
-                $uploadFilePath = $uploadDir . $fileBaru;
-    
-                // Validate file type and size (same as above)
-                if (move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
-                    // Update the file path in the update data
-                    $updxx['file_path'] = $fileBaru;
-                } else {
-                    return 'File upload failed. Please try again.';
+                if ($_FILES['file_upload']['error'] == 0) {
+                    // Memasukkan data file ke dalam $_FILES['userfile']
+                    $_FILES['userfile'] = [
+                        'name'      => $_FILES['file_upload']['name'],
+                        'type'      => $_FILES['file_upload']['type'],
+                        'tmp_name'  => $_FILES['file_upload']['tmp_name'],
+                        'error'     => $_FILES['file_upload']['error'],
+                        'size'      => $_FILES['file_upload']['size'],
+                    ];
+                
+                    // Konfigurasi upload file
+                    $upload = upload_file_new([
+                        'nm_file' => 'userfile',            // Nama input file yang akan diupload
+                        'size'    => 10000000,              // Ukuran maksimum file (10MB)
+                        'path'    => 'lost_event',          // Direktori tujuan untuk menyimpan file
+                        'thumb'   => false,                 // Tidak membuat thumbnail
+                        'type'    => 'pdf|doc|docx',        // Jenis file yang diperbolehkan (PDF, DOC, DOCX)
+                    ]);
+                
+                    // Cek jika upload berhasil
+                    if ($upload) {
+                        // Jika berhasil, perbarui path file dalam array data
+                        $updxx['file_path'] = $upload['file_name'];
+                    } else {
+                        // Jika upload gagal, kembalikan pesan error
+                        return 'File upload failed. Please try again.';
+                    }
                 }
+                
             }
     
             // Update fields for the existing event
@@ -201,13 +219,11 @@ class Data extends MX_Model {
                     'size'      => $_FILES['file_upload']['size'],
                 ];
 
-                
-
                 // Upload new file
                 $upload = upload_file_new([
                     'nm_file' => 'userfile',
                     'size' => 10000000,
-                    'path' => 'lost_event_database',
+                    'path' => 'lost_event',
                     'thumb' => false,
                     'type' => 'pdf|doc|docx',
                 ]);      
