@@ -191,6 +191,7 @@ class Data extends MX_Model {
             
             // Handle file upload only if a file is uploaded
             if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] == 0) {
+                
                 // File upload processing
                 $file = $_FILES['file_upload'];
                 $uploadDir = 'themes/upload/lost_events/'; // Directory to store uploaded _FILES
@@ -220,7 +221,8 @@ class Data extends MX_Model {
             // Insert new event if it's not in edit mode
             $upd['create_user'] = $this->authentication->get_info_user('username');
             $upd['create_date'] = date('Y-m-d H:i:s');
-    
+            // doi::dump($upd);
+            // die;
             // Execute the insertion
             return $this->crud->crud_data([
                 'table' => _TBL_RCSA_LOST_EVENT,
