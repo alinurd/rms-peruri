@@ -66,6 +66,8 @@ class Data extends MX_Model {
     // Description: Adds or updates a loss event entry
     // ==========================================
     public function simpan_lost_event($data) {
+        doi::dump($data);
+            die;
         // Prepare the data for insertion or update
         $upd = [
             'rcsa_no'                     => $data['rcsa_no_e'],
@@ -221,8 +223,7 @@ class Data extends MX_Model {
             // Insert new event if it's not in edit mode
             $upd['create_user'] = $this->authentication->get_info_user('username');
             $upd['create_date'] = date('Y-m-d H:i:s');
-            doi::dump($upd);
-            die;
+            
             // Execute the insertion
             return $this->crud->crud_data([
                 'table' => _TBL_RCSA_LOST_EVENT,
