@@ -797,7 +797,7 @@ if ( ! function_exists('buku_path_relative'))
         $CI =& get_instance();
         // doi::dump($CI);
         
-        return './' . 'themes/upload/lost_events/'. $value;
+        return './' . 'themes/upload/lost_event/'. $value;
     }
 }
 
