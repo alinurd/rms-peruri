@@ -66,8 +66,7 @@ class Data extends MX_Model {
     // Description: Adds or updates a loss event entry
     // ==========================================
     public function simpan_lost_event($data) {
-        doi::dump($data);
-            die;
+        
         // Prepare the data for insertion or update
         $upd = [
             'rcsa_no'                     => $data['rcsa_no_e'],
