@@ -122,7 +122,7 @@
             <tr>
                 <th><label class="w250">Peristiwa (T3)</label></th>
                 <th><label class="w250">Penyebab</label></th>
-                <th><label class="w250">Dampak Kualitatif</label></th>
+                <th><label class="w250">Dampak</label></th>
                 <th><label class="w250">Dampak Kuantitatif</label></th>
 
                 <th colspan="2"><label>Kemungkinan</label></th>
@@ -138,9 +138,9 @@
                 <th colspan="2"><label>Dampak</label></th>
                 <th colspan="2"><label> Level</label></th>
 
-                <th><label>Rencana Proaktif</label></th>
-                <th><label>Rencana Reaktif</label></th>
-                <th><label>Target Waktu</label></th>
+                <th style="min-width: 400px !important;"><label>Risk Treatment</label></th>
+                <th><label>Kategori</label></th>
+                <!-- <th><label>Target Waktu</label></th> -->
                 <th><label>Risk Treatment Owner</label></th>
             </tr>
         </thead>
@@ -149,7 +149,6 @@
             $no = 1;
             $groupedRows = array(); // Associative array to group rows by 'sasaran'
             foreach ($field as $key => $row) :
-                // doi::dump($row);
                 $sasaranKey = $row['sasaran'];
                 if (!isset($groupedRows[$sasaranKey])) {
                     $groupedRows[$sasaranKey] = array();
@@ -191,9 +190,36 @@ $groupedRows[$sasaranKey][] = $row;
               <td colspan="29"><strong><?= strtoupper($sasaranKey); ?></strong></td>
             </tr>
             <?php foreach ($group as $row) : 
-                $act = $this->db
-                ->where('rcsa_detail_no', $row['id'])
-                ->get('bangga_rcsa_action')->row_array();
+               $act = $this->db
+               ->where('rcsa_detail_no', $row['id'])
+               ->get('bangga_rcsa_action')->result_array();
+   
+               $act = $this->db
+               ->where('rcsa_detail_no', $row['id'])
+               ->get('bangga_rcsa_action')->result_array();
+   
+                $treatments = [];
+                $kategori     = [];
+                
+                // Pastikan $act tidak kosong
+                if (!empty($act)) {
+                    foreach ($act as $item) {
+                        if (!empty($item['proaktif']) && empty($item['reaktif'])) {
+                            $treatments[] = $item['proaktif']; // Tambahkan proaktif ke array
+                            $kategori[] = 'Proaktif'; // Tambahkan proaktif ke array
+                        } elseif (!empty($item['reaktif']) && empty($item['proaktif'])) {
+                            $treatments[] = $item['reaktif']; // Tambahkan reaktif ke array
+                            $kategori[] = 'Reaktif'; // Tambahkan reaktif ke array
+                        } else {
+                            $treatments[] = $item['proaktif']; // Atau bisa juga $item['reaktif'] jika ingin
+                            $kategori[] = 'Keduanya'; // Atau bisa juga $item['reaktif'] jika ingin
+                        }
+                    }
+                } else {
+                    $treatments = ''; // Atau nilai default lainnya jika tidak ada hasil
+                }
+   
+                // doi::dump($kategori);
                 $tema = $this->db->where('id', $row['tema'])->get(_TBL_LIBRARY)->row_array();
                $control_as = $this->db->where('id', $row['risk_control_assessment'])->get('bangga_data_combo')->row_array();
                $pic = $this->db->where('id', $row['pic'])->get('bangga_owner')->row_array();
@@ -230,7 +256,7 @@ $groupedRows[$sasaranKey][] = $row;
                     <td valign="top"><?= $row['event_name']; ?></td>
                     <td valign="top"><?= format_list($row['couse'], "### "); ?></td>
                     <td valign="top"><?= format_list($row['impact'], "### "); ?></td>
-                    <td valign="top"><?= $row['risk_impact_kuantitatif'] ?></td>
+                    <td valign="top"><?= number_format($row['risk_impact_kuantitatif'],0,',','.') ?></td>
                   
                     <td valign="top" style="text-align: center;"><?= $likeinherent['code']; ?></td>
                     <td valign="top" style="text-align: center;"><?= $likeinherent['level']; ?></td>
@@ -240,7 +266,7 @@ $groupedRows[$sasaranKey][] = $row;
                     <td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?></td>
 
                     <td valign="top" style="text-align: center;"><?= $row['urgensi_no_kadiv']; ?></td>
-                    <td valign="top"><?= format_list($row['control_name'], "###"); ?></td>
+                    <td valign="top"><?= format_list($row['control_name'], "### "); ?></td>
                     <td valign="top"><?= $control_as['data']; ?></td>
                     <td valign="top"><?= $pic['name']; ?></td>
                     <!-- residual -->
@@ -252,43 +278,62 @@ $groupedRows[$sasaranKey][] = $row;
                     <td valign="top" style="text-align: center;"><?= intval($like['code']) * intval($impact['code']); ?></td>
                     <td valign="top" style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= $residual_level['level_mapping']; ?></td>
 
-                    <td valign="top"><?= $act['proaktif']; ?></td>
-                    <td valign="top"><?= $act['reaktif']; ?></td>
+                    <td valign="top" width="100">
+                        <?php if (!empty($treatments)): ?>
+                            <table style="width: 100%;">
+                                    <?php foreach ($treatments as $index => $treatment): ?>
+                                        <tr>
+                                            <td width="2%"><?= $index + 1 .'.'; ?></td>
+                                            <td><?= $treatment; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                            </table>
+                                <?php else: ?>
+                            <?= '-';?>
+                        <?php endif; ?>
+                    </td>
+                    <td valign="top">
+                        <?php if (!empty($kategori)): ?>
+                            <table style="width: 100%;">
+                                <?php foreach ($kategori as $index => $kat): ?>
+                                    <tr>
+                                        <td><?= $index + 1 .'.'; ?></td>
+                                        <td><?= $kat; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
+                                <?php else: ?>
+                                <?= '-';?>
+                        <?php endif; ?>
+                    </td>
                     <?php
-                    $originalDate = $act['target_waktu'];
+                    // $originalDate = $act['target_waktu'];
 
-                    // Check if the date is empty or equal to "01-01-1970"
-                    if (empty($originalDate) || $originalDate === "01-01-1970") {
-                        $formattedDate = "";
-                    } else {
-                        $formattedDate = date("d-m-Y", strtotime($originalDate));
-                    }
+                    // // Check if the date is empty or equal to "01-01-1970"
+                    // if (empty($originalDate) || $originalDate === "01-01-1970") {
+                    //     $formattedDate = "";
+                    // } else {
+                    //     $formattedDate = date("d-m-Y", strtotime($originalDate));
+                    // }
                     ?>
 
-                    <td valign="top"><?= $formattedDate; ?></td>
+                    <!-- <td valign="top"><?= $formattedDate; ?></td> -->
                     <?php
 
-                    $arrayData = json_decode($act['owner_no'], true);
+                    // $arrayData = json_decode($act['owner_no'], true);
                     // doi::dump($act['owner_no']);
+                    $owner_no = $act['owner_no'];
 
-                    if ($arrayData !== null) {
-                        $owners = array(); // Membuat array kosong untuk menyimpan data owner
-                        foreach ($arrayData as $element) {
-                            $element = strval($element);
-                            $Accountable = $this->db->where('id', $element)->get('bangga_owner')->row_array();
-                            if ($Accountable) {
-                                $owners[] = $Accountable['name']; // Menyimpan nama owner ke dalam array
-                            }
-                        }
-
-                        // Menggabungkan data owner menjadi satu string dengan pemisah koma
-                        $ownersString = implode(", ", $owners);
+                    if ($owner_no !== null) {
+                        $owners = ''; // Membuat array kosong untuk menyimpan data owner
+                        $Accountable = $this->db->where('id', $owner_no)->get('bangga_owner')->row_array();
+                        $owners = $Accountable['name'];
                     } else {
-                        $ownersString = '-'; // Setel string menjadi kosong jika $arrayData null
+                        $owners = '-';
                     }
                     ?>
 
-                    <td valign="top"><?= format_list($ownersString); ?></td>
+                    <td valign="top"><?= $owners; ?></td>
 
 
                 </tr>

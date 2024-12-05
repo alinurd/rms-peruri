@@ -1890,7 +1890,7 @@ if($dtkri){
 		// $data['residual_level'] = $residual_level;
 		// $inherent_level = $this->data->get_master_level(true, $data['field'][0]['inherent_level']);
 		// $data['inherent_level'] = $inherent_level;
-
+  
 		
  		$data['log'] = $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_LOG_PROPOSE)->result_array();
 		
