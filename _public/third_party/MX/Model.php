@@ -768,7 +768,7 @@ class MX_Model extends CI_Model
 								data-like="'.$item_data['like_no'].'"
 								data-impact="'.$item_data['impact_no'].'"
 								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">' . $score . '</div>
+						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
 					</td>';
 			}
@@ -889,7 +889,7 @@ class MX_Model extends CI_Model
 								data-like="'.$item_data['like_no'].'"
 								data-impact="'.$item_data['impact_no'].'"
 								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">' . $score . '</div>
+						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
 					</td>';
 			}
@@ -1012,7 +1012,7 @@ class MX_Model extends CI_Model
 								data-like="' . $item_data['like_no'] . '"
 								data-impact="' . $item_data['impact_no'] . '"
 								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">' . $score . '</div>
+						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
 					</td>';
 			}
