@@ -120,4 +120,9 @@ $info_owner = $this->authentication->get_info_user('group_owner');
         });
     });
 
+     // Event listener untuk tombol remove yang sudah ada pada tabel
+     $(document).on('click', '.removeRowBtn', function() {
+        $(this).closest('tr').remove();
+    });
+
 </script>
