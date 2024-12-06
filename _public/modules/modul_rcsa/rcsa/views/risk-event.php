@@ -65,7 +65,7 @@ if ($parent['sts_propose'] == 5) {
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <!-- <span id="add_peristiwa" class="btn btn-primary <?= $hide_edit; ?> pointer" data-id="0" data-rcsa="<?= $parent['id']; ?>" data-rcsa="<?= $parent['id']; ?>" data-rcsa="<?= $parent['id']; ?>"> <?= lang('msg_tombol_add'); ?> </span>&nbsp;&nbsp; -->
-        <a href="<?= base_url(_MODULE_NAME_REAL_ . '/tambah-peristiwa/add/' . $parent['owner_no'] . '/' . $parent['id']) ?>" class="btn btn-primary  <?= $hide_edit; ?>" id="add_peristiwa" data-id="0" target="_blank" data-rcsa="<?= $parent['id']; ?>"> <?= lang('msg_tombol_add'); ?> </a>
+        <a href="<?= base_url(_MODULE_NAME_REAL_ . '/tambah-peristiwa/add/' . $parent['owner_no'] . '/' . $parent['id']) ?>" class="btn btn-primary  <?= $hide_edit; ?>" id="add_peristiwa" data-id="0" data-rcsa="<?= $parent['id']; ?>"> <?= lang('msg_tombol_add'); ?> </a>
         <button class="btn btn-success pull-right" data-id="<?= $parent['id']; ?>" data-owner="<?= $parent['owner_no']; ?>" id="cmdRisk_<?=$cmd?>"> <?= lang('msg_field_risk_register'); ?> </button>
          <a href="<?= base_url(_MODULE_NAME_REAL_); ?>" class="btn btn-default"> Kembali ke List </a>
 
