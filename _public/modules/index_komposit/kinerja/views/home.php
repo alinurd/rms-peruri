@@ -1,4 +1,9 @@
- <div class="row">
+<style>
+    .center-layout{
+        vertical-align: middle;
+    }
+</style>
+<div class="row">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-sm-8 panel-heading">
@@ -123,19 +128,19 @@
                          <td width="5%"><?= $pk['skala']; ?></td>
                          <td width="5%"><?= $pk['penilaian']; ?></td>
                          <?php if ($pKey === 0) : ?>
-                             <td>
-                                 <input type="text" id="target-<?= $pk['id']; ?>" value="<?=$resParents['target']?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $pk['id']; ?>)">
+                             <td  rowspan="<?= count($c['parent']) ?>">
+                                 <input class="form-control" type="text" id="target-<?= $pk['id']; ?>" value="<?=$resParents['target']?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $pk['id']; ?>)">
                              </td>
-                             <td>
-                                 <input type="text" id="realisasitw-<?= $pk['id']; ?>" data-absolut="0" value="<?=$resParents['realisasitw']?>"  style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $pk['id']; ?>)" >
+                             <td rowspan="<?= count($c['parent']) ?>">
+                                 <input class="form-control" type="text" id="realisasitw-<?= $pk['id']; ?>" data-absolut="0" value="<?=$resParents['realisasitw']?>"  style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $pk['id']; ?>)" >
                              </td>
-                             <td class="text-center" width="10%">
+                             <td class="text-center" width="10%" rowspan="<?= count($c['parent']) ?>">
                              <input type="hidden" name="idx[]" value="<?= $pk['id'] ?>">
                              <input type="checkbox" id="isAbsolute-<?= $pk['id']; ?>-1" name="absolut[]" value="1" <?= $resParents['absolut'] > 0 ? 'checked' : '' ?> onclick="updatePercentage(<?= $pk['id']; ?>)">
                              <label for="isAbsolute-<?= $pk['id']; ?>-1">Absolute</label>
                                  <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>
                              </td>
-                             <td>
+                             <td rowspan="<?= count($c['parent']) ?>">
                                  <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>" style="width: 110px;"
                                      data-bobot="<?= $pk['bobot']; ?>"
                                      data-id-parent="<?= $pk['id']; ?>"
@@ -185,13 +190,13 @@
                          <td width="5%"><?= $d['skala']; ?></td>
                          <td width="5%"><?= $d['penilaian']; ?></td>
                          <?php if ($dKey === 0) : ?>
-                             <td>
+                             <td rowspan="<?= count($countDetailx) ?>">
                                  <input type="text" class="form-control" id="target-<?= $d['id']; ?>" value="<?=$resDetail['target']?>" data-absolut="0" style="width: 150px; text-align:right;" name="target[]" oninput="updatePercentage(<?= $d['id']; ?>)">
                              </td>
-                             <td>
+                             <td rowspan="<?= count($countDetailx) ?>">
                                  <input type="text" class="form-control" id="realisasitw-<?= $d['id']; ?>" value="<?=$resDetail['realisasitw']?>" data-absolut="0" style="width: 150px; text-align:right;" name="realisasitw[]" oninput="updatePercentage(<?= $d['id']; ?>)">
                              </td>
-                             <td class="text-center" width="10%">
+                             <td class="text-center" width="10%" rowspan="<?= count($countDetailx) ?>">
                                  <input type="hidden" name="idx[]" value="<?= $d['id'] ?>">
                                  <input type="checkbox" id="isAbsolute-<?= $d['id']; ?>-1" name="absolut[]" value="1" onclick="updatePercentage(<?= $d['id']; ?>)" <?= $resDetail['absolut'] > 0 ? 'checked' : '' ?> >
                                  <label for="isAbsolute-<?= $d['id']; ?>-1">Absolute</label> 
