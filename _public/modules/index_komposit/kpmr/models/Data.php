@@ -54,45 +54,70 @@ class Data extends MX_Model {
     }
     
     function simpan($data, $owner, $tw, $periode) {
-        // Optional: If you want to use $owner, you can still extract it like this
-        // $owner = $data['owner']; 
+        $owner = $data['owner']; 
         $tw = $data['tw'];
         $periode = $data['periode'];
     
-        $result = []; // To store the result of each insert or update
+        $result = [];
     
         foreach ($data['id'] as $index => $id) {
-            // Handle file upload for evidence[]
-            $file_name = null; // Default to null if no file is uploaded
+            // Initialize file_name to null
+            $file_name = null;
     
+            // Fetch existing file from the database for this record
+            $existing_file = $this->db->select('evidence')->from(_TBL_INDEXKOM_REALISASI)->where('id_komposit', $id)->get()->row();
+    
+            // Check if an 'evidence' file is uploaded
             if (isset($_FILES['evidence']['name'][$index]) && $_FILES['evidence']['name'][$index] != '') {
-                // Upload the file if it exists
-                $file_tmp = $_FILES['evidence']['tmp_name'][$index];
-                $file_name = $_FILES['evidence']['name'][$index];
-                $upload_dir = 'uploads/'; // Set your upload directory here
+                $_FILES['userfile'] = [
+                    'name'      => $_FILES['evidence']['name'][$index],
+                    'type'      => $_FILES['evidence']['type'][$index],
+                    'tmp_name'  => $_FILES['evidence']['tmp_name'][$index],
+                    'error'     => $_FILES['evidence']['error'][$index],
+                    'size'      => $_FILES['evidence']['size'][$index],
+                ];
     
-                // Sanitize and move the file to the desired location
-                $upload_path = $upload_dir . basename($file_name);
-                if (move_uploaded_file($file_tmp, $upload_path)) {
-                    $file_name = $upload_path; // Update the file name with the path
-                } else {
-                    $file_name = null; // If file upload failed, keep it null
+                // Check for upload error
+                if ($_FILES['userfile']['error'] == 0) {
+                    // If there's an existing file, delete it
+                    if ($existing_file && file_exists('./themes/upload/evidence/' . $existing_file->evidence)) {
+                        unlink('./themes/upload/evidence/' . $existing_file->evidence); // Delete old file
+                    }
+    
+                    // Handle file upload
+                    $upload = upload_file_new([
+                        'nm_file'   => 'userfile',
+                        'size'      => 10000000, // max file size 10 MB
+                        'path'      => 'evidence',
+                        'thumb'     => false,
+                        'type'      => 'pdf|doc|docx|jpg|png', // Adjust file types as needed
+                    ], true, $index);
+    
+                    // If upload successful, save the file name
+                    if ($upload) {
+                        $file_name = $upload['file_name'];  // Store uploaded file name
+                    } else {
+                        log_message('error', 'Upload failed: ' . $this->upload->display_errors());
+                    }
                 }
+            } else {
+                // If no file uploaded, keep the old file name
+                $file_name = $existing_file ? $existing_file->evidence : null;
             }
     
             // Prepare data for insert or update
             $upd = array(
-                'jenis' => 0,
-                'id_komposit' => $id,
-                'urut' => $data['urut'][$index],
-                'penjelasan' => $data['penjelasan'][$index],
-                'evidence' => $file_name, // Save the file path or null if no file was uploaded
-                'realisasi' => $data['realisasi'][$index],
-                'tw' => $tw,
-                'periode' => $periode
+                'jenis'         => 0,
+                'id_komposit'   => $id,
+                'urut'          => $data['urut'][$index],
+                'penjelasan'    => $data['penjelasan'][$index],
+                'evidence'      => $file_name, // If file uploaded, use new file name, else use old file name
+                'realisasi'     => $data['realisasi'][$index],
+                'tw'            => $tw,
+                'periode'       => $periode
             );
     
-            // Check if the record exists
+            // Check if the record exists for update
             $res = $this->db->where('id_komposit', $id)
                             ->where('urut', $data['urut'][$index])
                             ->where('tw', $tw)
@@ -102,7 +127,7 @@ class Data extends MX_Model {
                             ->result_array();
     
             if (count($res) > 0) {
-                // If record exists, update it
+                // If record exists, perform an update
                 $upd['update_user'] = $this->authentication->get_Info_User('username');
                 $whereDetail = [
                     'id' => $res[0]['id'],
@@ -112,31 +137,37 @@ class Data extends MX_Model {
                     'periode' => $periode
                 ];
     
-                // Perform the update query
-                $this->crud->crud_data(array(
+                // Update the record in the database
+                $this->crud->crud_data([
                     'table' => _TBL_INDEXKOM_REALISASI,
                     'field' => $upd,
                     'where' => $whereDetail,
                     'type' => 'update'
-                ));
-                
-                $result[] = $res[0]['id']; // Store the updated record ID
+                ]);
+    
+                // Store the updated record ID in result
+                $result[] = $res[0]['id']; 
+    
             } else {
-                // If record does not exist, insert a new one
+                // If the record doesn't exist, perform an insert
                 $upd['create_user'] = $this->authentication->get_Info_User('username');
-                $result[] = $this->crud->crud_data(array(
+                $inserted_id = $this->crud->crud_data([
                     'table' => _TBL_INDEXKOM_REALISASI,
                     'field' => $upd,
                     'type' => 'add'
-                ));
+                ]);
+    
+                // Store the newly inserted record ID in result
+                $result[] = $inserted_id;
             }
         }
     
-        return $result; // Return the result (IDs of inserted/updated records)
+        return $result;
     }
     
     
     
+    
+    
+    
 }
-/* End of file app_login_model.php */
-/* Location: ./application/models/app_login_model.php */

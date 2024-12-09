@@ -790,9 +790,9 @@ if ( ! function_exists('buku_path_relative'))
         return './' . 'themes/upload/crm/'. $value;
     }
 }
- if ( ! function_exists('lost_events_relative'))
+ if ( ! function_exists('lost_event_relative'))
 {
-    function lost_events_relative($value='')
+    function lost_event_relative($value='')
     {
         $CI =& get_instance();
         // doi::dump($CI);
@@ -843,6 +843,14 @@ if ( ! function_exists('events_path_relative'))
     {
         $CI =& get_instance();
         return './' . 'themes/' . $CI->config->item('events_path') . $value;
+    }
+}
+if ( ! function_exists('evidence_path_relative'))
+{
+    function evidence_path_relative($value='')
+    {
+        $CI =& get_instance();
+        return './' . 'themes/' . $CI->config->item('evidence_path') . $value;
     }
 }
 if ( ! function_exists('import_path_relative'))

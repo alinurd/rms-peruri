@@ -1,3 +1,24 @@
+<?php
+if ($this->session->userdata('result_proses')){
+    $info = $this->session->userdata('result_proses');
+    $this->session->set_userdata(array('result_proses'=>''));
+    $sts_input='info';
+}
+
+if ($this->session->userdata('result_proses_error')){
+    $info =  $this->session->userdata('result_proses_error');
+    $this->session->set_userdata(array('result_proses_error'=>''));
+    $sts_input='danger';
+}
+?>
+<script>
+	$(function() {
+		var err="<?php echo $info;?>";
+		var sts="<?php echo $sts_input;?>";
+		if (err.length>0)
+			pesan_toastr(err,sts);
+	});
+</script>
 <div class="row">
     <div class="col-md-12">
         <div class="row">
@@ -57,7 +78,7 @@
     $hide="";
 }
 ?>
-
+<form method="POST" id='form-lost' enctype="multipart/form-data"  action="<?= base_url(_MODULE_NAME_REAL_ . '/simpan');?>">
 <input type="hidden" name="owner" value="<?=$owner?>">
 <input type="hidden" name="tw" value="<?=$tw?>">
 <input type="hidden" name="periode" value="<?=$periode?>">
@@ -156,6 +177,12 @@
 
                             <td rowspan="<?= count($c['parent']) ?>"><textarea name="penjelasan[]" id="penjelasan"><?= $resParents['penjelasan'] ?></textarea></td>
                             <td rowspan="<?= count($c['parent']) ?>">
+                                <?php if (isset($resParents['evidence'])): ?>
+                                    <!-- Preview Link -->
+                                    <a href="<?= base_url('themes/upload/evidence/'.$resParents['evidence']) ?>" target="_blank" class="btn btn-info btn-xs" style="text-align: center;">
+                                        <i class="fa fa-eye"></i> Pdf Preview
+                                    </a>
+                                <?php endif; ?>
                                 <input class="form-control" style="min-width:200px;" type="file" name="evidence[]" id="evidence" multiple>
                             </td>
 
@@ -256,6 +283,7 @@
         </th>
     </tr>
 </table>
+</form>
 
 </div>
 <style>

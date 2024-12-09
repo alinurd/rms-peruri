@@ -438,8 +438,11 @@ if (!function_exists('upload_file_new')) {
 			case 'crm':
 				$path = crm_path_relative();
 				break;
-			case 'lost_event_database':
-				$path = lost_events_relative();
+			case 'lost_event':
+				$path = lost_event_relative();
+			case 'evidence':
+				$path = lost_event_relative();
+				
 			break;
 			default:
 				$path = upload_path_relative();
@@ -453,7 +456,7 @@ if (!function_exists('upload_file_new')) {
 			}
 			$path .= '/' . $fld;
 		}
-
+		
 		$ci =& get_instance();
 		$config['upload_path'] = $path;
 		$config['allowed_types'] = $data['type'];
@@ -467,6 +470,8 @@ if (!function_exists('upload_file_new')) {
 		} else {
 			$config['file_name'] = url_title(strtolower(basename($data['file_name'])));
 		}
+
+		
 
 		if (!is_dir($config['upload_path'])) {
 			return false;
@@ -546,6 +551,9 @@ if ( ! function_exists('upload_image_new'))
 				break;
 			case 'events':
 				$path=events_path_relative();
+				break;
+			case 'evidence':
+				$path=evidence_path_relative();
 				break;
 			case 'img':
 				$path=img_path_relative();

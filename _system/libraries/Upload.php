@@ -1022,6 +1022,9 @@ class CI_Upload {
 		if($p =="lost_event"){
 			$this->upload_path= "./themes/upload/$p/";
 		}
+		if($p =="evidence"){
+			$this->upload_path= "./themes/upload/$p/";
+		}
 		// doi::dump('patch=>'.$this->upload_path);
 		if ($this->upload_path === '')
 		{
