@@ -795,7 +795,7 @@ if($dtkri){
 			$arrControl = json_decode($data['detail']['control_no'], true);
 			//analisis
 			$cboLike = $this->get_combo('likelihood');
-			$cboImpact = $this->get_combo('impact');
+			$cboImpact = $this->get_combo('impact'); 
 			$data['cboTreatment'] = $this->get_combo('treatment');
 			$data['cboTreatment1'] = $this->get_combo('treatment1');
 			$data['cboTreatment2'] = $this->get_combo('treatment2');

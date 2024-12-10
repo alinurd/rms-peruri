@@ -614,17 +614,17 @@ if ($field['iskri'] == 0) {
 
                                     <?php for ($i = 1; $i <= 12; $i++) { 
                                         $datatarget = $this->db->where('id_detail', $id_edit)->where('bulan', $i)->get("bangga_analisis_risiko")->row_array();
-
+                                        
                                         // Ambil nilai target_like dan target_impact dari $datatarget jika tersedia
                                         $selected_target_like = !empty($datatarget['target_like']) ? $datatarget['target_like'] : '';
                                         $selected_target_impact = !empty($datatarget['target_impact']) ? $datatarget['target_impact'] : '';
                                     ?>
                                         <input type="hidden" name="month" id="month">
                                         <td class="text-center">
-                                            <?php echo form_dropdown('target_like[]', $cboLike, $selected_target_like, 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
-                                        </td>
-                                        <td class="text-center">
                                             <?php echo form_dropdown('target_impact[]', $cboImpact, $selected_target_impact, 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
+                                            </td>
+                                            <td class="text-center">
+                                            <?php echo form_dropdown('target_like[]', $cboLike, $selected_target_like, 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
                                         </td>
                                         <td class="text-center">
                                             <span id="targetResidualLabel<?= $i ?>">
