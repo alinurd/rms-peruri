@@ -37,7 +37,7 @@ class Report_Risk_Criteria extends BackendController {
 		$this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 		$this->addField(array('field' => 'pi', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 		$this->addField(array('field' => 'progres', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
-		$this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
+		// $this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
 		$this->addField(array('field' => 'name', 'show' => false));
 		$this->addField(array('field' => 'periode_name', 'show' => false));
 		$this->addField(array('field' => 'sts_propose_text', 'show' => false));
@@ -64,7 +64,7 @@ class Report_Risk_Criteria extends BackendController {
 		$this->set_Table_List($this->tbl_master, 'kriteria_probabilitas', 'Jumlah Probabilitas', 10, 'center');
 		$this->set_Table_List($this->tbl_master, 'kriteria_dampak', 'Jumlah Dampak', 10, 'center');
 		$this->set_Table_List($this->tbl_master, 'periode_name','Periode',10,'center');
-		$this->set_Table_List($this->tbl_master, 'aksi', 'View Risk Criteria', 10, 'center','false',false);
+		$this->set_Table_List($this->tbl_master, 'aksi', 'View Risk Criteria', 10, 'center');
 
 		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
 		$this->_CHANGE_TABLE_MASTER(_TBL_RCSA);
@@ -91,7 +91,7 @@ class Report_Risk_Criteria extends BackendController {
 		$tombol['delete'] = [];
 		$tombol['view'] = [];
 
-		return $tombol;
+		return $tombol; 
 	}
 			function update_OPTIONAL_CMD($tombol,$rows)
 	{
@@ -120,22 +120,61 @@ class Report_Risk_Criteria extends BackendController {
 
 		return $jml;
 	}
-	function listBox_KRITERIA_PROBABILITAS($rows, $value){
-		$id=$rows['l_id'];
-		$jml='';
-		if (array_key_exists($id, $this->use_list['probabilitas'])){
-			$jml = $this->use_list['probabilitas'][$id];
+	function listBox_KRITERIA_PROBABILITAS($rows, $value) {
+		// Mengambil ID dari array $rows yang diterima sebagai parameter
+		$id = $rows['l_id'];
+	
+		// Ambil data kemungkinan berdasarkan kelompok dan param1
+		$kemungkinan = $this->db
+			->where('kelompok', 'kriteria-kemungkinan')
+			->where('param1', $id)  // Menambahkan kondisi untuk field param1
+			->get(_TBL_DATA_COMBO)
+			->result_array();
+	
+		// Jika data 'kemungkinan' kosong, ambil data dengan 'param1' kosong atau null
+		if (empty($kemungkinan)) {
+			$kemungkinan = $this->db
+				->where('kelompok', 'kriteria-kemungkinan')
+				->where('param1', NULL)  // Menambahkan kondisi untuk field param1 kosong
+				->or_where('param1', '') // Jika kosong bisa berupa NULL atau string kosong
+				->get(_TBL_DATA_COMBO)
+				->result_array();
 		}
-
+	
+		// Hitung jumlah data yang ditemukan
+		$jml = count($kemungkinan);
+	
+		// Mengembalikan jumlah data yang ditemukan
 		return $jml;
 	}
+	
+	
 	function listBox_KRITERIA_DAMPAK($rows, $value){
-		$id=$rows['l_id'];
-		$jml='';
-		if (array_key_exists($id, $this->use_list['dampak'])){
-			$jml = $this->use_list['dampak'][$id];
-		}
+		// $id=$rows['l_id'];
+		// $jml='';
+		// if (array_key_exists($id, $this->use_list['dampak'])){
+		// 	$jml = $this->use_list['dampak'][$id];
+		// }
 
+		// Query untuk mengambil data dampak berdasarkan kelompok dan param1
+		$dampak = $this->db
+		->where('kelompok', 'kriteria-dampak')
+		->where('param1', $id)  // Menambahkan kondisi untuk field param1
+		->get(_TBL_DATA_COMBO)
+		->result_array();
+
+		// Jika data `dampak` kosong, ambil data dengan `param1` kosong
+		if (empty($dampak)) {
+		$dampak = $this->db
+			->where('kelompok', 'kriteria-dampak')
+			->group_start()               // Memulai grouping kondisi untuk NULL atau string kosong
+				->where('param1', NULL)
+				->or_where('param1', '')  // Jika kosong bisa berupa NULL atau string kosong
+			->group_end()                 // Mengakhiri grouping kondisi
+			->get(_TBL_DATA_COMBO)
+			->result_array();
+		}
+		$jml = count($dampak);
 		return $jml;
 	}	
 	function insertBox_SASARAN($field){
@@ -185,8 +224,23 @@ class Report_Risk_Criteria extends BackendController {
 					'color' => 'red'
 				]
 			];
-			$data['kemungkinan'] = $this->db->where('kelompok', 'kriteria-kemungkinan')->get(_TBL_DATA_COMBO)->result_array();
-
+			// $data['kemungkinan'] = $this->db->where('kelompok', 'kriteria-kemungkinan')->get(_TBL_DATA_COMBO)->result_array();
+			// Query untuk mengambil data kemungkinan berdasarkan kelompok dan param1
+			$data['kemungkinan'] = $this->db
+			->where('kelompok', 'kriteria-kemungkinan')
+			->where('param1', $id)  // Menambahkan kondisi untuk field param1
+			->get(_TBL_DATA_COMBO)
+			->result_array();
+	
+		// Jika data `kemungkinan` kosong, ambil data dengan `param1` kosong
+		if (empty($data['kemungkinan'])) {
+			$data['kemungkinan'] = $this->db
+				->where('kelompok', 'kriteria-kemungkinan')
+				->where('param1', NULL)  // Menambahkan kondisi untuk field param1 kosong
+				->or_where('param1', '') // Jika kosong bisa berupa NULL atau string kosong
+				->get(_TBL_DATA_COMBO)
+				->result_array();
+		}
 			$result = $this->load->view('krit_kemungkinan',  $data, true);
 		}else{
 			$data['kriteria'] = [1 => [
@@ -206,8 +260,26 @@ class Report_Risk_Criteria extends BackendController {
 					'color' => 'red'
 				]
 			];
-			$data['dampak'] = $this->db->where('kelompok', 'kriteria-dampak')->get(_TBL_DATA_COMBO)->result_array();
+			// $data['dampak'] = $this->db->where('kelompok', 'kriteria-dampak')->get(_TBL_DATA_COMBO)->result_array();
 			// $data['field'] = $this->db->where('risiko_no', $id)->get(_TBL_SUBRISIKO)->result_array();
+			// Query untuk mengambil data dampak berdasarkan kelompok dan param1
+			$data['dampak'] = $this->db
+			->where('kelompok', 'kriteria-dampak')
+			->where('param1', $id)  // Menambahkan kondisi untuk field param1
+			->get(_TBL_DATA_COMBO)
+			->result_array();
+
+			// Jika data `dampak` kosong, ambil data dengan `param1` kosong
+			if (empty($data['dampak'])) {
+			$data['dampak'] = $this->db
+				->where('kelompok', 'kriteria-dampak')
+				->group_start()               // Memulai grouping kondisi untuk NULL atau string kosong
+					->where('param1', NULL)
+					->or_where('param1', '')  // Jika kosong bisa berupa NULL atau string kosong
+				->group_end()                 // Mengakhiri grouping kondisi
+				->get(_TBL_DATA_COMBO)
+				->result_array();
+			}
 			$result = $this->load->view('krit_dampak',  $data, true);
 		}
 		return $result;

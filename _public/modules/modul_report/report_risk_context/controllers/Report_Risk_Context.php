@@ -63,7 +63,7 @@ class Report_Risk_Context extends BackendController {
 		$this->addField(array('field' => 'stakeholder_internal', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
 
-		$this->set_Open_Tab('Isu External');
+		$this->set_Open_Tab('Isu External'); 
 		$this->addField(array('field' => 'politics', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'economics', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'social', 'input' => 'multitext', 'size' => 10000));
@@ -171,7 +171,23 @@ class Report_Risk_Context extends BackendController {
 			'name' => 'Sangat Besar',
 			'color' => 'red'
 		]];
-		$data['kemungkinan'] = $this->db->where('kelompok', 'kriteria-kemungkinan')->get(_TBL_DATA_COMBO)->result_array();
+		// $data['kemungkinan'] = $this->db->where('kelompok', 'kriteria-kemungkinan')->get(_TBL_DATA_COMBO)->result_array();
+		// Query untuk mengambil data kemungkinan berdasarkan kelompok dan param1
+		$data['kemungkinan'] = $this->db
+        ->where('kelompok', 'kriteria-kemungkinan')
+        ->where('param1', $id)  // Menambahkan kondisi untuk field param1
+        ->get(_TBL_DATA_COMBO)
+        ->result_array();
+
+    // Jika data `kemungkinan` kosong, ambil data dengan `param1` kosong
+    if (empty($data['kemungkinan'])) {
+        $data['kemungkinan'] = $this->db
+            ->where('kelompok', 'kriteria-kemungkinan')
+            ->where('param1', NULL)  // Menambahkan kondisi untuk field param1 kosong
+            ->or_where('param1', '') // Jika kosong bisa berupa NULL atau string kosong
+            ->get(_TBL_DATA_COMBO)
+            ->result_array();
+    }
 
 		$result = $this->load->view('krit_kemungkinan',  $data, true);
 		return $result;
@@ -206,8 +222,26 @@ class Report_Risk_Context extends BackendController {
 			'name' => 'Sangat Besar',
 			'color' => 'red'
 		]];
-		$data['dampak'] = $this->db->where('kelompok', 'kriteria-dampak')->get(_TBL_DATA_COMBO)->result_array();
+		// $data['dampak'] = $this->db->where('kelompok', 'kriteria-dampak')->get(_TBL_DATA_COMBO)->result_array();
 		// $data['field'] = $this->db->where('risiko_no', $id)->get(_TBL_SUBRISIKO)->result_array();
+		// Query untuk mengambil data dampak berdasarkan kelompok dan param1
+		$data['dampak'] = $this->db
+		->where('kelompok', 'kriteria-dampak')
+		->where('param1', $id)  // Menambahkan kondisi untuk field param1
+		->get(_TBL_DATA_COMBO)
+		->result_array();
+
+		// Jika data `dampak` kosong, ambil data dengan `param1` kosong
+		if (empty($data['dampak'])) {
+		$data['dampak'] = $this->db
+			->where('kelompok', 'kriteria-dampak')
+			->group_start()               // Memulai grouping kondisi untuk NULL atau string kosong
+				->where('param1', NULL)
+				->or_where('param1', '')  // Jika kosong bisa berupa NULL atau string kosong
+			->group_end()                 // Mengakhiri grouping kondisi
+			->get(_TBL_DATA_COMBO)
+			->result_array();
+		}
 		$result = $this->load->view('krit_dampak',  $data, true);
 		return $result;
 	}
