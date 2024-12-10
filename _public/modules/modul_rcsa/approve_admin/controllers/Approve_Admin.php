@@ -131,7 +131,7 @@ class Approve_Admin extends BackendController
 		$id_rcsa = $this->input->post('id');
 		$owner_no = $this->input->post('owner_no');
 		$data['field'] = $this->data->get_data_risk_register($id_rcsa);
-		$data['field'] = $this->data->get_data_risk_register($id_rcsa);
+		// $data['field'] = $this->data->get_data_risk_register($id_rcsa);
 		$data['fieldxx'] = $this->data->get_data_risk_reg_acc($id_rcsa);
 		$data['tgl'] = $this->data->get_data_tanggal($id_rcsa);
 

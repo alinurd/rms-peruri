@@ -179,57 +179,68 @@ class Data extends MX_Model {
 		return true;
 	}
 
-	function get_data_risk_register($id){
-		$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_REGISTER)->result_array();
-		foreach($rows as &$row){
-			$arrCouse = json_decode($row['risk_couse_no'],true);
-			$rows_couse=array();
+	function get_data_risk_register($id)
+	{
+		$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+
+		// $rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_REGISTER)->result_array();
+		// doi::dump($rows)
+		//$rows = $this->db->where('rcsa_no', $id)->group_by('id_rcsa_detail')->order_by('urgensi_no_kadiv')->get(_TBL_VIEW_REGISTER)->result_array();
+
+		foreach ($rows as &$row) {
+			$arrCouse = json_decode($row['risk_couse_no'], true);
+			
+			$rows_couse = array();
 			if ($arrCouse)
-				$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-			$arrCouse=array();
-			foreach($rows_couse as $rc){
+			
+				$arrCouse_implode = implode(", ", $arrCouse);
+			$rows_couse  = $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array(); //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+			$arrCouse = array();
+			foreach ($rows_couse as $rc) {
 				$arrCouse[] = $rc['description'];
 			}
-			$row['couse']= implode('### ',$arrCouse);
-			
-			$arrCouse = json_decode($row['risk_impact_no'],true);
-			$rows_couse=array();
+			$row['couse'] = implode('### ', $arrCouse);
+
+			$arrCouse = json_decode($row['risk_impact_no'], true);
+			$rows_couse = array();
 			if ($arrCouse)
-				$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-			$arrCouse=array();
-			foreach($rows_couse as $rc){
-				$arrCouse[]=$rc['description'];
+				$arrCouse_implode = implode(", ", $arrCouse);
+			$rows_couse =  $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array();  //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+			$arrCouse = array();
+			foreach ($rows_couse as $rc) {
+				$arrCouse[] = $rc['description'];
 			}
-			$row['impact']=implode('### ',$arrCouse);
-			
-			$arrCouse = json_decode($row['accountable_unit'],true);
-			$rows_couse=array();
+			$row['impact'] = implode('### ', $arrCouse);
+
+			$arrCouse = json_decode($row['accountable_unit'], true);
+			$rows_couse = array();
 			if ($arrCouse)
 				$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
-			$arrCouse=array();
-			foreach($rows_couse as $rc){
-				$arrCouse[]=$rc['name'];
+			$arrCouse = array();
+			foreach ($rows_couse as $rc) {
+				$arrCouse[] = $rc['name'];
 			}
-			$row['accountable_unit_name']=implode('### ',$arrCouse);
-			
-			
-			$arrCouse = json_decode($row['penangung_no'], true);
-			$rows_couse=array();
-			if ($arrCouse)
-			$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
-			$arrCouse=array();
-			foreach($rows_couse as $rc){
-				$arrCouse[]=$rc['name'];
-			}
-			$row['penanggung_jawab']=implode('### ',$arrCouse);
-			
-			$arrCouse = json_decode($row['control_no'],true);
-			if (!empty($row['note_control']))
-				$arrCouse[]=$row['note_control'];
-			$row['control_name']=implode(', ',$arrCouse);
+			$row['accountable_unit_name'] = implode('### ', $arrCouse);
 
+
+			$arrCouse = json_decode($row['penangung_no'], true);
+			$rows_couse = array();
+			if ($arrCouse)
+				$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+			$arrCouse = array();
+			foreach ($rows_couse as $rc) {
+				$arrCouse[] = $rc['name'];
+			}
+			$row['penanggung_jawab'] = implode('### ', $arrCouse);
+
+			// $arrCouse = json_decode($row['control_no'], true);
+			// $arrCouse = json_decode($row['risk_impact_no'], true);
+			if (!empty($row['note_control']))
+				$arrCouse =json_decode($row['note_control'], true);
+			$row['control_name'] = implode('### ', $arrCouse);
 		}
 		unset($row);
+
 		return $rows;
 	}
 	function get_data_risk_reg_acc($id){

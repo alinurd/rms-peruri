@@ -436,11 +436,17 @@ if ($field['iskri'] == 0) {
                                             <table class="table table-borderless" id="">
                                                 <thead>
                                                     <tr>
-                                                        <td width="25%">Dampak Kuantitatif </td>
+                                                        <td width="25%">Kategori Dampak</td>
                                                         <td>
-                                                            <div id="l_risk_impact_kuantitatif_parent" class="input-group">
-                                                                <span id="span_l_amoun" class="input-group-addon"> Rp </span>
-                                                                <?= form_input('risk_impact_kuantitatif', ($detail) ? ( number_format($detail['risk_impact_kuantitatif'], 0, ',', ',')) : '', 'class="form-control text-right rupiah" id="risk_impact_kuantitatif"' . $disable); ?>
+                                                            <div id="l_risk_impact_parent" class="input-group">
+                                                                <!-- Dropdown untuk memilih Kuantitatif atau Kualitatif -->
+                                                                <?= form_dropdown('kategori_dampak', 
+                                                                    array(
+                                                                        'kuantitatif' => 'Kuantitatif', 
+                                                                        'kualitatif' => 'Kualitatif'
+                                                                    ), 
+                                                                    ($detail) ? ($detail['kategori_dampak']) : 'kuantitatif', 
+                                                                    'class="form-control" id="kategori_dampak" ' . $disable); ?>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -537,7 +543,7 @@ if ($field['iskri'] == 0) {
                                     <!-- Kolom Analisis Risiko Inhern -->
                                     <th class="sticky text-center" style="left: 0;" colspan="3">Analisis Risiko Inhern</th>
                                     <!-- Kolom Analisis Risiko Residual -->
-                                    <th class="sticky text-center" style="left: 198px;" colspan="3">Analisis Risiko Residual</th>
+                                    <th class="sticky text-center" style="left: 185px;" colspan="3">Analisis Risiko Saat Ini</th>
                                     <?php
                                     $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                                     for ($i = 1; $i < 13; $i++) { ?>
@@ -547,18 +553,18 @@ if ($field['iskri'] == 0) {
                                     <tr>
                                     <!-- Kolom Detail Risiko Inhern -->
                                     <th class="sticky text-center" style="left: 0;">Skala Dampak</th>
-                                    <th class="sticky text-center" style="left: 67px;">Skala Probabilitas</th>
-                                    <th class="sticky text-center" style="left: 148px;">Level Risiko</th>
+                                    <th class="sticky text-center" style="left: 67px;">Skala likelihood</th>
+                                    <th class="sticky text-center" style="left: 135px;">Level Risiko</th>
 
                                     <!-- Kolom Detail Risiko Residual -->
-                                    <th class="sticky text-center" style="left: 198px;">Skala Dampak</th>
-                                    <th class="sticky text-center" style="left: 265px;">Skala Probabilitas</th>
-                                    <th class="sticky text-center" style="left: 346px;">Level Risiko</th>
+                                    <th class="sticky text-center" style="left: 185px;">Skala Dampak</th>
+                                    <th class="sticky text-center" style="left: 252px;">Skala likelihood</th>
+                                    <th class="sticky text-center" style="left: 319px;">Level Risiko</th>
 
                                     <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
                                     <?php for ($i = 1; $i < 13; $i++) { ?>
                                         <th class="text-center">Skala Dampak</th>
-                                        <th class="text-center">Skala Probabilitas</th>
+                                        <th class="text-center">Skala Likelihood</th>
                                         <th class="text-center">Level Risiko</th>
                                     <?php } ?>
                                     </tr>
@@ -569,13 +575,14 @@ if ($field['iskri'] == 0) {
                                     <input type="hidden" id="id_detail" value="<?=$detail['id']?>">
                                     <!-- Kolom Detail Risiko Inhern -->
                                     <td class="sticky text-center" style="left: 0;">
-                                        <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['inherent_likelihood'])) ? '' : $analisiData['inherent_likelihood'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
+                                            <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['inherent_impact'])) ? '' : $analisiData['inherent_impact'], 'class="form-control" id="impactAnalisisInheren"'); ?>
+                                        
                                         <input type="hidden" id="inherent_level" name="inherent_level">
                                     </td>
                                     <td class="sticky text-center" style="left: 67px;">
-                                        <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['inherent_impact'])) ? '' : $analisiData['inherent_impact'], 'class="form-control" id="impactAnalisisInheren"'); ?>
+                                        <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['inherent_likelihood'])) ? '' : $analisiData['inherent_likelihood'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
                                     </td>
-                                    <td class="sticky text-center" style="left: 148px;">
+                                    <td class="sticky text-center" style="left: 135px;">
                                         <span id="likeAnalisisInherenLabel">
                                             <span style="background-color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color'] : '#fff'; ?>;
                                                         color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color_text'] : '#000'; ?>;
@@ -586,13 +593,13 @@ if ($field['iskri'] == 0) {
                                     </td>
 
                                     <!-- Kolom Detail Risiko Residual -->
-                                    <td class="sticky text-center" style="left: 200px;">
-                                        <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['residual_likelihood'])) ? '' : $analisiData['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
-                                    </td>
-                                    <td class="sticky text-center" style="left: 268px;">
+                                    <td class="sticky text-center" style="left: 185px;">
                                         <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['residual_impact'])) ? '' : $analisiData['residual_impact'], 'class="form-control" id="impactAnalisisResidual"'); ?>
                                     </td>
-                                    <td class="sticky text-center" style="left: 349px;">
+                                    <td class="sticky text-center" style="left: 252px;">
+                                        <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['residual_likelihood'])) ? '' : $analisiData['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
+                                    </td>
+                                    <td class="sticky text-center" style="left: 319px;">
                                         <span id="likeAnalisisResidualLabel">
                                             <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;
                                                         color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;
@@ -819,7 +826,7 @@ if ($field['iskri'] == 0) {
                                                 Treatment
                                             </th>
                                             <th class="text-center rencana-col" rowspan="2" style="position: sticky; left: 325px; background: white; width: 100px !important; z-index: 2;">
-                                                Rencana
+                                                Kategori
                                             </th>
                                             <?php
                                             $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -858,7 +865,7 @@ if ($field['iskri'] == 0) {
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                            <input style="width:100px !important;" type="text" name="target_damp_loss[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_damp_loss, 0, ',', '.')); ?>" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                                            <input style="width:100px !important;" type="text" name="target_damp_loss[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_damp_loss, 0, ',', '.')); ?>" class="form-control numeric rupiah" placeholder="Treatment Cost" aria-describedby="basic-addon1">
                                                         </div>
                                                         
                                                     </td>
@@ -913,7 +920,7 @@ if ($field['iskri'] == 0) {
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                            <input style="width:100px !important;" type="text" name="target_damp_loss[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_damp_loss, 0)); ?>" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                                                            <input style="width:100px !important;" type="text" name="target_damp_loss[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_damp_loss, 0)); ?>" class="form-control numeric rupiah" placeholder="Treatment Cost" aria-describedby="basic-addon1">
                                                         </div>
                                                         <!-- Input hidden untuk menyimpan ID -->
                                                         <input type="hidden" name="id[<?= $index; ?>]" value="<?= $id_treatment; ?>">
@@ -1239,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                     <div class="input-group">
                         <span  class="input-group-addon" id="basic-addon1">Rp.</span>
-                        <input style="width:100px !important;" type="text" name="target_damp_loss[${rowIndex}][${i + 1}]" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                        <input style="width:100px !important;" type="text" name="target_damp_loss[${rowIndex}][${i + 1}]" class="form-control numeric rupiah" placeholder="Treatment Cost" aria-describedby="basic-addon1">
                     </div>
                 </td>
             `).join('')}

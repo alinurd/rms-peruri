@@ -573,11 +573,12 @@ $msg="risk impcat yang anda masukan sudah ada";
 			$upd['sub_kategori'] = $data['sub_kategori'];
 		}
 		// field baru
-		$upd['risk_asumsi_perhitungan_dampak'] = $data['risk_asumsi_perhitungan_dampak'];
 		$upd['proses_bisnis'] = $data['proses_bisnis'];
+		$upd['risk_asumsi_perhitungan_dampak'] = $data['risk_asumsi_perhitungan_dampak'];
+		$upd['kategori_dampak'] = $data['kategori_dampak'];
 		// $upd['sts_heatmap'] = $data['sts_heatmap'];
 
-		$upd['risk_impact_kuantitatif'] = str_replace(',', '', $data['risk_impact_kuantitatif']);
+		// $upd['risk_impact_kuantitatif'] = str_replace(',', '', $data['risk_impact_kuantitatif']);
 
 		$couse = array();
 
@@ -1058,30 +1059,88 @@ $msg="risk impcat yang anda masukan sudah ada";
 		// doi::dump($sts);
 		$hasil['field'] = $ket;
 		if (!$sts) {
-			$rsca_detail_no = [];
-			$rows = $this->db->where('rcsa_no', $id)->where('urgensi_no', 0)->where('type', 1)->get(_TBL_VIEW_REGISTER)->result_array();
-			// echo $this->db->last_query();
+			// $rsca_detail_no = [];
+			// $rows = $this->db->where('rcsa_no', $id)->where('urgensi_no', 0)->where('type', 1)->get(_TBL_VIEW_REGISTER)->result_array();
+			// foreach ($rows as &$row) {
+			// 	$arrCouse = json_decode($row['risk_couse_no'], true);
+			// 	if ($arrCouse) {
+			// 		$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+			// 		$arrCouse = array();
+			// 		foreach ($rows_couse as $rc) {
+			// 			$arrCouse[] = $rc['description'];
+			// 		}
+			// 	}
+			// 	$row['couse'] = implode('### ', $arrCouse);
+
+			// 	$arrCouse = json_decode($row['risk_impact_no'], true);
+			// 	if ($arrCouse) {
+			// 		$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+			// 		$arrCouse = array();
+			// 		foreach ($rows_couse as $rc) {
+			// 			$arrCouse[] = $rc['description'];
+			// 		}
+			// 	}
+			// 	$row['impact'] = implode('### ', $arrCouse);
+
+			// 	$arrCouse = json_decode($row['accountable_unit'], true);
+			// 	$rows_couse = array();
+			// 	if ($arrCouse)
+			// 		$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+			// 	$arrCouse = array();
+			// 	foreach ($rows_couse as $rc) {
+			// 		$arrCouse[] = $rc['name'];
+			// 	}
+
+			// 	$row['penanggung_jawab'] = implode('### ', $arrCouse);
+
+			// 	$arrCouse = json_decode($row['penangung_no'], true);
+			// 	$rows_couse = array();
+			// 	if ($arrCouse)
+			// 		$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+			// 	$arrCouse = array();
+			// 	foreach ($rows_couse as $rc) {
+			// 		$arrCouse[] = $rc['name'];
+			// 	}
+			// 	$row['accountable_unit_name'] = implode('### ', $arrCouse);
+
+			// 	// $row['control_no']=implode('###',$arrCouse);
+
+			// 	$arrCouse = json_decode($row['control_no'], true);
+
+			// 	if (!empty($row['note_control']))
+			// 		$arrCouse[] = $row['note_control'];
+			// 	// $row['control_name']=implode(', ',$arrCouse);
+			// 	$row['control_name'] = implode('###', $arrCouse);
+			// 	$rsca_detail_no[] = $row['id_rcsa_detail'];
+			// }
+
+			$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+	
 			foreach ($rows as &$row) {
 				$arrCouse = json_decode($row['risk_couse_no'], true);
-				if ($arrCouse) {
-					$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-					$arrCouse = array();
-					foreach ($rows_couse as $rc) {
-						$arrCouse[] = $rc['description'];
-					}
+				
+				$rows_couse = array();
+				if ($arrCouse)
+				
+					$arrCouse_implode = implode(", ", $arrCouse);
+				$rows_couse  = $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array(); //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+				$arrCouse = array();
+				foreach ($rows_couse as $rc) {
+					$arrCouse[] = $rc['description'];
 				}
 				$row['couse'] = implode('### ', $arrCouse);
-
+	
 				$arrCouse = json_decode($row['risk_impact_no'], true);
-				if ($arrCouse) {
-					$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-					$arrCouse = array();
-					foreach ($rows_couse as $rc) {
-						$arrCouse[] = $rc['description'];
-					}
+				$rows_couse = array();
+				if ($arrCouse)
+					$arrCouse_implode = implode(", ", $arrCouse);
+				$rows_couse =  $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array();  //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+				$arrCouse = array();
+				foreach ($rows_couse as $rc) {
+					$arrCouse[] = $rc['description'];
 				}
 				$row['impact'] = implode('### ', $arrCouse);
-
+	
 				$arrCouse = json_decode($row['accountable_unit'], true);
 				$rows_couse = array();
 				if ($arrCouse)
@@ -1090,9 +1149,9 @@ $msg="risk impcat yang anda masukan sudah ada";
 				foreach ($rows_couse as $rc) {
 					$arrCouse[] = $rc['name'];
 				}
-
-				$row['penanggung_jawab'] = implode('### ', $arrCouse);
-
+				$row['accountable_unit_name'] = implode('### ', $arrCouse);
+	
+	
 				$arrCouse = json_decode($row['penangung_no'], true);
 				$rows_couse = array();
 				if ($arrCouse)
@@ -1101,24 +1160,20 @@ $msg="risk impcat yang anda masukan sudah ada";
 				foreach ($rows_couse as $rc) {
 					$arrCouse[] = $rc['name'];
 				}
-				$row['accountable_unit_name'] = implode('### ', $arrCouse);
-
-				// $row['control_no']=implode('###',$arrCouse);
-
-				$arrCouse = json_decode($row['control_no'], true);
-
+				$row['penanggung_jawab'] = implode('### ', $arrCouse);
+	
+				// $arrCouse = json_decode($row['control_no'], true);
+				// $arrCouse = json_decode($row['risk_impact_no'], true);
 				if (!empty($row['note_control']))
-					$arrCouse[] = $row['note_control'];
-				// $row['control_name']=implode(', ',$arrCouse);
-				$row['control_name'] = implode('###', $arrCouse);
-				$rsca_detail_no[] = $row['id_rcsa_detail'];
+					$arrCouse =json_decode($row['note_control'], true);
+				$row['control_name'] = implode('### ', $arrCouse);
 			}
+
 			unset($row);
 			$hasil['field'] = $rows;
 			$hasil['rcsa_detail'] = json_encode($rsca_detail_no);
 		}
 		$hasil['status'] = $sts;
-		// die($this->db->last_query());
 		return $hasil;
 	}
 

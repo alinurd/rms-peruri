@@ -43,7 +43,7 @@ class Rcsa extends BackendController
 		$this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 		$this->addField(array('field' => 'pi', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 		$this->addField(array('field' => 'progres', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
-		$this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
+		// $this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
 		$this->addField(array('field' => 'name', 'show' => false));
 		$this->addField(array('field' => 'periode_name', 'show' => false));
 		$this->addField(array('field' => 'sts_propose_text', 'show' => false));
@@ -68,7 +68,7 @@ class Rcsa extends BackendController
 		$this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
 		$this->set_Open_Tab('Dokumen Lainnnya');
-		// $this->addField(array('field' => 'upload', 'input' => 'upload', 'size' => 10000));
+		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf', 'file_random' => false));
 		$this->set_Close_Tab();
 		$this->set_Open_Tab('Kriteria Kemungkinan Risiko ');
 		$this->addField(array('field' => 'kriteria_kemungkinan_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
@@ -252,7 +252,7 @@ class Rcsa extends BackendController
 		$data['cbo_user'] = $this->get_combo('officer_approve');
 
 		$data['id_rcsa'] = $id;
-		$this->template->build('register', $data);
+		$this->template->build('register', $data); 
 	}
 
 	function simpan_propose()
@@ -283,6 +283,7 @@ class Rcsa extends BackendController
 		$result = '<i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '">  </i>';
 		return $result;
 	}
+	
 	function listBox_PROGRES($rows, $value)
 	{
 		// doi::dump($rows);

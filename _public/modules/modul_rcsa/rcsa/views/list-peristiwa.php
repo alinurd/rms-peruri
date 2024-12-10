@@ -150,7 +150,7 @@ if ($parent['sts_propose'] == 5) {
                             if ($ros['inherent_level'] > 0) : ?>
 
                                 <span id="inherent_level_label">
-                                    <span style="background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;">&nbsp; <?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;<?= $inherent_level['level_mapping']; ?>&nbsp;</span>
+                                    <span style="background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;">&nbsp;<?= $impactinherent['code']; ?> x <?= $likeinherent['code']; ?>&nbsp;<?= $inherent_level['level_mapping']; ?>&nbsp;</span>
                                 </span>
 
                                 <!--echo "<span style='background-color:" . $ros[' warna'] . ";color:" . $ros['warna_text'] . ";'>&nbsp;" . $ros['inherent_analisis'] . "&nbsp;</span>" ;; ?>
@@ -177,7 +177,7 @@ if ($parent['sts_propose'] == 5) {
                             <?php
                             if ($ros['residual_level'] > 0) : ?>
                                 <span id="residual_level_label">
-                                    <span style="background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;">&nbsp; <?= $like['code']; ?> x <?= $impact['code']; ?>&nbsp;<?= $residual_level['level_mapping']; ?>&nbsp;</span>
+                                    <span style="background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;">&nbsp; <?= $impact['code']; ?> X <?= $like['code']; ?> &nbsp;<?= $residual_level['level_mapping']; ?>&nbsp;</span>
                                 </span>
 
                                 <!-- echo "<span style='background-color:" . $ros[' warna_residual'] . ";color:" . $ros['warna_text_residual'] . ";'>&nbsp;" . $ros['residual_analisis'] . "&nbsp;</span>" ;; ?> -->
