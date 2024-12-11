@@ -32,7 +32,7 @@ $info_owner = $this->authentication->get_info_user('group_owner');
 													<td width="15%" bgcolor="<?= $k['color'] ?>" class="text-center" style="color: #000;">
 														<?= $k['name'] ?>
 													</td>
-												<?php
+												<?php 
 												}
 												?>
 											</tr>

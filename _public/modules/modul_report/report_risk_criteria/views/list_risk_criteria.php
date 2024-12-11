@@ -52,10 +52,19 @@
       <td colspan="7" style="border: none;">A. Kriteria Probabilitas</td>
     </tr>
     <tr>
-      <td style="background-color: #BFBFBF; text-align: center;" colspan="3">
+      <td style="background-color: #BFBFBF; text-align: center;" colspan="2">
         <h3><strong>Skor</strong></h3>
       </td>
-      <td style="background-color: #BFBFBF; text-align: center;">
+      <?php
+      foreach ($kriteria as $index => $k) {
+      ?>
+        <td style="background-color: #BFBFBF; text-align: center;">
+          <?= $index; ?>
+        </td>
+      <?php 
+      }
+      ?>
+      <!-- <td style="background-color: #BFBFBF; text-align: center;">
         <h3><strong>4</strong></h3>
       </td>
       <td style="background-color: #BFBFBF; text-align: center;">
@@ -66,9 +75,9 @@
       </td>
       <td style="background-color: #BFBFBF; text-align: center;">
         <h3><strong>1</strong></h3>
-      </td>
+      </td> -->
     </tr>
-    <tr>
+    <!-- <tr>
       <td style="background-color: #BFBFBF; text-align: center;" colspan="3">
         <h3><strong>Deskripsi</strong></h3>
       </td>
@@ -84,35 +93,41 @@
       <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
         <h3><strong>Kecil</strong></h3>
       </td>
+    </tr> -->
+    <tr>
+      <th style="background-color: #BFBFBF; text-align: center;width: 250px;" colspan="2">Kemungkinan</th>
+      <?php
+      foreach ($kriteria as $k) {
+      ?>
+        <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
+          <?= $k['name'] ?>
+        </td>
+      <?php 
+      }
+      ?>
     </tr>
   </thead>
   <tbody>
-    <?php
-    if (count($field) == 0)
-      echo '<tr><td colspan=23 style="text-align:center">No Data</td></tr>';
-    $no = 0;
-    $ttl_nil_dampak = 0;
-    $ttl_exposure = 0;
-    $ttl_exposure_residual = 0;
-    $last_id = 0;
-    foreach ($fields as $key => $rows) {
-      $not = '';
-      $tmp = ['', '', '', '', '', ''];
-      if ($last_id == $row['id']) {
-        ++$no;
-        $last_id = $row['id'];
-        $not = $no;
-        $tmp[0] = $row['name'];
-      }
-    ?>
-    <tr>
-      <td colspan="3" style="text-align: center;"><?= $rows['deskripsi']; ?></td>
-      <td><?= $rows['sangat_besar']; ?></td>
-      <td><?= $rows['besar']; ?></td>
-      <td><?= $rows['sedang']; ?></td>
-      <td><?= $rows['kecil']; ?></td>
-    </tr>
-    <?php } ?>
+        <?php foreach ($kemungkinan as $kem) { ?>
+          <tr>
+            <td colspan="2"><?= $kem['data'] ?></td>
+            <?php
+            foreach ($kriteria as $kee => $k) {
+            ?>
+              <td>
+                <?php
+                $kemu = $this->db->where('km_id', $kem['id'])->where('criteria_risiko', $kee)->order_by('criteria_risiko')->get(_TBL_AREA_KM)->row_array();
+                ?>
+                <?php if ($kemu) : ?>
+                  <?= $kemu['area'] ?>
+                <?php endif ?>
+              </td>
+            <?php
+            }
+            ?>
+          </tr>
+        <?php
+        } ?>
   </tbody>
 </table>
 
@@ -172,67 +187,59 @@
       <td colspan="7" style="border: none;">B. Kriteria Dampak</td>
     </tr>
     <tr>
-      <td style="background-color: #BFBFBF; text-align: center;" colspan="3">
+      <td style="background-color: #BFBFBF; text-align: center;" colspan="2">
         <h3><strong>Skor</strong></h3>
       </td>
-      <td style="background-color: #BFBFBF; text-align: center;">
-        <h3><strong>4</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center;">
-        <h3><strong>3</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center;">
-        <h3><strong>2</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center;">
-        <h3><strong>1</strong></h3>
-      </td>
+      <?php
+      foreach ($kriteria as $index => $k) {
+      ?>
+        <td style="background-color: #BFBFBF; text-align: center;">
+          <?= $index; ?>
+        </td>
+      <?php 
+      }
+      ?>
     </tr>
     <tr>
-      <td style="background-color: #BFBFBF; text-align: center;" colspan="3">
-        <h3><strong>Deskripsi</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
-        <h3><strong>Sangat Besar</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
-        <h3><strong>Besar</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
-        <h3><strong>Sedang</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
-        <h3><strong>Kecil</strong></h3>
-      </td>
+      <th>Kategori</th>
+      <th>Dampak</th>
+      <?php foreach ($kriteria as $k): ?>
+        <td style="background-color: #BFBFBF; text-align: center;">
+          <?= $k['name'] ?>
+        </td>
+      <?php endforeach; ?>
     </tr>
   </thead>
   <tbody>
-    <?php
-    if (count($field) == 0)
-      echo '<tr><td colspan=23 style="text-align:center">No Data</td></tr>';
-    $no = 0;
-    $ttl_nil_dampak = 0;
-    $ttl_exposure = 0;
-    $ttl_exposure_residual = 0;
-    $last_id = 0;
-    foreach ($fields1 as $key => $rows1) {
-      $not = '';
-      $tmp = ['', '', '', '', '', ''];
-      if ($last_id == $row['id']) {
-        ++$no;
-        $last_id = $row['id'];
-        $not = $no;
-        $tmp[0] = $row['name'];
-      }
+  <?php foreach ($dampak as $dam): 
+      $subDampak = $this->db->where('kelompok', 'sub-kriteria-dampak')
+                ->where('pid', $dam['id'])
+                ->get(_TBL_DATA_COMBO)
+                ->result_array();
     ?>
-    <tr>
-      <td colspan="3" style="text-align: center;"><?= $rows1['deskripsi']; ?></td>
-      <td><?= $rows1['sangat_besar']; ?></td>
-      <td><?= $rows1['besar']; ?></td>
-      <td><?= $rows1['sedang']; ?></td>
-      <td><?= $rows1['kecil']; ?></td>
-    </tr>
-    <?php } ?>
+      <?php foreach ($subDampak as $key => $subd): ?>
+        <tr>
+          <?php if ($key + 1 == 1): ?>
+            <td rowspan="<?= count($subDampak) ?>"><?= $dam['data'] ?></td>
+          <?php endif; ?>
+          <td><?= $subd['data'] ?></td>
+          <?php foreach ($kriteria as $kee => $k): ?>
+            <td>
+              <?php
+              $damp = $this->db->where('sub_dampak_id', $subd['id'])
+                ->where('criteria_risiko', $kee)
+                ->order_by('criteria_risiko')
+                ->get(_TBL_AREA)
+                ->row_array();
+              ?>
+              <?php if ($damp): ?>
+                <?= $damp['area'] ?>
+              <?php endif; ?>
+            </td>
+          <?php endforeach; ?>
+        </tr>
+      <?php endforeach; ?>
+    <?php endforeach; ?>
   </tbody>
   <tfoot>
     <tr>
