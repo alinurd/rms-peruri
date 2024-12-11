@@ -187,7 +187,7 @@ class Data extends MX_Model
 
 		// $rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_REGISTER)->result_array();
 		// doi::dump($rows)
-		//$rows = $this->db->where('rcsa_no', $id)->group_by('id_rcsa_detail')->order_by('urgensi_no_kadiv')->get(_TBL_VIEW_REGISTER)->result_array();
+		// $rows = $this->db->where('rcsa_no', $id)->group_by('id_rcsa_action')->order_by('urgensi_no_kadiv')->get(_TBL_VIEW_REGISTER)->result_array();
 
 		foreach ($rows as &$row) {
 			$arrCouse = json_decode($row['risk_couse_no'], true);

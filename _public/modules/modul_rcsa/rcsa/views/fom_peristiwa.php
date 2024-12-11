@@ -543,7 +543,7 @@ if ($field['iskri'] == 0) {
                                     <!-- Kolom Analisis Risiko Inhern -->
                                     <th class="sticky text-center" style="left: 0;" colspan="3">Analisis Risiko Inhern</th>
                                     <!-- Kolom Analisis Risiko Residual -->
-                                    <th class="sticky text-center" style="left: 185px;" colspan="3">Analisis Risiko Saat Ini</th>
+                                    <th class="sticky text-center" style="left: 231px;" colspan="3">Analisis Risiko Saat Ini (Current Risk)</th>
                                     <?php
                                     $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                                     for ($i = 1; $i < 13; $i++) { ?>
@@ -552,20 +552,20 @@ if ($field['iskri'] == 0) {
                                     </tr>
                                     <tr>
                                     <!-- Kolom Detail Risiko Inhern -->
-                                    <th class="sticky text-center" style="left: 0;">Skala Dampak</th>
+                                    <th class="sticky text-center" style="left: 0;">Skala Impact</th>
                                     <th class="sticky text-center" style="left: 67px;">Skala likelihood</th>
-                                    <th class="sticky text-center" style="left: 135px;">Level Risiko</th>
+                                    <th class="sticky text-center" style="left: 135px;">Level/Exposure</th>
 
                                     <!-- Kolom Detail Risiko Residual -->
-                                    <th class="sticky text-center" style="left: 185px;">Skala Dampak</th>
-                                    <th class="sticky text-center" style="left: 252px;">Skala likelihood</th>
-                                    <th class="sticky text-center" style="left: 319px;">Level Risiko</th>
+                                    <th class="sticky text-center" style="left: 231px;">Skala Impact</th>
+                                    <th class="sticky text-center" style="left: 298px;">Skala likelihood</th>
+                                    <th class="sticky text-center" style="left: 366px;">Level/Exposure</th>
 
                                     <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
                                     <?php for ($i = 1; $i < 13; $i++) { ?>
-                                        <th class="text-center">Skala Dampak</th>
+                                        <th class="text-center">Skala Impact</th>
                                         <th class="text-center">Skala Likelihood</th>
-                                        <th class="text-center">Level Risiko</th>
+                                        <th class="text-center">Level/Exposure</th>
                                     <?php } ?>
                                     </tr>
                                 </thead>
@@ -593,13 +593,13 @@ if ($field['iskri'] == 0) {
                                     </td>
 
                                     <!-- Kolom Detail Risiko Residual -->
-                                    <td class="sticky text-center" style="left: 185px;">
+                                    <td class="sticky text-center" style="left: 231px;">
                                         <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['residual_impact'])) ? '' : $analisiData['residual_impact'], 'class="form-control" id="impactAnalisisResidual"'); ?>
                                     </td>
-                                    <td class="sticky text-center" style="left: 252px;">
+                                    <td class="sticky text-center" style="left: 298px;">
                                         <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['residual_likelihood'])) ? '' : $analisiData['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
                                     </td>
-                                    <td class="sticky text-center" style="left: 319px;">
+                                    <td class="sticky text-center" style="left: 366px;">
                                         <span id="likeAnalisisResidualLabel">
                                             <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;
                                                         color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;

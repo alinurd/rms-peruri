@@ -1173,7 +1173,7 @@ if($dtkri){
 	{
 		$id_rcsa = $this->input->post('id');
 		$id_edit = $this->input->post('edit');
-
+ 
 		$data['parent'] = $this->db->where('id', $id_rcsa)->get(_TBL_VIEW_RCSA)->row_array();
 		$data['detail'] = $this->db->where('id', $id_edit)->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
 		$data['realisasi'] = $this->data->get_realisasi($id_edit);
@@ -1879,7 +1879,7 @@ if($dtkri){
 		$data['tgl'] = $this->data->get_data_tanggal($id_rcsa);
 		$data['id_rcsa'] = $id_rcsa;
 		$data['id'] = $id_rcsa;
-
+ 
 		$parent_no = $this->data->get_data_parent($owner_no);
 		$data['owner'] = $parent_no[0]['parent_no'];
 		$data['divisi'] = $this->data->get_data_divisi($parent_no);
@@ -1891,6 +1891,7 @@ if($dtkri){
 		// $data['residual_level'] = $residual_level;
 		// $inherent_level = $this->data->get_master_level(true, $data['field'][0]['inherent_level']);
 		// $data['inherent_level'] = $inherent_level;
+		// doi::dump($data['field']);
   
 		
  		$data['log'] = $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_LOG_PROPOSE)->result_array();
@@ -2011,9 +2012,11 @@ if($dtkri){
 					border-collapse: collapse;
 				}
 
-				// .test table > th > td {
-				// 	border: 1px solid #ccc;
-				// }
+				.test th, 
+				.test td {
+					border: 1px solid black;
+				}
+
 				</style>';
 
 
