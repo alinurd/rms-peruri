@@ -123,6 +123,8 @@ class Report_Risk_Criteria extends BackendController {
 	function listBox_KRITERIA_PROBABILITAS($rows, $value) {
 		// Mengambil ID dari array $rows yang diterima sebagai parameter
 		$id = $rows['l_id'];
+		// doi::dump($id);
+		// exit;
 	
 		// Ambil data kemungkinan berdasarkan kelompok dan param1
 		$kemungkinan = $this->db
@@ -206,6 +208,7 @@ class Report_Risk_Criteria extends BackendController {
 	}
 	function get_kriteria($type1=1, $id=0)
 	{
+		$id=$this->uri->segment(3);
 		if($type1==1){
 			$data['kriteria'] = [1 => [
 				'name' => 'Sangat Kecil',
