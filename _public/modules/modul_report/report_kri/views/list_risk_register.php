@@ -50,7 +50,7 @@
     <a href="<?= base_url('report-kri/cetak_pdf/' . $id . '/' . $owner . '/' . $bulan); ?>" target="_blank" style="color:#ffffff;"><i class="fa fa-file-pdf-o"></i> PDF </a>
 </span>
 <span class="btn btn-secondary btn-flat">
-    <?= form_dropdown('bulan', $cbobulan, $bulan, ' class="form-control select2" id="bulan" style="width:100%;"'); ?>
+    <?= form_dropdown('bulan', $cbobulan, $bulan, ' class="form-control" id="bulan" style="width:100%;"'); ?>
 </span>
 <span class="btn btn-info btn-flat" style="width:100px;" data-id="<?= $id_rcsa ?>" data-owner="<?= $owner_no ?>" id="filter_bulan"> Filter Bulan </span>
 
@@ -142,8 +142,8 @@
             <tr>
                 <th><label class="w250">Peristiwa (T3)</label></th>
                 <th><label class="w250">Penyebab</label></th>
-                <th><label class="w250">Dampak Kualitatif</label></th>
-                <th><label class="w250">Dampak Kuantitatif</label></th>
+                <th><label class="w250">Dampak</label></th>
+                <th><label class="w250">Kategori Dampak</label></th>
 
                 <th><label class="w80">Aman</label></th>
                 <th><label class="w80">Hati-Hati</label></th>
@@ -190,7 +190,7 @@
                                 <td valign="top"><?= $row['event_name']; ?></td>
                                 <td valign="top"><?= format_list($row['couse'], "### "); ?></td>
                                 <td valign="top"><?= format_list($row['impact'], "### "); ?></td>
-                                <td valign="top"><?= $row['risk_impact_kuantitatif'] ?></td>
+                                <td valign="top"><?= $row['kategori_dampak'] ?></td>
 
                                 <!-- kri -->
                                 <td><?= $kri['data'] ?></td>

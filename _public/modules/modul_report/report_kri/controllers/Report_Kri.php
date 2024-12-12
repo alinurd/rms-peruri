@@ -36,7 +36,7 @@ class Report_Kri extends BackendController {
 			$this->addField(array('field' => 'iskri', 'input' => 'multitext', 'size' => 1000));
 			$this->addField(array('field' => 'sasaran', 'input' => 'multitext', 'size' => 1000));
 			$this->addField(array('field' => 'tupoksi', 'input' => 'multitext', 'size' => 1000));
-			// $this->addField(array('field' => 'register', 'input' => 'multitext', 'size' => 1000));
+			$this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 			// $this->addField(array('field' => 'sasaran', 'type' => 'free', 'input' => 'free', 'mode' =>'e'));
 			
 			// $this->addField(array('field' => 'item_use', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
@@ -94,18 +94,7 @@ class Report_Kri extends BackendController {
 		function listBox_REGISTER($row, $value)
 	{
 		$id = $row['l_rcsa_no'];
-		$detail=$this->db->where('rcsa_no', $id)->where('iskri', 1)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-		$actDetail=$this->db->where('rcsa_no', $id)->order_by('bulan')->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-	 
-		// doi::dump($id);
 		$owner = $row['l_owner_no'];
-		// $result = '<i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '"></i>';
-		// if(count($detail)>0){
-		// 	$result = '<i class="fa fa-search  disabled pointer" title="belum menitoring" data-id="' . $id . '" data-owner="' . $owner . '"></i>';
-		// 	if(count($actDetail)>0){
-		// 	}
-		// 	// doi::dump($actDetail);
-		// }
 		$result = '<strong><i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '"></i></strong>';
 
 		

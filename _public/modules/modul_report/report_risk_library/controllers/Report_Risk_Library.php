@@ -49,10 +49,10 @@ class Report_Risk_Library extends BackendController {
 		$this->set_Table_List($this->tbl_master, 'name','Risk Owner',10);
 		$this->set_Table_List($this->tbl_master, 'sasaran','Sasaran');
 		// $this->set_Table_List($this->tbl_master, 'event_name', 'Peristiwa');
+		$this->set_Table_List($this->tbl_master, 'event_name', 'Sub-Kelompok Risiko (T4)');
 		$this->set_Table_List($this->tbl_master, 'tema_risiko', 'Tema Risiko (T1)');
 		$this->set_Table_List($this->tbl_master, 'tema_risiko_t2_gabungan', 'Kategori Risiko(T2)');
 		$this->set_Table_List($this->tbl_master, 't2_t3', 'Kelompok Risiko (T3)');
-		$this->set_Table_List($this->tbl_master, 'event_name', 'Sub-Kelompok Risiko (T4)');
 		$this->set_Table_List($this->tbl_master, 'risk_couse_no','Risk Cause');
 		$this->set_Table_List($this->tbl_master, 'risk_impact_no','Risk Impact');
 	
