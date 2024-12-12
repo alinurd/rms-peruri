@@ -29,7 +29,7 @@
                 // Level tindakan dan status
                 $like_impact = $this->data->level_action($like, $impact);
                 $cek_level = $this->data->cek_level_new($like, $impact);
-                $progress_detail = $like_impact['like']['code'] . ' x ' . $like_impact['impact']['code'];
+                $progress_detail = $like_impact['impact']['code']  . ' x ' . $like_impact['like']['code'];
 
                 $status = '';
                 $class_text = '';

@@ -262,7 +262,7 @@ class Data extends MX_Model {
 
 		$like_impact 		= $this->data->level_action($like, $impact);
 		$cek_level 			= $this->data->cek_level_new($like, $impact);
-		$progress_detail 	= $like_impact['like']['code'] . ' x ' . $like_impact['impact']['code'];
+		$progress_detail 	= $like_impact['impact']['code'] . ' x ' . $like_impact['like']['code'];
 		$cboLike 			= $q['cb_like'];   
 		$cboImpact			= $q['cb_impact'];  
 
@@ -280,8 +280,8 @@ class Data extends MX_Model {
 			<input type="hidden" name="inherent_level[]" id="inherent_level' . $q['id'] . '_' . $month . '" value="' . $data['data']['risk_level_action'] . '">
 
 			<div style="display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 10px;">
-				' . form_dropdown('likehold[]', $cboLike, $like, 'class="form-control select2" data-mode="3" id="likehold' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width:50%;"') . '
-				' . form_dropdown('impact[]', $cboImpact, $impact, 'class="form-control select2" data-mode="3" id="impact' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width:50%"') . '
+			' . form_dropdown('impact[]', $cboImpact, $impact, 'class="form-control select2" data-mode="3" id="impact' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width:50%"') . '
+			' . form_dropdown('likehold[]', $cboLike, $like, 'class="form-control select2" data-mode="3" id="likehold' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width:50%;"') . '
 			</div>
 
 			<div style="text-align: center; margin-bottom: 10px;">

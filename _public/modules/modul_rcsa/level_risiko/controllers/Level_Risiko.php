@@ -233,7 +233,7 @@ class Level_Risiko extends BackendController
 		$result['month'] =(isset($post['month']))?$post['month']:0;
 		// $result['cek'] = $rows;
 		if ($rows) {
-			$progress_detail    = $rows['code_likelihood'] . ' x ' . $rows['code_impact'];
+			$progress_detail    = $rows['code_impact']  . ' x ' . $rows['code_likelihood'];
 			$result['level_text'] = "<span class='btn' style='padding:4px 8px;width:100%; background-color:" . $rows['warna_bg'] . ";color:" . $rows['warna_txt'] . ";'>&nbsp;" . $rows['tingkat'] ." [" . $progress_detail . "] &nbsp;</span>";
 			$result['level_no'] = $rows['id'];
 			$result['level_name'] = $rows['tingkat'];
