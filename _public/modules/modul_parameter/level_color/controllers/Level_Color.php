@@ -22,8 +22,8 @@ class Level_Color extends BackendController {
 			$this->addField(array('field'=>'impact','search'=>true, 'input'=>'combo', 'combo'=>$this->cboIMpact, 'size'=>50));
 			$this->addField(array('field'=>'likelihood','search'=>true, 'input'=>'combo', 'combo'=>$this->cboLikelihod, 'size'=>50));
 			$this->addField(array('field'=>'score', 'size'=>20));
-			$this->addField(array('field'=>'urut', 'size'=>20));
-			$this->addField(array('field'=>'urut_res', 'title'=>'Urut Residual', 'size'=>20));
+			$this->addField(array('field'=>'urut', 'size'=>20, 'show'=>false));
+			$this->addField(array('field'=>'urut_res', 'show'=>false, 'title'=>'Urut Residual', 'size'=>20));
 		$this->set_Close_Tab();
 			
 		$this->set_Field_Primary('id');
