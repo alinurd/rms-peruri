@@ -10,7 +10,7 @@ class Data extends MX_Model {
 
     function grafik (){
         $result=[];
-        $rows=$this->db->where('kelompok','kel-library')->order_by('urut')->get(_TBL_DATA_COMBO)->result_array();
+        $rows=$this->db->where('kelompok','kategori-risiko')->order_by('urut')->get(_TBL_DATA_COMBO)->result_array();
         $master=[];
         foreach($rows as $row){
             $master[$row['id']]=['name'=>$row['data'], 'jml'=>0];
@@ -48,7 +48,7 @@ class Data extends MX_Model {
         $result['master']=$master;
 
         // setelah progress
-        $rows=$this->db->where('kelompok','kel-library')->order_by('urut')->get(_TBL_DATA_COMBO)->result_array();
+        $rows=$this->db->where('kelompok','kategori-risiko')->order_by('urut')->get(_TBL_DATA_COMBO)->result_array();
         $master=[];
         foreach($rows as $row){
             $master[$row['id']]=['name'=>$row['data'], 'jml'=>0];
