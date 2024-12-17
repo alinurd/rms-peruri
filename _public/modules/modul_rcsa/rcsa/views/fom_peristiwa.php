@@ -218,7 +218,11 @@ if ($field['iskri'] == 0) {
                                         </tr>
                                         <tr>
                                             <td width="20%">Tema Risiko (T1)</td>
-                                            <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class=" select2 form-control" style="width:100%;" id="tema" disabled'); ?></td>
+                                            <td colspan="2">
+                                            <td colspan="2"><?= form_input('tema_risiko', ($detail) ? ($detail['tema_risiko']) : 'Bisnis BUMN', 'class="form-control" placeholder="Input Proses Bisnis" id="tema_risiko" readonly'); ?>
+                                        </td>
+                                            
+                                            
                                         </tr>
                                         <tr>
                                             <td width="20%">Kategori Risiko(T2)</td>
