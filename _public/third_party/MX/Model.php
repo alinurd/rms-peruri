@@ -736,7 +736,10 @@ class MX_Model extends CI_Model
 				$item_data = find_data($data, $like_no, $impact_no);
 				// doi::dump($item_data);
 				// Data default jika tidak ditemukan
-				$score 			= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
+				$scr 	= $this->db->where('impact',$item_data['impact_no'])->where('likelihood',$item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
+ 
+				$score 			= $scr['score'];
+				// $score 			= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
 				$nilai 			= $item_data['nilai'] ?? '';
 				$warna_bg 		= $item_data['warna_bg'] ?? '#ffffff';
 				$warna_txt 		= $item_data['warna_txt'] ?? '#000000';
@@ -768,7 +771,7 @@ class MX_Model extends CI_Model
 								data-like="'.$item_data['like_no'].'"
 								data-impact="'.$item_data['impact_no'].'"
 								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
+						<div style="position: absolute; bottom: 0; left: 2px; font-size: 8px; font-weight: normal;">'.$score.'</div>
 						' . $nilai . '
 					</td>';
 			}
