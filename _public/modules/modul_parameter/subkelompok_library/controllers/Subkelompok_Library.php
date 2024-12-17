@@ -12,11 +12,11 @@ class Subkelompok_Library extends BackendController {
 		$this->set_Tbl_Master(_TBL_DATA_COMBO);
  		$this->pid=$this->get_combo('tasktonimi','t2');
 
-		$this->set_Open_Tab('Kelompok Risiko T3');
+		$this->set_Open_Tab('Subkelompok Risiko T4');
 			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			$this->addField(array('field'=>'kelompok', 'show'=>false, 'save'=>true, 'default'=>$this->kelCombo));
-			$this->addField(array('field'=>'pid', 'input'=>'combo', 'title'=>'Kategori Risiko T2','show'=>true , 'required'=>true,  'combo'=>$this->pid, 'size'=>50));
-			$this->addField(array('field'=>'data' , 'title'=>'Kelompok Risiko T3', 'required'=>true, 'search'=>true, 'size'=>50));
+			$this->addField(array('field'=>'pid', 'input'=>'combo', 'title'=>'Kelompok Risiko T3','show'=>true , 'required'=>true,  'combo'=>$this->pid, 'size'=>50));
+			$this->addField(array('field'=>'data' , 'title'=>'Subkelompok Risiko T4', 'required'=>true, 'search'=>true, 'size'=>50));
 			$this->addField(array('field'=>'aktif', 'type'=>'string', 'input'=>'boolean', 'search'=>true, 'size'=>20));
 		$this->set_Close_Tab();
 			
