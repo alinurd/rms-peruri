@@ -218,14 +218,18 @@ if ($field['iskri'] == 0) {
                                         </tr>
                                         <tr>
                                             <td width="20%">Tema Risiko (T1)</td>
-                                            <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class=" select2 form-control" style="width:100%;" id="tema"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class=" select2 form-control" style="width:100%;" id="tema" disabled'); ?></td>
                                         </tr>
                                         <tr>
                                             <td width="20%">Kategori Risiko(T2)</td>
+                                            <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class=" select2 form-control" style="width:100%;" id="tema"' . $disable); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">Kelompok Risiko (T3)</td>
                                             <td colspan="2"><?= form_dropdown('kategori', $kategori, ($detail) ? $detail['kategori_no'] : '', 'class="select2 form-control" style="width:100%;" id="kategori"' . $disable); ?></td>
                                         </tr>
                                         <tr class="">
-                                            <td width="20%">Kelompok Risiko (T3)</td>
+                                            <td width="20%">Sub-Kelompok Risiko (T4)</td>
                                             <td colspan="2"><?= form_dropdown('sub_kategori', $subkategori, ($detail) ? $detail['sub_kategori'] : '', 'class=" t3 select2 form-control" style="width:100%;" id="sub_kategori"' . $disable); ?></td>
 
                                         </tr>
@@ -241,7 +245,7 @@ if ($field['iskri'] == 0) {
                                         </tr>
 
                                         <tr>
-                                            <td width="20%" rowspan="3">Sub-Kelompok Risiko (T4)</td>
+                                            <td width="20%" rowspan="3">Detail Peristiwa Risiko (T5)</td>
                                         </tr>
                                         <tr class="peristiwa_lib">
                                             <td>
