@@ -15,7 +15,7 @@ class Tema_Library extends BackendController {
 		$this->set_Tbl_Master(_TBL_LIBRARY);
 		$this->set_Table(_TBL_RISK_TYPE);
 		
-		$this->set_Open_Tab('Data Risk Event Library');
+		$this->set_Open_Tab('Data Kategori Risiko - T2');
  			// $this->addField(array('field'=>'kel', 'type'=>'free', 'input'=>'combo', 'combo'=>$this->kel, 'size'=>50));
 			 $this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			 $this->addField(array('field'=>'type', 'show'=>false, 'save'=>true, 'default'=>4));
