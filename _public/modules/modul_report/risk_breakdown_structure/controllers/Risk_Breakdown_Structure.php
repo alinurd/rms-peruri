@@ -130,7 +130,7 @@ class Risk_Breakdown_Structure extends BackendController {
 		$data['owner'] = $parent_no[0]['parent_no'];
 		$data['divisi'] = $this->data->get_data_divisi($parent_no);
 		$data['id_rcsa'] = $id_rcsa;
-		$data['field'] = $this->data->get_data_risk_ishikawa($id_rcsa);
+		$data['field'] = $this->data->get_data_risk_ishikawa($id_rcsa); 
 		$data['id'] = $id_rcsa;
 		$data['owner'] = $owner;
 		$data['fields'] = $this->data->get_data_officer($id_rcsa);
