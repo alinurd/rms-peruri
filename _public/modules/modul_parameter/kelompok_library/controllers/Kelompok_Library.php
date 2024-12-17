@@ -30,7 +30,7 @@ class Kelompok_Library extends BackendController {
 		$this->set_Sort_Table($this->tbl_master,'urut');
 		
 		// $this->set_Table_List($this->tbl_master,'kode');
-		$this->set_Table_List($this->tbl_master,'pid', '',20, '');
+ 		$this->set_Table_List($this->tbl_master,'pid');
 		$this->set_Table_List($this->tbl_master,'data');
 		// $this->set_Table_List($this->tbl_master, 'param1', 'Jumlah Event', 10, 'center');
 
