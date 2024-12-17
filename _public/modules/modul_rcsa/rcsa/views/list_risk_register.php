@@ -296,7 +296,7 @@
                      <td valign="top"><?= $row['tema_risiko']; ?> </td> <!-- T1 -->
                     <td valign="top"><?= $tema['description']; ?></td><!-- T2 -->
                     <td valign="top"><?= $row['kategori']; ?></td><!-- T3 -->
-                    <td valign="top"><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td><!-- T4 -->
+                    <!-- <td valign="top"><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td>T4 -->
                     <td valign="top"><?= $row['proses_bisnis']; ?></td>
 
                     <td valign="top"><?= $row['event_name']; ?></td><!-- T5 -->
