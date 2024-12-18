@@ -734,7 +734,7 @@ class MX_Model extends CI_Model
 				
 
 				$item_data = find_data($data, $like_no, $impact_no);
-				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
+				// $score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
 				// Data default jika tidak ditemukan
 				$scr 	= $this->db->where('impact',$item_data['impact_no'])->where('likelihood',$item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
  
@@ -773,6 +773,9 @@ class MX_Model extends CI_Model
 								>
 						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
+						<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
+						' . $score['score'] . '
+					</div>
 					</td>';
 			}
 
