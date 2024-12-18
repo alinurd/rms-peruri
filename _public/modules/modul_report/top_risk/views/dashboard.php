@@ -94,13 +94,13 @@
 							<aside class="profile-info col-md-12">
 								<section class="x_panel">
 									<div class="profile-info col-md-6">
-										<strong>Inherent</strong>
+										<!-- <strong>Inherent</strong> -->
 										<div class="x_content text-center" id="mapping_inherent">
 											<?=$mapping['inherent'];?>
 										</div>
 									</div>
 									<div class="profile-info col-md-6">
-										<strong>Residual</strong>
+										<!-- <strong>Residual</strong> -->
 										<div class="x_content text-center" id="mapping_residual">
 											<?=$mapping['residual'];?>
 										</div>
