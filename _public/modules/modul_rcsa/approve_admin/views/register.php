@@ -108,6 +108,8 @@ if ($status) : ?>
 				$ttl_exposure_residual = 0;
 
 				foreach ($field as $keys => $row) {
+					// doi::dump($row);
+					$tema               = $this->db->where('id', $row['tema'])->get(_TBL_LIBRARY)->row_array();
 					$residual_level = $this->data->get_master_level(true, $row['residual_level']);
 						$inherent_level = $this->data->get_master_level(true, $row['inherent_level']);
 						$control_as = $this->db->where('id', $row['risk_control_assessment'])->get('bangga_data_combo')->row_array();
@@ -165,8 +167,8 @@ if ($status) : ?>
 						<td><?php echo $i; ?></td>
 						<td> <button data-urgency="<?= $row['id_rcsa_detail']; ?>" data-rcsa="<?= $row['rcsa_no']; ?>" value="<?= $row['urgensi_no_kadiv']; ?>" class="btn btn-xs btn-success move">select</button></td>
 						<td style="width: 50%"><?= $row['area_name']; ?></td>
+						<td><?= $tema['description']; ?></td>
 						<td><?= $row['kategori']; ?></td>
-						<td ><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td>
 						<td><?= $row['event_name']; ?></td>
 						<td><?= format_list($row['couse'], "###"); ?></td>
 						<td><?= format_list($row['impact'], "###"); ?></td>
