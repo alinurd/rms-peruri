@@ -22,7 +22,7 @@
                                 ->row_array();
         $status = '';
         $class_text = '';
-        if ($row['progress_detail'] === $data_treatment['target_progress_detail'] && $row['target_progress_detail'] === $data_treatment['target_damp_loss']) {
+        if ($row['progress_detail'] == $data_treatment['target_progress_detail'] && $row['target_progress_detail'] == $data_treatment['target_damp_loss']) {
             $status = 'Sesuai';
             $class_text = 'text-success';
         } else {
