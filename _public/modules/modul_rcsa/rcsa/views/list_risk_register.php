@@ -132,7 +132,7 @@
             </tr>
 
             <tr>
-                <th rowspan="2"><label class="w250">Peristiwa (Risk Event) T5</label></th>
+                <th rowspan="2"><label class="w250">Peristiwa (Risk Event) T3</label></th>
                 <th rowspan="2"><label class="w250">Penyebab (Risk Cause)</label></th>
                 <th rowspan="2"><label class="w250">Dampak (Risk Impact)</label></th>
                 <th rowspan="2"><label class="w250">Kategori Dampak (Impact Category)</label></th>
@@ -293,13 +293,13 @@
                 <tr>
                     <td valign="top" style="text-align: center;"><?= $no++; ?></td>
                     <td valign="top"><?= $row['sasaran']; ?> </td>
-                     <td valign="top"><?= $row['tema_risiko']; ?> </td> <!-- T1 -->
-                    <td valign="top"><?= $tema['description']; ?></td><!-- T2 -->
-                    <td valign="top"><?= $row['kategori']; ?></td><!-- T3 -->
-                    <!-- <td valign="top"><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td>T4 -->
+                    <td valign="top"><?= $row['tema_risiko']; ?> </td>
+                    <td valign="top"><?= $tema['description']; ?></td>
+                    <td valign="top"><?= $row['kategori']; ?></td>
+                    <!-- <td valign="top"><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td> -->
                     <td valign="top"><?= $row['proses_bisnis']; ?></td>
 
-                    <td valign="top"><?= $row['event_name']; ?></td><!-- T5 -->
+                    <td valign="top"><?= $row['event_name']; ?></td>
                     <td valign="top"><?= format_list($row['couse'], "### "); ?></td>
                     <td valign="top"><?= format_list($row['impact'], "### "); ?></td>
                     <td valign="top"><?= $row['kategori_dampak']; ?></td> 
@@ -314,7 +314,7 @@
                     <td valign="top" style="text-align: left; "><?= 'Rp....'; ?></td>
 
                     <td valign="top"><?= format_list($row['control_name'], "### "); ?></td>
-                    <td valign="top"><?= number_format($row['anggaran'],0,',','.') ?></td>
+                    <td valign="top"><?= number_format($row['coa'],0,',','.') ?></td>
                     <td valign="top"><?= $row['kode_jasa']; ?></td>
                     <td valign="top"><?= $control_as['data']; ?></td>
                     <td valign="top"><?= $row['treatment']; ?></td>
