@@ -774,7 +774,7 @@ class MX_Model extends CI_Model
 						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
 						<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
-						' . $score['score'] . '
+						' . $score. '
 					</div>
 					</td>';
 			}
