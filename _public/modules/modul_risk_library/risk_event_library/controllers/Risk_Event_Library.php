@@ -21,15 +21,15 @@ class Risk_Event_Library extends BackendController {
 		$this->set_Tbl_Master(_TBL_LIBRARY);
 		$this->set_Table(_TBL_RISK_TYPE);
 		
-		$this->set_Open_Tab('Data Peristiwa Risiko T4');
+		$this->set_Open_Tab('Data Detail Peristiwa Risiko T5');
 			$this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			// $this->addField(array('field'=>'kel', 'type'=>'free', 'required'=>true, 'input'=>'combo', 'combo'=>$this->kel, 'size'=>50));
 			$this->addField(array('field'=>'risk_type_no','title'=>'Kategori Risiko', 'input'=>'combo', 'required'=>false,'show'=>false, 'combo'=>$this->cbo_risk_type, 'size'=>50));
 			$this->addField(array('field'=>'code','title'=>'Risk Event Code', 'show'=>true, 'search'=>false, 'size'=>10));
-			$this->addField(array('field' => 't1', 'title' => 'Tema (T1)', 'input' => 'combo:search', 'combo' => $this->t1, 'size' => 80, 'search' => true, 'required' => true));
-			$this->addField(array('field' => 't2', 'title' => 'Kategori (T2)', 'input' => 'combo:search', 'combo' => $this->t2, 'size' => 80, 'search' => true, 'required' => true));
-			$this->addField(array('field' => 't3', 'title' => 'Kelompok (T3)', 'input' => 'combo:search', 'combo' => $this->t3, 'size' => 80, 'search' => true, 'required' => true));
-			$this->addField(array('field'=>'description', 'title'=>'Peristiwa Risiko (T4)', 'search'=>true, 'required' => true, 'size'=>90));
+			$this->addField(array('field' => 't1', 'title' => 'Kategori (T2)', 'input' => 'combo:search', 'combo' => $this->t1, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field' => 't2', 'title' => 'Kelompok (T3)', 'input' => 'combo:search', 'combo' => $this->t2, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field' => 't3', 'title' => 'Subkelompok (T4)', 'input' => 'combo:search', 'combo' => $this->t3, 'size' => 80, 'search' => true, 'required' => true));
+			$this->addField(array('field'=>'description', 'title'=>'Detail Peristiwa Risiko  (T5)', 'search'=>true, 'required' => true, 'size'=>90));
 		
 			$this->addField(array('field'=>'notes','show'=>false, 'input'=>'multitext', 'search'=>false, 'size'=>500));
 			$this->addField(array('field'=>'jml_couse', 'type'=>'free', 'show'=>false, 'search'=>false));

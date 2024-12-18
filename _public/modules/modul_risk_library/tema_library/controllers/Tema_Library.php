@@ -15,14 +15,14 @@ class Tema_Library extends BackendController {
 		$this->set_Tbl_Master(_TBL_LIBRARY);
 		$this->set_Table(_TBL_RISK_TYPE);
 		
-		$this->set_Open_Tab('Data Risk Event Library');
+		$this->set_Open_Tab('Data Kategori Risiko - T2');
  			// $this->addField(array('field'=>'kel', 'type'=>'free', 'input'=>'combo', 'combo'=>$this->kel, 'size'=>50));
 			 $this->addField(array('field'=>'id', 'type'=>'int', 'show'=>false, 'size'=>4));
 			 $this->addField(array('field'=>'type', 'show'=>false, 'save'=>true, 'default'=>4));
 
 			// $this->addField(array('field'=>'risk_type_no', 'input'=>'combo','show'=>true, 'combo'=>$this->cbo_risk_type, 'size'=>50));
 			$this->addField(array('field'=>'code','search'=>true,'show'=>true, 'size'=>10));
- 			$this->addField(array('field'=>'description', 'title'=>'Tema Risiko', 'size'=>100));
+ 			$this->addField(array('field'=>'description', 'title'=>'Kategori Risiko', 'size'=>100));
 
  			// $this->addField(array('field'=>'notes','show'=>false, 'input'=>'multitext', 'search'=>false, 'size'=>500));
 			// $this->addField(array('field'=>'item_use', 'type'=>'free', 'show'=>false, 'search'=>false));

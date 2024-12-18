@@ -736,8 +736,10 @@ class MX_Model extends CI_Model
 				$item_data = find_data($data, $like_no, $impact_no);
 				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
 				// Data default jika tidak ditemukan
+				$scr 	= $this->db->where('impact',$item_data['impact_no'])->where('likelihood',$item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
+ 
+				$score 			= $scr['score'];
 				// $score 			= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
-				// $score 			= $row_l['id'];
 				$nilai 			= $item_data['nilai'] ?? '';
 				$warna_bg 		= $item_data['warna_bg'] ?? '#ffffff';
 				$warna_txt 		= $item_data['warna_txt'] ?? '#000000';
@@ -749,38 +751,29 @@ class MX_Model extends CI_Model
 
 				$content .= '
 					<td data-id="' . $row_i['id'] . '" 
-					class="pointer peta" 
-					onclick="hoho(this)" 
-					style="position: relative; 
-						background-color:' . $warna_bg . '; 
-						color:' . $warna_txt . '; 
-						width: 60px; 
-						height: 60px; 
-						padding: 5px; 
-						border: 1px solid white; 
-						font-size: 10px; 
-						font-weight: bold; 
-						text-align: center; 
-						vertical-align: middle;"
-					data-toggle="popover"
-					data-placement="top"
-					data-html="true"
-					data-content="<strong>'.$tingkat.'</strong><br/>Standar Nilai :<br/>Impact: [ >= '.$bawah_impact.' s.d <= '.$atas_impact.']<br/>Likelihood: [ >='.$bawah_like.' s.d <= '.$atas_like.']"
-					data-nilai="'.$nilai.'"
-					data-kel="'.$type.'"
-					data-like="'.$item_data['like_no'].'"
-					data-impact="'.$item_data['impact_no'].'"
-				>
-				
-					<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">
-					</div>
-					' . $nilai . '
-					<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
-						' . $score['score'] . '
-					</div>
-					
-				</td>';
-
+						class="pointer peta" onclick="hoho(this)" 
+						style="position: relative; background-color:' . $warna_bg . '; 
+								color:' . $warna_txt . '; 
+								width: 60px; 
+								height: 60px; 
+								padding: 5px; 
+								border: 1px solid white; 
+								font-size: 10px; 
+								font-weight: bold; 
+								text-align: center; 
+								vertical-align: middle;"
+								data-toggle="popover"
+								data-placement="top"
+								data-html="true"
+								data-content="<strong>'.$tingkat.'</strong><br/>Standar Nilai :<br/>Impact: [ >= '.$bawah_impact.' s.d <= '.$atas_impact.']<br/>Likelihood: [ >='.$bawah_like.' s.d <= '.$atas_like.']"
+								data-nilai="'.$nilai.'"
+								data-kel="'.$type.'"
+								data-like="'.$item_data['like_no'].'"
+								data-impact="'.$item_data['impact_no'].'"
+								>
+						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
+						' . $nilai . '
+					</td>';
 			}
 
 			// <!-- Score di pojok kiri bawah -->
