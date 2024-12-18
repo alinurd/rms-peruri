@@ -120,7 +120,7 @@
                 <th rowspan="3"><label class="w100">Sasaran (Objective)</label></th>
                 <th rowspan="3"><label class="w100">Tema Risiko (Risk Theme) T1</label></th>
                 <th rowspan="3"><label class="w100">Kategori Risiko (Risk Category) T2</label></th>
-                <th rowspan="3"><label class="w100">Sub Kategori Risiko</label></th>
+                <th rowspan="3"><label class="w100">Sub Kategori Risiko T3</label></th>
                 <th rowspan="3"><label class="w100">Proses Bisnis (Business Process)</label></th>
 
                 <th colspan="6"><label>Identifikasi Risiko (Risk Identification)</label></th>
@@ -293,9 +293,10 @@
                 <tr>
                     <td valign="top" style="text-align: center;"><?= $no++; ?></td>
                     <td valign="top"><?= $row['sasaran']; ?> </td>
+                    <td valign="top"><?= $row['tema_risiko']; ?> </td>
                     <td valign="top"><?= $tema['description']; ?></td>
                     <td valign="top"><?= $row['kategori']; ?></td>
-                    <td valign="top"><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td>
+                    <!-- <td valign="top"><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td> -->
                     <td valign="top"><?= $row['proses_bisnis']; ?></td>
 
                     <td valign="top"><?= $row['event_name']; ?></td>
@@ -313,7 +314,7 @@
                     <td valign="top" style="text-align: left; "><?= 'Rp....'; ?></td>
 
                     <td valign="top"><?= format_list($row['control_name'], "### "); ?></td>
-                    <td valign="top"><?= number_format($row['anggaran'],0,',','.') ?></td>
+                    <td valign="top"><?= number_format($row['coa'],0,',','.') ?></td>
                     <td valign="top"><?= $row['kode_jasa']; ?></td>
                     <td valign="top"><?= $control_as['data']; ?></td>
                     <td valign="top"><?= $row['treatment']; ?></td>
