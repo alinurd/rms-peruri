@@ -249,7 +249,16 @@ class Top_Risk extends BackendController
 		}
 
 		if ($post['kel'] == 'residual') {
-			$this->db->where('residual_level', $post['id']);
+			$this->db->where('residual_likelihood', $post['like']);
+			$this->db->where('residual_impact', $post['impact']);
+
+			if ($post['bulan'] > 0) {
+				$this->db->where("bulan",$post['bulan']);
+			}
+
+			if ($post['tahun'] > 0) {
+				$this->db->where('period_no', $post['tahun']);
+			}
 		} else {
 			$this->db->where('risk_level_action', $post['id']);
 		}
