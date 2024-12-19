@@ -111,5 +111,61 @@ class Data extends MX_Model
 		echo json_encode($hasil);
 		
 	}
+
+	function get_map_residual1($data = [])
+    {
+        $hasil['residual1'] = '';
+        $mapping1 = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
+
+        // === Filter by Owner ===
+        if (isset($data['id_owner']) && $data['id_owner'] > 0) {
+            $this->get_owner_child($data['id_owner']);
+            $this->owner_child[] = $data['id_owner'];
+            $this->db->where_in('a.rcsa_owner_no', $this->owner_child);
+            $this->db->where('a.urgensi_no_kadiv > 0');
+        }
+
+        // === Filter by Period ===
+        if (isset($data['id_period']) && $data['id_period'] > 0) {
+            $this->db->where('a.period_no', $data['id_period']);
+        }
+
+        // Validasi bulan dan bulanx
+        if (isset($data['bulan']) && $data['bulan'] > 0 && isset($data['bulanx'])) {
+            $this->db->where("b.bulan BETWEEN {$this->db->escape($data['bulan'])} AND {$this->db->escape($data['bulanx'])}");
+        }
+
+    $rows = $this->db->select('b.target_like as target_like, b.target_impact as target_impact, COUNT(*) as jml')
+        ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
+        ->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner') // Perbaiki alias di sini
+        ->where('a.sts_propose', 4)
+        ->where('a.sts_heatmap', '1')
+        ->group_by(['b.target_like', 'b.target_impact']) 
+        ->get()
+        ->result_array();
+  
+        $arrData = [];
+        foreach ($rows as $ros) {
+
+            if (isset($ros['target_like'], $ros['target_impact'])) {
+                $key = $ros['target_like'] . '-' . $ros['target_impact']; // Gabungkan likelihood dan impact
+                $arrData[$key] = $ros['jml'];
+            }
+        }
+
+        // === Update Mapping with Inherent Values ===
+        foreach ($mapping1 as &$row) {
+            // Pastikan kolom likelihood dan impact ada dalam $mapping
+            if (isset($row['like_no'], $row['impact_no'])) {
+                $key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+                $row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+                
+            }
+        }
+
+        $hasil['residual1'] = $this->data->draw_rcsa1($mapping1, 'Target');
+       
+        return $hasil;
+    }
 }
 /* End of file app_login_model.php */

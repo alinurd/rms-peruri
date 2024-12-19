@@ -49,16 +49,22 @@ class Top_Risk extends BackendController
 			$param = ['id_period' => _TAHUN_NO_,'bulan' => date('n'), 'id_owner' => $owner_id ];
 		}
 		$data['mapping'] = $this->data->get_map_rcsa($param);
+		$data['mapping2'] = $this->data->get_map_residual1($param);
 		$this->template->build('dashboard', $data);
 	}
 
 	function get_map()
 	{
 		$post = $this->input->post();
-		//$id_rcsa =$post=$this->input->post('id_owner');
 		$data = $this->data->get_map_rcsa($post);
-		// var_dump($data);
-		// $hasil['combo'] = $data;
+		$hasil = $data;
+		echo json_encode($hasil);
+
+	}
+	function map_residual2()
+	{
+		$post = $this->input->post();
+		$data = $this->data->get_map_residual1($post);
 		$hasil = $data;
 		echo json_encode($hasil);
 

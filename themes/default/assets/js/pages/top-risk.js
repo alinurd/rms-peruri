@@ -24,8 +24,10 @@ $(function () {
     var data = { id_owner: id_owner, id_period: id_period, bulan: bulan };
     var target_combo = $("#mapping");
     var url = modul_name + "/get_map";
+    var url2 = modul_name + "/map_residual2";
 
     cari_ajax_combo("post", parent, data, target_combo, url, "result_map");
+    cari_ajax_combo("post", parent, data, target_combo, url2, "result_map1");
   });
 
   $(document).on("click", "#export_data, .show_detail", function () {
@@ -152,6 +154,10 @@ function hoho(e) {
 function result_map(hasil) {
   $("#mapping_inherent").html(hasil.inherent);
   $("#mapping_residual").html(hasil.residual);
+}
+
+function result_map1(hasil) {
+  $("#mapping_residual1").html(hasil.residual1);
 }
 
 function show_detail(hasil) {
