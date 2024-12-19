@@ -683,6 +683,17 @@ class MX_Model extends CI_Model
 		return $content;
 	}
 
+	// Fungsi untuk mencari data berdasarkan like_no dan impact_no
+	function find_data($data, $like_no, $impact_no)
+	{
+		foreach ($data as $item) {
+			if ($item['like_no'] == $like_no && $item['impact_no'] == $impact_no) {
+				return $item;
+			}
+		}
+		return null;
+	}
+
 	function draw_rcsa($data, $type = 'inherent')
 	{
 		// doi::dump($data);
@@ -691,16 +702,7 @@ class MX_Model extends CI_Model
 		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
 		$abjad 	= ['E', 'D', 'C', 'B', 'A']; // Daftar abjad untuk menggantikan kode tingkat kemungkinan
 
-		// Fungsi untuk mencari data berdasarkan like_no dan impact_no
-		function find_data($data, $like_no, $impact_no)
-		{
-			foreach ($data as $item) {
-				if ($item['like_no'] == $like_no && $item['impact_no'] == $impact_no) {
-					return $item;
-				}
-			}
-			return null;
-		}
+		
 
 		// Awal tabel HTML
 		$content = '<center><table style="text-align:center; border-collapse: collapse; width: 100%; font-size: 12px;" border="0">';
@@ -733,7 +735,7 @@ class MX_Model extends CI_Model
 				$impact_no 	= $row_i['id'];
 				
 
-				$item_data = find_data($data, $like_no, $impact_no);
+				$item_data = $this->find_data($data, $like_no, $impact_no);
 				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
 				// Data default jika tidak ditemukan
 				// $score 			= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
