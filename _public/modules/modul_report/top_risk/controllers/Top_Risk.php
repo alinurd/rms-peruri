@@ -257,7 +257,7 @@ class Top_Risk extends BackendController
 
 		if ($post['owner'] == 0 && $post['kel'] == 'residual') {
 			$rows = $this->db->where('sts_propose', 4)->where('urgensi_no', 0)->order_by('residual_analisis_id', 'DESC')->order_by('residual_analisis_id', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			// doi::dump($rows);
+			doi::dump($rows);
 
 		} elseif ($post['owner'] == 0 && $post['kel'] == 'residual') {
 			$rows['bobo'] = $this->db->where('sts_propose', 4)->where('urgensi_no', 0)->where('bulan >=', $post['bulan'])
