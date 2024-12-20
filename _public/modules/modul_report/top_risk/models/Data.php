@@ -131,8 +131,8 @@ class Data extends MX_Model
         }
 
         // Validasi bulan dan bulanx
-        if (isset($data['bulan']) && $data['bulan'] > 0 && isset($data['bulanx'])) {
-            $this->db->where("b.bulan BETWEEN {$this->db->escape($data['bulan'])} AND {$this->db->escape($data['bulanx'])}");
+        if (isset($data['bulan']) && $data['bulan'] > 0) {
+            $this->db->where("b.bulan",$data['bulan']);
         }
 
     $rows = $this->db->select('b.target_like as target_like, b.target_impact as target_impact, COUNT(*) as jml')
