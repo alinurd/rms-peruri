@@ -13,7 +13,7 @@ class Daftar_Top_Risk extends BackendController {
 	{
         parent::__construct();
 
-		$this->urgensi= 1;
+		$this->urgensi= 0;
 		$this->urgensi1= 0;
 		$this->cbo_parent = $this->get_combo('parent-input');
 		
@@ -43,12 +43,14 @@ class Daftar_Top_Risk extends BackendController {
 			$this->addField(array('field'=>'event_name', 'show' => false, 'search'=>false));
 			$this->addField(array('field' => 'rcsa_owner_no', 'show' => false));
 			$this->addField(array('field' => 'name', 'show' => false));
-			$this->addField(array('field' => 'kategori_no', 'show' => false));
+			$this->addField(array('field' => 'tema', 'show' => false));
 			$this->addField(array('field' => 'risk_couse_no', 'show' => false));
 			$this->addField(array('field' => 'risk_impact_no', 'show' => false));
 			$this->addField(array('field' => 'inherent_analisis_id', 'show' => false));
 			$this->addField(array('field' => 'residual_analisis_id', 'show' => false));
 			$this->addField(array('field' => 'residual_analisis', 'show' => false));
+			$this->addField(array('field' => 'residual_likelihood', 'show' => false));
+			$this->addField(array('field' => 'residual_impact', 'show' => false));
 			$this->addField(array('field' => 'urgensi_no', 'show' => false));
 			$this->addField(array('field' => 'warna', 'show' => false));
 			$this->addField(array('field' => 'warna_text', 'show' => false));
@@ -64,10 +66,11 @@ class Daftar_Top_Risk extends BackendController {
 		$this->set_Sort_Table($this->tbl_master, 'residual_analisis_id',"DESC");
 		$this->set_Field_Primary('id');
 		$this->set_Join_Table(array('pk' => $this->tbl_master,'id_pk'=>'event_no','sp'=>$this->tbl_library,'id_sp'=>'id'));
-		$this->set_Where_Table($this->tbl_master, 'urgensi_no_kadiv', '=', $this->urgensi);
-		$this->set_Where_Table($this->tbl_master, 'urgensi_no', '>', $this->urgensi1);
+		// $this->set_Where_Table($this->tbl_master, 'urgensi_no_kadiv', '=', $this->urgensi);
+		// $this->set_Where_Table($this->tbl_master, 'urgensi_no', '>', $this->urgensi1);
+		$this->set_Where_Table($this->tbl_master, 'sts_heatmap', '=', 1);
 		$this->set_Table_List($this->tbl_master, 'name','Risk Owner',15);
-		$this->set_Table_List($this->tbl_master, 'kategori_no','Kategori');
+		$this->set_Table_List($this->tbl_master, 'tema','Kategori');
 		$this->set_Table_List($this->tbl_master, 'event_name','Risk Event');
 		// $this->set_Table_List($this->tbl_master, 'risk_couse_no','Penyebab');
 		// $this->set_Table_List($this->tbl_master, 'risk_impact_no','Akibat');
@@ -116,19 +119,28 @@ class Daftar_Top_Risk extends BackendController {
 	}
 	function listBox_RESIDUAL_ANALISIS_ID($row, $value)
 	{
-		$nilai1 = intval($row['l_residual_analisis_id']);
-		$a = $row['l_residual_analisis'];
-		$b = $row['l_warna_residual'];
-		$c = $row['l_warna_text_residual'];
-		$result = "";
-			if ($nilai1 > 0) {
-				$result = '<span style="background-color:'.$b.';color:'.$c.'";>' . $a . '</span>';
-			}
+		$like = $row['l_residual_likelihood'];
+		$impact = $row['l_residual_impact'];
+		$level_color = $this->data->cek_level_new($like,$impact);
+		$result = '<span style="background-color:'.$level_color['warna_bg'].';color:'.$level_color['warna_txt'].'";>' . $level_color['tingkat'] . '</span>';
 		return $result;
 
 	}
+	// function listBox_RESIDUAL_ANALISIS_ID($row, $value)
+	// {
+	// 	$nilai1 = intval($row['l_residual_analisis_id']);
+	// 	$a = $row['l_residual_analisis'];
+	// 	$b = $row['l_warna_residual'];
+	// 	$c = $row['l_warna_text_residual'];
+	// 	$result = "";
+	// 		if ($nilai1 > 0) {
+	// 			$result = '<span style="background-color:'.$b.';color:'.$c.'";>' . $a . '</span>';
+	// 		}
+	// 	return $result;
+
+	// }
 	
-	function listBox_kategori_no($rows, $value){
+	function listBox_tema($rows, $value){
 	
 		$data = str_replace('[','', $value);
 		$data = str_replace("]",'', $data);
