@@ -645,11 +645,263 @@ if ($field['iskri'] == 0) {
                                         </td>
                                     <?php } ?>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                                 </table>
-
-
-
+                                
                             </div>
 
                             <div class="x_footer <?= $analysisacthide ?>">
