@@ -3,7 +3,7 @@
 // NamaTbl, NmFields, NmTitle, Type, input, required, search, help, isiedit, size, label 
 // $tbl, 'id', 'id', 'int', false, false, false, true, 0, 4, 'l_id'
 
-class All_report extends BackendController {
+class All_Report extends BackendController {
     var $table 		= "";
 	var $post 		= array();
 	var $sts_cetak 	= false;
