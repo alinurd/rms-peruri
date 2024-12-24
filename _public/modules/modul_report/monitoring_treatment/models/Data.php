@@ -132,9 +132,9 @@ function grafik() {
         c.owner_no, 
         c.period_no, 
         CASE
-            WHEN b.progress_detail < a.target_progress_detail AND  b.target_progress_detail < a.target_damp_loss THEN 'Kurang'
-            WHEN  b.progress_detail = a.target_progress_detail AND  b.target_progress_detail =  a.target_damp_loss THEN 'Sama'
-            WHEN b.progress_detail > a.target_progress_detail  AND b.target_progress_detail  > a.target_damp_loss THEN 'Lebih'
+            WHEN b.progress_detail < a.target_progress_detail AND  b.target_progress_detail < a.target_damp_loss THEN 'Kurang Dari Target'
+            WHEN  b.progress_detail = a.target_progress_detail AND  b.target_progress_detail =  a.target_damp_loss THEN 'Sama Dengan Target'
+            WHEN b.progress_detail > a.target_progress_detail  AND b.target_progress_detail  > a.target_damp_loss THEN 'Lebih Dari Target'
         END AS kategori, 
         COUNT(*) AS jml",
         false
