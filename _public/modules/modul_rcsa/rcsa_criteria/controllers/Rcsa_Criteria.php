@@ -158,14 +158,27 @@ class Rcsa_Criteria extends BackendController
 
 	public function get_kriteria_kemungkinan_risiko($id = 0)
 {
-    // Definisi data kriteria
-    $data['kriteria'] = [
-        1 => ['name' => 'Sangat Kecil', 'color' => 'green'],
-        2 => ['name' => 'Kecil', 'color' => 'lightgreen'],
-        3 => ['name' => 'Sedang', 'color' => 'yellow'],
-        4 => ['name' => 'Besar', 'color' => 'orange'],
-        5 => ['name' => 'Sangat Besar', 'color' => 'red']
-    ];
+	// Ambil data kriteria dari database
+	$kriteriaData = $this->db->where('category', 'likelihood')->get(_TBL_LEVEL)->result_array();
+
+	// Definisi warna default berdasarkan level
+	$defaultColors = [
+		1 => 'green',
+		2 => 'lightgreen',
+		3 => 'yellow',
+		4 => 'orange',
+		5 => 'red'
+	];
+
+	// Tambahkan warna ke data kriteria berdasarkan level
+	$data['kriteria'] = [];
+	foreach ($kriteriaData as $item) {
+		$level = (int)$item['code']; // Pastikan level berupa integer
+		$data['kriteria'][$level] = [
+			'name' => $item['level'], // Nama diambil dari database
+			'color' => $defaultColors[$level] ?? 'gray' // Warna berdasarkan defaultColors
+		];
+	}
 
     // Query untuk mengambil data kemungkinan berdasarkan kelompok dan param1
     $data['kemungkinan'] = $this->db
@@ -206,22 +219,27 @@ class Rcsa_Criteria extends BackendController
 
 	function get_kriteria_dampak_risiko($id = 0)
 	{
-		$data['kriteria'] = [1 => [
-			'name' => 'Sangat Kecil',
-			'color' => 'green',
-		], 2 => [
-			'name' => 'Kecil',
-			'color' => 'lightgreen'
-		], 3 => [
-			'name' => 'Sedang',
-			'color' => 'yellow'
-		], 4 => [
-			'name' => 'Besar',
-			'color' => 'orange'
-		], 5 => [
-			'name' => 'Sangat Besar',
-			'color' => 'red'
-		]];
+		// Ambil data kriteria dari database
+	$kriteriaData = $this->db->where('category', 'impact')->get(_TBL_LEVEL)->result_array();
+
+	// Definisi warna default berdasarkan level
+	$defaultColors = [
+		1 => 'green',
+		2 => 'lightgreen',
+		3 => 'yellow',
+		4 => 'orange',
+		5 => 'red'
+	];
+
+	// Tambahkan warna ke data kriteria berdasarkan level
+	$data['kriteria'] = [];
+	foreach ($kriteriaData as $item) {
+		$level = (int)$item['code']; // Pastikan level berupa integer
+		$data['kriteria'][$level] = [
+			'name' => $item['level'], // Nama diambil dari database
+			'color' => $defaultColors[$level] ?? 'gray' // Warna berdasarkan defaultColors
+		];
+	}
 
 		// Query untuk mengambil data dampak berdasarkan kelompok dan param1
 		$data['dampak'] = $this->db

@@ -5,6 +5,7 @@ $units      = $this->authentication->get_info_user('param_level');
 $groups     = $this->authentication->get_info_user('group');
 $info_owner = $this->authentication->get_info_user('group_owner');
 // var_dump($id);
+// doi::dump($test);
 ?>
 
 <section class="wrapper site-min-height">

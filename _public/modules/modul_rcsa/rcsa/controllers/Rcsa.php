@@ -665,7 +665,7 @@ if($dtkri){
 		$id = intval($this->uri->segment(4));
 		$data['parent'] = $this->db->where('id', $id)->get(_TBL_VIEW_RCSA)->row_array();
 		$data['field'] = $this->data->get_peristiwa($id);
-
+ 
 		// $inherent_level = $this->data->get_master_level(true, $data['field']['inherent_level']);
 
 		// $residual_level = $this->data->get_master_level(true, $data['field']['residual_level']);
