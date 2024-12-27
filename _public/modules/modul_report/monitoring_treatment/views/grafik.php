@@ -42,32 +42,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($master as $kategori => $dataBulan): ?>
-                    <?php if ($kategori !== '' && array_sum($dataBulan) > 0): // Tampilkan hanya jika kategori ada dan jumlah lebih dari 0 ?>
-                        <tr>
-                            <td>
-                                <span style="background-color: <?php 
-                                    if ($kategori === 'Kurang') echo 'rgba(255, 99, 71, 0.7)'; // Merah lembut
-                                    elseif ($kategori === 'Sama') echo 'rgb(148, 194, 255)'; // Biru lembut
-                                    elseif ($kategori === 'Lebih') echo 'rgba(144, 238, 144, 0.7)'; // Hijau lembut
-                                    else echo '#ccc'; // Default abu-abu
-                                ?>; color: white;">&nbsp;<?= $kategori; ?>&nbsp;</span>
-                            </td>
-                            <td class="text-center">
-                                <?= array_sum($dataBulan); // Menjumlahkan total data per kategori ?>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-
-
+                    <?php foreach ($master as $kategori => $dataBulan): ?>
+                        <?php if ($kategori !== '' && array_sum($dataBulan) > 0): ?>
+                            <tr>
+                                <td>
+                                    <span style="background-color: <?php 
+                                        if ($kategori === 'Kurang') echo 'rgba(255, 99, 71, 0.7)'; 
+                                        elseif ($kategori === 'Sama') echo 'rgb(148, 194, 255)'; 
+                                        elseif ($kategori === 'Lebih') echo 'rgba(144, 238, 144, 0.7)';
+                                        else echo '#ccc'; 
+                                    ?>; color: white;">
+                                        &nbsp;<?= 
+                                            $kategori === 'Kurang' ? 'Kurang Dari Target' : 
+                                            ($kategori === 'Sama' ? 'Sama Dengan Target' : 
+                                            ($kategori === 'Lebih' ? 'Lebih Dari Target' : 'Tidak Diketahui')) 
+                                        ?>&nbsp;
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <?= array_sum($dataBulan); ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 </tbody>
+
             </table>
         </center>
     </div>
 </div>
 <?php
-
 // Daftar bulan dari Januari hingga Desember
 $bulan = [
     1 => 'Jan',
@@ -102,26 +106,23 @@ foreach ($master as $kategori => $dataBulan) {
     }
 }
 
-// Debug: Tampilkan hasil data kategori
-// doi::dump($dataKategori);
-
 // Prepare data for JavaScript
 $data = [
     'data' => [
         'labels' => array_values($bulan), // Label bulan
         'datasets' => [
             [
-                'label' => 'Kurang',
+                'label' => 'Kurang Dari Target',
                 'data' => array_values($dataKategori['Kurang']),
                 'backgroundColor' => 'rgba(255, 99, 71, 0.7)', // Warna merah lembut
             ],
             [
-                'label' => 'Sama',
+                'label' => 'Sama Dengan Target',
                 'data' => array_values($dataKategori['Sama']),
                 'backgroundColor' => 'rgb(148, 194, 255)', // Warna biru lembut
             ],
             [
-                'label' => 'Lebih',
+                'label' => 'Lebih Dari Target',
                 'data' => array_values($dataKategori['Lebih']),
                 'backgroundColor' => 'rgba(144, 238, 144, 0.7)', // Warna hijau lembut
             ],
@@ -129,9 +130,11 @@ $data = [
     ],
     'judul' => [$post['title_text'], 'Periode ' . $post['periode_no']],
 ];
+
 $dataJson = json_encode($data);
 
 ?>
+
 <script>
     const data = <?= $dataJson; ?>;
 

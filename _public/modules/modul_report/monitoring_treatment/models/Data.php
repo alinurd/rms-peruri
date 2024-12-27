@@ -116,48 +116,46 @@ function grafik() {
 
     // Filter berdasarkan owner_no
     if ($owner_child) {
-        $this->db->where_in('owner_no', $owner_child);
+        $this->db->where_in('c.owner_no', $owner_child);
     } else {
-        $this->db->where('owner_no', $this->post['owner_no']);
+        $this->db->where('c.owner_no', $this->post['owner_no']);
     }
 
     // Filter berdasarkan periode dan bulan
     if (!empty($this->post['periode_no'])) {
-        $this->db->where('period_no', $this->post['periode_no']);
+        $this->db->where('c.period_no', $this->post['periode_no']);
     }
 
-    // Query untuk kategori "Kurang", "Sama", "Lebih"
-    $rows = $this->db->select(
-        "b.bulan, 
-        c.owner_no, 
-        c.period_no, 
-        CASE
-            WHEN b.progress_detail < a.target_progress_detail AND  b.target_progress_detail < a.target_damp_loss THEN 'Kurang'
-            WHEN  b.progress_detail = a.target_progress_detail AND  b.target_progress_detail =  a.target_damp_loss THEN 'Sama'
-            WHEN b.progress_detail > a.target_progress_detail  AND b.target_progress_detail  > a.target_damp_loss THEN 'Lebih'
-        END AS kategori, 
-        COUNT(*) AS jml",
-        false
-    )
-    ->from('bangga_rcsa_treatment a')
-    ->join('bangga_rcsa_monitoring_treatment b', 'a.rcsa_detail_no = b.rcsa_detail AND a.bulan = b.bulan', 'inner') // Pastikan bulan sama
-    ->join('bangga_view_rcsa_detail c', 'b.rcsa_detail = c.id', 'left')
-    ->group_by([
-        'b.bulan',
-        'c.owner_no',
-        'kategori',
-        'a.target_progress_detail',
-        'a.target_damp_loss',
-        'b.progress_detail',
-        'b.target_progress_detail',
-        'c.period_no'
-    ])
-    ->order_by('b.bulan', 'ASC')
-    ->get()
-    ->result_array();
+    $rows = $this->db
+        ->select("
+            a.bulan, 
+            c.owner_no, 
+            c.period_no,
+            CASE
+                WHEN (a.progress_detail < b.target_progress_detail) 
+                     OR (a.progress_detail = b.target_progress_detail AND a.target_progress_detail < b.target_damp_loss) THEN 'Kurang'
+                WHEN a.progress_detail = b.target_progress_detail AND a.target_progress_detail = b.target_damp_loss THEN 'Sama'
+                WHEN (a.progress_detail > b.target_progress_detail) 
+                     OR (a.progress_detail = b.target_progress_detail AND a.target_progress_detail > b.target_damp_loss) THEN 'Lebih'
+                ELSE 'Tidak Diketahui'
+            END AS kategori, 
+            1 AS jml", false) // Setiap baris dianggap sebagai jumlah 1
+        ->from('bangga_rcsa_monitoring_treatment a')
+        ->join(
+            'bangga_rcsa_treatment b', 
+            'a.rcsa_action_no = b.id_rcsa_action AND a.bulan = b.bulan', 
+            'left'
+        )
+        ->join(
+            'bangga_view_rcsa_detail c', 
+            'b.rcsa_detail_no = c.id', 
+            'left'
+        )
+        ->order_by('a.bulan', 'ASC')
+        ->get()
+        ->result_array();
 
-
-    // Daftar bulan dari Januari hingga Desember dengan key indeks 1-12
+    // Daftar bulan dari Januari hingga Desember
     $bulan = [
         1 => 'Jan',
         2 => 'Feb',
@@ -173,27 +171,30 @@ function grafik() {
         12 => 'Dec'
     ];
 
+    // Inisialisasi default untuk setiap kategori
+    $dataKategori = [
+        'Kurang' => array_fill_keys(array_values($bulan), 0),
+        'Sama' => array_fill_keys(array_values($bulan), 0),
+        'Lebih' => array_fill_keys(array_values($bulan), 0),
+    ];
+
     // Proses hasil query
-    $dataKategori = [];
     foreach ($rows as $row) {
         $bulanKey = $bulan[(int)$row['bulan']] ?? null;
         $kategori = $row['kategori'];
-        $jml = $row['jml'];
+        $jml = (int)$row['jml'];
 
-        if (!isset($dataKategori[$kategori])) {
-            $dataKategori[$kategori] = array_fill_keys(array_values($bulan), 0);
-        }
-
-        if ($bulanKey) {
-            $dataKategori[$kategori][$bulanKey] = $jml;
+        // Tambahkan jumlah berdasarkan bulan
+        if ($bulanKey && isset($dataKategori[$kategori])) {
+            $dataKategori[$kategori][$bulanKey] += $jml;
         }
     }
 
     // Format hasil untuk master
     $result['master'] = $dataKategori;
-
     return $result;
 }
+
 
 
 

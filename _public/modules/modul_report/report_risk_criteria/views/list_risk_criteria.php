@@ -18,22 +18,23 @@
       <td>Tanggal Revisi</td>
       <td>: 31 Januari <?= $tahun; ?></td>
     </tr>
+
     <?php
     if (count($field) == 0)
       echo '<tr><td colspan=23 style="text-align:center">No Data</td></tr>';
-    $no = 0;
-    $ttl_nil_dampak = 0;
-    $ttl_exposure = 0;
-    $ttl_exposure_residual = 0;
-    $last_id = 0;
+      $no                     = 0;
+      $ttl_nil_dampak         = 0;
+      $ttl_exposure           = 0;
+      $ttl_exposure_residual  = 0;
+      $last_id                = 0;
     foreach ($field as $key => $row) {
-      $not = '';
-      $tmp = ['', '', '', '', '', ''];
+      $not                    = '';
+      $tmp                    = ['', '', '', '', '', ''];
       if ($last_id != $row['id']) {
         ++$no;
-        $last_id = $row['id'];
-        $not = $no;
-        $tmp[0] = $row['name'];
+        $last_id  = $row['id'];
+        $not      = $no;
+        $tmp[0]   = $row['name'];
       }
     ?>
     <?php } ?>
@@ -56,7 +57,7 @@
         <h3><strong>Skor</strong></h3>
       </td>
       <?php
-      foreach ($kriteria as $index => $k) {
+      foreach ($kriteria_kemungkinan as $index => $k) {
       ?>
         <td style="background-color: #BFBFBF; text-align: center;">
           <?= $index; ?>
@@ -64,40 +65,12 @@
       <?php 
       }
       ?>
-      <!-- <td style="background-color: #BFBFBF; text-align: center;">
-        <h3><strong>4</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center;">
-        <h3><strong>3</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center;">
-        <h3><strong>2</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center;">
-        <h3><strong>1</strong></h3>
-      </td> -->
     </tr>
-    <!-- <tr>
-      <td style="background-color: #BFBFBF; text-align: center;" colspan="3">
-        <h3><strong>Deskripsi</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
-        <h3><strong>Sangat Besar</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
-        <h3><strong>Besar</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
-        <h3><strong>Sedang</strong></h3>
-      </td>
-      <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
-        <h3><strong>Kecil</strong></h3>
-      </td>
-    </tr> -->
+  
     <tr>
       <th style="background-color: #BFBFBF; text-align: center;width: 250px;" colspan="2">Kemungkinan</th>
       <?php
-      foreach ($kriteria as $k) {
+      foreach ($kriteria_kemungkinan as $k) {
       ?>
         <td style="background-color: #BFBFBF; text-align: center; width: 250px;">
           <?= $k['name'] ?>
@@ -112,7 +85,7 @@
           <tr>
             <td colspan="2"><?= $kem['data'] ?></td>
             <?php
-            foreach ($kriteria as $kee => $k) {
+            foreach ($kriteria_kemungkinan as $kee => $k) {
             ?>
               <td>
                 <?php
@@ -191,7 +164,7 @@
         <h3><strong>Skor</strong></h3>
       </td>
       <?php
-      foreach ($kriteria as $index => $k) {
+      foreach ($kriteria_dampak as $index => $k) {
       ?>
         <td style="background-color: #BFBFBF; text-align: center;">
           <?= $index; ?>
@@ -203,7 +176,7 @@
     <tr>
       <th>Kategori</th>
       <th>Dampak</th>
-      <?php foreach ($kriteria as $k): ?>
+      <?php foreach ($kriteria_dampak as $k): ?>
         <td style="background-color: #BFBFBF; text-align: center;">
           <?= $k['name'] ?>
         </td>
@@ -223,7 +196,7 @@
             <td rowspan="<?= count($subDampak) ?>"><?= $dam['data'] ?></td>
           <?php endif; ?>
           <td><?= $subd['data'] ?></td>
-          <?php foreach ($kriteria as $kee => $k): ?>
+          <?php foreach ($kriteria_dampak as $kee => $k): ?>
             <td>
               <?php
               $damp = $this->db->where('sub_dampak_id', $subd['id'])
