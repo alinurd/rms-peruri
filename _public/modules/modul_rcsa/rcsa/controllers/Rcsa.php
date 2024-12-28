@@ -2213,11 +2213,20 @@ if($dtkri){
 	}
 
 	public function simpan_analisis(){
+
 		$post = $this->input->post();
+		// doi::dump($post);
+		// die;
 		$updPI['inherent_likelihood'] 		= $post['analisis_like_inherent'];
 		$updPI['inherent_impact'] 			= $post['analisis_impact_inherent'];
 		$updPI['residual_likelihood'] 		= $post['analisis_like_residual'];
 		$updPI['residual_impact'] 			= $post['analisis_impact_residual'];
+		$updPI['nilai_in_impact']			= str_replace(',', '',$post['nilai_in_impact']);
+		$updPI['nilai_in_likelihood']		= str_replace(',', '',$post['nilai_in_likelihood']);
+		$updPI['nilai_in_exposure']			= str_replace(',', '',$post['nilai_in_exposure']);
+		$updPI['nilai_res_impact']			= str_replace(',', '',$post['nilai_res_impact']);
+		$updPI['nilai_res_likelihood']		= str_replace(',', '',$post['nilai_res_likelihood']);
+		$updPI['nilai_res_exposure']		= str_replace(',', '',$post['nilai_res_exposure']);
 		$updPI['inherent_level'] 			= $post['inherent_level'];
 		$updPI['residual_level'] 			= $post['residual_level'];
 		$updPI['update_user'] 				= $this->authentication->get_info_user('username');
@@ -2225,8 +2234,14 @@ if($dtkri){
 		$add=false;
 
 			foreach ($post['month'] as $key => $month) {
-				$target_impact 	= isset($post['target_impact'][$key]) ? $post['target_impact'][$key] : null;
-				$target_like 	= isset($post['target_like'][$key]) ? $post['target_like'][$key] : null;
+				$target_impact 		= isset($post['target_impact'][$key]) ? $post['target_impact'][$key] : null;
+				$target_like 		= isset($post['target_like'][$key]) ? $post['target_like'][$key] : null;
+				$nilai_impact 		= isset($post['nilai_impact'][$key]) ? $post['nilai_impact'][$key] : null;
+				$nilai_likelihood 	= isset($post['nilai_likelihood'][$key]) ? $post['nilai_likelihood'][$key] : null;
+				$nilai_exposure 	= isset($post['nilai_exposure'][$key]) ? $post['nilai_exposure'][$key] : null;
+				$nilai_impact		= str_replace(',', '',$nilai_impact);
+				$nilai_likelihood	= str_replace(',', '',$nilai_likelihood);
+				$nilai_exposure		= str_replace(',', '',$nilai_exposure);
 		
 				// Memeriksa apakah data bulan sudah ada di tabel analisis_risiko
 				$cek_data = $this->db->where('id_detail', $post['id_detail'])
@@ -2237,7 +2252,10 @@ if($dtkri){
 				if ($cek_data) {
 					$update_bulan = [
 						'target_impact' => $target_impact,
-						'target_like' 	=> $target_like
+						'target_like' 	=> $target_like,
+						'nilai_impact' 	=> $nilai_impact,
+						'nilai_likelihood' 	=> $nilai_likelihood,
+						'nilai_exposure' 	=> $nilai_exposure
 					];
 					$update_bulan['update_by'] = $this->authentication->get_info_user('username');
 					$res = $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $update_bulan, 'where' => array('id_detail' => $post['id_detail'], 'bulan' => $month), 'type' => 'update'));
@@ -2246,7 +2264,10 @@ if($dtkri){
 						'id_detail' 	=> $post['id_detail'],
 						'bulan' 		=> $month,
 						'target_impact' => $target_impact,
-						'target_like' 	=> $target_like
+						'target_like' 	=> $target_like,
+						'nilai_impact' 	=> $nilai_impact,
+						'nilai_likelihood' 	=> $nilai_likelihood,
+						'nilai_exposure' 	=> $nilai_exposure
 					];
 					$updPI['pi'] = 3;
 					$upd['create_by'] 			= $this->authentication->get_info_user('username');

@@ -582,59 +582,56 @@ if ($field['iskri'] == 0) {
                                         <td>
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                <input style="width:100px !important;" type="text" name="nilai_in_impact" id="nilai_in_impact" value="<?= (empty($analisiData['nilai_in_impact'])) ? '' : number_format($analisiData['nilai_in_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="input-group">
-                                                <input style="width:100px !important;" type="text" name="nilai_in_likelihood" id="nilai_in_likelihood" value="<?= (empty($analisiData['nilai_in_likelihood'])) ? '' : number_format($analisiData['nilai_in_likelihood']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon2">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
                                                 <span class="input-group-addon" id="basic-addon2">%</span>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                <input style="width:100px !important;" type="text" name="nilai_in_exposure" id="nilai_in_exposure" value="<?= (empty($analisiData['nilai_in_exposure'])) ? '' : number_format($analisiData['nilai_in_exposure']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1" readonly>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                <input style="width:100px !important;" type="text" name="nilai_res_impact" id="nilai_res_impact" value="<?= (empty($analisiData['nilai_res_impact'])) ? '' : number_format($analisiData['nilai_res_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="input-group">
-                                                <input style="width:100px !important;" type="text" name="nilai_res_likelihood" id="nilai_res_likelihood" value="<?= (empty($analisiData['nilai_res_impact'])) ? '' : number_format($analisiData['nilai_res_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon2">
+                                                <input style="width:100px !important;" type="number" name="nilai" value="" class="form-control" aria-describedby="basic-addon2">
                                                 <span class="input-group-addon" id="basic-addon2">%</span>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                <input style="width:100px !important;" type="text" name="nilai_res_exposure" id="nilai_res_exposure" value="<?= (empty($analisiData['nilai_res_impact'])) ? '' : number_format($analisiData['nilai_res_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1" readonly>
+                                                <input style="width:100px !important;" type="text" name="nilai" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
                                             </div>
                                         </td>
-                                        <?php for ($i = 1; $i <= 12; $i++) { 
-                                            $data_analisis_month = $this->db->where('id_detail', $id_edit)->where('bulan', $i)->get("bangga_analisis_risiko")->row_array();
-                                        ?>
-                                            
+                                        <?php for ($i = 1; $i <= 12; $i++) { ?>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                    <input style="width:100px !important;" type="text" name="nilai_impact[]" value="<?= (empty($data_analisis_month['nilai_impact'])) ? '' : number_format($data_analisis_month['nilai_impact']) ;?>" id="nilai_impact<?=$i;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                                    <input style="width:100px !important;" type="text" name="nilai_impact[]" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
-                                                    <input style="width:100px !important;" type="text" name="nilai_likelihood[]" id="nilai_likelihood<?=$i;?>" value="<?= (empty($data_analisis_month['nilai_likelihood'])) ? '' : number_format($data_analisis_month['nilai_likelihood']) ;?>" class="form-control " aria-describedby="basic-addon2">
+                                                    <input style="width:100px !important;" type="number" name="nilai_likelihood[]" value="" class="form-control" aria-describedby="basic-addon2">
                                                     <span class="input-group-addon" id="basic-addon2">%</span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                    <input style="width:100px !important;" type="text" name="nilai_exposure[]" id="nilai_exposure<?=$i;?>" value="<?= (empty($data_analisis_month['nilai_exposure'])) ? '' : number_format($data_analisis_month['nilai_exposure']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1" readonly>
+                                                    <input style="width:100px !important;" type="text" name="nilai_exposure[]" value="" class="form-control numeric rupiah" aria-describedby="basic-addon1">
                                                 </div>
                                             </td>
                                         <?php }?>
