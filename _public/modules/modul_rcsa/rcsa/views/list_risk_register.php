@@ -307,11 +307,11 @@
                     <td valign="top"><?= $pic['name']; ?></td>
                   
                     <td valign="top" style="text-align: center;"><?= $impactinherent['code'].' '.$impactinherent['level']; ?></td>
-                    <td valign="top" style="text-align: left;"><?= 'Rp.....'; ?></td>
+                    <td valign="top" style="text-align: left;">Rp.<?= number_format($row['nilai_in_impact']); ?></td>
                     <td valign="top" style="text-align: center;"><?= $likeinherent['code'].' '. $likeinherent['level'] ; ?></td>
-                    <td valign="top" style="text-align: right;"><?=  '.....%'; ?></td>
+                    <td valign="top" style="text-align: right;"><?= number_format($row['nilai_in_likelihood']); ?>%</td>
                     <td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= intval($likeinherent['code']) * intval($impactinherent['code']).' '.$inherent_level['level_mapping']; ?></td>
-                    <td valign="top" style="text-align: left; "><?= 'Rp....'; ?></td>
+                    <td valign="top" style="text-align: left; ">Rp.<?= number_format($row['nilai_in_exposure']); ?></td>
 
                     <td valign="top"><?= format_list($row['control_name'], "### "); ?></td>
                     <td valign="top"><?= number_format($row['coa'],0,',','.') ?></td>
@@ -320,11 +320,11 @@
                     <td valign="top"><?= $row['treatment']; ?></td>
                     
                     <td valign="top" style="text-align: center;"><?= $impact['code'].' '.$impact['level']; ?></td>
-                    <td valign="top" style="text-align: left;"><?= 'Rp.....'; ?></td>
+                    <td valign="top" style="text-align: left;">Rp.<?= number_format($row['nilai_res_impact']); ?></td>
                     <td valign="top" style="text-align: center;"><?= $like['code'].' '. $like['level'] ; ?></td>
-                    <td valign="top" style="text-align: right;"><?=  '.....%'; ?></td>
+                    <td valign="top" style="text-align: right;"><?= number_format($row['nilai_res_likelihood']); ?>%</td>
                     <td valign="top" style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= intval($like['code']) * intval($impact['code']).' '.$residual_level['level_mapping']; ?></td>
-                    <td valign="top" style="text-align: left; "><?= 'Rp....'; ?></td>
+                    <td valign="top" style="text-align: left; ">Rp.<?= number_format($row['nilai_res_exposure']); ?></td>
                     <td valign="top" width="100">
                         <?php if (!empty($treatments)): ?>
                             <table style="width: 100%; border-collapse: collapse;">

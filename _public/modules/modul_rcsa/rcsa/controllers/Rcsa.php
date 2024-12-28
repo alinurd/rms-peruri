@@ -1868,7 +1868,7 @@ if($dtkri){
 	}
 
 	function get_register() 
-	{
+	{ 
 		$id_rcsa = $this->input->post('id');
 		$owner_no = $this->input->post('owner_no');
 		$data['field'] = $this->data->get_data_risk_register($id_rcsa);
