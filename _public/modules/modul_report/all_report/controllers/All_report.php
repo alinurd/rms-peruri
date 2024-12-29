@@ -3,7 +3,7 @@
 // NamaTbl, NmFields, NmTitle, Type, input, required, search, help, isiedit, size, label 
 // $tbl, 'id', 'id', 'int', false, false, false, true, 0, 4, 'l_id'
 
-class All_Report extends BackendController {
+class All_report extends BackendController {
     var $table 		= "";
 	var $post 		= array();
 	var $sts_cetak 	= false;
@@ -218,6 +218,7 @@ class All_Report extends BackendController {
 	function get_kriteria($type1=1, $id=0)
 	{
 		$id=$this->uri->segment(3);
+		doi::dump($id);
 		$data['field']=$this->db->where('kriteria_type', $type1)->where('rcsa_no', $id)->get(_TBL_RCSA_KRITERIA)->result_array();
 		$data['type1']=$type1;
 		$result=$this->load->view('kriteria',$data,true);

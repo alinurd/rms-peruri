@@ -96,7 +96,7 @@ class Report_Rbb extends BackendController {
 		$data = $row['l_nm_file']; 
  		if($data){
 			// $result = '<a class=""  href="' . base_url($this->modul_name . '/downloadFile/' .$data) . '"><i class="fa fa-download" aria-hidden="true"></i></a>';
-			$result = '<i class="fa fa-search showFile pointer" data-file="' . $data .'"  data-nama="' . $row['l_judul_assesment'] .'">  </i>';
+			$result = '<i class="fa fa-download showFile pointer" data-file="' . $data .'"  data-nama="' . $row['l_judul_assesment'] .'">  </i>';
 
 		}else{
 			$result = 'File Tidak Ada';

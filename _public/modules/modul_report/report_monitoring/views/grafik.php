@@ -66,11 +66,11 @@
                 <th>Kategori Risiko (T2)</th>
                 <th style="width: 300px">Peristiwa (T3)</th>
                 <th>Risk Level Inherent</th>
-                <th>Pelaksanaan Treatment</th>
+                <!-- <th>Pelaksanaan Treatment</th> -->
                 <th>Risk Level Residual</th>
                 <th>Loss Event</th>
                 <th>Risk Level Bulanan</th>
-                <th>Progress</th>
+                <!-- <th>Progress</th> -->
             </tr>
         </thead>
         <tbody>
@@ -129,7 +129,7 @@
                     <td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;">[ <?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>] <br><strong><?= $inherent_level['level_mapping']; ?></strong></td>
 
 
-                    <td style="text-align: center;">
+                    <!-- <td style="text-align: center;">
                         <?php $hoho = $coba['baba'][$value1['id']]['status_action_detail']; ?>
                         <?php if ($hoho == "Add") : ?>
                             <span style="background-color:red;color:white;"><?= $hoho; ?></span>
@@ -138,7 +138,7 @@
                         <?php endif; ?>
 
 
-                    </td>
+                    </td> -->
 
                     <td valign="top" style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"> [ <?= $like['code']; ?> x <?= $impact['code']; ?> ] <br><strong><?= $residual_level['level_mapping']; ?></strong>
                     </td>
@@ -157,7 +157,7 @@
 
                     <td valign="top" style="text-align: center; background-color:<?= $residual_mont['warna_bg']; ?>;color:<?= $residual_mont['warna_txt']; ?>;"> [ <?= $like_mont['code']; ?> x <?= $impact_mont['code']; ?> ] <br><strong><?= $residual_mont['tingkat']; ?></strong>
                     </td>
-                    <?php
+                    <!-- <?php
                     $a = $coba['baba'][$value1['id']]['progress_detail'];
                     if ($a <= 30) : $warna = "danger"; ?>
                     <?php elseif ($a <= 50) : $warna = "warning"; ?>
@@ -174,7 +174,7 @@
                                 </div>
                             </div>
                         <?php endif; ?>
-                    </td>
+                    </td> -->
 
 
 

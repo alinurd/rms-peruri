@@ -92,18 +92,7 @@ class Daftar_Top_Risk extends BackendController {
 		$this->tmp_data['setActionprivilege']=false;
 		$this->set_Close_Setting();
 	}
-	// function list_MANIPULATE_PERSONAL_ACTION($tombol, $rows)
-	// {
-	// 	// $id = $rows['l_event_no'];
-	// 	// $url2 = base_url($this->modul_name="risk-event-library" . '/edit/'.$id);
-	// 	// $tombol['propose'] = array("default" => true, "url" => $url2,"target"=>"blank", "label" => 'Edit Resiko');
-	// 	$tombol['edit'] = [];
-	// 	$tombol['print'] = [];
-	// 	$tombol['delete'] = [];
-	// 	$tombol['view'] = [];
 
-	// 	return $tombol;
-	// }
 
 		function listBox_INHERENT_ANALISIS_ID($row, $value)
 	{
@@ -126,19 +115,7 @@ class Daftar_Top_Risk extends BackendController {
 		return $result;
 
 	}
-	// function listBox_RESIDUAL_ANALISIS_ID($row, $value)
-	// {
-	// 	$nilai1 = intval($row['l_residual_analisis_id']);
-	// 	$a = $row['l_residual_analisis'];
-	// 	$b = $row['l_warna_residual'];
-	// 	$c = $row['l_warna_text_residual'];
-	// 	$result = "";
-	// 		if ($nilai1 > 0) {
-	// 			$result = '<span style="background-color:'.$b.';color:'.$c.'";>' . $a . '</span>';
-	// 		}
-	// 	return $result;
-
-	// }
+	
 	
 	function listBox_tema($rows, $value){
 	
