@@ -74,32 +74,32 @@
                             <tr>
                                 <th class="text-center" style="position: sticky; left: 0; background: white; z-index: 99; width: 30px;">No</th>
                                 <th class="text-center" style="position: sticky; left: 30px; background: white; z-index: 99; width: 150px;">Risk Owner</th>
-                                <th class="text-center" style="position: sticky; left: 150px; background: white; z-index: 99; width: 150px;">Peristiwa Risiko</th>
+                                <th class="text-center" style="position: sticky; left: 180px; background: white; z-index: 99; width: 150px;">Peristiwa Risiko</th>
                                 <th class="text-center" style="width: 100px;">Tahun</th>
                                 <th class="text-center" style="width: 200px;">Level Risiko Inheren</th>
                                 <th class="text-center" style="width: 200px;">Level Risiko Target Desember</th>
                                 <?php if ($triwulan == 1): ?>
-                                    <th class="text-center" style="width: 200px;">Januari</th>
-                                    <th class="text-center" style="width: 200px;">Februari</th>
-                                    <th class="text-center" style="width: 200px;">Maret</th>
+                                    <th class="text-center" style="width: 300px;">Januari</th>
+                                    <th class="text-center" style="width: 300px;">Februari</th>
+                                    <th class="text-center" style="width: 300px;">Maret</th>
                                 <?php elseif ($triwulan == 2): ?>
-                                    <th class="text-center" style="width: 200px;">April</th>
-                                    <th class="text-center" style="width: 200px;">Mei</th>
-                                    <th class="text-center" style="width: 200px;">Juni</th>
+                                    <th class="text-center" style="width: 300px;">April</th>
+                                    <th class="text-center" style="width: 300px;">Mei</th>
+                                    <th class="text-center" style="width: 300px;">Juni</th>
                                 <?php elseif ($triwulan == 3): ?>
-                                    <th class="text-center" style="width: 200px;">Juli</th>
-                                    <th class="text-center" style="width: 200px;">Agustus</th>
-                                    <th class="text-center" style="width: 200px;">September</th>
+                                    <th class="text-center" style="width: 300px;">Juli</th>
+                                    <th class="text-center" style="width: 300px;">Agustus</th>
+                                    <th class="text-center" style="width: 300px;">September</th>
                                 <?php elseif ($triwulan == 4): ?>
-                                    <th class="text-center" style="width: 200px;">Oktober</th>
-                                    <th class="text-center" style="width: 200px;">November</th>
-                                    <th class="text-center" style="width: 200px;">Desember</th>
+                                    <th class="text-center" style="width: 300px;">Oktober</th>
+                                    <th class="text-center" style="width: 300px;">November</th>
+                                    <th class="text-center" style="width: 300px;">Desember</th>
                                 <?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $no = 1;
+                            $no = 1; 
                             foreach ($field as $q) {
                                 $residual_level = $this->data->get_master_level(true,  $q['inherent_level']);
                                 $inherent = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">' . $residual_level['level_mapping'] . '</span>';
@@ -118,7 +118,7 @@
                                         <?= ($target_desember) ? $target : '<span style="color: red;">Target risiko desember belum di input</span>' ?>
                                     </td>
                                     <?php
-                                    // Determine the correct start and end months based on the triwulan
+                                    // Tentukan bulan mulai dan selesai berdasarkan triwulan
                                     switch ($triwulan) {
                                         case 1:
                                             $start = 1;
@@ -138,7 +138,7 @@
                                             break;
                                     }
 
-                                    // Loop through the months for the current triwulan
+                                    // Loop untuk bulan-bulan dalam triwulan
                                     for ($i = $start; $i < $end; $i++): ?>
                                         <td class="text-center">
                                             <?php
@@ -146,7 +146,7 @@
                                             $data['rcsa_no'] = $q['rcsa_no'];
                                             $data['cb_like'] = $cb_like;
                                             $data['cb_impact'] = $cb_impact;
-                                            // Output the data for each month
+                                            // Output data untuk setiap bulan
                                             echo $this->data->getMonthlyMonitoringGlobal($data, $i);
                                             ?>
                                         </td>
@@ -155,6 +155,7 @@
                             <?php } ?>
                         </tbody>
                     </table>
+
                     </form>
                     <!-- Submit Buttons Positioned Outside of Table -->
                     <div class="add-button-wrapper" style="position: sticky; left: 82%; background: white; width: 15%; z-index: 1000; display: flex; justify-content: space-between; padding: 10px;">

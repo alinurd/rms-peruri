@@ -52,6 +52,31 @@ $(function () {
     cari_ajax_combo("get", parent, data, "", url, "result_show_model");
   });
 
+  $(".nilai_impact, .nilai_likelihood").on("input", function () {
+    var id = $(this).data("id");
+    var month = $(this).data("month");
+    calculateExposure(id, month);
+  });
+
+  function calculateExposure(id, month) {
+    var nilai_impact = $("#nilai_impact" + id + "_" + month)
+      .val()
+      .replace(/[^0-9.-]+/g, ""); // Menghapus semua karakter kecuali angka dan tanda minus
+    nilai_impact = parseFloat(nilai_impact) || 0; // Mengonversi ke float
+
+    var nilai_likelihood =
+      parseFloat($("#nilai_likelihood" + id + "_" + month).val()) || 0;
+    nilai_likelihood = nilai_likelihood / 100; // Mengonversi likelihood dari persen ke desimal
+    var nilai_exposure = nilai_impact * nilai_likelihood;
+
+    $("#nilai_exposure" + id + "_" + month).val(
+      nilai_exposure
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") // Menambahkan koma sebagai pemisah ribuan
+        .replace(".", ",") // Mengganti titik dengan koma untuk desimal
+    );
+  }
+
   $("#simpan_validasi").on("click", function () {
     var owner = $('select[name="owner"]').val(); // Semester
     var periode = $('select[name="periode"]').val(); // Get selected value from 'periode' dropdown
@@ -66,6 +91,9 @@ $(function () {
     var inherent_level = [];
     var likehold = [];
     var impact = [];
+    var nilai_impact = [];
+    var nilai_likelihood = [];
+    var nilai_exposure = [];
 
     // Ambil nilai dari input hidden berdasarkan name="rcsa_detail_no[]", "rcsa_action_no[]", dll
     $('input[name="rcsa_detail_no[]"]').each(function () {
@@ -105,6 +133,18 @@ $(function () {
       impact.push($(this).val());
     });
 
+    $('input[name="nilai_impact[]"]').each(function () {
+      nilai_impact.push($(this).val());
+    });
+
+    $('input[name="nilai_likelihood[]"]').each(function () {
+      nilai_likelihood.push($(this).val());
+    });
+
+    $('input[name="nilai_exposure[]"]').each(function () {
+      nilai_exposure.push($(this).val());
+    });
+
     // Mengumpulkan data dalam objek data
     var data = {
       rcsa_detail_no: rcsa_detail_no,
@@ -116,6 +156,9 @@ $(function () {
       inherent_level: inherent_level,
       likehold: likehold,
       impact: impact,
+      nilai_impact: nilai_impact,
+      nilai_likelihood: nilai_likelihood,
+      nilai_exposure: nilai_exposure,
       owner: owner,
       periode: periode,
     };

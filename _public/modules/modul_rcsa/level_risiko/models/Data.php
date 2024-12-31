@@ -43,7 +43,7 @@ class Data extends MX_Model {
 			$this->owner_child[] = $data['owner'];
 			// Filter berdasarkan owner_no
 			$this->db->where_in('bangga_view_rcsa_action_detail.owner_no', $this->owner_child);
-		}
+		} 
 
 		// Cek apakah ada periode pada $data
 		if ($data['periode']) {
@@ -165,31 +165,35 @@ class Data extends MX_Model {
 		$upd = [];
 		
 		// Mendapatkan data dari POST
-		$rcsa_detail_no = $data['rcsa_detail_no'];
-		$rcsa_no 		= $data['rcsa_no'];
-		$month 			= $data['month'];
-		$likehold 		= $data['likehold'];
-		$impact 		= $data['impact'];
-		$id_edit 		= $data['id_edit'];
-		$rcsa_action_no = $data['rcsa_action_no'];
-		
+		$rcsa_detail_no 		= $data['rcsa_detail_no'];
+		$rcsa_no 				= $data['rcsa_no'];
+		$month 					= $data['month'];
+		$likehold 				= $data['likehold'];
+		$impact 				= $data['impact'];
+		$id_edit 				= $data['id_edit'];
+		$rcsa_action_no 		= $data['rcsa_action_no'];
+		$nilai_impact 			= str_replace(',', '',$data['nilai_impact']);
+		$nilai_likelihood 		= str_replace(',', '',$data['nilai_likelihood']);
+		$nilai_exposure 		= str_replace(',', '',$data['nilai_exposure']);
 		// Iterasi untuk setiap item dalam array
 		foreach ($rcsa_detail_no as $i => $id) {
 
 			$upd_log = [
 				'id_detail' 		=> $id,
-				// 'id_action_detail' 	=> $rcsa_action_no[$i],
 				'bulan' 			=> $month[$i],
 				'tanggal_validasi' 	=> date('Y-m-d H:i:s')
 			];
 
 			// Persiapkan data yang akan disimpan
 			$upd = [
-				'rcsa_detail' => $id,
-				'bulan' => $month[$i],
-				'residual_likelihood_action' => $likehold[$i],  // Handle empty values
-				'residual_impact_action' => $impact[$i],  // Handle empty values
-				'rcsa_action_no' => $rcsa_action_no[$i]
+				'rcsa_detail' 					=> $id,
+				'bulan' 						=> $month[$i],
+				'residual_likelihood_action' 	=> $likehold[$i],  // Handle empty values
+				'residual_impact_action' 		=> $impact[$i],
+				'nilai_impact' 					=> $nilai_impact[$i],
+				'nilai_likelihood' 				=> $nilai_likelihood[$i],
+				'nilai_exposure' 				=> $nilai_exposure[$i],
+				'rcsa_action_no'				=> $rcsa_action_no[$i]
 			];
 
 			 // Cek apakah data sudah ada
@@ -254,10 +258,16 @@ class Data extends MX_Model {
 			$monthly			= $data['data'];
 			$like 				= $monthly['residual_likelihood_action'];
 			$impact    			= $monthly['residual_impact_action'];
+			$nilai_impact    	= $monthly['nilai_impact'];
+			$nilai_likelihood   = $monthly['nilai_likelihood'];
+			$nilai_exposure    	= $monthly['nilai_exposure'];
 		}else{
 			$monthly			= $data['data_awal'];
 			$like 				= $monthly['target_like'];
 			$impact    			= $monthly['target_impact'];
+			$nilai_impact    	= $monthly['nilai_impact'];
+			$nilai_likelihood   = $monthly['nilai_likelihood'];
+			$nilai_exposure    	= $monthly['nilai_exposure'];
 		}
 
 		$like_impact 		= $this->data->level_action($like, $impact);
@@ -278,12 +288,29 @@ class Data extends MX_Model {
 			<input type="hidden" id="month_' . $q['id'] . '_' . $month . '" name="month[]" value="' . $month . '">
 			<input type="hidden" id="id_edit_' . $q['id'] . '_' . $month . '" name="id_edit[]" value="' . (isset($cek_id_detail) ? $cek_id_detail['id'] : 0) . '">
 			<input type="hidden" name="inherent_level[]" id="inherent_level' . $q['id'] . '_' . $month . '" value="' . $data['data']['risk_level_action'] . '">
-
+			
 			<div style="display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 10px;">
-			' . form_dropdown('impact[]', $cboImpact, $impact, 'class="form-control select2" data-mode="3" id="impact' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width:50%"') . '
-			' . form_dropdown('likehold[]', $cboLike, $like, 'class="form-control select2" data-mode="3" id="likehold' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width:50%;"') . '
+				<div class="input-group" style="width:50%">
+					<span class="input-group-addon" id="basic-addon1">Rp.</span>
+					<input style="max-width: 100px;" type="text" name="nilai_impact[]" value="'.number_format($nilai_impact).'" id="nilai_impact' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" class="nilai_impact form-control numeric rupiah" aria-describedby="basic-addon1">
+				</div>
+				<div class="input-group" style="width:50%">
+					<input style="max-width: 105px;" type="text" name="nilai_likelihood[]" id="nilai_likelihood' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" value="'.number_format($nilai_likelihood).'" class="nilai_likelihood form-control" aria-describedby="basic-addon2">
+					<span class="input-group-addon" id="basic-addon2">%</span>
+				</div>
 			</div>
-
+			<div style="display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 10px;">
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon1">Rp.</span>
+					<input style="width:240px !important;" type="text" name="nilai_exposure[]" id="nilai_exposure' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" value="'.number_format($nilai_exposure).'" class="nilai_exposure form-control numeric rupiah" aria-describedby="basic-addon1" readonly>
+				</div>
+			</div>
+			
+			<div style="display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 10px;">
+				' . form_dropdown('impact[]', $cboImpact, $impact, 'class="form-control select2" data-mode="3" id="impact' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 50%;"') . '
+				' . form_dropdown('likehold[]', $cboLike, $like, 'class="form-control select2" data-mode="3" id="likehold' . $q['id'] . '_' . $month . '" data-id="' . $q['id'] . '" data-month="' . $month . '" style="width: 50%;"') . '
+			</div>
+			
 			<div style="text-align: center; margin-bottom: 10px;">
 				<span id="targetResidualLabel' . $q['id'] . $month . '">
 					<span class="btn" style="display: inline-block; width: 100%; background-color: ' . $cek_level['warna_bg'] . '; color: ' . $cek_level['warna_txt'] . '; padding: 4px 8px;">
@@ -291,6 +318,7 @@ class Data extends MX_Model {
 					</span>
 				</span>
 			</div>';
+
 
 		return $result;
 	}
