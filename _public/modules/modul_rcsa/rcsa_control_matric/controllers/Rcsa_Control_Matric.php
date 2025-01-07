@@ -24,7 +24,7 @@ class Rcsa_Control_Matric extends BackendController
 		$this->cbo_type = $this->get_combo('type-project');
 		$this->cbo_bulan = $this->get_combo('bulan');
 
-		$this->set_Open_Tab('Risk Control Matric');
+		$this->set_Open_Tab('Risk Control Matrix');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
 
 		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true,  'show' => true));

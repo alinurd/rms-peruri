@@ -909,7 +909,7 @@ if($dtkri){
 
 	
 		$data['cbogroup'] = $cbogroup;
-		$data['inp_couse'] = form_input('', '', ' id="new_cause[]" name="new_cause[]" class="form-control" placeholder="Input Risk Couse Baru"');
+		$data['inp_couse'] = form_input('', '', ' id="new_cause[]" name="new_cause[]" class="form-control" placeholder="Input Risk Cause Baru"');
 		$data['lib_couse'] = form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="form-control select2" id="risk_couseno');
 
  		$data['cbogroup1'] = $cbogroup1;
