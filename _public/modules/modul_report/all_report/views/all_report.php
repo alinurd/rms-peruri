@@ -12,7 +12,8 @@
             </div>
         </div>
         <section class="panel">
-			<form id="form_grafik" method="post">
+			<!-- <form id="form_grafik" method="post"> -->
+                <?=form_open_multipart(base_url(), array('id' => 'form_grafik', 'class'=>'form-horizontal'));?>
                 <div class="panel-body bio-graph-info" style="overflow-x: auto;">
                     <div class="col-md-3 col-sm-3 col-xs-3">Risk Owner</div>
                     <div class="col-md-9 col-sm-9 col-xs-9">
@@ -39,7 +40,8 @@
                     </div>
                     <hr>
                 </div>
-            </form>
+                <?php echo form_close(); ?>
+            <!-- </form> -->
 		</section>
 
         <section class="x_panel">
