@@ -14,7 +14,7 @@ $(function () {
 
     var data = $("#form_grafik").serialize();
     var parent = $(this).parent();
-    var url = modul_name + "/get-grafik";
+    var url = "all-report" + "/get-grafik";
     // var target_combo = result_show();
     cari_ajax_combo("post", parent, data, "", url, "result_show");
   });
