@@ -12,7 +12,7 @@
             </div>
         </div>
         <section class="panel">
-			<form id="form_grafik">
+			<form id="form_grafik" method="post">
                 <div class="panel-body bio-graph-info" style="overflow-x: auto;">
                     <div class="col-md-3 col-sm-3 col-xs-3">Risk Owner</div>
                     <div class="col-md-9 col-sm-9 col-xs-9">
