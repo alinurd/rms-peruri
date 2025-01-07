@@ -1,61 +1,12 @@
-<style>
-    .modal {
-        z-index: 2050;
-    }
 
-    .double-scroll {
-        width: 100%;
-    }
+<?php
+if($data){
+  foreach ($data as $d) {
+?>
 
-    thead th,
-    tfoot th {
-        padding: 5px !important;
-        text-align: center;
-    }
-
-    .w250 {
-        width: 250px;
-    }
-
-    .w150 {
-        width: 150px;
-    }
-
-    .w100 {
-        width: 100px;
-    }
-
-    .w80 {
-        width: 80px;
-    }
-
-    .w50 {
-        width: 50px;
-    }
-
-    td ol {
-        padding-left: 10px;
-        width: 300px;
-    }
-
-    td ol li {
-        margin-left: 5px;
-    }
-</style>
-
-
-<!-- button cetak excel dan pdf -->
-<span class="btn btn-primary btn-flat">
-    <a href="<?= base_url('rcsa/cetak-register/excel/' . $id . '/' . $owner); ?>" target="_blank" style="color:#ffffff;"><i class="fa fa-file-excel-o"></i> Ms-Excel </a>
-</span>
-<span class="btn btn-warning btn-flat">
-    <a href="<?= base_url('rcsa/cetak-register/pdf/' . $id . '/' . $owner); ?>" target="_blank" style="color:#ffffff;"><i class="fa fa-file-pdf-o"></i> PDF </a>
-</span>
-
-<div class="double-scroll" style='height:550px;'>
-    <table class="table table-bordered table-sm test" id="datatables_event" border="1">
+  <table class="table table-bordered table-sm test" id="datatables_event" border="1">
     <thead>
-            <tr>
+    <tr>
                 <td colspan="2" rowspan="6" style="text-align: left;border-right:none;">
                 <?php
                     $relative_path = "themes/default/assets/images/logo.png";
@@ -72,7 +23,7 @@
                 </td>
 
                 <td colspan="2" rowspan="2" style="text-align:left;">No.</td>
-                <td colspan="4" rowspan="2" style="text-align:left;">: 004/RM-FORM/I/<?= $row1['periode_name']; ?></td>
+                <td colspan="4" rowspan="2" style="text-align:left;">: 004/RM-FORM/I/<?= $d['periode_name']; ?></td>
             </tr>
 
             <tr>
@@ -90,7 +41,7 @@
 
             <tr>
                 <td colspan="2" rowspan="2" style="text-align:left;">Tanggal Revisi</td>
-                <td colspan="4" rowspan="2" style="text-align:left;">: 31 Januari <?= $row1['periode_name']; ?> </td>
+                <td colspan="4" rowspan="2" style="text-align:left;">: 31 Januari <?= $d['periode_name']; ?> </td>
             </tr>
 
             <tr>
@@ -103,18 +54,17 @@
 
             <tr>
                 <td colspan="2" style="border: none;">Risk Owner</td>
-                <td colspan="20" style="border: none;">: <?= $row1['name']; ?></td>
+                <td colspan="20" style="border: none;">: <?= $d['name']; ?></td>
             </tr>
 
             <tr>
                 <td colspan="2" style="border: none;">Risk Agent</td>
-                <td colspan="20" style="border: none;">: <?= $row1['officer_name']; ?></td>
+                <td colspan="20" style="border: none;">: <?= $d['officer_name']; ?></td>
             </tr>
 
             <tr>
                 <td colspan="22" style="border: none;"></td>
             </tr>
-
             <tr>
                 <th rowspan="3">No</th>
                 <th rowspan="3"><label class="w100">Sasaran (Objective)</label></th>
@@ -197,6 +147,23 @@
             <?php
             $no = 1;
             $groupedRows = array();
+			$id_rcsa = $this->input->post('id');
+			$owner_no = $this->input->post('owner_no');
+			$field = $this->data->get_data_risk_register($d['id']);
+			// $data['fieldxx'] = $this->data->get_data_risk_reg_acc($id_rcsa);
+			// $data['tgl'] = $this->data->get_data_tanggal($id_rcsa);
+			// $data['id_rcsa'] = $id_rcsa; 
+			// $data['id'] = $id_rcsa;
+
+			// $parent_no = $this->data->get_data_parent($owner_no);
+			// $data['owner'] = $parent_no[0]['parent_no'];
+			// $data['divisi'] = $this->data->get_data_divisi($parent_no);
+			// $data['fields'] = $this->data->get_data_officer($id_rcsa);
+			// $data['tipe'] = 'cetak';
+			// $xx = array('field' => $data['field'], 'rcsa' => $data['id_rcsa']);
+			// $this->session->set_userdata('result_risk_register', $xx);
+
+
             foreach ($field as $key => $row) :
 
                 $sasaranKey = $row['sasaran'];
@@ -439,81 +406,8 @@
             <tr>
                 <th colspan="22" style="border: none;">&nbsp;</th>
             </tr>
-            <tr>
-            <?php if ($tgl == NULL) : ?>
-                <th colspan="43" style="text-align: right;border: none;font-size: 20px;font-style: normal;"></th>
-            <?php else : ?>
-                <th colspan="43" style="text-align: center;border: none;font-size: 20px;font-style: normal;">
-                    Dokumen ini telah disahkan oleh Kepala Divisi
-                    <?php if ($divisi == NULL) {
-                        echo $row1['name'];
-                    } else {
-                        echo $divisi->name;
-                    } ?>
-                    Pada
-                    <?php setlocale(LC_ALL, 'id_ID.UTF8', 'id_ID.UTF-8', 'id_ID.8859-1', 'id_ID', 'IND.UTF8', 'IND.UTF-8', 'IND.8859-1', 'IND', 'Indonesian.UTF8', 'Indonesian.UTF-8', 'Indonesian.8859-1', 'Indonesian', 'Indonesia', 'id', 'ID', 'en_US.UTF8', 'en_US.UTF-8', 'en_US.8859-1', 'en_US', 'American', 'ENG', 'English');
-                    foreach ($tgl as $key1 => $row1) {
-                        echo strftime("%d %B %Y", strtotime($row1['create_date']))
-                    ?>
-                    <?php }  ?>
-                <?php endif; ?>
-                </th>
-
-            </tr>
         </tbody>
     </table>
-</div>
-
 <?php
-if (isset($log)) : ?>
-    <div class="row">
-        <br />
-        Log Aktifitas<br />
-        <div class="col-md-12">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th width="5%">No.</th>
-                        <th width="25%" class="text-left"> Status</th>
-                        <th class="text-left">Keterangan</th>
-                        <th width="10%">Tanggal</th>
-                        <th width="15%">Petugas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $no = 0;
-                    foreach ($log as $row) : ?>
-                        <tr>
-                            <td><?= ++$no; ?></td>
-                            <td><?= $row['keterangan']; ?></td>
-                            <td><?= $row['note']; ?></td>
-                            <td><?= $row['create_date']; ?></td>
-                            <td><?= $row['create_user']; ?></td>
-                        </tr>
-                    <?php
-                    endforeach;
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-<?php
-endif; ?>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.double-scroll').doubleScroll({
-            resetOnWindowResize: true,
-            scrollCss: {
-                'overflow-x': 'auto',
-                'overflow-y': 'auto'
-            },
-            contentCss: {
-                'overflow-x': 'auto',
-                'overflow-y': 'auto'
-            },
-        });
-        $(window).resize();
-    });
-</script>
+  }
+}

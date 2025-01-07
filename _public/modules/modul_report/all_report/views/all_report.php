@@ -11,6 +11,36 @@
                 </ul>
             </div>
         </div>
+        <section class="panel">
+			<form id="form_grafik">
+                <div class="panel-body bio-graph-info" style="overflow-x: auto;">
+                    <div class="col-md-3 col-sm-3 col-xs-3">Risk Owner</div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="form-group form-inline">
+                            <?=form_dropdown('owner_no', $korporasi, '', ' class="form-control select2" id="owner_no" style="width:100%;"');?>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3">Periode</div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <div class="form-group form-inline">
+                            <?=form_dropdown('periode_no', $periode, _TAHUN_NO_, ' class="form-control select2" id="periode_no" style="width:100%;"');?>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 col-sm-3 col-xs-3">&nbsp;</div>
+                        <hr>
+                        <input type="hidden" id="tahun" name="tahun">
+                        <input type="hidden" id="bulan2" name="bulan2">
+                        <input type="hidden" id="owner_name" name="owner_name">
+                        <span class="btn btn-warning btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadPdf"><i class="fa fa-file-pdf-o"></i>Export PDF </a>
+                        </span>
+                        <span class="btn btn-primary pull-right" style="width:100px;" id="proses"> Proses </span>
+                    </div>
+                    <hr>
+                </div>
+            </form>
+		</section>
 
         <section class="x_panel">
             <!-- Accordion Section -->
@@ -27,8 +57,8 @@
                         </h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="panel-body">
-                            <?= $risk_context;?>
+                        <div class="panel-body" id="risk_context">
+                            
                         </div>
                     </div>
                 </div>
@@ -43,8 +73,7 @@
                         </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body">
-                            <?= $risk_criteria;?>
+                        <div class="panel-body" id="risk_criteria">
                         </div>
                     </div>
                 </div>
@@ -59,8 +88,7 @@
                         </h4>
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                        <div class="panel-body">
-                            Content for Report 3 goes here.
+                        <div class="panel-body" id="risk_appetite">
                         </div>
                     </div>
                 </div>
@@ -75,8 +103,7 @@
                         </h4>
                     </div>
                     <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-                        <div class="panel-body">
-                            Content for Report 1 goes here.
+                        <div class="panel-body" id="risk_register" style="overflow-x: auto;">
                         </div>
                     </div>
                 </div>
@@ -91,8 +118,8 @@
                         </h4>
                     </div>
                     <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-                        <div class="panel-body">
-                            Content for Report 2 goes here.
+                        <div class="panel-body" id="efektifitas_control">
+
                         </div>
                     </div>
                 </div>
@@ -107,8 +134,7 @@
                         </h4>
                     </div>
                     <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
-                        <div class="panel-body">
-                            Content for Report 3 goes here.
+                        <div class="panel-body" id="progress_treatment" style="overflow-x: auto;">
                         </div>
                     </div>
                 </div>
@@ -118,13 +144,12 @@
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
                                Lost Event Database
-                                <i class="fa fa-minus pull-right"></i>  <!-- Icon Min di kanan -->
+                                <i class="fa fa-minus pull-right"></i>  
                             </a>
                         </h4>
                     </div>
                     <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
-                        <div class="panel-body">
-                            Content for Report 1 goes here.
+                        <div class="panel-body" id="loss_event_database">
                         </div>
                     </div>
                 </div>
@@ -139,8 +164,7 @@
                         </h4>
                     </div>
                     <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
-                        <div class="panel-body">
-                            Content for Report 2 goes here.
+                        <div class="panel-body" id="early_warning"  style="overflow-x: auto;">
                         </div>
                     </div>
                 </div>
@@ -155,8 +179,7 @@
                         </h4>
                     </div>
                     <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
-                        <div class="panel-body">
-                            Content for Report 3 goes here.
+                        <div class="panel-body" id="perubahan_level">
                         </div>
                     </div>
                 </div>

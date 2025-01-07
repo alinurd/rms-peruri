@@ -1,123 +1,158 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-// NamaTbl, NmFields, NmTitle, Type, input, required, search, help, isiedit, size, label 
-// $tbl, 'id', 'id', 'int', false, false, false, true, 0, 4, 'l_id'
-
 class All_report extends BackendController {
     var $table 		= "";
 	var $post 		= array();
 	var $sts_cetak 	= false;
-	public function __construct()
-	{
-		parent::__construct();
-		$this->set_Tbl_Master(_TBL_VIEW_RCSA);
-		$this->nil_tipe 		= 1;
-		$this->cbo_periode 		= $this->get_combo('periode');
-		$this->cbo_parent 		= $this->get_combo('parent-input');
-		$this->cbo_parent_all 	= $this->get_combo('parent-input-all');
-		$this->cbo_type 		= $this->get_combo('type-project');
-		$this->cbo_bulan 		= $this->get_combo('bulan');
-		$type = $this->uri->segment(6);
-
-		if($type == 'risk_context'){
-			$this->set_Open_Tab('General Information');
-			$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
-			$this->addField(array('field' => 'judul_assesment', 'size' => 100, 'search' => false));
-			$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true));
-			$this->addField(array('field' => 'officer_no', 'show' => false, 'save' => true, 'default' => $this->authentication->get_info_user('identifier')));
-			$this->addField(array('field' => 'create_user', 'search' => false, 'default' => $this->authentication->get_info_user('username')));
-			$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => false));
-			$this->addField(array('field' => 'anggaran_rkap', 'type' => 'float', 'input' => 'float', 'required' => true));
-			$this->addField(array('field' => 'owner_pic', 'title'=> 'Owner Pic','size' => 100, 'search' => false));
-			$this->addField(array('field' => 'anggota_pic', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'tugas_pic', 'input' => 'multitext:sms', 'size' => 10000));
-			$this->addField(array('field' => 'tupoksi', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'tahun_rcsa', 'show' => false));
-			$this->addField(array('field' => 'bulan_rcsa', 'show' => false));
-
-			$this->set_Open_Tab('Rencana Implementasi MR'); // implementasi_risiko
-			$this->addField(array('field' => 'implementasi_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-			$this->set_Close_Tab();
-
-			$this->addField(array('field' => 'item_use', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
-			$this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
-			$this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
-			$this->addField(array('field' => 'name', 'show' => false));
-			$this->addField(array('field' => 'periode_name', 'show' => false));
-			$this->addField(array('field' => 'sts_propose_text', 'show' => false));
-			$this->addField(array('field' => 'sts_propose', 'show' => false));
-			$this->set_Close_Tab();
-
-			$this->set_Open_Tab('Isu Internal');
-			$this->addField(array('field' => 'man', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'method', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'machine', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'money', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'material', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'market', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'stakeholder_internal', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-			$this->set_Close_Tab();
-
-			$this->set_Open_Tab('Isu External'); 
-			$this->addField(array('field' => 'politics', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'economics', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'social', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'tecnology', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'environment', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'legal', 'input' => 'multitext', 'size' => 10000));
-			$this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-			$this->set_Close_Tab();
-
-
-			$this->set_Open_Tab('Dokumen Lainnnya');
-			$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
-			$this->set_Close_Tab();
-		}else if($type == 'risk_criteria'){
-			$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
-			$this->set_Open_Tab('Kriteria Probabilitas');
-			$this->addField(array('field' => 'kriteria_probabilitas', 'type' => 'free', 'input' => 'free', 'mode' =>'e'));		
-			$this->set_Close_Tab();
-			$this->set_Open_Tab('Kriteria Dampak');
-			$this->addField(array('field' => 'kriteria_dampak', 'type' => 'free', 'input' => 'free', 'mode' =>'e'));		
-			$this->set_Close_Tab();
-		}
-
-		
-		$this->set_Field_Primary('id');
-		$this->set_Join_Table(array('pk' => $this->tbl_master));
-
-		$this->set_Bid(array('nmtbl' => $this->tbl_master, 'field' => 'anggaran_rkap', 'span_right_addon' => ' Rp ', 'align' => 'right'));
-		$this->set_Bid(array('nmtbl' => $this->tbl_master, 'field' => 'create_user', 'readonly' => true));
-
-		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
-		$this->_CHANGE_TABLE_MASTER(_TBL_RCSA);
-		$this->_SET_PRIVILEGE('add', false);
-		$this->_SET_PRIVILEGE('edit', false);
-		$this->_SET_PRIVILEGE('delete', false);
-		$this->tmp_data['setActionprivilege']=false;
-		$this->set_Close_Setting();
-		
-	}
-
 
     public function index()
     {
-        $data['risk_context'] 	= $this->risk_context();
-        $data['risk_criteria'] 	= $this->risk_criteria();
+		$data['korporasi'] 		= $this->get_combo('parent-input');;
+		$data['periode']		= $this->get_combo('periode');
         $this->template->build('all_report',$data);
     }
 
-    public function risk_context()
+	function get_grafik(){
+		$post							= $this->input->post();
+		$data_parent					= $this->data->risk_parent($post);
+		$data_progress_treatment		= $this->data->risk_progress_treatment($post);
+		$data_early_warning				= $this->data->risk_early_warning($post);
+		// $data_perubahan_level			= $this->data->perubahan_level($post);
+		$result['combo']				= $this->risk_context($data_parent);
+		$result['risk_criteria']		= $this->risk_criteria($data_parent);
+		$result['risk_appetite']		= $this->risk_appetite($data_parent);
+		$result['risk_register']		= $this->risk_register($data_parent);
+		$result['efektifitas_control']	= $this->risk_efektifitas_control($data_parent);
+		$result['progress_treatment']	= $this->risk_progress_treatment($data_progress_treatment);
+		$result['loss_event_database']	= $this->lost_event_database($data_parent);
+		$result['early_warning']		= $this->risk_early_warning($data_early_warning);
+		$result['perubahan_level']		= $this->perubahan_level($post);
+		echo json_encode($result);
+
+	}
+
+    public function risk_context($data)
     {
-        $data['data'] = $this->data->get_risk_context();
+        $data['data'] 	= $data;
+		$tahun 			= $data[0]['periode_name'];
+		$data['tahun']  = $tahun;
+		$data['combo'] 	= $this->db
+								->where('kelompok', 'implementasi')
+								->order_by('kode', 'asc')
+								->get(_TBL_DATA_COMBO)
+								->result_array();
         return $this->load->view('risk_context',$data,true);
     }
 
-    public function risk_criteria()
+    public function risk_criteria($data)
     {
-        $data['data'] = $this->data->get_risk_criteria();
+		$data['data'] 	= $data;
+		$tahun 			= $data[0]['periode_name'];
+		$data['tahun']  = $tahun;
+		$data['combo'] 	= $this->db
+								->where('kelompok', 'implementasi')
+								->order_by('kode', 'asc')
+								->get(_TBL_DATA_COMBO)
+								->result_array();
         return $this->load->view('risk_criteria',$data,true);
     }
+
+    public function risk_appetite($data)
+    {
+		$data['data'] 	= $data;
+		$tahun 			= $data[0]['periode_name'];
+		$data['tahun']  = $tahun;
+		$data['combo'] 	= $this->db
+								->where('kelompok', 'implementasi')
+								->order_by('kode', 'asc')
+								->get(_TBL_DATA_COMBO)
+								->result_array();
+        return $this->load->view('risk_appetite',$data,true);
+    }
+	
+    public function risk_register($data)
+    {
+		$data['data'] 	= $data;
+		$tahun 			= $data[0]['periode_name'];
+		$data['tahun']  = $tahun;
+		$data['combo'] 	= $this->db
+								->where('kelompok', 'implementasi')
+								->order_by('kode', 'asc')
+								->get(_TBL_DATA_COMBO)
+								->result_array();
+        return $this->load->view('risk_register',$data,true);
+    }
+
+
+	
+    public function risk_efektifitas_control($data)
+    {
+		$data['data'] 	= $data;
+		$tahun 			= $data[0]['periode_name'];
+		$data['tahun']  = $tahun;
+		$data['combo'] 	= $this->db
+								->where('kelompok', 'implementasi')
+								->order_by('kode', 'asc')
+								->get(_TBL_DATA_COMBO)
+								->result_array();
+        return $this->load->view('efektifitas_control',$data,true);
+    }
+
+    public function risk_progress_treatment($data)
+    {
+		$data['data'] 	= $data;
+		$tahun 			= $data[0]['periode_name'];
+		$data['tahun']  = $tahun;
+		$data['combo'] 	= $this->db
+								->where('kelompok', 'implementasi')
+								->order_by('kode', 'asc')
+								->get(_TBL_DATA_COMBO)
+								->result_array();
+        return $this->load->view('progress_treatment',$data,true);
+    }
+
+	public function lost_event_database($data)
+    {
+        $data['data'] 				= $data;
+		$tahun 						= $data[0]['periode_name'];
+		$data['tahun']  			= $tahun;
+		$data['kategori_kejadian'] 	= $this->get_combo('data-combo', 'kat-kejadian');
+        $data['frekuensi_kejadian'] = $this->get_combo('data-combo', 'frek-kejadian');
+		$data['kat_risiko'] 		= $this->get_combo('data-combo', 'kel-library');
+		$data['cboLike']    		= $this->get_combo('likelihood');
+        $data['cboImpact'] 			= $this->get_combo('impact');
+		$data['combo'] 				= $this->db
+											->where('kelompok', 'implementasi')
+											->order_by('kode', 'asc')
+											->get(_TBL_DATA_COMBO)
+											->result_array();
+        return $this->load->view('loss_event_database',$data,true);
+    }
+
+	public function risk_early_warning($data)
+    {
+		$data['data'] 	= $data;
+		$tahun 			= $data[0]['periode_name'];
+		$data['tahun']  = $tahun;
+		$data['combo'] 	= $this->db
+								->where('kelompok', 'implementasi')
+								->order_by('kode', 'asc')
+								->get(_TBL_DATA_COMBO)
+								->result_array();
+        return $this->load->view('early_warning',$data,true);
+    }
+
+	public function perubahan_level($data){
+		$data['data'] 	= $data;
+		$tahun 			= $data[0]['periode_name'];
+		$data['tahun']  = $tahun;
+		$data['combo'] 	= $this->db
+								->where('kelompok', 'implementasi')
+								->order_by('kode', 'asc')
+								->get(_TBL_DATA_COMBO)
+								->result_array();
+        return $this->load->view('perubahan_level',$data,true);
+	}
 
     public function downloadFile()
 	{
