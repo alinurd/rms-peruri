@@ -69,7 +69,7 @@ class All_report extends BackendController {
 								->result_array();
         return $this->load->view('risk_appetite',$data,true);
     }
-	
+	 
     public function risk_register($data)
     {
 		$data['data'] 	= $data;
