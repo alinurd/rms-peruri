@@ -188,6 +188,107 @@
             </div>
             <!-- End Accordion Section -->
         </section>
+        <section class="x_panel">
+            <!-- Accordion Section -->
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+                <h3 style="padding-left:10px;">Reporting Grafik</h3>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTen">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                               Heatmap
+                                <i class="fa fa-minus pull-right"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTen">
+                        <div class="panel-body" id="heatmap">
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingEleven">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                                Risk Distribution
+                                <i class="fa fa-minus pull-right"></i>  <!-- Icon Min di kanan -->
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseEleven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEleven">
+                        <div class="panel-body" id="risk_distribution">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwelve">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">
+                                Risk Categories
+                                <i class="fa fa-minus pull-right"></i>  <!-- Icon Min di kanan -->
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwelve" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwelve">
+                        <div class="panel-body" id="risk_categories">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThirteen">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThirteen" aria-expanded="false" aria-controls="collapseThirteen">
+                               Tasktonomi Risiko T1,T2,T3
+                                <i class="fa fa-minus pull-right"></i>  <!-- Icon Min di kanan -->
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThirteen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThirteen">
+                        <div class="panel-body" id="risk_tasktonomi" style="overflow-x: auto;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingFourteen">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFourteen" aria-expanded="false" aria-controls="collapseFourteen">
+                                Efektifitas Control
+                                <i class="fa fa-minus pull-right"></i>  <!-- Icon Min di kanan -->
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFourteen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFourteen">
+                        <div class="panel-body" id="grapik_efektifitas_control">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingFiveteen">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFiveteen" aria-expanded="false" aria-controls="collapseFiveteen">
+                                Progress Treatment
+                                <i class="fa fa-minus pull-right"></i>  <!-- Icon Min di kanan -->
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFiveteen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFiveteen">
+                        <div class="panel-body" id="grapik_progress_treatment" style="overflow-x: auto;">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End Accordion Section -->
+        </section>
+
     </div>
 </div>
 

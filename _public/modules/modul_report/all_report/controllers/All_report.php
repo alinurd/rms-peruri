@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class All_report extends BackendController {
+class All_Report extends BackendController {
     var $table 		= "";
 	var $post 		= array();
 	var $sts_cetak 	= false;
@@ -13,22 +13,27 @@ class All_report extends BackendController {
     }
 
 	function get_grafik(){
-		$post							= $this->input->post();
-		$data_parent					= $this->data->risk_parent($post);
-		$data_progress_treatment		= $this->data->risk_progress_treatment($post);
-		$data_early_warning				= $this->data->risk_early_warning($post);
-		// $data_perubahan_level			= $this->data->perubahan_level($post);
-		$result['combo']				= $this->risk_context($data_parent);
-		$result['risk_criteria']		= $this->risk_criteria($data_parent);
-		$result['risk_appetite']		= $this->risk_appetite($data_parent);
-		$result['risk_register']		= $this->risk_register($data_parent);
-		$result['efektifitas_control']	= $this->risk_efektifitas_control($data_parent);
-		$result['progress_treatment']	= $this->risk_progress_treatment($data_progress_treatment);
-		$result['loss_event_database']	= $this->lost_event_database($data_parent);
-		$result['early_warning']		= $this->risk_early_warning($data_early_warning);
-		$result['perubahan_level']		= $this->perubahan_level($post);
+		$post									= $this->input->post();
+		$data_parent							= $this->data->risk_parent($post);
+		$data_progress_treatment				= $this->data->risk_progress_treatment($post);
+		$data_early_warning						= $this->data->risk_early_warning($post);
+		$data_tasktonomi						= $this->data->risk_tasktonomi($post);
+		$result['combo']						= $this->risk_context($data_parent);
+		$result['risk_criteria']				= $this->risk_criteria($data_parent);
+		$result['risk_appetite']				= $this->risk_appetite($data_parent);
+		$result['risk_register']				= $this->risk_register($data_parent);
+		$result['efektifitas_control']			= $this->risk_efektifitas_control($data_parent);
+		$result['progress_treatment']			= $this->risk_progress_treatment($data_progress_treatment);
+		$result['loss_event_database']			= $this->lost_event_database($data_parent);
+		$result['early_warning']				= $this->risk_early_warning($data_early_warning);
+		$result['perubahan_level']				= $this->perubahan_level($post);
+		$result['heatmap']						= $this->heatmap($post);
+		$result['risk_distribution']			= $this->risk_distribution($post);
+		$result['risk_categories']				= $this->risk_categories($post);
+		$result['risk_tasktonomi']				= $this->risk_tasktonomi($data_tasktonomi);
+		$result['grapik_efektifitas_control']	= $this->grapik_efektifitas_control($post);
+		$result['grapik_progress_treatment']	= $this->grapik_progress_treatment($post);
 		echo json_encode($result);
-
 	}
 
     public function risk_context($data)
@@ -69,7 +74,7 @@ class All_report extends BackendController {
 								->result_array();
         return $this->load->view('risk_appetite',$data,true);
     }
-	 
+	
     public function risk_register($data)
     {
 		$data['data'] 	= $data;
@@ -154,6 +159,51 @@ class All_report extends BackendController {
         return $this->load->view('perubahan_level',$data,true);
 	}
 
+	public function heatmap($data)
+    {
+        $data['data'] 		= $data;
+		$tahun 				= $data[0]['periode_name'];
+		$data['tahun']  	= $tahun;
+		$data['mapping'] 	= $this->data->get_map_rcsa($data);
+		$data['mapping2'] 	= $this->data->get_map_residual1($data);
+        return $this->load->view('heatmap',$data,true);
+    }
+
+
+	public function risk_distribution($data)
+    {
+        $data['data'] 		= $data;
+		$data				= $this->data->grafik($data);
+        return $this->load->view('risk_distribution',$data,true);
+    }
+
+	public function risk_categories($data)
+    {
+        $data['data'] 		= $data;
+		$data				= $this->data->grafik_categories($data);
+        return $this->load->view('risk_categories',$data,true);
+    }
+
+	public function risk_tasktonomi($data)
+    {
+		$data['data'] 	= $data;
+        return $this->load->view('tasktonomi',$data,true);
+    }
+
+	public function grapik_efektifitas_control($data)
+    {
+        $data['data'] 		= $data;
+		$data				= $this->data->grapik_efektifitas_control($data);
+        return $this->load->view('grapik_efektifitas_control',$data,true);
+    }
+
+	public function grapik_progress_treatment($data)
+    {
+        $data['data'] 		= $data;
+		$data				= $this->data->grapik_progress_treatment($data);
+        return $this->load->view('grapik_progress_treatment',$data,true);
+    }
+
     public function downloadFile()
 	{
 		$value = $this->uri->segment(3); 
@@ -176,92 +226,7 @@ class All_report extends BackendController {
 		}
 	}
 
-	function insertBox_IMPLEMENTASI_RISIKO($field)
-	{
-		$content = $this->get_implementasi();
-		return $content;
-	}
-
-	function updateBox_IMPLEMENTASI_RISIKO($field, $row, $value)
-	{
-		$content = $this->get_implementasi();
-		return $content;
-	}
-
-	function get_implementasi()
-	{
-		$id 				= $this->uri->segment(3);
-		$mode 				= $this->uri->segment(2);
-		$data['id'] 		= $id;
-		$data['mode'] 		= $mode;
-		$data['combo'] 		= $this->db
-		->where('kelompok', 'implementasi')
-		->order_by('kode', 'asc')
-		->get(_TBL_DATA_COMBO)
-		->result_array();
-		$result 			= $this->load->view('implementasi', $data, true);
-		return $result;
-	}
-
-    function insertBox_STAKEHOLDER_INTERNAL($field){
-		$content = $this->get_stakeholder(1);
-		return $content;
-	}
 	
-	function updateBox_STAKEHOLDER_INTERNAL($field, $row, $value){
-		$content = $this->get_stakeholder(1);
-		return $content;
-	}
-
-	function insertBox_STAKEHOLDER_EXTERNAL($field){
-		$content = $this->get_stakeholder(2);
-		return $content;
-	}
-	
-	function updateBox_STAKEHOLDER_EXTERNAL($field, $row, $value){
-		$content = $this->get_stakeholder(2);
-		return $content;
-	}
-
-	function get_stakeholder($type=1, $id=0)
-	{
-		$id=$this->uri->segment(3);
-		$data['field']=$this->db->where('stakeholder_type', $type)->where('rcsa_no', $id)->get(_TBL_RCSA_STAKEHOLDER)->result_array();
-		$data['type']=$type;
-		$result=$this->load->view('stakeholder',$data,true);
-		return $result;
-	}
-
-	function insertBox_KRITERIA_PROBABILITAS($field){
-		$content = $this->get_kriteria(1);
-		return $content;
-	}
-	
-	function updateBox_KRITERIA_PROBABILITAS($field, $row, $value){
-		$content = $this->get_kriteria(1);
-		return $content;
-	}
-	function insertBox_KRITERIA_DAMPAK($field){
-		$content = $this->get_kriteria(2);
-		return $content;
-	}
-	
-	function updateBox_KRITERIA_DAMPAK($field, $row, $value){
-		$content = $this->get_kriteria(2);
-		return $content;
-	}
-	function get_kriteria($type1=1, $id=0)
-	{
-		$id=$this->uri->segment(3);
-		doi::dump($id);
-		$data['field']=$this->db->where('kriteria_type', $type1)->where('rcsa_no', $id)->get(_TBL_RCSA_KRITERIA)->result_array();
-		$data['type1']=$type1;
-		$result=$this->load->view('kriteria',$data,true);
-	
-		return $result;
-	}
-
-
 }
 
 /* End of file All_report.php */

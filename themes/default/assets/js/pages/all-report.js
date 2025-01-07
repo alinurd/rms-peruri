@@ -30,6 +30,12 @@ function result_show(hasil) {
   $("#loss_event_database").html(hasil.loss_event_database);
   $("#early_warning").html(hasil.early_warning);
   $("#perubahan_level").html(hasil.perubahan_level);
+  $("#risk_distribution").html(hasil.risk_distribution);
+  $("#risk_categories").html(hasil.risk_categories);
+  $("#risk_tasktonomi").html(hasil.risk_tasktonomi);
+  $("#grapik_efektifitas_control").html(hasil.grapik_efektifitas_control);
+  $("#grapik_progress_treatment").html(hasil.grapik_progress_treatment);
+  $("#heatmap").html(hasil.heatmap);
   $("#collapseOne").collapse("show");
   $("#collapseTwo").collapse("show");
   $("#collapseThree").collapse("show");
@@ -39,6 +45,12 @@ function result_show(hasil) {
   $("#collapseSeven").collapse("show");
   $("#collapseEight").collapse("show");
   $("#collapseNine").collapse("show");
+  $("#collapseTen").collapse("show");
+  $("#collapseEleven").collapse("show");
+  $("#collapseTwelve").collapse("show");
+  $("#collapseThirteen").collapse("show");
+  $("#collapseFourteen").collapse("show");
+  $("#collapseFiveteen").collapse("show");
 }
 
 $("#downloadPdf").on("click", function () {
@@ -54,6 +66,7 @@ $("#downloadPdf").on("click", function () {
     $("#golum").hide();
   });
 });
+
 function graph(datas, target) {
   var ctx = document.getElementById(target);
   var mybarChart = new Chart(ctx, {
@@ -90,6 +103,34 @@ function graph(datas, target) {
           },
           color: "#fff",
         },
+      },
+    },
+  });
+}
+
+function graph_categories(datas, target) {
+  var ctx = document.getElementById(target);
+  var mybarChart = new Chart(ctx, {
+    type: "radar",
+    data: datas.data,
+
+    options: {
+      backgroundColor: "#ffffff",
+      title: {
+        display: option.title,
+        text: datas.judul,
+        fontSize: 14,
+      },
+      legend: {
+        display: option.legend,
+        labels: {
+          fontColor: "rgb(255, 99, 132)",
+          position: "left",
+        },
+        position: option.position,
+      },
+      tooltips: {
+        enabled: true,
       },
     },
   });
