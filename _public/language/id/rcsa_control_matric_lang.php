@@ -1,7 +1,7 @@
 <?php
 			
-$lang['msg_title']						= "Risk Control Matric";
-$lang['msg_sub_title']					= "Daftar Risk Control Matric";
+$lang['msg_title']						= "Risk Control Matrix";
+$lang['msg_sub_title']					= "Daftar Risk Control Matrix";
 $lang['msg_field_owner_no']				= "Risk Owner";
 $lang['msg_field_type']					= "Assessment Type";
 $lang['msg_field_period_no']			= "Periode";

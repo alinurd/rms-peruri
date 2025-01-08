@@ -31,7 +31,7 @@ class Rcsa_Control_Matric extends BackendController
 		$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => true,  'show' => true));
 		$this->addField(array('field' => 'create_user', 'search' => false, 'default' => $this->authentication->get_info_user('username')));
 		$this->addField(array('field' => 'judul_assesment', 'show'=>false));
- 		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Control Matric', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+ 		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Control Matrix', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->addField(array('field' => 'officer_no', 'show' => false, 'save' => true, 'default' => $this->authentication->get_info_user('identifier')));
 
 		// $this->addField(array('field' => 'anggaran_rkap', 'type' => 'float', 'input' => 'float', 'required' => true));
