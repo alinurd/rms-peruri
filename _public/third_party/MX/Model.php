@@ -716,7 +716,11 @@ class MX_Model extends CI_Model
 
 		// Header vertikal "Tingkatan Kemungkinan"
 		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:5px; writing-mode: vertical-rl; transform: rotate(180deg);">TINGKATAN KEMUNGKINAN</td>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
+						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
+							TINGKATAN KEMUNGKINAN
+						</div>
+					</td>';
 		$content .= '</tr>';
 
 		// Baris tingkat kemungkinan
@@ -778,7 +782,7 @@ class MX_Model extends CI_Model
 					</div>
 					' . $nilai . '
 					<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
-						' . $score['score'] . '
+						<strong style="font-weight:900;">' . $score['score'] . '</strong>
 					</div>
 					
 				</td>';
@@ -850,7 +854,11 @@ class MX_Model extends CI_Model
 
 		// Header vertikal "Tingkatan Kemungkinan"
 		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:5px; writing-mode: vertical-rl; transform: rotate(180deg);">TINGKATAN KEMUNGKINAN</td>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
+						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
+							TINGKATAN KEMUNGKINAN
+						</div>
+					</td>';
 		$content .= '</tr>';
 
 		// Baris tingkat kemungkinan
@@ -908,7 +916,7 @@ class MX_Model extends CI_Model
 						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
 						<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
-						' . $score['score'] . '
+						<strong style="font-weight:900;">' . $score['score'] . '</strong>
 					</div>
 					</td>';
 			}
@@ -977,7 +985,11 @@ class MX_Model extends CI_Model
 
 		// Header vertikal "Tingkatan Kemungkinan"
 		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:5px; writing-mode: vertical-rl; transform: rotate(180deg);">TINGKATAN KEMUNGKINAN</td>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
+						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
+							TINGKATAN KEMUNGKINAN
+						</div>
+					</td>';
 		$content .= '</tr>';
 
 		// Baris tingkat kemungkinan
@@ -1036,7 +1048,7 @@ class MX_Model extends CI_Model
 						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
 						<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
-						' . $score['score'] . '
+						<strong style="font-weight:900;">' . $score['score'] . '</strong>
 					</div>
 					</td>';
 			}

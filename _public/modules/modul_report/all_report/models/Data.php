@@ -277,7 +277,7 @@ class Data extends MX_Model {
         $resLv              = $residual_level['likelihood'] . ' x ' . $residual_level['impact'];
         $keterangan_pl      = $monitoring['keterangan_pl'];
         $lv                 = '
-        <a class="btn" data-toggle="popover" style="padding:4px; height:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';"> &nbsp;</a>';
+        <a class="btn" data-toggle="popover" style="padding:4px; height:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">&nbsp;</a>';
         $r = 0;
         if ($residual_level['level_mapping'] == "High") {
             $r = 5;
@@ -305,7 +305,7 @@ class Data extends MX_Model {
 
         if ($r == $Inh) {
             $pl = ' 
-                                      <span class="btn " data-toggle="popover" data-content="residual anda tidak penurunan dan kenaikan dari risiko inherent &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
+            <span class="btn " data-toggle="popover" data-content="residual anda tidak penurunan dan kenaikan dari risiko inherent &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
                 <i style=" font-size: 30px;" class="glyphicon glyphicon-resize-horizontal text-primary" aria-hidden="true"></i> 
             </span>
 
@@ -313,17 +313,16 @@ class Data extends MX_Model {
         } elseif ($r > $Inh) {
             $pl = ' 
 
-                      <span class="btn " data-toggle="popover" data-content="risiko anda lebih tinggi dari risiko inherent risk &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
+        	<span class="btn " data-toggle="popover" data-content="risiko anda lebih tinggi dari risiko inherent risk &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
                 <i style=" font-size: 30px;" class="fa fa-arrow-up text-danger" aria-hidden="true"></i> 
             </span>
 
          ';
         } elseif ($r<$Inh) {
             $pl = '
-                    <span class="btn " data-toggle="popover" data-content="residual anda turun dari  risiko inherent &#x1F603;
-" style="padding:4px; height:4px 8px;width:100%;">
-                <i style=" font-size: 30px;" class="fa fa-arrow-down text-success" aria-hidden="true"></i> 
-            </span>';
+                <span class="btn " data-toggle="popover" data-content="residual anda turun dari  risiko inherent &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
+					<i style=" font-size: 30px;" class="fa fa-arrow-down text-success" aria-hidden="true"></i> 
+				</span>';
         } else {
             $result['pl']         = '<center> <i class="  fa fa-times-circle text-danger"></i></center>';
         }
@@ -410,6 +409,123 @@ class Data extends MX_Model {
 	
 
 	function get_map_residual1($data = [])
+    {
+        $hasil['residual1'] = '';
+        $mapping1 = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
+
+        if ($data['owner_no'] > 0) {
+			$this->get_owner_child($data['owner_no']);
+			$this->owner_child[] = $data['owner_no'];
+			$this->db->where_in('owner_no', $this->owner_child);
+		}
+	
+
+        // === Filter by Period ===
+        if (isset($data['id_period']) && $data['id_period'] > 0) {
+            $this->db->where('a.period_no', $data['id_period']);
+        }
+
+        // Validasi bulan dan bulanx
+        if (isset($data['bulan']) && $data['bulan'] > 0) {
+            $this->db->where("b.bulan",$data['bulan']);
+        }
+
+    $rows = $this->db->select('b.target_like as target_like, b.target_impact as target_impact, COUNT(*) as jml')
+        ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
+        ->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner') // Perbaiki alias di sini
+        ->where('a.sts_propose', 4)
+        ->where('a.sts_heatmap', '1')
+        ->group_by(['b.target_like', 'b.target_impact']) 
+        ->get()
+        ->result_array();
+  
+        $arrData = [];
+        foreach ($rows as $ros) {
+
+            if (isset($ros['target_like'], $ros['target_impact'])) {
+                $key = $ros['target_like'] . '-' . $ros['target_impact']; // Gabungkan likelihood dan impact
+                $arrData[$key] = $ros['jml'];
+            }
+        }
+
+        // === Update Mapping with Inherent Values ===
+        foreach ($mapping1 as &$row) {
+            // Pastikan kolom likelihood dan impact ada dalam $mapping
+            if (isset($row['like_no'], $row['impact_no'])) {
+                $key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+                $row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+                
+            }
+        }
+
+        $hasil['residual1'] = $this->data->draw_rcsa1($mapping1, 'Target');
+       
+        return $hasil;
+    }
+	function get_map_rcsa_cetak($data = [])
+	{
+
+		// doi::dump($data['owner_no']);
+		$hasil['inherent'] = '';
+		$hasil['residual'] = '';
+
+		if ($data) {
+			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
+			if ($data['owner_no'] > 0) {
+				$this->get_owner_child($data['owner_no']);
+				$this->owner_child[] = $data['owner_no'];
+				$this->db->where_in('owner_no', $this->owner_child);
+			}
+		
+			if ($data['id_period'] > 0) {
+				$this->db->where('period_no', $data['id_period']);
+			}
+			$rows = $this->db->select('inherent_level, count(inherent_level) as jml')->group_by(['inherent_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			$arrData = [];
+			foreach ($rows as &$ros) {
+				$arrData[$ros['inherent_level']] = $ros['jml'];
+			}
+
+			foreach ($mapping as &$row) {
+				if (array_key_exists($row['id'], $arrData))
+					$row['nilai'] = $arrData[$row['id']];
+				else
+					$row['nilai'] = '';
+			}
+			unset($row);
+			$hasil['inherent'] = $this->data->draw_rcsa_cetak($mapping);
+
+			// residual
+			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
+			if ($data['owner_no'] > 0) {
+				$this->get_owner_child($data['owner_no']);
+				$this->owner_child[] = $data['owner_no'];
+				$this->db->where_in('owner_no', $this->owner_child);
+			}
+		
+			if ($data['id_period'] > 0) {
+				$this->db->where('period_no', $data['id_period']);
+			}
+			$rows = $this->db->select('residual_level, count(residual_level) as jml')->group_by(['residual_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			$arrData = [];
+			foreach ($rows as &$ros) {
+				$arrData[$ros['residual_level']] = $ros['jml'];
+			}
+
+			foreach ($mapping as &$row) {
+				if (array_key_exists($row['id'], $arrData))
+					$row['nilai'] = $arrData[$row['id']];
+				else
+					$row['nilai'] = '';
+			}
+			unset($row);
+			$hasil['residual'] = $this->data->draw_rcsa_res_cetak($mapping);
+		}
+		return $hasil;
+	}
+	
+
+	function get_map_residual1_cetak($data = [])
     {
         $hasil['residual1'] = '';
         $mapping1 = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
@@ -571,10 +687,10 @@ class Data extends MX_Model {
     }
 	function grafik_categories($data){
         $result=[];
-        $rows=$this->db->where('type',4)->order_by('code')->get(_TBL_LIBRARY)->result_array();
+        $rows=$this->db->where('kelompok','kategori-risiko')->order_by('id')->get(_TBL_DATA_COMBO)->result_array();
         $master=[];
         foreach($rows as $row){
-            $master[$row['id']]=['name'=>$row['description'], 'jml'=>0];
+            $master[$row['id']]=['name'=>$row['data'], 'jml'=>0];
         }
         
         $this->owner_child=array();
@@ -596,12 +712,12 @@ class Data extends MX_Model {
 			$this->db->where_in('period_no',$data['periode_no']);
         }
         
-        $rows=$this->db->select('periode_name,tema, tema_risiko_, count(tema) as jml')->group_by(['tema', 'tema_risiko_'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+        $rows=$this->db->select('periode_name,kategori_no, kategori, count(kategori_no) as jml')->group_by(['kategori_no', 'kategori'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 
 		$result['periode_name'] = $rows[0]['periode_name'];
         foreach($master as $key=>$mr){
             foreach($rows as $row){
-                if ($row['tema']==$key){
+                if ($row['kategori_no']==$key){
                     $master[$key]['jml']=$row['jml'];
                   
                 }

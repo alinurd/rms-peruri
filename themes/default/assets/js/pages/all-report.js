@@ -6,8 +6,6 @@ $(function () {
   $("#proses").click(function () {
     var tahun = $("#periode_no option:selected").text();
     $("#tahun").val(tahun);
-    // var bulan2 = $("#bulan option:selected").text();
-    // $("#bulan2").val(bulan2);
     var owner_no = $("#owner_no option:selected").text();
     var owner_name = owner_no.trim();
     $("#owner_name").val(owner_name);
@@ -15,8 +13,84 @@ $(function () {
     var data = $("#form_grafik").serialize();
     var parent = $(this).parent();
     var url = modul_name + "/get-grafik";
-    // var target_combo = result_show();
     cari_ajax_combo("post", parent, data, "", url, "result_show");
+  });
+
+  $("#downloadPdf").on("click", function () {
+    var parent = $(this).parent();
+    var owner_no = $("#owner_no").val();
+    var periode_no = $("#periode_no").val();
+
+    // Validasi input
+    if (!owner_no || !periode_no) {
+      alert("Periode dan Owner harus diisi!");
+      return;
+    }
+
+    var imageElements = [
+      "#heatmap",
+      "#risk_distribution",
+      "#risk_categories",
+      "#grapik_efektifitas_control",
+      "#grapik_progress_treatment",
+    ];
+
+    // Memeriksa apakah semua elemen gambar memiliki konten
+    for (var i = 0; i < imageElements.length; i++) {
+      var element = document.querySelector(imageElements[i]);
+      if (!element || !element.innerHTML.trim()) {
+        alert("Silahkan Proses Terlebih Dahulu.");
+        return;
+      }
+    }
+
+    looding("light", parent); // Menampilkan loading
+
+    // Mengambil gambar dari elemen yang ditentukan
+    Promise.all(
+      imageElements.map(function (selector) {
+        return html2canvas(document.querySelector(selector), { scale: 2 });
+      })
+    ).then((canvases) => {
+      // Mengonversi canvas menjadi data URL
+      var data = {
+        periode_no: periode_no,
+        owner_no: owner_no,
+        heatmap: canvases[0].toDataURL("image/png"),
+        risk_distribution: canvases[1].toDataURL("image/png"),
+        risk_categories: canvases[2].toDataURL("image/png"),
+        risk_efektifitas_control: canvases[3].toDataURL("image/png"),
+        risk_progress_treatment: canvases[4].toDataURL("image/png"),
+      };
+
+      // Mengirim data ke server untuk menghasilkan PDF
+      var url = modul_name + "/downloadPdf";
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/pdf",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.blob();
+          } else {
+            throw new Error("Gagal menghasilkan PDF");
+          }
+        })
+        .then((blob) => {
+          var blobUrl = URL.createObjectURL(blob);
+          window.open(blobUrl, "_blank"); // Membuka PDF di tab baru
+          stopLooding(parent); // Menghentikan loading
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Gagal menghasilkan atau menampilkan PDF.");
+          stopLooding(parent); // Menghentikan loading jika terjadi error
+        });
+    });
   });
 });
 
@@ -52,20 +126,9 @@ function result_show(hasil) {
   $("#collapseFourteen").collapse("show");
   $("#collapseFiveteen").collapse("show");
 }
-
-$("#downloadPdf").on("click", function () {
-  var skillsSelect = document.getElementById("owner_no");
-  var owner1 = skillsSelect.options[skillsSelect.selectedIndex].text;
-  var owner = owner1.trim();
-  $("#golum").show();
-  html2canvas(document.querySelector("#content_detail")).then((canvas) => {
-    var doc = new jsPDF("l", "mm", "a4");
-    var canvas_img = canvas.toDataURL("image/png");
-    doc.addImage(canvas_img, "png", 10, 10, 280, 180, "", "FAST");
-    doc.save("Risk-Distribution-" + owner + ".pdf");
-    $("#golum").hide();
-  });
-});
+function result_cetak(hasil) {
+  console.log(hasil);
+}
 
 function graph(datas, target) {
   var ctx = document.getElementById(target);

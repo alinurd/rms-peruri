@@ -5,6 +5,7 @@ class All_Report extends BackendController {
 	var $post 		= array();
 	var $sts_cetak 	= false;
 
+    // INDEX
     public function index()
     {
 		$data['korporasi'] 		= $this->get_combo('parent-input');;
@@ -12,6 +13,7 @@ class All_Report extends BackendController {
         $this->template->build('all_report',$data);
     }
 
+    // GET GRAFIK
 	function get_grafik(){
 		$post									= $this->input->post();
 		$data_parent							= $this->data->risk_parent($post);
@@ -36,6 +38,7 @@ class All_Report extends BackendController {
 		echo json_encode($result);
 	}
 
+    // RISK CONTEXT
     public function risk_context($data)
     {
         $data['data'] 	= $data;
@@ -49,6 +52,7 @@ class All_Report extends BackendController {
         return $this->load->view('risk_context',$data,true);
     }
 
+    // RISK KRITERIA
     public function risk_criteria($data)
     {
 		$data['data'] 	= $data;
@@ -62,6 +66,7 @@ class All_Report extends BackendController {
         return $this->load->view('risk_criteria',$data,true);
     }
 
+    // RISK APPETITE
     public function risk_appetite($data)
     {
 		$data['data'] 	= $data;
@@ -75,6 +80,7 @@ class All_Report extends BackendController {
         return $this->load->view('risk_appetite',$data,true);
     }
 	
+    // RISK REGISTER
     public function risk_register($data)
     {
 		$data['data'] 	= $data;
@@ -88,8 +94,7 @@ class All_Report extends BackendController {
         return $this->load->view('risk_register',$data,true);
     }
 
-
-	
+    // RISK EFEKTIFITAS CONTROL
     public function risk_efektifitas_control($data)
     {
 		$data['data'] 	= $data;
@@ -103,6 +108,7 @@ class All_Report extends BackendController {
         return $this->load->view('efektifitas_control',$data,true);
     }
 
+    // RISK PROGRESS TREATMENT
     public function risk_progress_treatment($data)
     {
 		$data['data'] 	= $data;
@@ -116,6 +122,7 @@ class All_Report extends BackendController {
         return $this->load->view('progress_treatment',$data,true);
     }
 
+    // RISK LOST EVENT DATABASE
 	public function lost_event_database($data)
     {
         $data['data'] 				= $data;
@@ -134,6 +141,7 @@ class All_Report extends BackendController {
         return $this->load->view('loss_event_database',$data,true);
     }
 
+    // RISK ERLY WARNING
 	public function risk_early_warning($data)
     {
 		$data['data'] 	= $data;
@@ -204,27 +212,116 @@ class All_Report extends BackendController {
         return $this->load->view('grapik_progress_treatment',$data,true);
     }
 
-    public function downloadFile()
-	{
-		$value = $this->uri->segment(3); 
-		if ($value) {
-			$filePath = "themes/file/regulasix/" . $value;
-			if ($value) {
-				if (file_exists($filePath)) {
-					header('Content-Type: application/octet-stream');
-					header("Content-Disposition: attachment; filename=\"" . $value . "\"");
-					header('Content-Length: ' . filesize($filePath));
-					readfile($filePath);
-				} else {
-					echo "<script>alert('file tidak ditemukan atau permision jalur tidak sah'); window.history.go(-1);</script>";
-				}
-			} else {
-				echo "<script>alert('" . htmlspecialchars($value) . " Tidak memiliki lampiran'); window.history.go(-1);</script>";
-			}
-		} else {
-			echo "<script>alert('Data file tidak ditemukan.'); window.history.go(-1);</script>";
-		}
-	}
+    public function downloadPdf()
+    {
+        // Decode JSON input
+        $json_input = json_decode($this->input->raw_input_stream, true);
+        
+        // Extract parameters from JSON input
+        $periode_no                 = $json_input['periode_no'] ?? null;
+        $owner_no                   = $json_input['owner_no'] ?? null;
+        $grafik_heatmap             = $json_input['heatmap'] ?? null;
+        $grafik_distribution        = $json_input['risk_distribution'] ?? null;
+        $grafik_category            = $json_input['risk_categories'] ?? null;
+        $grafik_efektifitas_control = $json_input['risk_efektifitas_control'] ?? null;
+        $grafik_progress_treatment  = $json_input['risk_progress_treatment'] ?? null;
+    
+        // Initialize image paths
+        $image_paths = [
+            'heatmap'               => null,
+            'distribution'          => null,
+            'category'              => null,
+            'efektifitas_control'   => null,
+            'progress_treatment'    => null,
+        ];
+    
+        // Clear existing images in the folder
+        $folder_path = 'themes/upload/grafik/';
+        $files = glob($folder_path . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+    
+        // Function to save base64 image
+        $saveImage = function($base64_string, $type, &$image_path) {
+            if ($base64_string) {
+                $base64_string  = str_replace('data:image/png;base64,', '', $base64_string);
+                $decoded_image  = base64_decode($base64_string);
+                $image_path     = "themes/upload/grafik/{$type}_image_" . time() . ".png";
+                if (file_put_contents($image_path, $decoded_image) === false) {
+                    log_message('error', "Gagal menyimpan gambar {$type}: " . $image_path);
+                    $image_path = null;
+                }
+            }
+        };
+    
+        // Save images
+        $saveImage($grafik_heatmap, 'heatmap', $image_paths['heatmap']);
+        $saveImage($grafik_distribution, 'distribution', $image_paths['distribution']);
+        $saveImage($grafik_category, 'category', $image_paths['category']);
+        $saveImage($grafik_efektifitas_control, 'efektifitas_control', $image_paths['efektifitas_control']);
+        $saveImage($grafik_progress_treatment, 'progress_treatment', $image_paths['progress_treatment']);
+    
+        // Prepare data for the PDF
+        $data = [
+            'periode_no'                => $periode_no,
+            'owner_no'                  => $owner_no,
+            'parent'                    => $this->data->risk_parent(['periode_no' => $periode_no, 'owner_no' => $owner_no]),
+            'kategori_kejadian'         => $this->get_combo('data-combo', 'kat-kejadian'),
+            'frekuensi_kejadian'        => $this->get_combo('data-combo', 'frek-kejadian'),
+            'kat_risiko'                => $this->get_combo('data-combo', 'kel-library'),
+            'cboLike'                   => $this->get_combo('likelihood'),
+            'cboImpact'                 => $this->get_combo('impact'),
+            'heatmap'                   => $image_paths['heatmap'],
+            'risk_distribution'         => $image_paths['distribution'],
+            'risk_category'             => $image_paths['category'],
+            'risk_efektifitas_control'  => $image_paths['efektifitas_control'],
+            'risk_progress_treatment'   => $image_paths['progress_treatment'],
+            'early_warning'             => $this->data->risk_early_warning(['periode_no' => $periode_no, 'owner_no' => $owner_no]),
+            'tasktonomi'                => $this->data->risk_tasktonomi(['periode_no' => $periode_no, 'owner_no' => $owner_no]),
+        ];
+        
+    
+        // Generate PDF
+        $rows   = $this->db->where('id', $owner_no)->get(_TBL_OWNER)->row_array();
+        $nama   = 'All-Report-' . url_title($rows['name']);
+        $hasil  = $this->load->view('cetak_all_report', $data, true);
+        $cetak  = 'cetak_pdf';
+        $this->$cetak($hasil, $nama);
+    }
+
+    public function cetak_pdf($data, $nama = "All-Report")
+    {
+        $this->load->library('pdf');
+        $tgl = date('d-m-Y');
+        $this->nmFile = $nama . '-' . $tgl . ".pdf";
+        $this->pdfFilePath = download_path_relative($this->nmFile);
+        $html = "";
+        $html .= $data;
+        $pdf = $this->pdf->load('en-GB-x,legal,,,5,5,5,5,6,3');
+        $font = [
+            'fontawesome' => [
+                'R' => FCPATH . 'themes/default/assets/fonts/fontawesome-webfont.ttf',
+                'B' => FCPATH . 'themes/default/assets/fonts/fontawesome-webfont.ttf',
+            ],
+        ];
+
+        $pdf->fontdata = array_merge($pdf->fontdata, $font);
+        $pdf->default_font = 'fontawesome';
+        $pdf->AddPage('L', '', '', '', '', 10, 10, 10, 10, 5, 5);
+        $pdf->SetHeader('');
+        $pdf->setFooter('|{PAGENO} Dari {nb} Halaman|');
+        $pdf->WriteHTML($html);
+        ob_clean();
+        $pdf->Output($this->pdfFilePath, 'F');
+        redirect($this->pdfFilePath);
+        return true;
+    }
+
+
+
 
 	
 }
