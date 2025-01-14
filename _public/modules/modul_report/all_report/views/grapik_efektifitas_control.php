@@ -3,7 +3,7 @@
 <div class="col-md-6 col-sm-6 col-xs-6">
     <canvas id="mybarChart_efektifitas"></canvas>
     <br/>&nbsp;<hr>
-    <table class="table" width="100%">
+    <table class="table table_grafik" width="100%">
         <thead>
             <tr>
                 <th width="70%">Efektifitas Control</th>

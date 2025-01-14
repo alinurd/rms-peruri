@@ -4,7 +4,7 @@
 <div class="col-md-12 col-sm-6 col-xs-6">
     <canvas id="mybarChart_categories"></canvas>
     <br/>&nbsp;<hr>
-     <table class="table" width="90%">
+     <table class="table table_grafik" width="90%">
         <thead>
             <tr>
                 <th width="70%">Risk Categories</th>
@@ -25,7 +25,7 @@
                 <?php endforeach;?>
         </tbody>
     </table>
-   <table class="table" width="90%">
+   <table class="table table_grafik" width="90%">
         <thead>
             <tr>
                 <th width="70%">Total</th>

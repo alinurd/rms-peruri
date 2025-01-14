@@ -1426,36 +1426,39 @@ $bulanName = [
 ?>
 <div class="page-break"></div>
 <div style="width: 100%; text-align: center;">
-<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-    <thead>
-    <tr>
-          <td colspan="2" rowspan="3" style="text-align: center; border-right: none;">
-              <img src="<?= img_url('logo.png'); ?>" width="90">
-          </td>
-          <td colspan="4" rowspan="3" style="text-align: center; border-left: none; vertical-align: middle;">
-              <h4>GRAFIK HEATMAP</h4>
-          </td>
-          <td style="width: 12%;">No.</td>
-          <td style="width: 12%;">: 001/RM-FORM/I/<?= $parent[0]['periode_name']; ?></td>
-      </tr>
+  <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+      <thead>
       <tr>
-          <td style="width: 12%;">Revisi</td>
-          <td style="width: 12%;">: 1</td>
+            <td colspan="2" rowspan="3" style="text-align: center; border-right: none;">
+                <img src="<?= img_url('logo.png'); ?>" width="90">
+            </td>
+            <td colspan="4" rowspan="3" style="text-align: center; border-left: none; vertical-align: middle;">
+                <h4>GRAFIK HEATMAP</h4>
+            </td>
+            <td style="width: 12%;">No.</td>
+            <td style="width: 12%;">: 001/RM-FORM/I/<?= $parent[0]['periode_name']; ?></td>
+        </tr>
+        <tr>
+            <td style="width: 12%;">Revisi</td>
+            <td style="width: 12%;">: 1</td>
+        </tr>
+        <tr>
+            <td style="width: 12%;">Tanggal Revisi</td>
+            <td style="width: 12%;">: 31 Januari <?= $parent[0]['periode_name']; ?></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="border: none;">Risk Owner</td>
+            <td style="border: none;">: <?= $parent[0]['name']; ?></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="border: none;">Risk Agent</td>
+            <td style="border: none;">: <?= $parent[0]['officer_name']; ?></td>
+        </tr>
+        <tr>
+          <td colspan="8" style="padding-top: 20px; border: none;"></td>
       </tr>
-      <tr>
-          <td style="width: 12%;">Tanggal Revisi</td>
-          <td style="width: 12%;">: 31 Januari <?= $parent[0]['periode_name']; ?></td>
-      </tr>
-      <tr>
-          <td colspan="2" style="border: none;">Risk Owner</td>
-          <td style="border: none;">: <?= $parent[0]['name']; ?></td>
-      </tr>
-      <tr>
-          <td colspan="2" style="border: none;">Risk Agent</td>
-          <td style="border: none;">: <?= $parent[0]['officer_name']; ?></td>
-      </tr>
-    </thead>
-  </table>
+      </thead>
+    </table>
     <?php if (isset($heatmap)): ?>
         <img style="display: block; margin: 0 auto;" src="<?= base_url() . $heatmap; ?>" alt="Heatmap" />
     <?php endif; ?>
@@ -1492,10 +1495,14 @@ $bulanName = [
           <td colspan="2" style="border: none;">Risk Agent</td>
           <td style="border: none;">: <?= $parent[0]['officer_name']; ?></td>
       </tr>
+      <tr>
+          <td colspan="8" style="padding-top: 20px; border: none;"></td>
+      </tr>
     </thead>
   </table>
+      <br>
     <?php if (isset($risk_distribution)): ?>
-        <img style="display: block; margin: 0 auto;" src="<?= base_url() . $risk_distribution; ?>" alt="Risk Distribution" />
+        <img style="width:80%;display: block; margin: 0 auto;" src="<?= base_url() . $risk_distribution; ?>" alt="Risk Distribution" />
     <?php endif; ?>
 </div>
 
@@ -1503,7 +1510,7 @@ $bulanName = [
 
 <div style="width: 100%; text-align: center;">
     <?php if (isset($risk_category)): ?>
-      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+      <table style="border-collapse: collapse; font-size: 12px;">
         <thead>
         <tr>
               <td colspan="2" rowspan="3" style="text-align: center; border-right: none;">
@@ -1531,9 +1538,12 @@ $bulanName = [
               <td colspan="2" style="border: none;">Risk Agent</td>
               <td style="border: none;">: <?= $parent[0]['officer_name']; ?></td>
           </tr>
+          <tr>
+          <td colspan="8" style="padding-top: 20px; border: none;"></td>
+      </tr>
         </thead>
       </table>
-        <img style="width:63%;display: block; margin: 0 auto;" src="<?= base_url() . $risk_category; ?>" alt="Risk Distribution" />
+        <img style="width:80%;display: block; margin: 0 auto;" src="<?= base_url() . $risk_category; ?>" alt="Risk Distribution" />
     <?php endif; ?>
 </div>
 
@@ -1633,9 +1643,12 @@ $bulanName = [
               <td colspan="2" style="border: none;">Risk Agent</td>
               <td style="border: none;">: <?= $parent[0]['officer_name']; ?></td>
           </tr>
+          <tr>
+          <td colspan="8" style="padding-top: 20px; border: none;"></td>
+      </tr>
         </thead>
       </table>
-        <img style="width:70%;display: block; margin: 0 auto;" src="<?= base_url() . $risk_efektifitas_control; ?>" alt="Risk Distribution" />
+        <img style="width:80%;display: block; margin: 0 auto;" src="<?= base_url() . $risk_efektifitas_control; ?>" alt="Risk Distribution" />
     <?php endif; ?>
 </div>
 
@@ -1643,7 +1656,7 @@ $bulanName = [
 
 <div style="width: 100%; text-align: center;">
     <?php if (isset($risk_progress_treatment)): ?>
-      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+      <table style=" border-collapse: collapse; font-size: 12px;">
     <thead>
     <tr>
           <td colspan="2" rowspan="3" style="text-align: center; border-right: none;">
@@ -1671,8 +1684,11 @@ $bulanName = [
           <td colspan="2" style="border: none;">Risk Agent</td>
           <td style="border: none;">: <?= $parent[0]['officer_name']; ?></td>
       </tr>
+      <tr>
+          <td colspan="8" style="padding-top: 20px; border: none;"></td>
+      </tr>
     </thead>
   </table>
-        <img style="width:70%;display: block; margin: 0 auto;" src="<?= base_url() . $risk_progress_treatment; ?>" alt="Risk Distribution" />
+        <img style="width:80%;display: block; margin: 0 auto;" src="<?= base_url() . $risk_progress_treatment; ?>" alt="Risk Distribution" />
     <?php endif; ?>
 </div>

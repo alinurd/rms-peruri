@@ -3,7 +3,7 @@
         <center>
             <canvas id="mybarChart_progress_treatment"></canvas>
             <br>&nbsp;<hr>
-            <table class="table" width="90%">
+            <table class="table table_grafik" width="90%">
                 <thead>
                     <tr>
                         <th width="70%">Treatment</th>

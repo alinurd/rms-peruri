@@ -4,7 +4,7 @@
     <canvas id="mybarChart"></canvas>
     <center>Grafik Saat Menilai Level Risiko </center>
     <br/>&nbsp;<hr>
-    <table class="table" width="90%">
+    <table class="table table_grafik" width="90%">
         <thead>
             <tr>
                 <th width="70%">Level Risiko</th>
@@ -26,7 +26,7 @@
     <canvas id="mybarChart2"></canvas>
     <center>Grafik Risiko Perbulan terhadap Progress Treatment</center>
     <br/>&nbsp;<hr>
-    <table class="table" width="90%">
+    <table class="table table_grafik" width="90%">
         <thead>
             <tr>
                 <th width="70%">Level Risiko</th>

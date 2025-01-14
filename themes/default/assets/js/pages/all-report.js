@@ -20,7 +20,10 @@ $(function () {
     var parent = $(this).parent();
     var owner_no = $("#owner_no").val();
     var periode_no = $("#periode_no").val();
-
+    var tables = document.getElementsByClassName("table_grafik");
+    for (var i = 0; i < tables.length; i++) {
+        tables[i].style.display = "none"; // Menyembunyikan setiap tabel
+    }
     // Validasi input
     if (!owner_no || !periode_no) {
       alert("Periode dan Owner harus diisi!");
