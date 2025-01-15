@@ -36,7 +36,7 @@
                         <input type="hidden" id="owner_name" name="owner_name">
                         <span class="btn btn-warning btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadPdf"><i class="fa fa-file-pdf-o"></i>Export PDF </a>
                         </span>
-                        <span class="btn btn-success btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadPdf"><i class="fa fa-file-pdf-o"></i>Export Excel Progress Treatment </a>
+                        <span class="btn btn-success btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadExcel"><i class="fa fa-file-pdf-o"></i>Export Excel Progress Treatment </a>
                         </span>
                         <span class="btn btn-primary pull-right" style="width:100px;" id="proses"> Proses </span>
                     </div>

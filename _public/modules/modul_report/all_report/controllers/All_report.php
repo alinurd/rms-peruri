@@ -320,6 +320,29 @@ class All_Report extends BackendController {
         return true;
     }
 
+    public function exportExcel()
+    {
+        $owner_no   = $this->input->get('owner_no');
+        $periode_no = $this->input->get('periode_no');
+        $get        = $this->input->get();
+
+        if (empty($owner_no) || empty($periode_no)) {
+            echo "Parameter tidak lengkap!";
+            return;
+        }
+
+        $parent = $this->data->risk_parent($get);
+
+        $data =$this->data->risk_progress_treatment($get);
+        // Set header untuk file Excel
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="data_export_' . $owner_no . '_' . $periode_no . '.xls"');
+        header('Cache-Control: max-age=0');
+
+        // Muat view untuk mengeluarkan data dalam format Excel
+        $this->load->view('excel_progress_treatment', ['progress_treatment' => $data,'parent' => $parent]);
+    }
+
 
 
 

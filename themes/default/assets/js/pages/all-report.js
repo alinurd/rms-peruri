@@ -22,7 +22,7 @@ $(function () {
     var periode_no = $("#periode_no").val();
     var tables = document.getElementsByClassName("table_grafik");
     for (var i = 0; i < tables.length; i++) {
-        tables[i].style.display = "none"; // Menyembunyikan setiap tabel
+      tables[i].style.display = "none"; // Menyembunyikan setiap tabel
     }
     // Validasi input
     if (!owner_no || !periode_no) {
@@ -95,6 +95,18 @@ $(function () {
         });
     });
   });
+
+  $("#downloadExcel").on("click", function () {
+      var owner_no = $("#owner_no").val();
+      var periode_no = $("#periode_no").val();
+      if (owner_no && periode_no) {
+          var url = modul_name + "/exportExcel?owner_no=" + owner_no + "&periode_no=" + periode_no;
+          window.location.href = url;
+      } else {
+          alert("Harap masukkan data yang diperlukan!");
+      }
+  });
+
 });
 
 function result_show(hasil) {
