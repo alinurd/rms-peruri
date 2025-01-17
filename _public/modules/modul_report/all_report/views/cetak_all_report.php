@@ -1384,14 +1384,12 @@ $bulanName = [
 
         $bg_color;
         if ($r == $Inh) {
-            $bg_color = '#007bff';
-            $pl       = 'residual anda tidak penurunan dan kenaikan dari risiko inherent';
+            $pl       = '<img src="'. img_url('tengah.png').'"'.'>';
+            // <!-- $pl       = 'residual anda tidak penurunan dan kenaikan dari risiko inherent'; -->
         } elseif ($r > $Inh) {
-            $bg_color = '#dc3545';
-            $pl       = 'risiko anda lebih tinggi dari risiko inherent risk';
+            $pl       = '<img src="'. img_url('up.png').'"'.'>';
         } elseif ($r < $Inh) {
-          $bg_color   ='#28a745';
-          $pl         = 'residual anda turun dari risiko inherent';
+          $pl         = '<img src="'. img_url('down.png').'"'.'>';
         } else {
           $bg_color   = '#dc3545';
             $pl       = 'x';
@@ -1415,7 +1413,7 @@ $bulanName = [
       <td width="8%" style="text-align: center;"><?= $q['tahun'] ?></td>
       <td width="10%" style="text-align: center; background: <?= $inherent_level['color']; ?>; color: <?= $inherent_level['color_text']; ?>"><?= $inherent ?></td>
       <td width="10%" style="text-align: center; background-color: <?= $residual_level['color']; ?>; color: <?= $residual_level['color_text']; ?>"><?= $lv; ?></td>
-      <td width="10%" style="text-align: center; color:white; background-color: <?= $bg_color; ?>;"><?= $pl ?></td>
+      <td width="10%" style="text-align: center;"><?= $pl ?></td>
       <td width="22%" style="text-align: left;"><?= $ket ?></td>
     </tr>
     <?php } ?>

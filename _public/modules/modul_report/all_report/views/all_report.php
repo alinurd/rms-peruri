@@ -11,7 +11,7 @@
                 </ul>
             </div>
         </div>
-        <section class="panel">
+        <section class="x_panel">
 			<!-- <form id="form_grafik" method="post"> -->
                 <?=form_open_multipart(base_url(), array('id' => 'form_grafik', 'class'=>'form-horizontal'));?>
                 <div class="panel-body bio-graph-info" style="overflow-x: auto;">
@@ -34,13 +34,15 @@
                         <input type="hidden" id="tahun" name="tahun">
                         <input type="hidden" id="bulan2" name="bulan2">
                         <input type="hidden" id="owner_name" name="owner_name">
-                        <span class="btn btn-warning btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadPdf"><i class="fa fa-file-pdf-o"></i>Export PDF </a>
+                        <span class="btn btn-warning btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadPdf"><i class="fa fa-file-pdf-o"></i>PDF </a>
                         </span>
-                        <span class="btn btn-success btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadExcel"><i class="fa fa-file-pdf-o"></i>Export Excel Progress Treatment </a>
+                        <span class="btn btn-success btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadExcel"><i class="fa fa-file-excel-o"></i>Progress Treatment </a></span>
+                        <span class="btn btn-info btn-flat pull-right"><a href="#" style="color:#ffffff;" id="downloadExcelRegister"><i class="fa fa-file-excel-o"></i>Risk Register </a>
                         </span>
                         <span class="btn btn-primary pull-right" style="width:100px;" id="proses"> Proses </span>
                     </div>
                     <hr>
+                    <p class="text-left text-danger"><span>*</span> Sebelum melakukan ekspor, harap lakukan proses terlebih dahulu. Tombol PDF untuk semua laporan kecuali progress treatment; gunakan Risk Register untuk ekspor data excel risk register dan Progress Treatment untuk ekspor data excel progress treatment.</p>
                 </div>
                 <?php echo form_close(); ?>
             <!-- </form> -->
@@ -205,8 +207,38 @@
                         </h4>
                     </div>
                     <div id="collapseTen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTen">
-                        <div class="panel-body" id="heatmap">
-                            
+                        <div class="panel-body">
+                            <div class="col-md-3 col-sm-3 col-xs-3">Bulan</div>
+                                <div class="col-md-9 col-sm-9 col-xs-9">
+                                    <div class="form-group form-inline">
+                                        <?php
+                                            $current_month = date('n'); 
+                                            echo form_dropdown(
+                                                'bulan', 
+                                                [
+                                                    '1' => 'Januari',
+                                                    '2' => 'Februari',
+                                                    '3' => 'Maret',
+                                                    '4' => 'April',
+                                                    '5' => 'Mei',
+                                                    '6' => 'Juni',
+                                                    '7' => 'Juli',
+                                                    '8' => 'Agustus',
+                                                    '9' => 'September',
+                                                    '10' => 'Oktober',
+                                                    '11' => 'November',
+                                                    '12' => 'Desember'
+                                                ], 
+                                                $current_month,
+                                                'class="form-control select2" id="bulan" style="width:100%;"'
+                                            );
+                                            ?>
+
+                                        </div>
+                            </div>
+                            <div class="heatmap" id="heatmap">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -245,7 +277,7 @@
                     <div class="panel-heading" role="tab" id="headingThirteen">
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThirteen" aria-expanded="false" aria-controls="collapseThirteen">
-                               Tasktonomi Risiko T1,T2,T3
+                               Takstonomi Risiko T1,T2,T3
                                 <i class="fa fa-minus pull-right"></i>  <!-- Icon Min di kanan -->
                             </a>
                         </h4>

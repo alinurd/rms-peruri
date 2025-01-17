@@ -44,11 +44,6 @@ class All_Report extends BackendController {
         $data['data'] 	= $data;
 		$tahun 			= $data[0]['periode_name'];
 		$data['tahun']  = $tahun;
-		$data['combo'] 	= $this->db
-								->where('kelompok', 'implementasi')
-								->order_by('kode', 'asc')
-								->get(_TBL_DATA_COMBO)
-								->result_array();
         return $this->load->view('risk_context',$data,true);
     }
 
@@ -58,11 +53,6 @@ class All_Report extends BackendController {
 		$data['data'] 	= $data;
 		$tahun 			= $data[0]['periode_name'];
 		$data['tahun']  = $tahun;
-		$data['combo'] 	= $this->db
-								->where('kelompok', 'implementasi')
-								->order_by('kode', 'asc')
-								->get(_TBL_DATA_COMBO)
-								->result_array();
         return $this->load->view('risk_criteria',$data,true);
     }
 
@@ -72,11 +62,6 @@ class All_Report extends BackendController {
 		$data['data'] 	= $data;
 		$tahun 			= $data[0]['periode_name'];
 		$data['tahun']  = $tahun;
-		$data['combo'] 	= $this->db
-								->where('kelompok', 'implementasi')
-								->order_by('kode', 'asc')
-								->get(_TBL_DATA_COMBO)
-								->result_array();
         return $this->load->view('risk_appetite',$data,true);
     }
 	
@@ -86,11 +71,6 @@ class All_Report extends BackendController {
 		$data['data'] 	= $data;
 		$tahun 			= $data[0]['periode_name'];
 		$data['tahun']  = $tahun;
-		$data['combo'] 	= $this->db
-								->where('kelompok', 'implementasi')
-								->order_by('kode', 'asc')
-								->get(_TBL_DATA_COMBO)
-								->result_array();
         return $this->load->view('risk_register',$data,true);
     }
 
@@ -100,11 +80,6 @@ class All_Report extends BackendController {
 		$data['data'] 	= $data;
 		$tahun 			= $data[0]['periode_name'];
 		$data['tahun']  = $tahun;
-		$data['combo'] 	= $this->db
-								->where('kelompok', 'implementasi')
-								->order_by('kode', 'asc')
-								->get(_TBL_DATA_COMBO)
-								->result_array();
         return $this->load->view('efektifitas_control',$data,true);
     }
 
@@ -114,11 +89,6 @@ class All_Report extends BackendController {
 		$data['data'] 	= $data;
 		$tahun 			= $data[0]['periode_name'];
 		$data['tahun']  = $tahun;
-		$data['combo'] 	= $this->db
-								->where('kelompok', 'implementasi')
-								->order_by('kode', 'asc')
-								->get(_TBL_DATA_COMBO)
-								->result_array();
         return $this->load->view('progress_treatment',$data,true);
     }
 
@@ -133,11 +103,6 @@ class All_Report extends BackendController {
 		$data['kat_risiko'] 		= $this->get_combo('data-combo', 'kel-library');
 		$data['cboLike']    		= $this->get_combo('likelihood');
         $data['cboImpact'] 			= $this->get_combo('impact');
-		$data['combo'] 				= $this->db
-											->where('kelompok', 'implementasi')
-											->order_by('kode', 'asc')
-											->get(_TBL_DATA_COMBO)
-											->result_array();
         return $this->load->view('loss_event_database',$data,true);
     }
 
@@ -147,11 +112,6 @@ class All_Report extends BackendController {
 		$data['data'] 	= $data;
 		$tahun 			= $data[0]['periode_name'];
 		$data['tahun']  = $tahun;
-		$data['combo'] 	= $this->db
-								->where('kelompok', 'implementasi')
-								->order_by('kode', 'asc')
-								->get(_TBL_DATA_COMBO)
-								->result_array();
         return $this->load->view('early_warning',$data,true);
     }
 
@@ -159,17 +119,12 @@ class All_Report extends BackendController {
 		$data['data'] 	= $data;
 		$tahun 			= $data[0]['periode_name'];
 		$data['tahun']  = $tahun;
-		$data['combo'] 	= $this->db
-								->where('kelompok', 'implementasi')
-								->order_by('kode', 'asc')
-								->get(_TBL_DATA_COMBO)
-								->result_array();
         return $this->load->view('perubahan_level',$data,true);
 	}
 
 	public function heatmap($data)
     {
-        $data['data'] 		= $data;
+        $data['data'] 		= $data; 
 		$tahun 				= $data[0]['periode_name'];
 		$data['tahun']  	= $tahun;
 		$data['mapping'] 	= $this->data->get_map_rcsa($data);
@@ -343,7 +298,41 @@ class All_Report extends BackendController {
         $this->load->view('excel_progress_treatment', ['progress_treatment' => $data,'parent' => $parent]);
     }
 
+    function get_map_residual()
+	{
+		$post = $this->input->post();
+		$data = $this->data->get_map_rcsa($post);
+		$hasil = $data;
+		echo json_encode($hasil);
 
+	}
+
+    public function exportExcelRegister()
+    {
+        $owner_no   = $this->input->get('owner_no');
+        $periode_no = $this->input->get('periode_no');
+        $get        = $this->input->get();
+
+        if (empty($owner_no) || empty($periode_no)) {
+            echo "Parameter tidak lengkap!";
+            return;
+        }
+
+        $parent = $this->data->risk_parent($get);
+
+        $owner_name = $parent[0]['name'];
+        $owner_name = str_replace(' ', '_', $owner_name);
+        $tahun      = $parent[0]['periode_name'];
+        // doi::dump($parent[0]['name']);
+        // die;
+        // $data =$this->data->risk_progress_treatment($get);
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Report_risk_register_' . $owner_name . '_' . $tahun . '.xls"');
+        header('Cache-Control: max-age=0');
+
+        // Muat view untuk mengeluarkan data dalam format Excel
+        $this->load->view('cetak_excel_risk_register', ['data' => $parent]);
+    }
 
 
 	

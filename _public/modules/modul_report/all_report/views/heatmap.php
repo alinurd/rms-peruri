@@ -1,6 +1,8 @@
 <div class="row">
     <aside class="profile-info col-md-12">
         <section class="x_panel" >
+        
+
             <div class="profile-info col-md-4">
                 <!-- <strong>Inherent</strong> -->
                 <div class="x_content text-center" id="mapping_inherent">
@@ -21,3 +23,4 @@
         </section>
     </aside>
 </div>
+

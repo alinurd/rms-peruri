@@ -17,8 +17,8 @@
                 <td class="text-center" style="background: white; min-width: 50px;"><?= $no++ ?></td>
                 <td style=" background: white; min-width: 150px;"><?= $d['sasaran'] ?></td>
                 <td style=" background: white; min-width: 150px;"><?= $d['tema_risiko'] ?></td>
+                <td style=" background: white; min-width: 150px;"><?= $d['tema_risiko_'] ?></td>
                 <td style=" background: white; min-width: 150px;"><?= $d['t2'] ?></td>
-                <td style=" background: white; min-width: 150px;"><?= $d['data_t3'] ?></td>
             </tr>
         <?php
         }

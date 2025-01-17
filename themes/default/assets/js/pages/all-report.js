@@ -9,7 +9,6 @@ $(function () {
     var owner_no = $("#owner_no option:selected").text();
     var owner_name = owner_no.trim();
     $("#owner_name").val(owner_name);
-
     var data = $("#form_grafik").serialize();
     var parent = $(this).parent();
     var url = modul_name + "/get-grafik";
@@ -97,17 +96,56 @@ $(function () {
   });
 
   $("#downloadExcel").on("click", function () {
-      var owner_no = $("#owner_no").val();
-      var periode_no = $("#periode_no").val();
-      if (owner_no && periode_no) {
-          var url = modul_name + "/exportExcel?owner_no=" + owner_no + "&periode_no=" + periode_no;
-          window.location.href = url;
-      } else {
-          alert("Harap masukkan data yang diperlukan!");
-      }
+    var owner_no = $("#owner_no").val();
+    var periode_no = $("#periode_no").val();
+    if (owner_no > 0 && periode_no) {
+      var url =
+        modul_name +
+        "/exportExcel?owner_no=" +
+        owner_no +
+        "&periode_no=" +
+        periode_no;
+      window.location.href = url;
+    } else {
+      alert("Harap masukkan data yang diperlukan!");
+    }
+  });
+  
+  $("#downloadExcelRegister").on("click", function () {
+    var owner_no    = $("#owner_no").val();
+    var periode_no  = $("#periode_no").val();
+    if (owner_no > 0 && periode_no) {
+        var url =
+          modul_name +
+          "/exportExcelRegister?owner_no=" +
+          owner_no +
+          "&periode_no=" +
+          periode_no;
+        window.location.href = url;
+    } else {
+      alert("Harap masukkan data yang diperlukan!");
+    }
   });
 
+  $('#bulan').change(function() {
+    var bulan           = $(this).val();
+    var owner_no        = $("#owner_no").val();
+    var periode_no      = $("#periode_no").val();
+
+      var parent        = $(this).parent();
+      var data        = { owner_no: owner_no, periode_no: periode_no, bulan: bulan };
+      // var target_combo = $("#mapping");
+      var url = modul_name + "/get_map_residual";
+
+      cari_ajax_combo("post", parent, data, '', url, "result_map");
+  });
+
+  
 });
+
+function result_map(hasil) {
+  $("#mapping_residual").html(hasil.residual);
+}
 
 function result_show(hasil) {
   $("#risk_context").html(hasil.combo);
@@ -125,7 +163,16 @@ function result_show(hasil) {
   $("#grapik_efektifitas_control").html(hasil.grapik_efektifitas_control);
   $("#grapik_progress_treatment").html(hasil.grapik_progress_treatment);
   $("#heatmap").html(hasil.heatmap);
-  $("#collapseOne").collapse("show");
+
+  if (hasil.combo.trim() === '') {
+    if ($("#collapseOne").length) {
+        $("#collapseOne").collapse("hide");
+    }
+  } else {
+      if ($("#collapseOne").length) {
+          $("#collapseOne").collapse("show");
+      }
+  }
   $("#collapseTwo").collapse("show");
   $("#collapseThree").collapse("show");
   $("#collapseFour").collapse("show");
@@ -141,8 +188,11 @@ function result_show(hasil) {
   $("#collapseFourteen").collapse("show");
   $("#collapseFiveteen").collapse("show");
 }
-function result_cetak(hasil) {
-  console.log(hasil);
+
+
+function result_map(hasil) {
+  // $("#mapping_inherent").html(hasil.inherent);
+  $("#mapping_residual").html(hasil.residual);
 }
 
 function graph(datas, target) {

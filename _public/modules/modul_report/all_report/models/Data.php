@@ -7,11 +7,28 @@ class Data extends MX_Model {
         parent::__construct();
 	}
 
+	// RISK PARENT
+	function risk_parent($post)
+    {
+		if (!empty($post['owner_no'])) {
+			$this->get_owner_child($post['owner_no']);
+			$this->owner_child[] = $post['owner_no'];
+			$this->db->where_in('owner_no', $this->owner_child);
+		}
+	
+		if (isset($post['periode_no']) && $post['periode_no']) {
+			$this->db->where('period_no', $post['periode_no']);
+		}
 
+        $rows = $this->db->where('sts_propose',4)->get(_TBL_VIEW_RCSA)->result_array();
+        return $rows;
+    }
+
+	// RISK PROGRESS TREATMENT
 	function risk_progress_treatment($post)
     {
-		$x=$this->authentication->get_info_user();
-		$own=$x['group']['owner']['owner_no'];
+		$x		=$this->authentication->get_info_user();
+		$own	=$x['group']['owner']['owner_no'];
  		if($post['owner_no']){
 			$own= $post['owner_no'];
 		}
@@ -41,6 +58,7 @@ class Data extends MX_Model {
 		return $this->db->get('bangga_rcsa_action')->result_array();
     }
 
+	// RISK EARLY WARNING
 	function risk_early_warning($post)
     {
 		
@@ -58,75 +76,82 @@ class Data extends MX_Model {
         return $this->db->where('kri !=', null)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
     }
 
-    function risk_parent($post)
-    {
-        $rows = $this->db->where('owner_no', $post['owner_no'])->where('period_no', $post['periode_no'])->where('sts_propose',4)->get(_TBL_VIEW_RCSA)->result_array();
-        return $rows;
-    }
+	// RISK TAKSTONOMI
+    function risk_tasktonomi($post){
+		$x=$this->authentication->get_info_user();
+		$own=$x['group']['owner']['owner_no'];
+ 		if($post['owner_no']){
+			$own= $post['owner_no'];
+		}
+		if (!isset($this->owner_child)) {
+			$this->owner_child = [];
+		}
+		if (isset($post['owner_no']) && $post['owner_no']) {
+			$this->get_owner_child($post['owner_no']);
+			$this->owner_child[] = $post['owner_no'];
+			$this->db->where_in('bangga_view_rcsa_detail.owner_no', $this->owner_child);     
+		}
+		if (isset($data['periode_no']) && $data['periode_no']) {
+			$this->db->where('bangga_view_rcsa_detail.period_no', $data['periode_no']);
+		}
+		$this->db->where('bangga_view_rcsa_detail.sts_propose', 4); 
+		return $this->db->get('bangga_view_rcsa_detail')->result_array();
+	}
 
+	// GET DATA RISK REGISTER
     function get_data_risk_register($id)
 	{
 		$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		foreach ($rows as &$row) {
-			$arrCouse = json_decode($row['risk_couse_no'], true);
-			
+			$arrCouse 	= json_decode($row['risk_couse_no'], true);
 			$rows_couse = array();
 			if ($arrCouse)
-			
-				$arrCouse_implode = implode(", ", $arrCouse);
-			$rows_couse  = $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array(); //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-			$arrCouse = array();
+			$arrCouse_implode 	= implode(", ", $arrCouse);
+			$rows_couse  		= $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array(); //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+			$arrCouse 			= array();
+			foreach ($rows_couse as $rc) {
+				$arrCouse[] 	= $rc['description'];
+			}
+			$row['couse'] 		= implode('### ', $arrCouse);
+			$arrCouse 			= json_decode($row['risk_impact_no'], true);
+			$rows_couse 		= array();
+			if ($arrCouse)
+			$arrCouse_implode 	= implode(", ", $arrCouse);
+			$rows_couse 		=  $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array();  //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+			$arrCouse 			= array();
 			foreach ($rows_couse as $rc) {
 				$arrCouse[] = $rc['description'];
 			}
-			$row['couse'] = implode('### ', $arrCouse);
-
-			$arrCouse = json_decode($row['risk_impact_no'], true);
-			$rows_couse = array();
+			$row['impact'] 		= implode('### ', $arrCouse);
+			$arrCouse 			= json_decode($row['accountable_unit'], true);
+			$rows_couse 		= array();
 			if ($arrCouse)
-				$arrCouse_implode = implode(", ", $arrCouse);
-			$rows_couse =  $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array();  //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-			$arrCouse = array();
-			foreach ($rows_couse as $rc) {
-				$arrCouse[] = $rc['description'];
-			}
-			$row['impact'] = implode('### ', $arrCouse);
-
-			$arrCouse = json_decode($row['accountable_unit'], true);
-			$rows_couse = array();
-			if ($arrCouse)
-				$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
-			$arrCouse = array();
+			$rows_couse 		= $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+			$arrCouse 			= array();
 			foreach ($rows_couse as $rc) {
 				$arrCouse[] = $rc['name'];
 			}
 			$row['accountable_unit_name'] = implode('### ', $arrCouse);
-
-
-			$arrCouse = json_decode($row['penangung_no'], true);
-			$rows_couse = array();
+			$arrCouse 			= json_decode($row['penangung_no'], true);
+			$rows_couse 		= array();
 			if ($arrCouse)
-				$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
-			$arrCouse = array();
+			$rows_couse 		= $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+			$arrCouse 			= array();
 			foreach ($rows_couse as $rc) {
 				$arrCouse[] = $rc['name'];
 			}
 			$row['penanggung_jawab'] = implode('### ', $arrCouse);
-
-			// $arrCouse = json_decode($row['control_no'], true);
-			// $arrCouse = json_decode($row['risk_impact_no'], true);
 			if (!empty($row['note_control']))
 				$arrCouse =json_decode($row['note_control'], true);
 			$row['control_name'] = implode('### ', $arrCouse);
 		}
 		unset($row);
-
 		return $rows;
 	}
 
+	// GET MONTHLY PROGRESS TREATMENT
 	function getMonthlyMonitoringGlobal($q, $month)
-	{
- 		 
+	{	 
 		$data['data'] = $this->db
 			->where('rcsa_action_no', $q['id_action'])
 			->where('bulan', $month)
@@ -174,14 +199,12 @@ class Data extends MX_Model {
 				</table>
 			</td>
 		';
-
-
  		return $result;
 	}
 
+	// GET MONTHLY EARLY WARNING
 	function getMonthlyMonitoringGlobal_Early($q, $month)
 	{
- 		 
 		$act = $this->db
 			->select('id')
 			->where('rcsa_detail_no',$q['id'])
@@ -200,12 +223,7 @@ class Data extends MX_Model {
 			->where('rcsa_action_no', $act['id'])
 			->where('bulan', $month)
 			->get('bangga_view_rcsa_action_detail')->row_array();
-
-		$detail = $this->db
-			->select('periode_name')
-			->where('id',$q['id'])
- 			->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
-		
+					
         $realisasi 	= $data['kri_detail']['realisasi'];
         $level_1 	= range($data['kri']['min_rendah'], $data['kri']['max_rendah']);
         $level_2 	= range($data['kri']['min_menengah'], $data['kri']['max_menengah']);
@@ -226,31 +244,22 @@ class Data extends MX_Model {
         }
         
 		$result['data'] = $realisasi;
-        
  		return $result;
 	}
 
+	// IKHTISAR PERUBAHAN LEVEL
 	function perubahan_level($post) {
-		// Memastikan owner_no ada dalam post
 		if (!empty($post['owner_no'])) {
 			$this->get_owner_child($post['owner_no']);
 			$this->owner_child[] = $post['owner_no'];
 			$this->db->where_in('bangga_view_rcsa_action_detail.owner_no', $this->owner_child);
 		}
-	
-		// Memastikan periode_no ada dalam post
 		if (isset($post['periode_no']) && $post['periode_no']) {
 			$this->db->where('bangga_view_rcsa_action_detail.period_no', $post['periode_no']);
 		}
-	
-		// Menambahkan kondisi untuk status dan bulan
 		$this->db->where('bangga_view_rcsa_action_detail.sts_propose', 4);
 		$this->db->where('bangga_view_rcsa_action_detail.bulan', $post['bulan']);
-	
-		// Menambahkan JOIN
 		$this->db->join('bangga_rcsa_detail', 'bangga_rcsa_detail.id = bangga_view_rcsa_action_detail.rcsa_detail_no', 'left');
-	
-		// Mengambil data dari tabel bangga_rcsa_action_detail
 		return $this->db->get('bangga_view_rcsa_action_detail')->result_array();
 	}
 
@@ -267,6 +276,7 @@ class Data extends MX_Model {
         return $result;
     }
 
+	// GET MONTHLY IKHTISAR PERUBAHAN LEVEL
 	function getMonthlyMonitoringGlobal_PL($id, $month, $inh)
     {
         $act                = $this->db->select('id')->where('rcsa_detail_no', $id)->get('bangga_rcsa_action')->row_array();
@@ -290,7 +300,6 @@ class Data extends MX_Model {
         } elseif ($residual_level['level_mapping'] == "Low") {
             $r = 1;
         }
-
         if ($inh == "High") {
             $Inh = 5;
         } elseif ($inh == "Moderate to High") {
@@ -302,27 +311,23 @@ class Data extends MX_Model {
         } elseif ($inh == "Low") {
             $Inh = 1;
         }
-
         if ($r == $Inh) {
             $pl = ' 
-            <span class="btn " data-toggle="popover" data-content="residual anda tidak penurunan dan kenaikan dari risiko inherent &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
-                <i style=" font-size: 30px;" class="glyphicon glyphicon-resize-horizontal text-primary" aria-hidden="true"></i> 
-            </span>
-
-                         ';
+					<span class="btn " data-toggle="popover" data-content="residual anda tidak penurunan dan kenaikan dari risiko inherent &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
+						<i style=" font-size: 30px;" class="glyphicon glyphicon-resize-horizontal text-primary" aria-hidden="true"></i> 
+					</span>
+			';
         } elseif ($r > $Inh) {
             $pl = ' 
-
-        	<span class="btn " data-toggle="popover" data-content="risiko anda lebih tinggi dari risiko inherent risk &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
-                <i style=" font-size: 30px;" class="fa fa-arrow-up text-danger" aria-hidden="true"></i> 
-            </span>
-
+					<span class="btn " data-toggle="popover" data-content="risiko anda lebih tinggi dari risiko inherent risk &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
+						<i style=" font-size: 30px;" class="fa fa-arrow-up text-danger" aria-hidden="true"></i> 
+					</span>
          ';
         } elseif ($r<$Inh) {
             $pl = '
-                <span class="btn " data-toggle="popover" data-content="residual anda turun dari  risiko inherent &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
-					<i style=" font-size: 30px;" class="fa fa-arrow-down text-success" aria-hidden="true"></i> 
-				</span>';
+					<span class="btn " data-toggle="popover" data-content="residual anda turun dari  risiko inherent &#x1F603;" style="padding:4px; height:4px 8px;width:100%;">
+						<i style=" font-size: 30px;" class="fa fa-arrow-down text-success" aria-hidden="true"></i> 
+					</span>';
         } else {
             $result['pl']         = '<center> <i class="  fa fa-times-circle text-danger"></i></center>';
         }
@@ -339,19 +344,18 @@ class Data extends MX_Model {
         return $result;
     }
 
+	// CEK LEVEL
 	function cek_level_new($like, $impact)
 	{
 		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
         return $rows;
 	}
 
+	// GET MAP INHERENT & RESIDUAL
 	function get_map_rcsa($data = [])
 	{
-
-		// doi::dump($data['owner_no']);
 		$hasil['inherent'] = '';
 		$hasil['residual'] = '';
-
 		if ($data) {
 			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
 			if ($data['owner_no'] > 0) {
@@ -359,7 +363,6 @@ class Data extends MX_Model {
 				$this->owner_child[] = $data['owner_no'];
 				$this->db->where_in('owner_no', $this->owner_child);
 			}
-		
 			if ($data['id_period'] > 0) {
 				$this->db->where('period_no', $data['id_period']);
 			}
@@ -368,7 +371,6 @@ class Data extends MX_Model {
 			foreach ($rows as &$ros) {
 				$arrData[$ros['inherent_level']] = $ros['jml'];
 			}
-
 			foreach ($mapping as &$row) {
 				if (array_key_exists($row['id'], $arrData))
 					$row['nilai'] = $arrData[$row['id']];
@@ -386,28 +388,54 @@ class Data extends MX_Model {
 				$this->db->where_in('owner_no', $this->owner_child);
 			}
 		
-			if ($data['id_period'] > 0) {
-				$this->db->where('period_no', $data['id_period']);
+			
+			$current_month = date('n');
+			// === Filter by Period ===
+			if (isset($data['id_period']) && $data['id_period'] > 0) {
+				$this->db->where('a.period_no', $data['id_period']);
 			}
-			$rows = $this->db->select('residual_level, count(residual_level) as jml')->group_by(['residual_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			$arrData = [];
-			foreach ($rows as &$ros) {
-				$arrData[$ros['residual_level']] = $ros['jml'];
+	
+			// // Validasi bulan dan bulanx
+			if (isset($data['bulan']) && $data['bulan'] > 0) {
+				$this->db->where("b.bulan",$data['bulan']);
+			}else{
+				$this->db->where('b.bulan', $current_month);
 			}
 
-			foreach ($mapping as &$row) {
-				if (array_key_exists($row['id'], $arrData))
-					$row['nilai'] = $arrData[$row['id']];
-				else
-					$row['nilai'] = '';
-			}
+			$rows = $this->db->select('b.residual_likelihood_action as residual_like, b.residual_impact_action as residual_impact, COUNT(*) as jml')
+					->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
+					->join('bangga_rcsa_action_detail b', 'a.id = b.rcsa_detail', 'inner') 
+					->where('a.sts_propose', 4)
+					->where('a.sts_heatmap', '1')
+					->group_by(['b.residual_likelihood_action', 'b.residual_impact_action']) 
+					->get()
+					->result_array();
+  
+        $arrData = [];
+        foreach ($rows as $ros) {
+
+            if (isset($ros['residual_like'], $ros['residual_impact'])) {
+                $key = $ros['residual_like'] . '-' . $ros['residual_impact'];
+                $arrData[$key] = $ros['jml'];
+            }
+        }
+
+        // === Update Mapping with Inherent Values ===
+        foreach ($mapping as &$row) {
+            // Pastikan kolom likelihood dan impact ada dalam $mapping
+            if (isset($row['like_no'], $row['impact_no'])) {
+                $key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+                $row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+                
+            }
+        }
 			unset($row);
 			$hasil['residual'] = $this->data->draw_rcsa_res($mapping);
 		}
 		return $hasil;
 	}
 	
-
+ 
 	function get_map_residual1($data = [])
     {
         $hasil['residual1'] = '';
@@ -425,10 +453,6 @@ class Data extends MX_Model {
             $this->db->where('a.period_no', $data['id_period']);
         }
 
-        // Validasi bulan dan bulanx
-        if (isset($data['bulan']) && $data['bulan'] > 0) {
-            $this->db->where("b.bulan",$data['bulan']);
-        }
 
     $rows = $this->db->select('b.target_like as target_like, b.target_impact as target_impact, COUNT(*) as jml')
         ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
@@ -462,124 +486,7 @@ class Data extends MX_Model {
        
         return $hasil;
     }
-	function get_map_rcsa_cetak($data = [])
-	{
-
-		// doi::dump($data['owner_no']);
-		$hasil['inherent'] = '';
-		$hasil['residual'] = '';
-
-		if ($data) {
-			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
-			if ($data['owner_no'] > 0) {
-				$this->get_owner_child($data['owner_no']);
-				$this->owner_child[] = $data['owner_no'];
-				$this->db->where_in('owner_no', $this->owner_child);
-			}
-		
-			if ($data['id_period'] > 0) {
-				$this->db->where('period_no', $data['id_period']);
-			}
-			$rows = $this->db->select('inherent_level, count(inherent_level) as jml')->group_by(['inherent_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			$arrData = [];
-			foreach ($rows as &$ros) {
-				$arrData[$ros['inherent_level']] = $ros['jml'];
-			}
-
-			foreach ($mapping as &$row) {
-				if (array_key_exists($row['id'], $arrData))
-					$row['nilai'] = $arrData[$row['id']];
-				else
-					$row['nilai'] = '';
-			}
-			unset($row);
-			$hasil['inherent'] = $this->data->draw_rcsa_cetak($mapping);
-
-			// residual
-			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
-			if ($data['owner_no'] > 0) {
-				$this->get_owner_child($data['owner_no']);
-				$this->owner_child[] = $data['owner_no'];
-				$this->db->where_in('owner_no', $this->owner_child);
-			}
-		
-			if ($data['id_period'] > 0) {
-				$this->db->where('period_no', $data['id_period']);
-			}
-			$rows = $this->db->select('residual_level, count(residual_level) as jml')->group_by(['residual_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			$arrData = [];
-			foreach ($rows as &$ros) {
-				$arrData[$ros['residual_level']] = $ros['jml'];
-			}
-
-			foreach ($mapping as &$row) {
-				if (array_key_exists($row['id'], $arrData))
-					$row['nilai'] = $arrData[$row['id']];
-				else
-					$row['nilai'] = '';
-			}
-			unset($row);
-			$hasil['residual'] = $this->data->draw_rcsa_res_cetak($mapping);
-		}
-		return $hasil;
-	}
 	
-
-	function get_map_residual1_cetak($data = [])
-    {
-        $hasil['residual1'] = '';
-        $mapping1 = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
-
-        if ($data['owner_no'] > 0) {
-			$this->get_owner_child($data['owner_no']);
-			$this->owner_child[] = $data['owner_no'];
-			$this->db->where_in('owner_no', $this->owner_child);
-		}
-	
-
-        // === Filter by Period ===
-        if (isset($data['id_period']) && $data['id_period'] > 0) {
-            $this->db->where('a.period_no', $data['id_period']);
-        }
-
-        // Validasi bulan dan bulanx
-        if (isset($data['bulan']) && $data['bulan'] > 0) {
-            $this->db->where("b.bulan",$data['bulan']);
-        }
-
-    $rows = $this->db->select('b.target_like as target_like, b.target_impact as target_impact, COUNT(*) as jml')
-        ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
-        ->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner') // Perbaiki alias di sini
-        ->where('a.sts_propose', 4)
-        ->where('a.sts_heatmap', '1')
-        ->group_by(['b.target_like', 'b.target_impact']) 
-        ->get()
-        ->result_array();
-  
-        $arrData = [];
-        foreach ($rows as $ros) {
-
-            if (isset($ros['target_like'], $ros['target_impact'])) {
-                $key = $ros['target_like'] . '-' . $ros['target_impact']; // Gabungkan likelihood dan impact
-                $arrData[$key] = $ros['jml'];
-            }
-        }
-
-        // === Update Mapping with Inherent Values ===
-        foreach ($mapping1 as &$row) {
-            // Pastikan kolom likelihood dan impact ada dalam $mapping
-            if (isset($row['like_no'], $row['impact_no'])) {
-                $key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
-                $row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
-                
-            }
-        }
-
-        $hasil['residual1'] = $this->data->draw_rcsa1($mapping1, 'Target');
-       
-        return $hasil;
-    }
-
 	function grafik($data){
         $result=[];
         $rows=$this->db->order_by('urut')->get(_TBL_LEVEL_MAPPING)->result_array();
@@ -729,32 +636,7 @@ class Data extends MX_Model {
         return $result;
     }
 
-	function risk_tasktonomi($post){
-		$x=$this->authentication->get_info_user();
-		$own=$x['group']['owner']['owner_no'];
- 		if($post['owner_no']){
-			$own= $post['owner_no'];
-		}
-
-		if (!isset($this->owner_child)) {
-			$this->owner_child = [];
-		}
-
-		if (isset($post['owner_no']) && $post['owner_no']) {
-			$this->get_owner_child($post['owner_no']);
-			$this->owner_child[] = $post['owner_no'];
-			$this->db->where_in('bangga_view_rcsa_detail.owner_no', $this->owner_child);     
-		}
-
-		if (isset($data['periode_no']) && $data['periode_no']) {
-			$this->db->where('bangga_view_rcsa_detail.period_no', $data['periode_no']);
-		}
-
-		$this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
-
-		// $this->db->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_rcsa_action.rcsa_detail_no', 'left'); 
-		return $this->db->get('bangga_view_rcsa_detail')->result_array();
-	}
+	
 
 	function grapik_efektifitas_control($data){
 		$cboPenilaian = [
