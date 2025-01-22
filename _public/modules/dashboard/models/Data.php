@@ -21,12 +21,15 @@ class Data extends MX_Model
 			// doi::dump($mapping);
 			// === Filter by Owner ===
 			if ($data['id_owner'] > 0) {
-				$this->get_owner_child($data['id_owner']);
-				$this->owner_child[] = $data['id_owner'];
-				$this->db->where_in('rcsa_owner_no', $this->owner_child);
-				$this->db->where('urgensi_no_kadiv > 0');
+				// $this->get_owner_child($data['id_owner']);
+				// $this->owner_child[] = $data['id_owner'];
+				// $this->db->where_in('rcsa_owner_no', $this->owner_child);
+				// $this->db->where('urgensi_no_kadiv > 0');
 				// Debugging: Check owner child data
 				// doi::dump($data['id_owner']);
+                $this->get_owner_child($data['id_owner']);
+				$this->owner_child[] = $data['id_owner'];
+				$this->db->where_in('owner_no', $this->owner_child);
 			}
 
 			// === Filter by Period ===
@@ -99,10 +102,9 @@ class Data extends MX_Model
 			// doi::dump($mapping, 'RCSA Mapping Data for Residual');
 
 			if ($data['id_owner'] > 0) {
-				$this->get_owner_child($data['id_owner']);
+                $this->get_owner_child($data['id_owner']);
 				$this->owner_child[] = $data['id_owner'];
-				$this->db->where_in('rcsa_owner_no', $this->owner_child);
-				$this->db->where('urgensi_no_kadiv > 0');
+				$this->db->where_in('owner_no', $this->owner_child);
 				
 				// Debugging: Check owner child data for residual
 				// doi::dump($this->owner_child, 'Owner Child Data for Residual');
@@ -184,9 +186,8 @@ class Data extends MX_Model
         // === Filter by Owner ===
         if (isset($data['id_owner']) && $data['id_owner'] > 0) {
             $this->get_owner_child($data['id_owner']);
-            $this->owner_child[] = $data['id_owner'];
-            $this->db->where_in('a.rcsa_owner_no', $this->owner_child);
-            $this->db->where('a.urgensi_no_kadiv > 0');
+			$this->owner_child[] = $data['id_owner'];
+			$this->db->where_in('owner_no', $this->owner_child);
         }
 
         // === Filter by Period ===
