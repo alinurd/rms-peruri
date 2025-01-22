@@ -13,7 +13,7 @@
 			<th colspan="3" style="text-align:center;">Risk Tolerance</th>
 			<th rowspan="3" style="text-align:center;">Risk Limit</th>
 			<!-- <th colspan="3" style="text-align:center;">Risk Limit</th> -->
-		</tr>
+		</tr> 
 		<tr>
 			<th style="text-align:center;">Min</th>
 			<th style="text-align:center;">-</th>
@@ -73,7 +73,7 @@
 				<?php if ($this->uri->segment(2) == "view") : ?>
 					<td></td>
 				<?php else : ?>
-					<td style="text-align:center;width:10%;"><a href=" <?= base_url() ?>rcsa/delete_sasaran/<?php echo $row['id']; ?>/<?php echo $this->uri->segment(3); ?>"><i class="fa fa-cut" title="menghapus data"></i></a></td>
+					<td style="text-align:center;width:10%;"><a href=" <?= base_url() ?>rcsa-appetite/delete_sasaran/<?php echo $row['id']; ?>/<?php echo $this->uri->segment(3); ?>"><i class="fa fa-cut" title="menghapus data"></i></a></td>
 				<?php endif ?>
 			</tr>
 		<?php

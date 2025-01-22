@@ -206,7 +206,75 @@ class Data extends MX_Model {
 		return $result;
 	}
 
-	
+
+
+	function get_map_takstonomi($type, $id)
+{
+    $where = " AND dc.pid='" . $id . "'";
+    $query = '';
+
+    switch ($type) {
+        case 1:
+            $query = "SELECT 
+                          bl.description, 
+                          dc.id AS id, 
+                          CONCAT(bl.description, ' - ', dc.data) AS data 
+                      FROM " . _TBL_DATA_COMBO . " AS dc 
+                      JOIN bangga_library AS bl ON bl.id = dc.pid 
+                      WHERE dc.aktif = '1' 
+                        AND dc.kelompok = 'kategori-risiko' 
+                        {$where} 
+                      ORDER BY dc.urut, dc.data";
+            break;
+
+        case 2:
+            $query = "SELECT 
+                          bl.data, 
+                          dc.id AS id, 
+                          CONCAT(bl.data, ' - ', dc.data) AS data 
+                      FROM " . _TBL_DATA_COMBO . " AS dc 
+                      JOIN " . _TBL_DATA_COMBO . " AS bl ON bl.id = dc.pid 
+                      WHERE dc.aktif = '1' 
+                        AND dc.kelompok = 'kelompok-risiko' 
+                        {$where} 
+                      ORDER BY dc.urut, dc.data";
+            break;
+			case 3:
+				$query = "SELECT id as id, 
+							CONCAT(description) AS data 
+							FROM bangga_library
+							WHERE status = 1    AND t3= {$id} 
+							ORDER BY description";
+            break;
+
+        default:
+            return ['combo' => '<option value="0">' . lang('msg_cbo_select') . '</option>'];
+    }
+
+    // Memanggil fungsi untuk mengambil data
+    return $this->get_cbotakstonomi($query, $type);
+}
+
+function get_cbotakstonomi($query, $type)
+{
+    $data = $this->db->query($query)->result_array();
+    $option = '<option value="0">' . lang('msg_cbo_select') . '</option>';
+
+    if (count($data) > 0) {
+        foreach ($data as $row) {
+            $option .= '<option value="' . $row['id'] . '">' . $row['data'] . '</option>';
+        }
+    }
+
+	$res['takstonomi']=true;
+	$res['type']=$type;
+	$res['combo']=$option;
+	$res['reset']='<option value="0">' . lang('msg_cbo_select') . '</option>';
+    return $res;
+}
+
+
+
 	function get_data_type_risk($param){
 		if ($param>0){
 			$sql= $this->db

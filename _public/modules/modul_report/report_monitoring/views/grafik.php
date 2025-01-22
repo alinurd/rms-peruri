@@ -66,11 +66,11 @@
                 <th>Kategori Risiko (T2)</th>
                 <th style="width: 300px">Peristiwa (T3)</th>
                 <th>Risk Level Inherent</th>
-                <th>Pelaksanaan Treatment</th>
+                <!-- <th>Pelaksanaan Treatment</th> -->
                 <th>Risk Level Residual</th>
                 <th>Loss Event</th>
                 <th>Risk Level Bulanan</th>
-                <th>Progress</th>
+                <!-- <th>Progress</th> -->
             </tr>
         </thead>
         <tbody>
@@ -79,17 +79,17 @@
 
             foreach ($coba['bobo'] as $key1 => $value1) :
 
-                $residual_mont = $this->data->get_master_level(true, $value1['risk_level']);
+                // $residual_mont = $this->data->get_master_level(true, $value1['risk_level']);
                 $residual_level = $this->data->get_master_level(true, $value1['residual_level']);
                 $inherent_level = $this->data->get_master_level(true, $value1['inherent_level']);
 
 
                 $like_mont = $this->db
-                    ->where('id', $residual_mont['likelihood'])
+                    ->where('id', $coba['baba'][$value1['id']]['residual_likelihood_action'])
                     ->get('bangga_level')->row_array();
 
                 $impact_mont = $this->db
-                    ->where('id', $residual_mont['impact'])
+                    ->where('id', $coba['baba'][$value1['id']]['residual_impact_action'])
                     ->get('bangga_level')->row_array();
 
                 $like = $this->db
@@ -113,6 +113,10 @@
                     ->get('bangga_rcsa_action')->row_array();
                 $combo = $this->db->where('id', $value1['sub_kategori'])->get('bangga_data_combo')->row_array();
 
+                // $residual_mont = $this->data->get_master_level(true, $like_mont['id']);
+                $residual_mont     = $this->data->cek_level_new($coba['baba'][$value1['id']]['residual_likelihood_action'],$coba['baba'][$value1['id']]['residual_impact_action']);
+                // $residual_mont = $this->data->get_master_level(true, $like_mont['id']);
+                // doi::dump($residual_mont);
             ?>
 
                 <tr>
@@ -125,7 +129,7 @@
                     <td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;">[ <?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>] <br><strong><?= $inherent_level['level_mapping']; ?></strong></td>
 
 
-                    <td style="text-align: center;">
+                    <!-- <td style="text-align: center;">
                         <?php $hoho = $coba['baba'][$value1['id']]['status_action_detail']; ?>
                         <?php if ($hoho == "Add") : ?>
                             <span style="background-color:red;color:white;"><?= $hoho; ?></span>
@@ -134,7 +138,7 @@
                         <?php endif; ?>
 
 
-                    </td>
+                    </td> -->
 
                     <td valign="top" style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"> [ <?= $like['code']; ?> x <?= $impact['code']; ?> ] <br><strong><?= $residual_level['level_mapping']; ?></strong>
                     </td>
@@ -151,9 +155,9 @@
                     <?php endif; ?>
 
 
-                    <td valign="top" style="text-align: center; background-color:<?= $residual_mont['color']; ?>;color:<?= $residual_mont['color_text']; ?>;"> [ <?= $like_mont['code']; ?> x <?= $impact_mont['code']; ?> ] <br><strong><?= $residual_mont['level_mapping']; ?></strong>
+                    <td valign="top" style="text-align: center; background-color:<?= $residual_mont['warna_bg']; ?>;color:<?= $residual_mont['warna_txt']; ?>;"> [ <?= $like_mont['code']; ?> x <?= $impact_mont['code']; ?> ] <br><strong><?= $residual_mont['tingkat']; ?></strong>
                     </td>
-                    <?php
+                    <!-- <?php
                     $a = $coba['baba'][$value1['id']]['progress_detail'];
                     if ($a <= 30) : $warna = "danger"; ?>
                     <?php elseif ($a <= 50) : $warna = "warning"; ?>
@@ -170,7 +174,7 @@
                                 </div>
                             </div>
                         <?php endif; ?>
-                    </td>
+                    </td> -->
 
 
 

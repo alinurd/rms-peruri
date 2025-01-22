@@ -226,9 +226,10 @@ class Report_Risk_Register extends BackendController {
 				
 				}
 
-				// .test table > th > td {
-				// 	border: 1px solid #ccc;
-				// }
+				td {
+					border: 1px solid black;
+					padding: 4px;
+				}
 				</style>';
 
 

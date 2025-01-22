@@ -257,14 +257,12 @@ $hide = $periode ? "" : "hide";
 </style>
 
 <script>
-// Validasi input dan kirim data melalui AJAX
-$('.best').on('change', function () {
-    let value = this.value.replace(/[^0-9.,-]/g, ''); // Memungkinkan tanda koma dan titik
-    if (value.indexOf('-') > 0) value = value.replace('-', '');
-    if ((value.match(/[.,]/g) || []).length > 1) value = value.replace(/[.,]+$/, '');
-    
-    // Ganti titik dengan koma agar konsisten
-    this.value = value.replace(',', '.');
+$('.best').on('input', function () {
+    let value = this.value.replace(/\./g, ''); // Menghapus titik
+    value = value.replace(',', '.'); // Mengganti koma dengan titik
+
+    // Memastikan pemformatan angka tetap sesuai dengan yang diinginkan
+    this.value = _formatNumber(value.replace('.', ',')); // Mengubah titik desimal menjadi koma jika diperlukan
 
     let id = $(this).data('id');
     let data = { id: id, best: value };
@@ -274,14 +272,12 @@ $('.best').on('change', function () {
     cari_ajax_combo("post", "", data, "", url, "result_best");
 });
 
+
 // Validasi change dan kirim data melalui AJAX
-$('.base').on('change', function () {
-    let value = this.value.replace(/[^0-9.,-]/g, ''); // Memungkinkan tanda koma dan titik
-    if (value.indexOf('-') > 0) value = value.replace('-', '');
-    if ((value.match(/[.,]/g) || []).length > 1) value = value.replace(/[.,]+$/, '');
-    
-    // Ganti titik dengan koma agar konsisten
-    this.value = value.replace(',', '.');
+$('.base').on('input', function () {
+    let value = this.value.replace(/\./g, ''); // Menghapus titik, untuk menangani format ribuan
+    value = value.replace(',', '.'); // Mengganti koma dengan titik desimal
+    this.value = _formatNumber(value.replace('.', ',')); // Mengubah titik menjadi koma untuk format tampilan
 
     let id = $(this).data('id');
     let data = { id: id, base: value };
@@ -292,13 +288,10 @@ $('.base').on('change', function () {
 });
 
 // Validasi change dan kirim data melalui AJAX
-$('.worst').on('change', function () {
-    let value = this.value.replace(/[^0-9.,-]/g, ''); // Memungkinkan tanda koma dan titik
-    if (value.indexOf('-') > 0) value = value.replace('-', '');
-    if ((value.match(/[.,]/g) || []).length > 1) value = value.replace(/[.,]+$/, '');
-    
-    // Ganti titik dengan koma agar konsisten
-    this.value = value.replace(',', '.');
+$('.worst').on('input', function () {
+    let value = this.value.replace(/\./g, ''); // Menghapus titik, untuk menangani format ribuan
+    value = value.replace(',', '.'); // Mengganti koma dengan titik desimal
+    this.value = _formatNumber(value.replace('.', ',')); // Mengubah titik menjadi koma untuk format tampilan
 
     let id = $(this).data('id');
     let data = { id: id, worst: value };
@@ -307,6 +300,8 @@ $('.worst').on('change', function () {
     let url = modul_name + "/get_warna";
     cari_ajax_combo("post", "", data, "", url, "result_worst");
 });
+
+
 
 // Fungsi untuk mengatur warna berdasarkan respons
 function result_best(res) {

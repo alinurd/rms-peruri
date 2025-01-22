@@ -51,14 +51,13 @@
 <?php foreach ($fields as $key1 => $row1) : ?>
 <?php endforeach; ?>
 <div class="double-scroll" style='height:550px;'>
-    <table class="table table-bordered table-sm" id="datatables_event" border="1" cellpadding="0" cellspacing="0">
+    <table class="table table-bordered table-sm" id="datatables_event" border="1" cellpadding="0" cellspacing="0" style="width: 100%;">
         <thead>
             <tr>
                 <td colspan="2" rowspan="6" style="text-align: left;border-right:none;"><img src="<?= img_url('logo.png'); ?>" width="100"></td>
-                <td colspan="2" rowspan="6" style="text-align:center;border-left:none;">
+                <td colspan="4" rowspan="6" style="text-align:center;border-left:none;">
                     <h1>ACCEPT RISK</h1>
                 </td>
-
                 <td rowspan="2" style="text-align:left;">No.</td>
                 <td rowspan="2" style="text-align:left;">: 006/RM-FORM/I/<?= $row1['periode_name']; ?></td>
             </tr>
@@ -79,7 +78,6 @@
             <tr>
                 <td style="border: none;padding: 0;margin: 0;"></td>
             </tr>
-
             <tr>
                 <td colspan="2" style="border: none;">Risk Owner</td>
                 <td colspan="4" style="border: none;">: <?= $row1['name']; ?></td>
@@ -100,114 +98,77 @@
                 <th><label class="w250">Peristiwa (T3)</label></th>
                 <th><label class="w250">Penyebab</label></th>
                 <th><label class="w250">Dampak</label></th>
-
             </tr>
         </thead>
         <tbody>
-            <?php
-            $no = 0;
-            foreach ($field as $key => $row) : ?>
-                <tr>
-                    <td rowspan="<?= count($row['sasaran']); ?>" valign="top" style="text-align: center;vertical-align: text-top;">
-                        <?= ++$no; ?></td>
+    <?php
+    $no = 0;
+    foreach ($field as $key => $row) : ?>
+        <?php foreach ($row['sasaran'] as $key1 => $value1) : ?>
+            <tr>
+                <?php if ($key1 == 0) : ?>
+                    <!-- Kolom No dan Judul hanya dicetak pada baris pertama -->
+                    <td rowspan="<?= count($row['sasaran']); ?>" valign="top" style="text-align: center;">
+                        <?= ++$no; ?>
+                    </td>
                     <td rowspan="<?= count($row['sasaran']); ?>" valign="top"><?= $row['judul']; ?></td>
-                    <td valign="top"><?= $row['sasaran'][0]; ?></td>
-                     <td valign="top">
-                        <ol>
-                            <?php foreach ($row['event'] as $key2 => $value2) : ?>
-                                <?php if ($value2['sasaran'] == $row['sasaran'][0]) :
-                                    $combo = $this->db->where('id', $value2['sub_kategori'])->get('bangga_data_combo')->row_array();
-                                ?>
-                                    
-                                    <li> <?= $combo['data']; ?> </li>
-                                <?php endif ?>
-                            <?php endforeach; ?>
-                        </ol>
-                    </td>
-                     <td valign="top">
-                        <ol>
-                            <?php foreach ($row['event'] as $key2 => $value2) : ?>
-                                <?php if ($value2['sasaran'] == $row['sasaran'][0]) : ?>
-                                    <li> <?= $value2['kategori']; ?> </li>
-                                <?php endif ?>
-                            <?php endforeach; ?>
-                        </ol>
-                    </td>
-                     <td valign="top">
-                        <ol>
-                            <?php foreach ($row['event'] as $key2 => $value2) : ?>
-                                <?php if ($value2['sasaran'] == $row['sasaran'][0]) : ?>
-                                    <li> <?= $value2['risiko']; ?> </li>
-                                <?php endif ?>
-                            <?php endforeach; ?>
-                        </ol>
-                    </td>
-                    <td valign="top">
-                        <ol>
-                            <?php foreach ($row['event'] as $key2 => $value2) : ?>
-                                <?php if ($value2['sasaran'] == $row['sasaran'][0]) : ?>
-                                    <li> <?= format_list($value2['couse'], "### "); ?> </li>
-                                <?php endif ?>
-                            <?php endforeach; ?>
-                        </ol>
-                    </td>
-                    <td valign="top">
-                        <ol>
-                            <?php foreach ($row['event'] as $key2 => $value2) : ?>
-                                <?php if ($value2['sasaran'] == $row['sasaran'][0]) : ?>
-                                    <li> <?= format_list($value2['impact'], "### "); ?> </li>
-                                <?php endif ?>
-                            <?php endforeach; ?>
-                        </ol>
-                    </td>
+                <?php endif; ?>
 
+                <!-- Kolom Sasaran -->
+                <td valign="top"><?= $value1; ?></td>
 
-
-                </tr>
-                <?php foreach ($row['sasaran'] as $key1 => $value1) : ?>
-                    <?php if ($key1 != 0) : ?>
-                        <tr>
-                            <td valign="top"><?= $value1; ?></td>
-                            <td valign="top">
-                                <ol>
-                                    <?php foreach ($row['event'] as $key3 => $value3) : ?>
-                                        <?php if ($value3['sasaran'] == $value1) : ?>
-                                            <li> <?= $value3['risiko']; ?> </li>
-                                        <?php endif ?>
-                                    <?php endforeach; ?>
-                                </ol>
-                            </td>
-                            <td valign="top">
-                                <ol>
-                                    <?php foreach ($row['event'] as $key3 => $value3) : ?>
-                                        <?php if ($value3['sasaran'] == $value1) : ?>
-
-                                            <li> <?= format_list($value3['couse'], "### "); ?> </li>
-                                        <?php endif ?>
-                                    <?php endforeach; ?>
-                                </ol>
-                            </td>
-                            <td valign="top">
-                                <ol>
-                                    <?php
-                                    foreach ($row['event'] as $key3 => $value3) : ?>
-                                        <?php if ($value3['sasaran'] == $value1) : ?>
-
-                                            <li> <?= format_list($value3['impact'], "### "); ?> </li>
-
-                                        <?php endif ?>
-                                    <?php endforeach; ?>
-                                </ol>
-                            </td>
+                <!-- Kolom Tema Risiko -->
+                <td valign="top">
+                    <?php foreach ($row['event'] as $event) : ?>
+                        <?php if ($event['sasaran'] == $value1) : ?>
+                            <?= $event['tema_risiko']; ?>
                         <?php endif; ?>
                     <?php endforeach; ?>
-                <?php endforeach; ?>
+                </td>
 
-        </tbody>
+                <!-- Kolom Kategori Risiko -->
+                <td valign="top">
+                    <?php foreach ($row['event'] as $event) : ?>
+                        <?php if ($event['sasaran'] == $value1) : ?>
+                            <?= $event['kategori']; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </td>
 
+                <!-- Kolom Peristiwa -->
+                <td valign="top">
+                    <?php foreach ($row['event'] as $event) : ?>
+                        <?php if ($event['sasaran'] == $value1) : ?>
+                            <?= $event['risiko']; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </td>
+
+                <!-- Kolom Penyebab -->
+                <td valign="top">
+                    <?php foreach ($row['event'] as $event) : ?>
+                        <?php if ($event['sasaran'] == $value1) : ?>
+                            <?= format_list($event['couse'], "### "); ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </td>
+
+                <!-- Kolom Dampak -->
+                <td valign="top">
+                    <?php foreach ($row['event'] as $event) : ?>
+                        <?php if ($event['sasaran'] == $value1) : ?>
+                            <?= format_list($event['impact'], "### "); ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+</tbody>
 
     </table>
 </div>
+
 
 <script type="text/javascript">
     $(document).ready(function() {

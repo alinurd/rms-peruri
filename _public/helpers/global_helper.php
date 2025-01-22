@@ -438,6 +438,12 @@ if (!function_exists('upload_file_new')) {
 			case 'crm':
 				$path = crm_path_relative();
 				break;
+			case 'lost_event':
+				$path = lost_event_relative();
+			case 'evidence':
+				$path = lost_event_relative();
+				
+			break;
 			default:
 				$path = upload_path_relative();
 				break;
@@ -450,7 +456,7 @@ if (!function_exists('upload_file_new')) {
 			}
 			$path .= '/' . $fld;
 		}
-
+		
 		$ci =& get_instance();
 		$config['upload_path'] = $path;
 		$config['allowed_types'] = $data['type'];
@@ -465,6 +471,8 @@ if (!function_exists('upload_file_new')) {
 			$config['file_name'] = url_title(strtolower(basename($data['file_name'])));
 		}
 
+		
+
 		if (!is_dir($config['upload_path'])) {
 			return false;
 		}
@@ -474,11 +482,14 @@ if (!function_exists('upload_file_new')) {
 		} else {
 			$ci->upload->initialize($config, true);
 		}
-
+		
+		
 		if (!$ci->upload->do_upload($data['nm_file'],$data)) {
+			
 			$ci->session->set_userdata(array('result_proses_error' => $ci->upload->display_errors()));
 			return false;
 		} else {
+			
 			$result = $ci->upload->data();
 		}
 
@@ -540,6 +551,9 @@ if ( ! function_exists('upload_image_new'))
 				break;
 			case 'events':
 				$path=events_path_relative();
+				break;
+			case 'evidence':
+				$path=evidence_path_relative();
 				break;
 			case 'img':
 				$path=img_path_relative();

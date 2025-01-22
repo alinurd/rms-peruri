@@ -34,7 +34,10 @@ class Report_Kri extends BackendController {
 			$this->addField(array('field' => 'periode_name', 'input' => 'multitext', 'size' => 1000));
 			$this->addField(array('field' => 'name', 'input' => 'multitext', 'size' => 1000));
 			$this->addField(array('field' => 'iskri', 'input' => 'multitext', 'size' => 1000));
-			$this->addField(array('field' => 'sasaran', 'type' => 'free', 'input' => 'free', 'mode' =>'e'));
+			$this->addField(array('field' => 'sasaran', 'input' => 'multitext', 'size' => 1000));
+			$this->addField(array('field' => 'tupoksi', 'input' => 'multitext', 'size' => 1000));
+			$this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
+			// $this->addField(array('field' => 'sasaran', 'type' => 'free', 'input' => 'free', 'mode' =>'e'));
 			
 			// $this->addField(array('field' => 'item_use', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 			// $this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
@@ -68,7 +71,7 @@ class Report_Kri extends BackendController {
 
 		$this->set_Sort_Table($this->tbl_master, 'judul_assesment');
 
-		$this->set_Table_List($this->tbl_master, 'judul_assesment','judul_assesment');
+		$this->set_Table_List($this->tbl_master, 'judul_assesment','Judul Assesment');
 		$this->set_Table_List($this->tbl_master, 'name','Risk Owner');
 		$this->set_Table_List($this->tbl_master, 'sasaran', 'Jumlah Sasaran', 10, 'center');
 		$this->set_Table_List($this->tbl_master, 'tupoksi', 'Jumlah Peristiwa', 10, 'center');
@@ -87,21 +90,11 @@ class Report_Kri extends BackendController {
 		$this->tmp_data['setActionprivilege']=false;
 		$this->set_Close_Setting();
 	}
+	
 		function listBox_REGISTER($row, $value)
 	{
 		$id = $row['l_rcsa_no'];
-		$detail=$this->db->where('rcsa_no', $id)->where('iskri', 1)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-		$actDetail=$this->db->where('rcsa_no', $id)->order_by('bulan')->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-	 
-		// doi::dump($id);
 		$owner = $row['l_owner_no'];
-		// $result = '<i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '"></i>';
-		// if(count($detail)>0){
-		// 	$result = '<i class="fa fa-search  disabled pointer" title="belum menitoring" data-id="' . $id . '" data-owner="' . $owner . '"></i>';
-		// 	if(count($actDetail)>0){
-		// 	}
-		// 	// doi::dump($actDetail);
-		// }
 		$result = '<strong><i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '"></i></strong>';
 
 		
@@ -112,31 +105,34 @@ class Report_Kri extends BackendController {
 		$result[] = array('posisi' => 'right', 'content' => '<a class="btn btn-warning btn-flat" style="width:100%;" data-content="Detail Risk Register" data-toggle="popover" href="' . base_url($this->modul_name . '/risk-event/' . $id) . '" data-original-title="" title=""><strong style="text-shadow: 1px 2px #020202;">START<br/>Risk Register</strong></a>');
 		return $result;
 	}
-		function listBox_SASARAN($rows, $value){
-		$id=$rows['l_rcsa_no'];
-		$jml='';
-		if (array_key_exists($id, $this->use_list['sasaran'])){
-			$jml = $this->use_list['sasaran'][$id];
-		}
 
-		return $jml;
-	}
+
+	// function listBox_SASARAN($rows, $value){
+	// 	$id=$rows['l_rcsa_no'];
+	// 	$detail=$this->db->where('rcsa_no', $id)->get(_TBL_RCSA_SASARAN)->result_array();
+	// 	$jml='';
+	// 	if ($detail){
+	// 		$jml = count($detail);
+	// 	}
+	// 	return $jml;
+	// }
+
 	public function MASTER_DATA_LIST($arrId, $rows)
 	{
 		$this->use_list = $this->data->cari_total_dipakai($arrId);
 	}
-		function listBox_TUPOKSI($rows, $value){
-		$id=$rows['l_rcsa_no'];
-		$detail=$this->db->where('rcsa_no', $id)->where('iskri', 1)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+	// 	function listBox_TUPOKSI($rows, $value){
+	// 	$id=$rows['l_rcsa_no'];
+	// 	$detail=$this->db->where('rcsa_no', $id)->where('iskri', 1)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		
-		// doi::dump();
-		$jml='';
-		if ($detail){
-			$jml = count($detail);
-		}
+	// 	// doi::dump();
+	// 	$jml='';
+	// 	if ($detail){
+	// 		$jml = count($detail);
+	// 	}
 
-		return $jml;
-	}
+	// 	return $jml;
+	// }
 	
 	function risk_event(){
 		$id=intval($this->uri->segment(3));

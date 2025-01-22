@@ -24,14 +24,14 @@ class Rcsa_Control_Matric extends BackendController
 		$this->cbo_type = $this->get_combo('type-project');
 		$this->cbo_bulan = $this->get_combo('bulan');
 
-		$this->set_Open_Tab('Risk Control Matric');
+		$this->set_Open_Tab('Risk Control Matrix');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
 
 		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true,  'show' => true));
 		$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => true,  'show' => true));
 		$this->addField(array('field' => 'create_user', 'search' => false, 'default' => $this->authentication->get_info_user('username')));
 		$this->addField(array('field' => 'judul_assesment', 'show'=>false));
- 		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Control Matric', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
+ 		$this->addField(array('field' => 'sasaran', 'title' => 'Risk Control Matrix', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->addField(array('field' => 'officer_no', 'show' => false, 'save' => true, 'default' => $this->authentication->get_info_user('identifier')));
 
 		// $this->addField(array('field' => 'anggaran_rkap', 'type' => 'float', 'input' => 'float', 'required' => true));
@@ -552,6 +552,17 @@ class Rcsa_Control_Matric extends BackendController
 		$id = $this->uri->segment(3);
 		// $data['field'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCSA_SASARAN)->result_array();
 		$data['bisnis_proses'] = $this->db->where('rcsa_no', $id)->get(_TBL_RCM)->result_array();
+		$data['test'] = $this->db->select([
+			'proses_bisnis',
+			'note_control',
+			'JSON_LENGTH(note_control) as note_count'  // Menghitung jumlah elemen dalam array JSON
+		])
+		->where('rcsa_no', $id)  // Pastikan $id adalah nilai yang valid
+		->get(_TBL_RCSA_DETAIL)  // Mengambil data dari tabel
+		->result_array();  // Mengambil hasil sebagai array
+
+
+
 		$result = $this->load->view('crm', $data, true);
 		return $result;
 	}

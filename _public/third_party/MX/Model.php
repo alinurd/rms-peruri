@@ -75,12 +75,54 @@ class MX_Model extends CI_Model
 				break;
 			case "data-combo":
 				$where = '';
-				if (is_array($param)) {
+ 				if (is_array($param)) {
 					$where = " and kelompok='" . $param[0] . "' and id='" . $param[1] . "'";
 				} elseif (!empty($param)) {
 					$where = " and kelompok='" . $param . "'";
 				}
 				$query = "SELECT  id, CASE WHEN kode='' THEN data ELSE concat(kode,'-',data) END as name FROM " . _TBL_DATA_COMBO . " where aktif='1' {$where} order by urut, data";
+				break;
+			case "tasktonimi":
+				$where = '';
+				if($param=='t1'){
+					$tbl='library';
+					$param=4;
+				}elseif($param=='t2'){ 
+					if($param2){
+						$where = " and dc.pid='" . $param2 . "'";
+					}
+					$query = "SELECT bl.description, dc.id as id,   CONCAT(bl.description, ' - ', dc.data)   AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN bangga_library AS bl ON bl.id = dc.pid WHERE dc.aktif = '1' and dc.kelompok='kategori-risiko' {$where} ORDER BY dc.urut, dc.data";
+ 				}elseif($param=='t3'){
+					if($param2){
+						$where = " and dc.pid='" . $param2 . "'";
+					}
+ 					$query = "SELECT bl.data, dc.id as id,  CONCAT(bl.data, ' - ', dc.data)  AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN " . _TBL_DATA_COMBO . " AS bl ON bl.id = dc.pid WHERE dc.aktif = '1' and dc.kelompok='kelompok-risiko' {$where} ORDER BY dc.urut, dc.data";
+				}elseif($param=='t4'){
+					$tbl='library';
+					$param=1;
+				}elseif($param[0]=='t5'){
+					$where = "";
+					if($param[1]){
+						$where = "where child_type='" . $param[1] . "'";
+					}
+					if($param[2]){
+						$where.= "and event_no='" . $param[2] . "'";
+					}
+					$query = "SELECT  child_id as id, child_description as name FROM " . _TBL_VIEW_MAP_LIBRARY . " {$where} order by child_code";
+				}
+				if($tbl=="library"){
+					if($param2){
+						$where = " and t3='" . $param2 . "'";
+					}
+					$query = "SELECT  id, description as name FROM " . _TBL_LIBRARY . " where status=1 and type={$param}  {$where} order by code";
+				}else{
+					if (is_array($param)) {
+						$where = " and kelompok='" . $param[0] . "' and id='" . $param[1] . "'";
+					} elseif (!empty($param)) {
+						$where = " and kelompok='" . $param . "'";
+					}
+					
+				}
 				break;
 			case 'accountable-input':
 				$query = "select DISTINCT rcsa_owner_no as id, name from " . _TBL_VIEW_RCSA_MITIGASI . "  ";
@@ -139,7 +181,7 @@ class MX_Model extends CI_Model
 							  LEFT JOIN bangga_library ON bangga_library.id = bangga_rcsa_detail.event_no 
 							  WHERE {$where}
 							  ORDER BY description";
-				break;
+ 				break;
 
 			case 'judul_assesment':
 				$query = "SELECT id, judul_assesment AS name 
@@ -278,7 +320,7 @@ class MX_Model extends CI_Model
 		$d = $data->result();
 
 		if ($this->no_select)
-			$combo[''] = " - select - ";
+			$combo[''] = lang('msg_cbo_select');
 		else
 			$combo = [];
 
@@ -641,6 +683,17 @@ class MX_Model extends CI_Model
 		return $content;
 	}
 
+	// Fungsi untuk mencari data berdasarkan like_no dan impact_no
+	function find_data($data, $like_no, $impact_no)
+	{
+		foreach ($data as $item) {
+			if ($item['like_no'] == $like_no && $item['impact_no'] == $impact_no) {
+				return $item;
+			}
+		}
+		return null;
+	}
+
 	function draw_rcsa($data, $type = 'inherent')
 	{
 		// doi::dump($data);
@@ -649,16 +702,7 @@ class MX_Model extends CI_Model
 		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
 		$abjad 	= ['E', 'D', 'C', 'B', 'A']; // Daftar abjad untuk menggantikan kode tingkat kemungkinan
 
-		// Fungsi untuk mencari data berdasarkan like_no dan impact_no
-		function find_data($data, $like_no, $impact_no)
-		{
-			foreach ($data as $item) {
-				if ($item['like_no'] == $like_no && $item['impact_no'] == $impact_no) {
-					return $item;
-				}
-			}
-			return null;
-		}
+		
 
 		// Awal tabel HTML
 		$content = '<center><table style="text-align:center; border-collapse: collapse; width: 100%; font-size: 12px;" border="0">';
@@ -672,7 +716,11 @@ class MX_Model extends CI_Model
 
 		// Header vertikal "Tingkatan Kemungkinan"
 		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:5px; writing-mode: vertical-rl; transform: rotate(180deg);">TINGKATAN KEMUNGKINAN</td>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
+						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
+							TINGKATAN KEMUNGKINAN
+						</div>
+					</td>';
 		$content .= '</tr>';
 
 		// Baris tingkat kemungkinan
@@ -691,10 +739,11 @@ class MX_Model extends CI_Model
 				$impact_no 	= $row_i['id'];
 				
 
-				$item_data = find_data($data, $like_no, $impact_no);
-				// doi::dump($item_data);
+				$item_data = $this->find_data($data, $like_no, $impact_no);
+				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
 				// Data default jika tidak ditemukan
-				$score 			= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
+				// $score 			= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
+				// $score 			= $row_l['id'];
 				$nilai 			= $item_data['nilai'] ?? '';
 				$warna_bg 		= $item_data['warna_bg'] ?? '#ffffff';
 				$warna_txt 		= $item_data['warna_txt'] ?? '#000000';
@@ -706,30 +755,42 @@ class MX_Model extends CI_Model
 
 				$content .= '
 					<td data-id="' . $row_i['id'] . '" 
-						class="pointer peta" onclick="hoho(this)" 
-						style="position: relative; background-color:' . $warna_bg . '; 
-								color:' . $warna_txt . '; 
-								width: 60px; 
-								height: 60px; 
-								padding: 5px; 
-								border: 1px solid white; 
-								font-size: 10px; 
-								font-weight: bold; 
-								text-align: center; 
-								vertical-align: middle;"
-								data-toggle="popover"
-								data-placement="top"
-								data-html="true"
-								data-content="<strong>'.$tingkat.'</strong><br/>Standar Nilai :<br/>Impact: [ >= '.$bawah_impact.' s.d <= '.$atas_impact.']<br/>Likelihood: [ >='.$bawah_like.' s.d <= '.$atas_like.']"
-								data-nilai="'.$nilai.'"
-								data-kel="'.$type.'"
-								data-like="'.$item_data['like_no'].'"
-								data-impact="'.$item_data['impact_no'].'"
-								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">' . $score . '</div>
-						' . $nilai . '
-					</td>';
+					class="pointer peta" 
+					onclick="hoho(this)" 
+					style="position: relative; 
+						background-color:' . $warna_bg . '; 
+						color:' . $warna_txt . '; 
+						width: 60px; 
+						height: 60px; 
+						padding: 5px; 
+						border: 1px solid white; 
+						font-size: 10px; 
+						font-weight: bold; 
+						text-align: center; 
+						vertical-align: middle;"
+					data-toggle="popover"
+					data-placement="top"
+					data-html="true"
+					data-content="<strong>'.$tingkat.'</strong><br/>Standar Nilai :<br/>Impact: [ >= '.$bawah_impact.' s.d <= '.$atas_impact.']<br/>Likelihood: [ >='.$bawah_like.' s.d <= '.$atas_like.']"
+					data-nilai="'.$nilai.'"
+					data-kel="'.$type.'"
+					data-like="'.$item_data['like_no'].'"
+					data-impact="'.$item_data['impact_no'].'"
+				>
+				
+					<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">
+					</div>
+					' . $nilai . '
+					<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
+						<strong style="font-weight:900;">' . $score['score'] . '</strong>
+					</div>
+					
+				</td>';
+
 			}
+
+			// <!-- Score di pojok kiri bawah -->
+					
 
 			$content .= '</tr>';
 		}
@@ -793,7 +854,11 @@ class MX_Model extends CI_Model
 
 		// Header vertikal "Tingkatan Kemungkinan"
 		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:5px; writing-mode: vertical-rl; transform: rotate(180deg);">TINGKATAN KEMUNGKINAN</td>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
+						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
+							TINGKATAN KEMUNGKINAN
+						</div>
+					</td>';
 		$content .= '</tr>';
 
 		// Baris tingkat kemungkinan
@@ -813,9 +878,10 @@ class MX_Model extends CI_Model
 				
 
 				$item_data = find_data_res($data, $like_no, $impact_no);
+				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
 				// doi::dump($item_data);
 				// Data default jika tidak ditemukan
-				$score 		= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
+				// $score 		= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
 				$nilai 		= $item_data['nilai'] ?? '';
 				$warna_bg 	= $item_data['warna_bg'] ?? '#ffffff';
 				$warna_txt 	= $item_data['warna_txt'] ?? '#000000';
@@ -847,8 +913,11 @@ class MX_Model extends CI_Model
 								data-like="'.$item_data['like_no'].'"
 								data-impact="'.$item_data['impact_no'].'"
 								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">' . $score . '</div>
+						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
+						<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
+						<strong style="font-weight:900;">' . $score['score'] . '</strong>
+					</div>
 					</td>';
 			}
 
@@ -899,6 +968,7 @@ class MX_Model extends CI_Model
 	function draw_rcsa1($data, $type = 'inherent')
 	{
 		// Mengambil data 'likelihood' dan 'impact' dari database
+
 		$like = $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
 		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
 		$abjad = ['E', 'D', 'C', 'B', 'A']; // Daftar abjad untuk menggantikan kode tingkat kemungkinan
@@ -915,7 +985,11 @@ class MX_Model extends CI_Model
 
 		// Header vertikal "Tingkatan Kemungkinan"
 		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:5px; writing-mode: vertical-rl; transform: rotate(180deg);">TINGKATAN KEMUNGKINAN</td>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
+						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
+							TINGKATAN KEMUNGKINAN
+						</div>
+					</td>';
 		$content .= '</tr>';
 
 		// Baris tingkat kemungkinan
@@ -935,10 +1009,11 @@ class MX_Model extends CI_Model
 
 				// Mencari data target
 				$item_data = $this->find_data_target($data, $like_no, $impact_no);
+				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
 				// doi::dump($data);
 
 				// Data default jika tidak ditemukan
-				$score = $item_data['code_likelihood'] . ' - ' . $item_data['code_impact'] ?? '';
+				// $score = $item_data['code_likelihood'] . ' - ' . $item_data['code_impact'] ?? '';
 				$nilai = $item_data['nilai'] ?? '';
 				$warna_bg = $item_data['warna_bg'] ?? '#ffffff';
 				$warna_txt = $item_data['warna_txt'] ?? '#000000';
@@ -970,8 +1045,11 @@ class MX_Model extends CI_Model
 								data-like="' . $item_data['like_no'] . '"
 								data-impact="' . $item_data['impact_no'] . '"
 								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">' . $score . '</div>
+						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
 						' . $nilai . '
+						<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
+						<strong style="font-weight:900;">' . $score['score'] . '</strong>
+					</div>
 					</td>';
 			}
 

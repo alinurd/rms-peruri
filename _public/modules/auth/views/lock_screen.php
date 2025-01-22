@@ -123,8 +123,7 @@ if (validation_errors()) {
   <div class="main-login-form">
     <div class="login-group">
       <div class="form-group">
-<?php $url = str_replace('"', '>', '', $basedata);
-    echo $url; ?>
+<?php  ?>
         <label for="lg_username" class="sr-only"><i class="fa fa-key fa-fw"></i>Username</label>
         <input name="username" class="form-control inputxxx" type="text" placeholder="username" autocomplete="off">
         <input name="basedata" class="form-control inputxxx" type="hidden" value="<?= $basedata ?>" placeholder="username/email/nip" autocomplete="off">

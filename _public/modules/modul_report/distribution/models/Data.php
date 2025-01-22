@@ -65,27 +65,55 @@ class Data extends MX_Model {
 		if ($owner_child){
 			$this->db->where_in('owner_no',$owner_child);
 		}else{
-			$this->db->where('owner_no',$this->post['owner_no']);
+			$this->db->where('bangga_view_rcsa_detail.owner_no',$this->post['owner_no']);
 		}
 		
-		if ($this->post['periode_no'] > 0)
-			$this->db->where('period_no',$this->post['periode_no']);
+		if ($this->post['tahun'] > 0)
+			$this->db->where('bangga_view_rcsa_detail.periode_name',$this->post['tahun']);
         
         if ($this->post['bulan'] > 0)
-            $this->db->where('bulan',$this->post['bulan']);
+            $this->db->where('bangga_rcsa_action_detail.bulan',$this->post['bulan']);
         
-   
-        $rows=$this->db->select('residual_analisis_id, residual_analisis, count(residual_analisis_id) as jml')->group_by(['residual_analisis_id', 'residual_analisis'])->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-       
+
+            $this->db->select('
+            bangga_rcsa_action_detail.id,
+            bangga_rcsa_action_detail.bulan,
+            bangga_rcsa_action_detail.residual_impact_action, 
+            bangga_rcsa_action_detail.residual_likelihood_action, 
+            bangga_view_rcsa_detail.id AS rcsa_detail_id,
+            bangga_view_rcsa_detail.owner_no,
+            bangga_view_rcsa_detail.periode_name,
+            bangga_level_color.level_risk_no,
+            COUNT(bangga_rcsa_action_detail.id) AS jml
+        ');
+        $this->db->from('bangga_rcsa_action_detail');
+        $this->db->join('bangga_view_rcsa_detail', 'bangga_rcsa_action_detail.rcsa_detail = bangga_view_rcsa_detail.id', 'left');
+        $this->db->join('bangga_level_color', 'bangga_rcsa_action_detail.residual_impact_action = bangga_level_color.impact AND bangga_rcsa_action_detail.residual_likelihood_action = bangga_level_color.likelihood', 'left');
+        $this->db->group_by('
+            bangga_rcsa_action_detail.id,  
+            bangga_rcsa_action_detail.bulan,
+            bangga_rcsa_action_detail.residual_impact_action, 
+            bangga_rcsa_action_detail.residual_likelihood_action, 
+            bangga_view_rcsa_detail.id, 
+            bangga_view_rcsa_detail.owner_no, 
+            bangga_view_rcsa_detail.periode_name,
+            bangga_level_color.level_risk_no
+        ');
+        
+        // Mendapatkan hasil
+        $rows = $this->db->get()->result_array();
+
+
+
+        
         foreach($master as $key=>$mr){
-            foreach($rows as $row){
-                if ($row['residual_analisis_id']==$key){
+            foreach($rows as $index=>$row){
+                if ($rows[$index]['level_risk_no']==$key){
                     $master[$key]['jml']=$row['jml'];
                 }
             }
         }
         $result['master2']=$master;
-
         return $result;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-$lang['msg_title']				= "Data Risk Event Library";
+$lang['msg_title']				= "Detail Peristiwa Risiko T5";
 $lang['msg_field_description']	= "Risk Event";
 $lang['msg_field_notes']		= "Catatan";
 $lang['msg_field_type']			= "Type";

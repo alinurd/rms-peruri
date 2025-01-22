@@ -95,6 +95,70 @@ class Data extends MX_Model {
 
 		return $result;
 	}
+	// function get_data_risk_register($id)
+	// {
+	// 	$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+
+	// 	// $rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_REGISTER)->result_array();
+	// 	// doi::dump($rows)
+	// 	//$rows = $this->db->where('rcsa_no', $id)->group_by('id_rcsa_detail')->order_by('urgensi_no_kadiv')->get(_TBL_VIEW_REGISTER)->result_array();
+
+	// 	foreach ($rows as &$row) {
+	// 		$arrCouse = json_decode($row['risk_couse_no'], true);
+
+	// 		$rows_couse = array();
+	// 		if ($arrCouse)
+	// 			$arrCouse_implode = implode(", ", $arrCouse);
+	// 		$rows_couse  = $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array(); //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+	// 		$arrCouse = array();
+	// 		foreach ($rows_couse as $rc) {
+	// 			$arrCouse[] = $rc['description'];
+	// 		}
+	// 		$row['couse'] = implode('### ', $arrCouse);
+
+	// 		$arrCouse = json_decode($row['risk_impact_no'], true);
+	// 		$rows_couse = array();
+	// 		if ($arrCouse)
+	// 			$arrCouse_implode = implode(", ", $arrCouse);
+	// 		$rows_couse =  $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array();  //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+	// 		$arrCouse = array();
+	// 		foreach ($rows_couse as $rc) {
+	// 			$arrCouse[] = $rc['description'];
+	// 		}
+	// 		$row['impact'] = implode('### ', $arrCouse);
+
+	// 		$arrCouse = json_decode($row['accountable_unit'], true);
+	// 		$rows_couse = array();
+	// 		if ($arrCouse)
+	// 			$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+	// 		$arrCouse = array();
+	// 		foreach ($rows_couse as $rc) {
+	// 			$arrCouse[] = $rc['name'];
+	// 		}
+	// 		$row['accountable_unit_name'] = implode('### ', $arrCouse);
+
+
+	// 		$arrCouse = json_decode($row['penangung_no'], true);
+	// 		$rows_couse = array();
+	// 		if ($arrCouse)
+	// 			$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+	// 		$arrCouse = array();
+	// 		foreach ($rows_couse as $rc) {
+	// 			$arrCouse[] = $rc['name'];
+	// 		}
+	// 		$row['penanggung_jawab'] = implode('### ', $arrCouse);
+
+	// 		$arrCouse = json_decode($row['control_no'], true);
+	// 		if (!empty($row['note_control']))
+	// 			$arrCouse[] = $row['note_control'];
+	// 		// $row['control_name']=implode(', ',$arrCouse);
+	// 		$row['control_name'] = implode('###', $arrCouse);
+	// 	}
+	// 	unset($row);
+
+	// 	return $rows;
+	// }
+
 	function get_data_risk_register($id)
 	{
 		$rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
@@ -105,9 +169,10 @@ class Data extends MX_Model {
 
 		foreach ($rows as &$row) {
 			$arrCouse = json_decode($row['risk_couse_no'], true);
-
+			
 			$rows_couse = array();
 			if ($arrCouse)
+			
 				$arrCouse_implode = implode(", ", $arrCouse);
 			$rows_couse  = $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array(); //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
 			$arrCouse = array();
@@ -148,11 +213,11 @@ class Data extends MX_Model {
 			}
 			$row['penanggung_jawab'] = implode('### ', $arrCouse);
 
-			$arrCouse = json_decode($row['control_no'], true);
+			// $arrCouse = json_decode($row['control_no'], true);
+			// $arrCouse = json_decode($row['risk_impact_no'], true);
 			if (!empty($row['note_control']))
-				$arrCouse[] = $row['note_control'];
-			// $row['control_name']=implode(', ',$arrCouse);
-			$row['control_name'] = implode('###', $arrCouse);
+				$arrCouse =json_decode($row['note_control'], true);
+			$row['control_name'] = implode('### ', $arrCouse);
 		}
 		unset($row);
 
@@ -183,72 +248,121 @@ class Data extends MX_Model {
 		if (!$sts){
 			// $rows = $this->db->where_in('owner_no', $data)->where('urgensi_no <> 0')->where('period_no', _TAHUN_NO_)->where('sts_propose',3)->get(_TBL_VIEW_REGISTER)->result_array();
 			  
- 			$this->db->where('rcsa_no', $data);
-			$rows = $this->db->where('sts_propose', 2)->get(_TBL_VIEW_REGISTER)->result_array();
-			// die($this->db->last_query());
+ 			// $this->db->where('rcsa_no', $data);
+			// $rows = $this->db->where('sts_propose', 2)->get(_TBL_VIEW_REGISTER)->result_array();
 
-			// $this->db->select('*');
-			// $this->db->from('_TBL_VIEW_REGISTER');
-			// $this->db->where('rcsa_no', $data);
-			// $this->db->where('sts_propose', 3);
-			// $this->db->where('id_rcsa_detail IN (SELECT id_rcsa_detail FROM _TBL_VIEW_REGISTER GROUP BY id_rcsa_detail)');
-			// $this->db->order_by('urgensi_no_kadiv');
-			// $query = $this->db->get()->result_array();
-
-
+			$rows = $this->db->where('rcsa_no', $data)->where('sts_propose', 2)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 
 			if (count($rows)>0){
-				foreach($rows as &$row){
-					$arrCouse = json_decode($row['risk_couse_no'],true);
-					if(!$arrCouse){
-						$arrCouse[]=0;
-					}
-					$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-					$arrCouse=array();
-					foreach($rows_couse as $rc){
-						$arrCouse[]=$rc['description'];
-					}
-					$row['couse']= implode(', ',$arrCouse);
+				// foreach($rows as &$row){
+				// 	$arrCouse = json_decode($row['risk_couse_no'],true);
+				// 	if(!$arrCouse){
+				// 		$arrCouse[]=0;
+				// 	}
+				// 	$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+				// 	$arrCouse=array();
+				// 	foreach($rows_couse as $rc){
+				// 		$arrCouse[]=$rc['description'];
+				// 	}
+				// 	$row['couse']= implode(', ',$arrCouse);
 					
-					$arrCouse = json_decode($row['risk_impact_no'],true);
-					if(!$arrCouse){
-						$arrCouse[]=0;
-					}
-					$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-					$arrCouse=array();
-					foreach($rows_couse as $rc){
-						$arrCouse[]=$rc['description'];
-					}
-					$row['impact']=implode(', ',$arrCouse);
+				// 	$arrCouse = json_decode($row['risk_impact_no'],true);
+				// 	if(!$arrCouse){
+				// 		$arrCouse[]=0;
+				// 	}
+				// 	$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+				// 	$arrCouse=array();
+				// 	foreach($rows_couse as $rc){
+				// 		$arrCouse[]=$rc['description'];
+				// 	}
+				// 	$row['impact']=implode(', ',$arrCouse);
 					
-					$arrCouse = json_decode($row['accountable_unit'],true);
-					$rows_couse=array();
-					if ($arrCouse)
-						$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
-					$arrCouse=array();
-					foreach($rows_couse as $rc){
-						$arrCouse[]=$rc['name'];
-					}
+				// 	$arrCouse = json_decode($row['accountable_unit'],true);
+				// 	$rows_couse=array();
+				// 	if ($arrCouse)
+				// 		$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+				// 	$arrCouse=array();
+				// 	foreach($rows_couse as $rc){
+				// 		$arrCouse[]=$rc['name'];
+				// 	}
 					
-					$row['penanggung_jawab']=implode('### ',$arrCouse);
+				// 	$row['penanggung_jawab']=implode('### ',$arrCouse);
 					
-					$arrCouse = json_decode($row['penangung_no'], true);
-					$rows_couse=array();
-					if ($arrCouse)
-						$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
-					$arrCouse=array();
-					foreach($rows_couse as $rc){
-						$arrCouse[]=$rc['name'];
-					}
-					$row['accountable_unit_name']=implode('### ',$arrCouse);
+				// 	$arrCouse = json_decode($row['penangung_no'], true);
+				// 	$rows_couse=array();
+				// 	if ($arrCouse)
+				// 		$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+				// 	$arrCouse=array();
+				// 	foreach($rows_couse as $rc){
+				// 		$arrCouse[]=$rc['name'];
+				// 	}
+				// 	$row['accountable_unit_name']=implode('### ',$arrCouse);
 					
-					$arrCouse = json_decode($row['control_no'],true);
-					if (!empty($row['note_control']))
-						$arrCouse[]=$row['note_control'];
-					$row['control_name']=implode(', ',$arrCouse);
+				// 	$arrCouse = json_decode($row['control_no'],true);
+				// 	if (!empty($row['note_control']))
+				// 		$arrCouse[]=$row['note_control'];
+				// 	$row['control_name']=implode(', ',$arrCouse);
+				// }
+				// unset($row);
+				// $hasil['field']=$rows;
+
+				
+	
+			foreach ($rows as &$row) {
+				$arrCouse = json_decode($row['risk_couse_no'], true);
+				
+				$rows_couse = array();
+				if ($arrCouse)
+				
+					$arrCouse_implode = implode(", ", $arrCouse);
+				$rows_couse  = $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array(); //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+				$arrCouse = array();
+				foreach ($rows_couse as $rc) {
+					$arrCouse[] = $rc['description'];
 				}
-				unset($row);
-				$hasil['field']=$rows;
+				$row['couse'] = implode('### ', $arrCouse);
+	
+				$arrCouse = json_decode($row['risk_impact_no'], true);
+				$rows_couse = array();
+				if ($arrCouse)
+					$arrCouse_implode = implode(", ", $arrCouse);
+				$rows_couse =  $this->db->query("SELECT * FROM bangga_library WHERE id IN ($arrCouse_implode) ORDER BY FIELD(id, $arrCouse_implode)")->result_array();  //$this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
+				$arrCouse = array();
+				foreach ($rows_couse as $rc) {
+					$arrCouse[] = $rc['description'];
+				}
+				$row['impact'] = implode('### ', $arrCouse);
+	
+				$arrCouse = json_decode($row['accountable_unit'], true);
+				$rows_couse = array();
+				if ($arrCouse)
+					$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+				$arrCouse = array();
+				foreach ($rows_couse as $rc) {
+					$arrCouse[] = $rc['name'];
+				}
+				$row['accountable_unit_name'] = implode('### ', $arrCouse);
+	
+	
+				$arrCouse = json_decode($row['penangung_no'], true);
+				$rows_couse = array();
+				if ($arrCouse)
+					$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_OWNER)->result_array();
+				$arrCouse = array();
+				foreach ($rows_couse as $rc) {
+					$arrCouse[] = $rc['name'];
+				}
+				$row['penanggung_jawab'] = implode('### ', $arrCouse);
+	
+				// $arrCouse = json_decode($row['control_no'], true);
+				// $arrCouse = json_decode($row['risk_impact_no'], true);
+				if (!empty($row['note_control']))
+					$arrCouse =json_decode($row['note_control'], true);
+				$row['control_name'] = implode('### ', $arrCouse);
+			}
+
+			unset($row);
+			$hasil['field'] = $rows;
 			}else{
 				$hasil['field'] = 'Belum ada Assessment yang Propose <br> <a href="' . base_url('approve-admin') . '" class="btn btn-default" style="text-decoration: none;">Kembali Ke list</a>';
 				$sts=true;

@@ -24,20 +24,19 @@ class Data extends MX_Model {
 	}
 
 	function save_detail($newid, $data, $mode, $old = []) {
-
-		$rcsa_no            = $newid;
-		$bisnisProses       = $data['bisnisProses'];
-		$existingControl    = $data['exixtingControl'];
-		$metodePengujian    = $data['metodePengujian'];
-		$penilaianControl   = $data['penilaianControl'];
-		$kelemahanControl   = $data['kelemahanControl'];
-		$tindakLanjut       = $data['tindakLanjut'];
-		$bisnisProseslama   = isset($data['bisnisProseslama']) ? $data['bisnisProseslama'] : [];
+		$rcsa_no = $newid;
+		$bisnisProses = $data['bisnisProses'];
+		$existingControl = $data['exixtingControl'];
+		$metodePengujian = $data['metodePengujian'];
+		$penilaianControl = $data['penilaianControl'];
+		$kelemahanControl = $data['kelemahanControl'];
+		$tindakLanjut = $data['tindakLanjut'];
+		$bisnisProseslama = isset($data['bisnisProseslama']) ? $data['bisnisProseslama'] : [];
 		$exixtingControllama = isset($data['exixtingControllama']) ? $data['exixtingControllama'] : [];
 		$count_bisnis_baru  = count($bisnisProses);
 		$count_exiting_baru = count($exixtingControllama);
-	
-		// Mengecek jumlah bisnis proses di database
+		
+		// / Mengecek jumlah bisnis proses di database
 		$this->db->where('rcsa_no', $rcsa_no);
 		$count_bisnis_db = $this->db->count_all_results(_TBL_RCM);
 	
@@ -87,118 +86,101 @@ class Data extends MX_Model {
 			}
 			
 		}
-	
-		// Iterasi melalui bisnis proses baru
+
+		// Iterate through business processes and existing controls
 		foreach ($bisnisProses as $i => $process) {
 			if (empty($bisnisProseslama[$i])) {
+				// Add new business process
 				$data_bisnis = [
-					'bussines_process'  => $process,
-					'create_date'       => date('Y-m-d H:i:s'),
-					'create_user'       => $this->authentication->get_info_user('username'),
-					'rcsa_no'           => $rcsa_no,
+					'bussines_process' => $process,
+					'create_date' => date('Y-m-d H:i:s'),
+					'create_user' => $this->authentication->get_info_user('username'),
+					'rcsa_no' => $rcsa_no,
 				];
 				$result = $this->crud->crud_data(['table' => _TBL_RCM, 'field' => $data_bisnis, 'type' => 'add']);
 				$bisnis_id = $this->db->insert_id();
 			} else {
+				// Update existing business process
 				$data_bisnis = [
-					'bussines_process'  => $process,
-					'update_date'       => date('Y-m-d H:i:s'),
-					'update_user'       => $this->authentication->get_info_user('username'),
-					'rcsa_no'           => $rcsa_no,
+					'bussines_process' => $process,
+					'update_date' => date('Y-m-d H:i:s'),
+					'update_user' => $this->authentication->get_info_user('username'),
+					'rcsa_no' => $rcsa_no,
 				];
 				$result = $this->crud->crud_data(['table' => _TBL_RCM, 'field' => $data_bisnis, 'where' => ['id' => $bisnisProseslama[$i]], 'type' => 'update']);
 				$bisnis_id = $bisnisProseslama[$i];
 			}
 	
-			// Iterasi melalui existing control yang terkait dengan bisnis proses
+			// Handle existing controls associated with the business process
 			foreach ($existingControl[$i] as $j => $control) {
-				$this->db->where('rcm_id', $bisnisProseslama[$i]);
-				$count_exiting_db = $this->db->count_all_results(_TBL_EXISTING_CONTROL);
-	
-				if ($count_exiting_baru[$i] < $count_exiting_db) {
-					// Mengambil dokumen existing control sebelum penghapusan
-					$this->db->select('dokumen')
-						->from(_TBL_EXISTING_CONTROL)
-						->where('rcm_id', $bisnisProseslama[$i])
-						->where_not_in('id', $exixtingControllama[$i]);
-					$dokumen_existing = $this->db->get()->result_array();
-	
-					// Menghapus dokumen dari server
-					foreach ($dokumen_existing as $dokumen) {
-						if (!empty($dokumen['dokumen']) && file_exists('./themes/upload/crm/' . $dokumen['dokumen'])) {
-							unlink('./themes/upload/crm/' . $dokumen['dokumen']); // Menghapus file lama
-						}
-					}
-	
-					// Menghapus existing control
-					$this->db->where('rcm_id', $bisnisProseslama[$i]);
-					$this->db->where_not_in('id', $exixtingControllama[$i]);
-					$this->db->delete(_TBL_EXISTING_CONTROL);
-				}
-	
-				// Tambah atau update existing control
+				// Process existing control based on $i and $j to match correct control
 				$data_existing_cont = [
-					'component'               => $control,
-					'metode_pengujian'        => $metodePengujian[$i][$j],
+					'component' => $control,
+					'metode_pengujian' => $metodePengujian[$i][$j],
 					'penilaian_intern_control' => $penilaianControl[$i][$j],
-					'kelemahan_control'       => $kelemahanControl[$i][$j],
-					'rencana_tindak_lanjut'   => $tindakLanjut[$i][$j],
-					'rcm_id'                  => $bisnis_id,
+					'kelemahan_control' => $kelemahanControl[$i][$j],
+					'rencana_tindak_lanjut' => $tindakLanjut[$i][$j],
+					'rcm_id' => $bisnis_id,
 				];
 	
+				// If it's a new control, add it
 				if (empty($exixtingControllama[$i][$j])) {
 					$data_existing_cont['create_date'] = date('Y-m-d H:i:s');
 					$data_existing_cont['create_user'] = $this->authentication->get_info_user('username');
 					$result = $this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => $data_existing_cont, 'type' => 'add']);
+					$control_id = $this->db->insert_id();
 				} else {
+					// If it's an existing control, update it
 					$data_existing_cont['update_date'] = date('Y-m-d H:i:s');
 					$data_existing_cont['update_user'] = $this->authentication->get_info_user('username');
 					$result = $this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => $data_existing_cont, 'where' => ['id' => $exixtingControllama[$i][$j]], 'type' => 'update']);
+					$control_id = $exixtingControllama[$i][$j];
 				}
 	
-				// Mengelola file upload jika ada
-				if (!empty($_FILES['fileupload']['name'][$i])) {
-					foreach ($_FILES['fileupload']['name'][$i] as $key => $file) {
-						if (!empty($file)) {
-							// Mengambil file dokumen lama dari database
-							$existing_file = $this->db->select('dokumen')
-								->from(_TBL_EXISTING_CONTROL)
-								->where('id', $exixtingControllama[$i][$j])
-								->get()
-								->row();
+				// Manage file upload associated with each control
+				if (!empty($_FILES['fileupload']['name'][$i][$j])) { // Check for file for the correct business process & control
+					// Assign the correct file to upload
+					$_FILES['userfile'] = [
+						'name' => $_FILES['fileupload']['name'][$i][$j],
+						'type' => $_FILES['fileupload']['type'][$i][$j],
+						'tmp_name' => $_FILES['fileupload']['tmp_name'][$i][$j],
+						'error' => $_FILES['fileupload']['error'][$i][$j],
+						'size' => $_FILES['fileupload']['size'][$i][$j],
+					];
 	
-							// Menghapus file lama jika ada
-							if ($existing_file && file_exists('./themes/upload/crm/' . $existing_file->dokumen)) {
-								unlink('./themes/upload/crm/' . $existing_file->dokumen);
-							}
+					// Check for upload error
+					if ($_FILES['userfile']['error'] == 0) {
+						// Check and delete old file
+						$existing_file = $this->db->select('dokumen')->from(_TBL_EXISTING_CONTROL)->where('id', $control_id)->get()->row();
+						if ($existing_file && file_exists('./themes/upload/crm/' . $existing_file->dokumen)) {
+							unlink('./themes/upload/crm/' . $existing_file->dokumen); // Delete old file
+						}
 	
-							$_FILES['userfile'] = [
-								'name' => $_FILES['fileupload']['name'][$i][$key],
-								'type' => $_FILES['fileupload']['type'][$i][$key],
-								'tmp_name' => $_FILES['fileupload']['tmp_name'][$i][$key],
-								'error' => $_FILES['fileupload']['error'][$i][$key],
-								'size' => $_FILES['fileupload']['size'][$i][$key],
-							];
-							$upload = upload_file_new([
-								'nm_file' => 'userfile',
-								'size' => 10000000,
-								'path' => 'crm',
-								'thumb' => false,
-								'type' => 'pdf|doc|docx',
-							], true, $i);
-							if ($upload) {
-								$data_existing_cont['dokumen'] = $upload['file_name'];
-								$this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => ['dokumen' => $upload['file_name']], 'where' => ['rcm_id' => $bisnis_id, 'component' => $control], 'type' => 'update']);
-							} else {
-								log_message('error', 'Upload file gagal: ' . $this->upload->display_errors());
-							}
+						// Upload new file
+						$upload = upload_file_new([
+							'nm_file' => 'userfile',
+							'size' => 10000000,
+							'path' => 'crm',
+							'thumb' => false,
+							'type' => 'pdf|doc|docx',
+						], true, $i);
+	
+						// If upload successful, update database
+						if ($upload) {
+							$data_existing_cont['dokumen'] = $upload['file_name'];
+							$this->crud->crud_data(['table' => _TBL_EXISTING_CONTROL, 'field' => ['dokumen' => $upload['file_name']], 'where' => ['id' => $control_id], 'type' => 'update']);
+						} else {
+							log_message('error', 'Upload file failed: ' . $this->upload->display_errors());
 						}
 					}
 				}
 			}
 		}
+	
 		return true;
 	}
+	
+	
 	
 	
 	

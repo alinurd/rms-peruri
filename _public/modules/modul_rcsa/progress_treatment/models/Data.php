@@ -7,302 +7,272 @@ class Data extends MX_Model {
         parent::__construct();
 	}
 
-    function get_realisasi($id,$bulan)
-    {
-        $rows = $this-> db->where('rcsa_detail_no', $id)->where('bulan', $bulan)->order_by('progress_date')->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-// doi::dump($id);
-        return $rows;
-    }
-    function simpan_realisasi_kri($data)
-    {
-        $rows = $this->db->where('rcsa_detail', $data['id'])->where('bulan', $data['bulan'])->get(_TBL_KRI_DETAIL)->row_array();
-        // doi::dump($data);
-        // doi::dump($rows);
-        // die('cek');
+		public function getDetail($data, $limit, $offset) {
+		// Pastikan array owner_child sudah diinisialisasi
+		if (!isset($this->owner_child)) {
+			$this->owner_child = [];
+		}
 
-if($rows){
+		// Check if 'owner' is specified in the data
+		if (isset($data['owner']) && $data['owner']) {
+			$this->get_owner_child($data['owner']);
+			$this->owner_child[] = $data['owner'];
+			// Apply the 'owner_no' filter
+			$this->db->where_in('bangga_view_rcsa_detail.owner_no', $this->owner_child);     
+		}
 
-    // doi::dump('edit');
-    $updkri['rcsa_detail'] = $data['id'];
-    $updkri['realisasi'] = $data['realisasi'];
+		// Check if 'periode' is specified in the data
+		if (isset($data['periode']) && $data['periode']) {
+			// Apply the 'tahun' (period) filter
+			$this->db->where('bangga_view_rcsa_detail.tahun', $data['periode']);
+		}
 
-            $where['rcsa_detail'] = $data['id'];
-            $where['bulan'] = $data['bulan'];
-            $updkri['update_user'] = $this->authentication->get_info_user('username');
-            $result = $this->crud->crud_data(array('table' => _TBL_KRI_DETAIL, 'field' => $updkri, 'where' => $where, 'type' => 'update'));
-        }else{
-    // doi::dump('add');
+		// Filter on 'sts_propose' value (status proposal)
+		$this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
 
-            $kridet['realisasi'] = $data['realisasi'];
-            $kridet['rcsa_detail'] = $data['id'];
-            $kridet['bulan'] = $data['bulan'];
-            // $kridet['action_detail'] = $id;
+		// Select specific columns from both tables
+		$this->db->select('
+			bangga_rcsa_action.id as id_action, bangga_rcsa_action.proaktif as proaktif, bangga_rcsa_action.reaktif as reaktif, 
+			bangga_view_rcsa_detail.* 
+		');
 
-            $kridet['create_user'] = $this->authentication->get_info_user('username');
-            $result = $this->crud->crud_data(array('table' => _TBL_KRI_DETAIL, 'field' => $kridet, 'type' => 'add'));
-            $id = $this->db->insert_id();
-}
-// die();
-        return $result;
+		// Join with 'bangga_view_rcsa_detail' on 'rcsa_detail_no' field
+		$this->db->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_rcsa_action.rcsa_detail_no', 'left'); 
 
-        // Doi::dump($data);
+		// Apply limit and offset for pagination
+		$this->db->limit($limit, $offset);
 
-    }
+		// Execute the query and return the result as an array
+		return $this->db->get('bangga_rcsa_action')->result_array();
+	}
 
-    function get_peristiwa($rcsa_no)
-    {
-        // doi::dump($rcsa_no);
-        $rows = $this->db->where('rcsa_no', $rcsa_no)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 
-        $idArr = [];
-        foreach ($rows as $row) {
-            $idArr[] = $row['id'];
-        }
-        if ($idArr) {
-            $this->db->where_in('rcsa_detail_no', $idArr);
-        }
-        $rows_tmp = $this->db->select('rcsa_detail_no, count(id) as jml')->group_by('rcsa_detail_no')->get(_TBL_VIEW_RCSA_MITIGASI)->result_array();
-        $arrMitigasi = [];
-        foreach ($rows_tmp as $row) {
-            $arrMitigasi[$row['rcsa_detail_no']] = $row['jml'];
-        }
+    public function getDetail_modal($data, $limit, $offset) {
+		// doi::dump($data);
+		// exit;
+		// Cek apakah ada 'owner' pada $data
+		if ($data['owner']) {
+			// Ambil anak-anak dari owner
+			$this->get_owner_child($data['owner']);
+			$this->owner_child[] = $data['owner'];
+			// Filter berdasarkan owner_no
+			$this->db->where_in('bangga_view_rcsa_detail.owner_no', $this->owner_child);
+		}
 
-        if ($idArr) {
-            $this->db->where_in('rcsa_detail_no', $idArr);
-        }
-        $rows_tmp = $this->db->select('rcsa_detail_no, count(id) as jml')->group_by('rcsa_detail_no')->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-        $arrRealisasi = [];
-        foreach ($rows_tmp as $row) {
-            $arrRealisasi[$row['rcsa_detail_no']] = $row['jml'];
-        }
+		// Cek apakah ada periode pada $data
+		if ($data['periode']) {
+			$this->db->where('bangga_view_rcsa_detail.tahun', $data['periode']);
+		}
 
-        $peristiwa = [];
-        foreach ($rows as $row) {
-            $peristiwa[$row['sasaran_no']][$row['id']] = $row;
-            $jmlMitigasi = 0;
-            $jmlRealisasi = 0;
-            if (array_key_exists($row['id'], $arrMitigasi)) {
-                $jmlMitigasi = $arrMitigasi[$row['id']];
-            }
-            if (array_key_exists($row['id'], $arrRealisasi)) {
-                $jmlRealisasi = $arrRealisasi[$row['id']];
-            }
-            $peristiwa[$row['sasaran_no']][$row['id']]['jml_mitigasi'] = $jmlMitigasi;
-            $peristiwa[$row['sasaran_no']][$row['id']]['jml_realisasi'] = $jmlRealisasi;
-        }
-        $rows = $this->db->where('rcsa_no', $rcsa_no)->get(_TBL_RCSA_SASARAN)->result_array();
-        $sasaran = [];
-        foreach ($rows as $row) {
-            $sasaran[$row['id']]['nama'] = $row['sasaran'];
-            if (array_key_exists($row['id'], $peristiwa)) {
-                $sasaran[$row['id']]['detail'] = $peristiwa[$row['id']];
-            } else {
-                $sasaran[$row['id']]['detail'] = [];
-            }
-        }
+		// Filter on 'sts_propose' value
+        $this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
 
-        // doi::dump($sasaran);
-        // die('odel');
-        return $sasaran;
-    }
+		// Filter berdasarkan triwulan (bulan)
+		if (!empty($data['triwulan'])) {
+			switch ($data['triwulan']) {
+				case 1: // Triwulan 1: Januari - Maret (Bulan 1 - 3)
+					$this->db->where('bangga_rcsa_monitoring_treatment.bulan >=', 1);
+					$this->db->where('bangga_rcsa_monitoring_treatment.bulan <=', 3);
+					break;
+				case 2: // Triwulan 2: April - Juni (Bulan 4 - 6)
+					$this->db->where('bangga_rcsa_monitoring_treatment.bulan >=', 4);
+					$this->db->where('bangga_rcsa_monitoring_treatment.bulan <=', 6);
+					break;
+				case 3: // Triwulan 3: Juli - September (Bulan 7 - 9)
+					$this->db->where('bangga_rcsa_monitoring_treatment.bulan >=', 7);
+					$this->db->where('bangga_rcsa_monitoring_treatment.bulan <=', 9);
+					break;
+				case 4: // Triwulan 4: Oktober - Desember (Bulan 10 - 12)
+					$this->db->where('bangga_rcsa_monitoring_treatment.bulan >=', 10);
+					$this->db->where('bangga_rcsa_monitoring_treatment.bulan <=', 12);
+					break;
+			}
+		}
+
+		// $this->db->join('bangga_rcsa_log_level_risiko', 'bangga_rcsa_log_level_risiko.id_action_detail = bangga_view_rcsa_action_detail.id', 'left'); // Ganti dengan nama tabel yang sesuai
+		$this->db->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_rcsa_action.rcsa_detail_no', 'left'); 
+		$this->db->join('bangga_rcsa_monitoring_treatment', 'bangga_rcsa_monitoring_treatment.rcsa_action_no = bangga_rcsa_action.id', 'left'); 
+		$this->db->join('bangga_rcsa_log_treatment', 'bangga_rcsa_log_treatment.id_treatment_monitoring = bangga_rcsa_monitoring_treatment.id', 'left'); 
+		$this->db->order_by('bangga_rcsa_monitoring_treatment.bulan', 'ASC');
+		$this->db->limit($limit, $offset);
+		// Ambil data setelah join dan filter
+		$query = $this->db->get('bangga_rcsa_action');
+
+	
+		// Kembalikan hasil dalam bentuk array
+		return $query->result_array();
+	}
     
-    function simpan_realisasi($data)
-    {
-        $upd = array();
- 
-        // $upd['target_progress_detail'] = $data['target_progress']; 
-        // $upd['target_damp_loss']       = $data['target_damp_loss']; 
-        $upd['progress_detail']        = $data['progress']; 
-        $upd['damp_loss']              = $data['damp_loss']; 
-
-        $sts = $data['progress'];
-        if (floatval($data['progress']) >= 100)
-        $sts = 1;
-        // $upd['status_no']=$sts;
-        //  if (!empty($data['progress_date']))
- 
-        if ((int)$data['id_edit'] > 0) {
-            // die('model');
-
-            $upd['update_user'] = $this->authentication->get_info_user('username');
-            
-            $where['id'] = $data['id_edit'];
-            $where['bulan'] = $data['month'];
-            $result = $this->crud->crud_data(array('table' => _TBL_RCSA_ACTION_DETAIL, 'field' => $upd, 'where' => $where, 'type' => 'update'));
-            $id = intval($data['id_edit']);
-
-            $type = "edit";
-        }  
-
-        // $where['id']=$data['action_no'];
-        // $result=$this->crud->crud_data(array('table'=>_TBL_RCSA_ACTION, 'field'=>['status_loss'=>$data['status_loss']],'where'=>$where,'type'=>'update'));
-
-        return $result;
-    }
-
-    public function getDetail($data, $limit, $offset) {
-
-      
-
-        if($data['owner']){
-            $this->get_owner_child($data['owner']);
-            $this->owner_child[] = $data['owner'];
-            $this->db->where_in('owner_no', $this->owner_child);     
-        }
-
-        if($data['periode']){
-            $this->db->where('tahun', $data['periode']);
-        }
-        $this->db->where('sts_propose', 4);
-
-        $this->db->limit($limit, $offset);
-
-        return $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-    }
      
     public function count_all_data($data) {
       
         if($data['owner']){
             $this->get_owner_child($data['owner']);
             $this->owner_child[] = $data['owner'];
-            $this->db->where_in('owner_no', $this->owner_child);     
+            $this->db->where_in('bangga_view_rcsa_detail.owner_no', $this->owner_child);     
         }
 
         if($data['periode']){
-            $this->db->where('tahun', $data['periode']);
+            $this->db->where('bangga_view_rcsa_detail.tahun', $data['periode']);
         }
         
-        $this->db->where('sts_propose', 4);
+        $this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
 
-        return $this->db->count_all_results(_TBL_VIEW_RCSA_DETAIL);
+         // Join with 'owners' table on 'owner_no'
+         $this->db->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_rcsa_action.rcsa_detail_no', 'left'); // or 'inner' based on your requirements
+    
+         // Apply limit and offset for pagination
+         $this->db->limit($limit, $offset);
+     
+
+        return $this->db->count_all_results('bangga_rcsa_action');
     }
     
     function getMonthlyMonitoringGlobal($q, $month)
 	{
  		 
-		$act = $this->db
-			->select('id')
-			->where('rcsa_detail_no',$q['id'])
- 			->get('bangga_rcsa_action')->row_array();
+		// doi::dump($q['id_action']);
 
 		$data['data'] = $this->db
-			->where('rcsa_action_no', $act['id'])
+			->where('rcsa_action_no', $q['id_action'])
 			->where('bulan', $month)
-			->get('bangga_view_rcsa_action_detail')->row_array();
+			->get('bangga_rcsa_monitoring_treatment')->row_array();
 
 		$data['risk_treatment'] = $this->db
-			->where('rcsa_detail_no', $q['id'])
+			->where('id_rcsa_action', $q['id_action'])
 			->where('bulan', $month)
 			->get('bangga_rcsa_treatment')->row_array();
 
-		$detail = $this->db
-			->select('periode_name')
-			->where('id',$q['id'])
- 			->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
-
-        // Cek apakah bulan ada dalam lost event
-        $cek_ = $this->db
-            ->select('damp_loss')
-            ->where('rcsa_action_no', $act['id'])
-            ->where('bulan', $month)
-            ->get(_TBL_RCSA_ACTION_DETAIL)
-            ->row_array();
-			
-		$blnnow = date('m');
-		$thnRcsa   = substr( $detail['periode_name'], 0, 4 );
-		$tgl           = 01;
-
-		$dateRcsa  = new DateTime( $thnRcsa . '-' . $month . '-' . $tgl );
-		$hariIni   = new DateTime();
-		// doi::dump($dateRcsa);
-		// doi::dump($hariIni);
-		if($hariIni >= $dateRcsa ){
-			
-		
-
-		// if ($blnnow >= $month) {
-
-
-			$data['before'] = $this->db
-				->where('rcsa_action_no', $act['id'])
-				->where('bulan', $month - 1)
-				->get('bangga_view_rcsa_action_detail')->row_array();
-		}
- 
-
-        $monthly = $data['data']; 
         $data_risk_treatment = $data['risk_treatment'];
-        $monthbefore = $data['before'];
-        $currentMonth = date('n');
+        // doi::dump($data['data']);
+      
+    
+        $result = '
+    <td colspan="2">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="padding: 10px; vertical-align: top;">
+                    <div class="input-group">
+                        <input style="width:100px !important;" readonly type="hidden" name="id_edit[]" id="id_detail_'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data['data']['id'].'" aria-describedby="basic-addon2">
+                        <input style="width:100px !important;" readonly type="hidden" name="id_detail[]" id="id_detail_'.$data['data']['id'].$month.'_act" class="form-control" placeholder="Progress %" value="'.$q['id'].'" aria-describedby="basic-addon2">
+                        <input style="width:100px !important;" readonly type="hidden" name="id_action[]" id="id_action_'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data_risk_treatment['id_rcsa_action'].'" aria-describedby="basic-addon2">
+                        <input style="width:100px !important;" readonly type="hidden" name="bulan[]" id="bulan_'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$month.'" aria-describedby="basic-addon2">
+                        <input style="width:100px !important;" readonly type="number" name="target_progress[]" id="target_progress_'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data_risk_treatment['target_progress_detail'].'" aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2">%</span>
+                    </div>
+                </td>
+                <td style="padding: 10px; vertical-align: top;">
+                    <div class="input-group">
+                        <input style="width:100px !important;" type="number" name="progress[]" id="progress_'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data['data']['progress_detail'].'" aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2">%</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; vertical-align: top;">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                        <input style="width:100px !important;" readonly type="text" name="target_damp_loss[]" id="target_damp_loss_'.$data['data']['id'].$month.'" 
+                        value="'.number_format($data_risk_treatment['target_damp_loss'], 0, ',', ',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                    </div>
+                </td>
+                <td style="padding: 10px; vertical-align: top;">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                        <input style="width:100px !important;" type="text" name="damp_loss[]" id="damp_loss_'.$data['data']['id'].$month.'" 
+                        value="'.number_format($data['data']['target_progress_detail'], 0, ',', ',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </td>
+';
 
- 
- 
-
-        
-        if (!$monthbefore && $month !=1) {
-			$result = '<td colspan="2" style="vertical-align:middle;"><center><i class="  fa fa-times-circle text-danger"></i></center></td>';
-		} else {
-            if (!$monthly) {
-                $result = '<td colspan="2" style="vertical-align:middle;"><center><i class="  fa fa-times-circle text-warning" title="Level Risiko belum lengkap"></i></center></td>';
-
-            } else {
-                $result = '
-                    <td colspan="2">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <tr>
-                                <td style="padding: 10px; vertical-align: top;">
-                                    <div class="input-group">
-                                        <input style="width:100px !important;" readonly type="number" name="target_progress'.$data['data']['id'].$month.'" id="target_progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data_risk_treatment['target_progress_detail'].'" aria-describedby="basic-addon2">
-                                        <span class="input-group-addon" id="basic-addon2">%</span>
-                                    </div>
-                                </td>
-                                <td style="padding: 10px; vertical-align: top;">
-                                    <div class="input-group">
-                                        <input style="width:100px !important;" type="number" name="progress'.$data['data']['id'].$month.'" id="progress'.$data['data']['id'].$month.'" class="form-control" placeholder="Progress %" value="'.$data['data']['progress_detail'].'" aria-describedby="basic-addon2">
-                                        <span class="input-group-addon" id="basic-addon2">%</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 10px; vertical-align: top;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                        <input style="width:100px !important;" readonly type="text" name="target_damp_loss'.$data['data']['id'].$month.'" id="target_damp_loss'.$data['data']['id'].$month.'" 
-                                        value="'.number_format($data_risk_treatment['target_damp_loss'],0,',',',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
-                                    </div>
-                                </td>
-                                <td style="padding: 10px; vertical-align: top;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                        <input style="width:100px !important;" type="text" name="damp_loss'.$data['data']['id'].$month.'" id="damp_loss'.$data['data']['id'].$month.'" 
-                                        value="'.number_format($data['data']['damp_loss'],0,',',',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <div style="text-align: center; margin-top: 5px;">
-                            <button type="button" class="btn btn-primary" id="simpan_realisasi_'.$data['data']['id'].'" data-month="'.$month.'" data-id="'.$data['data']['id'].'">
-                                <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </td>
-                ';
-
-
-
-            }
-            
-            
-
-        }
 
  		return $result;
 	}
 
+    public function simpan_tritment($data) {
+       
+		// Array untuk menampung hasil update
+		$upd = [];
+		
+		// Mendapatkan data dari POST
+		$id_action              = $data['rcsa_action_no'];
+		$id_detail              = $data['id'];
+		$id_edit 		        = $data['id_edit'];
+		$month 			        = $data['month'];
+		$progress 		        = $data['progress'];
+		$damp_lost 		        = str_replace(',', '',$data['damp_loss']);
+		
+		// Iterasi untuk setiap item dalam array
+		foreach ($id_action as $i => $id) {
+
+            $upd_log = [
+				'id_detail' 		=> $id_detail[$i],
+				'bulan' 			=> $month[$i],
+				'tanggal_validasi' 	=> date('Y-m-d H:i:s')
+			];
+
+			// Persiapkan data yang akan disimpan
+			$upd = [
+				'rcsa_detail' => $id_detail[$i],
+				'bulan' => $month[$i],
+				'rcsa_action_no' => $id,  // Handle empty values
+				'progress_detail' => $progress[$i],  // Handle empty values
+				'target_progress_detail' => floatval($damp_lost[$i])
+			];
+
+
+			//  Cek apakah data sudah ada
+			 $existing_data = $this->db->get_where(_TBL_RCSA_MONITORING_TREATMENT, [
+				'id' => $id_edit[$i],
+				'bulan' => $month[$i]
+			])->row();
+
+			if ($existing_data) {
+				$upd['update_user'] = $this->authentication->get_info_user('username');
+				$where['rcsa_action_no'] = $id;
+				$where['bulan'] = $month[$i];
+				$result = $this->crud->crud_data(array('table' => _TBL_RCSA_MONITORING_TREATMENT, 'field' => $upd, 'where' => $where, 'type' => 'update'));
+				$id     = $id_edit[$i];
+				$type = 'edit';
+
+                $cek_log = $this->db->get_where(_TBL_RCSA_LOG_TREATMENT, [
+					'id_treatment_monitoring' => $id_edit[$i],
+					'bulan' => $month[$i]
+				])->row();
+
+				if($cek_log){
+					$upd_log['update_user'] = $this->authentication->get_info_user('username');
+					$where_log['id_treatment_monitoring'] = $id;
+					$where_log['bulan'] = $month[$i];
+					$result_log = $this->crud->crud_data(array('table' => _TBL_RCSA_LOG_TREATMENT, 'field' => $upd_log, 'where' => $where_log, 'type' => 'update'));
+				}else{
+					$upd_log['id_treatment_monitoring'] = $id;
+					$upd_log['create_user'] = $this->authentication->get_info_user('username');
+					$log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_TREATMENT, 'field' => $upd_log, 'type' => 'add']);
+				}
+				
+			} else {
+				$upd['create_user'] = $this->authentication->get_info_user('username');
+				$id = $this->crud->crud_data(['table' => _TBL_RCSA_MONITORING_TREATMENT, 'field' => $upd, 'type' => 'add']);
+				$id = $this->db->insert_id();
+				$type = "add";
+
+                $upd_log['id_treatment_monitoring'] = $id;
+                $upd_log['create_user'] = $this->authentication->get_info_user('username');
+                $log = $this->crud->crud_data(['table' => _TBL_RCSA_LOG_TREATMENT, 'field' => $upd_log, 'type' => 'add']);
+			}
+	
+		}
+	
+		return $id;  // Mengembalikan ID terakhir yang diupdate/ditambahkan
+	}
+
 	public function level_action($like, $impact)
 	{
-		// doi::dump($like);
-		// doi::dump($impact);
+
 		$result['like'] = $this->db
 			->where('id', $like)
  			->get('bangga_level')->row_array();

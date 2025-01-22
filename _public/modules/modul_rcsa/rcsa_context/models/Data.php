@@ -34,7 +34,7 @@ doi::dump($mode);
 			$upimp['rcsa_no'] = $newid;
 			$upimp['combo_no'] = $index;
 
-			if (isset($item['bulan'])) {
+			// if (isset($item['bulan'])) {
 				$upimp['ket'] = $item['ket'];
 				$upimp['combo_no'] = $index;
 				$bulanData[$index] = $item['bulan'];
@@ -59,7 +59,7 @@ doi::dump($mode);
 					$result = $this->crud->crud_data(array('table' => _TBL_RCSA_IMPLEMENTASI, 'field' => $upimp, 'type' => 'add'));
 				}
 
-			}
+			// }
 		}
 		foreach ($bulanData as $index => $bln) {
 			$upbln = array();

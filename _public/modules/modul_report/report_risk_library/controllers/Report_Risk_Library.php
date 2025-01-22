@@ -23,19 +23,22 @@ class Report_Risk_Library extends BackendController {
 		$this->set_Table(_TBL_LIBRARY);
 
 
-		$this->set_Open_Tab('Report Risk Library');
+			$this->set_Open_Tab('Report Risk Library');
 			$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
 			$this->addField(array('field' => 'owner_no','title'=>'Risk Owner', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true));
 			$this->addField(array('field' => 'create_user', 'search' =>false, 'default'=>$this->authentication->get_info_user('username')));
-	$this->addField(array('field' => 'kategori_no','title'=>'Kategori', 'input' => 'combo:search', 'combo' => $data['kategori'], 'size' => 100, 'required' => true, 'search' => true));
+			$this->addField(array('field' => 'kategori_no','title'=>'Kategori', 'input' => 'combo:search', 'combo' => $data['kategori'], 'size' => 100, 'required' => true, 'search' => true));
 			$this->addField(array('field' => 'event_no','title'=>'peristiwa', 'input' => 'combo:search', 'combo' => $data['cboper'], 'size' => 100, 'required' => true, 'search' => true));
 			
-			$this->addField(array('field' => 'name', 'show' => false));
 			$this->addField(array('field' => 'kategori', 'show' => false));
+			$this->addField(array('field' => 'tema_risiko', 'show' => false));
+			$this->addField(array('field' => 'name', 'show' => false));
 			$this->addField(array('field' => 'sasaran', 'show' => false));
 			$this->addField(array('field' => 'event_name', 'show' => false));
 			$this->addField(array('field' => 'risk_couse_no', 'show' => false));
 			$this->addField(array('field' => 'risk_impact_no', 'show' => false));
+			$this->addField(array('field' => 'tema_risiko_t2_gabungan', 'show' => false));
+			$this->addField(array('field' => 't2_t3', 'show' => false));
 			
 		$this->set_Close_Tab();
 		
@@ -45,8 +48,11 @@ class Report_Risk_Library extends BackendController {
 
 		$this->set_Table_List($this->tbl_master, 'name','Risk Owner',10);
 		$this->set_Table_List($this->tbl_master, 'sasaran','Sasaran');
-		$this->set_Table_List($this->tbl_master, 'kategori', 'Kategori Risiko(T2)');
-		$this->set_Table_List($this->tbl_master, 'event_name', 'Peristiwa (T3)');
+		// $this->set_Table_List($this->tbl_master, 'event_name', 'Peristiwa');
+		$this->set_Table_List($this->tbl_master, 'event_name', 'Sub-Kelompok Risiko (T4)');
+		$this->set_Table_List($this->tbl_master, 'tema_risiko', 'Tema Risiko (T1)');
+		$this->set_Table_List($this->tbl_master, 'tema_risiko_t2_gabungan', 'Kategori Risiko(T2)');
+		$this->set_Table_List($this->tbl_master, 't2_t3', 'Kelompok Risiko (T3)');
 		$this->set_Table_List($this->tbl_master, 'risk_couse_no','Risk Cause');
 		$this->set_Table_List($this->tbl_master, 'risk_impact_no','Risk Impact');
 	

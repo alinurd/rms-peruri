@@ -156,46 +156,48 @@ if ($field['iskri'] == 0) {
             <div class="tab-content">
                 <style>
                     .card.bg-primary {
-            position: relative;
-            background-color: #007bff;
-            color: white;
-            border-radius: 4px;
-            padding: 20px;
-            overflow: hidden; /* Supaya cahaya tidak keluar dari batas elemen */
-        }
+                        position: relative;
+                        background-color: #007bff;
+                        color: white;
+                        border-radius: 4px;
+                        padding: 20px;
+                        overflow: hidden; /* Supaya cahaya tidak keluar dari batas elemen */
+                    }
 
-        .card.bg-primary::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%; /* Cahaya mulai dari luar elemen */
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
-            animation: slide-right 3s infinite; /* Animasi berjalan ke kanan */
-        }
+                    .card.bg-primary::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: -100%; /* Cahaya mulai dari luar elemen */
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+                        animation: slide-right 3s infinite; /* Animasi berjalan ke kanan */
+                    }
 
-        @keyframes slide-right {
-            0% {
-                left: -100%; /* Mulai dari luar sisi kiri elemen */
-            }
-            100% {
-                left: 100%; /* Bergerak ke luar sisi kanan elemen */
-            }
-        }
+                    @keyframes slide-right {
+                        0% {
+                            left: -100%; /* Mulai dari luar sisi kiri elemen */
+                        }
+                        100% {
+                            left: 100%; /* Bergerak ke luar sisi kanan elemen */
+                        }
+                    }
 
 
 
-        
+            
 
                 </style>
-                    <div class="card bg-primary">
+                    <?php if($detail['event_name']) {?>
+                        <div class="card bg-primary">
                         <div class="card-body">
                             <h4>
                             <strong>Peristiwa Risiko : </strong> <?= $detail['event_name']; ?>
                             </h4>
                         </div>
                     </div>
+                    <?php } ?>
                 <div id="identify" class="tab-pane fade in  <?= $identifyact ?>">
                     <!-- <?php doi::dump($detail['pi']); ?>     -->
                     <div class="clearfix"> </div>
@@ -215,36 +217,42 @@ if ($field['iskri'] == 0) {
                                             <td colspan="2"><?= form_dropdown('sasaran', $sasaran, ($detail) ? $detail['sasaran_no'] : '', 'class="select2 form-control" style="width:100%;" id="sasaran"' . $disable); ?></td>
                                         </tr>
                                         <tr>
-                                            <td width="20%">Tema Risiko (T1)</td>
-                                            <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class="select2 form-control" style="width:100%;" id="tema"' . $disable); ?></td>
+                                            <td width="20%">Tema Risiko (T1)</td> 
+                                            <td colspan="2"><?= form_input('tema_risiko', ($detail) ? ($detail['tema_risiko']) : 'Bisnis BUMN', 'class="form-control" placeholder="Input Proses Bisnis" id="tema_risiko" readonly'); ?>
+                                        </td>
+                                            
+                                            
                                         </tr>
                                         <tr>
                                             <td width="20%">Kategori Risiko(T2)</td>
+                                            <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class=" select2 form-control" style="width:100%;" id="tema"' . $disable); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">Kelompok Risiko (T3)</td>
                                             <td colspan="2"><?= form_dropdown('kategori', $kategori, ($detail) ? $detail['kategori_no'] : '', 'class="select2 form-control" style="width:100%;" id="kategori"' . $disable); ?></td>
                                         </tr>
-                                        <!-- <tr class="hide">
-                                            <td width="20%">Subkategori risiko (T3)</td>
-                                            <td colspan="2"><?= form_dropdown('sub_kategori', $subkategori, ($detail) ? $detail['sub_kategori'] : '', 'class="select2 form-control" style="width:100%;" id="sub_kategori"' . $disable); ?></td>
+                                        <tr class="">
+                                            <td width="20%">Sub-Kelompok Risiko (T4)</td>
+                                            <td colspan="2"><?= form_dropdown('sub_kategori', $subkategori, ($detail) ? $detail['sub_kategori'] : '', 'class=" t3 select2 form-control" style="width:100%;" id="sub_kategori"' . $disable); ?></td>
 
-                                        </tr> -->
+                                        </tr>
                                         <tr>
-                                            <td width="20%">Subkategori Risiko</td>
+                                            <td width="20%">Jenis Risiko</td>
                                             <td colspan="2"><?= form_dropdown('subrisiko', $np, ($detail) ? $detail['subrisiko'] : '', 'class="select2 form-control" style="width:100%;" id="subrisiko"' . $disable); ?></td>
                                         </tr>
 
 
                                         <tr>
                                             <td width="20%">Proses Bisnis</td>
-                                            <td colspan="2"><?= form_dropdown('proses_bisnis', $proses_bisnis, ($rcsa_det) ? $rcsa_det['rcm_id'] : '', 'class="select2 form-control" style="width:100%;" id="proses_bisnis"' . $disable); ?></td>
+                                            <td colspan="2"><?= form_input('proses_bisnis', ($detail) ? ($detail['proses_bisnis']) : '', 'class="form-control" placeholder="Input Proses Bisnis" id="proses_bisnis"'); ?></td>
                                         </tr>
 
-                
                                         <tr>
-                                            <td width="20%" rowspan="3">Peristiwa (T3)</td>
+                                            <td width="20%" rowspan="3">Detail Peristiwa Risiko (T5)</td>
                                         </tr>
                                         <tr class="peristiwa_lib">
                                             <td>
-                                                <?= form_dropdown('event_no', $cboper, ($detail) ? $detail['event_no'] : '', 'class="eventcombo select2 form-control" style="width:100%;" id="event_no"' . $disable); ?>
+                                                <?= form_dropdown('event_no', $cboper, ($detail) ? $detail['event_no'] : '', 'class="select2 form-control" style="width:100%;" id="event_no"' . $disable); ?>
                                                 <?php if ($detail) {
                                                     // echo form_hidden('event_no', $detail['event_no']);
                                                 } ?>
@@ -278,7 +286,11 @@ if ($field['iskri'] == 0) {
                                                 <tbody>
 
                                                     <?php
-                                                    $risk_couseno_array = explode(',', $risk_couseno1);
+                                                        $couse_lib='hide';
+                                                        if($detail['event_no']){
+                                                        $couse_lib='';
+                                                    }
+                                                     $risk_couseno_array = explode(',', $risk_couseno1);
 
                                                     // Menghapus spasi di sekitar angka
                                                     $risk_couseno_array = array_map('trim', $risk_couseno_array);
@@ -294,7 +306,7 @@ if ($field['iskri'] == 0) {
 
                                                     ?>
 
-                                                        <tr class="couse_lib">
+                                                        <tr class="couse_lib <?=$couse_lib?>">
                                                             <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
                                                             <td>
                                                                 <?= form_dropdown('risk_couse_no[]', $cbogroup, ($couseno) ? $couseno : '', 'class="select2 form-control" style="width:100%;" id="risk_cousenox"' . $disable); ?>
@@ -349,6 +361,10 @@ if ($field['iskri'] == 0) {
                                                 <tbody>
 
                                                     <?php
+                                                       $impect_lib='hide';
+                                                       if($detail['event_no']){
+                                                           $impect_lib='';
+                                                       }
                                                     $risk_impactno = explode(',', $risk_impectno1);
 
                                                     // Menghapus spasi di sekitar angka
@@ -368,7 +384,7 @@ if ($field['iskri'] == 0) {
                                                         // doi::dump($impactno);
                                                     ?>
 
-                                                        <tr class="impect_lib">
+                                                        <tr class="impect_lib <?=$impect_lib?>">
                                                             <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
                                                             <td><?= form_dropdown('risk_impact_no[]', $cbogroup1, ($impactno) ? $impactno : '', 'class="select2 form-control" style="width:100%;" id="impactnox"' . $disable); ?>
                                                             </td>
@@ -427,11 +443,17 @@ if ($field['iskri'] == 0) {
                                             <table class="table table-borderless" id="">
                                                 <thead>
                                                     <tr>
-                                                        <td width="25%">Dampak Kuantitatif </td>
+                                                        <td width="25%">Kategori Dampak</td>
                                                         <td>
-                                                            <div id="l_risk_impact_kuantitatif_parent" class="input-group">
-                                                                <span id="span_l_amoun" class="input-group-addon"> Rp </span>
-                                                                <?= form_input('risk_impact_kuantitatif', ($detail) ? ( number_format($detail['risk_impact_kuantitatif'], 0, ',', ',')) : '', 'class="form-control text-right rupiah" id="risk_impact_kuantitatif"' . $disable); ?>
+                                                            <div id="l_risk_impact_parent" class="input-group">
+                                                                <!-- Dropdown untuk memilih Kuantitatif atau Kualitatif -->
+                                                                <?= form_dropdown('kategori_dampak', 
+                                                                    array(
+                                                                        'kuantitatif' => 'Kuantitatif', 
+                                                                        'kualitatif' => 'Kualitatif'
+                                                                    ), 
+                                                                    ($detail) ? ($detail['kategori_dampak']) : 'kuantitatif', 
+                                                                    'class="form-control" id="kategori_dampak" ' . $disable); ?>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -489,14 +511,14 @@ if ($field['iskri'] == 0) {
                                 .table-risk-analisis .form-control {
                                     font-size: 11px; /* Ukuran font kecil di dropdown */
                                     padding: 1px 2px;
-                                    width: 50px; /* Ukuran dropdown yang lebih kecil */
+                                    width: 100%; /* Ukuran dropdown yang lebih kecil */
                                 }
 
                                 .table-risk-analisis .label-level {
                                     display: inline-block;
                                     padding: 2px 4px;
                                     font-size: 10px;
-                                    min-width: 50px;
+                                    min-width: 100%;
                                     text-align: center;
                                 }
 
@@ -526,9 +548,9 @@ if ($field['iskri'] == 0) {
                                 <thead>
                                     <tr>
                                     <!-- Kolom Analisis Risiko Inhern -->
-                                    <th class="sticky text-center" style="left: 0;" colspan="3">Analisis Risiko Inhern</th>
+                                    <th class=" text-center" colspan="3">Analisis Risiko Inhern</th>
                                     <!-- Kolom Analisis Risiko Residual -->
-                                    <th class="sticky text-center" style="left: 198px;" colspan="3">Analisis Risiko Residual</th>
+                                    <th class=" text-center"  colspan="3">Analisis Risiko Saat Ini (Current Risk)</th>
                                     <?php
                                     $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                                     for ($i = 1; $i < 13; $i++) { ?>
@@ -537,36 +559,98 @@ if ($field['iskri'] == 0) {
                                     </tr>
                                     <tr>
                                     <!-- Kolom Detail Risiko Inhern -->
-                                    <th class="sticky text-center" style="left: 0;">Skala Dampak</th>
-                                    <th class="sticky text-center" style="left: 67px;">Skala Probabilitas</th>
-                                    <th class="sticky text-center" style="left: 148px;">Level Risiko</th>
+                                    <th class=" text-center">Skala Impact</th>
+                                    <th class=" text-center" >Skala likelihood</th>
+                                    <th class=" text-center" >Level/Exposure</th>
 
                                     <!-- Kolom Detail Risiko Residual -->
-                                    <th class="sticky text-center" style="left: 198px;">Skala Dampak</th>
-                                    <th class="sticky text-center" style="left: 265px;">Skala Probabilitas</th>
-                                    <th class="sticky text-center" style="left: 346px;">Level Risiko</th>
+                                    <th class=" text-center" >Skala Impact</th>
+                                    <th class=" text-center" >Skala likelihood</th>
+                                    <th class=" text-center">Level/Exposure</th>
 
                                     <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
                                     <?php for ($i = 1; $i < 13; $i++) { ?>
-                                        <th class="text-center">Skala Dampak</th>
-                                        <th class="text-center">Skala Probabilitas</th>
-                                        <th class="text-center">Level Risiko</th>
+                                        <th class="text-center">Skala Impact</th>
+                                        <th class="text-center">Skala Likelihood</th>
+                                        <th class="text-center">Level/Exposure</th>
                                     <?php } ?>
                                     </tr>
                                 </thead>
 
                                 <tbody>
+                                <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai_in_impact" id="nilai_in_impact" value="<?= (empty($analisiData['nilai_in_impact'])) ? '' : number_format($analisiData['nilai_in_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="text" name="nilai_in_likelihood" id="nilai_in_likelihood" value="<?= (empty($analisiData['nilai_in_likelihood'])) ? '' : number_format($analisiData['nilai_in_likelihood']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai_in_exposure" id="nilai_in_exposure" value="<?= (empty($analisiData['nilai_in_exposure'])) ? '' : number_format($analisiData['nilai_in_exposure']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1" readonly>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai_res_impact" id="nilai_res_impact" value="<?= (empty($analisiData['nilai_res_impact'])) ? '' : number_format($analisiData['nilai_res_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input style="width:100px !important;" type="text" name="nilai_res_likelihood" id="nilai_res_likelihood" value="<?= (empty($analisiData['nilai_res_impact'])) ? '' : number_format($analisiData['nilai_res_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon2">
+                                                <span class="input-group-addon" id="basic-addon2">%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                <input style="width:100px !important;" type="text" name="nilai_res_exposure" id="nilai_res_exposure" value="<?= (empty($analisiData['nilai_res_impact'])) ? '' : number_format($analisiData['nilai_res_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1" readonly>
+                                            </div>
+                                        </td>
+                                        <?php for ($i = 1; $i <= 12; $i++) { 
+                                            $data_analisis_month = $this->db->where('id_detail', $id_edit)->where('bulan', $i)->get("bangga_analisis_risiko")->row_array();
+                                        ?>
+                                            
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                    <input style="width:100px !important;" type="text" name="nilai_impact[]" value="<?= (empty($data_analisis_month['nilai_impact'])) ? '' : number_format($data_analisis_month['nilai_impact']) ;?>" id="nilai_impact<?=$i;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input style="width:100px !important;" type="text" name="nilai_likelihood[]" id="nilai_likelihood<?=$i;?>" value="<?= (empty($data_analisis_month['nilai_likelihood'])) ? '' : number_format($data_analisis_month['nilai_likelihood']) ;?>" class="form-control " aria-describedby="basic-addon2">
+                                                    <span class="input-group-addon" id="basic-addon2">%</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                    <input style="width:100px !important;" type="text" name="nilai_exposure[]" id="nilai_exposure<?=$i;?>" value="<?= (empty($data_analisis_month['nilai_exposure'])) ? '' : number_format($data_analisis_month['nilai_exposure']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1" readonly>
+                                                </div>
+                                            </td>
+                                        <?php }?>
+                                    </tr>
                                     <tr>
                                     <input type="hidden" id="id_detail" value="<?=$detail['id']?>">
                                     <!-- Kolom Detail Risiko Inhern -->
-                                    <td class="sticky text-center" style="left: 0;">
-                                        <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['inherent_likelihood'])) ? '' : $analisiData['inherent_likelihood'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
+                                    <td class=" text-center">
+                                            <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['inherent_impact'])) ? '' : $analisiData['inherent_impact'], 'class="form-control" id="impactAnalisisInheren"'); ?>
+                                        
                                         <input type="hidden" id="inherent_level" name="inherent_level">
                                     </td>
-                                    <td class="sticky text-center" style="left: 67px;">
-                                        <?php echo form_dropdown('analisis_impact_inherent', $cboImpact, (empty($analisiData['inherent_impact'])) ? '' : $analisiData['inherent_impact'], 'class="form-control" id="impactAnalisisInheren"'); ?>
+                                    <td class=" text-center">
+                                        <?php echo form_dropdown('analisis_like_inherent', $cboLike, (empty($analisiData['inherent_likelihood'])) ? '' : $analisiData['inherent_likelihood'], 'class="form-control" data-mode="1" data-month="0" id="likeAnalisisInheren"'); ?>
                                     </td>
-                                    <td class="sticky text-center" style="left: 148px;">
+                                    <td class=" text-center">
                                         <span id="likeAnalisisInherenLabel">
                                             <span style="background-color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color'] : '#fff'; ?>;
                                                         color:<?php echo (count($analisiData['inherent_level_text']) > 0) ? $analisiData['inherent_level_text'][0]['color_text'] : '#000'; ?>;
@@ -577,13 +661,13 @@ if ($field['iskri'] == 0) {
                                     </td>
 
                                     <!-- Kolom Detail Risiko Residual -->
-                                    <td class="sticky text-center" style="left: 200px;">
-                                        <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['residual_likelihood'])) ? '' : $analisiData['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
-                                    </td>
-                                    <td class="sticky text-center" style="left: 268px;">
+                                    <td class=" text-center">
                                         <?php echo form_dropdown('analisis_impact_residual', $cboImpact, (empty($analisiData['residual_impact'])) ? '' : $analisiData['residual_impact'], 'class="form-control" id="impactAnalisisResidual"'); ?>
                                     </td>
-                                    <td class="sticky text-center" style="left: 349px;">
+                                    <td class=" text-center">
+                                        <?php echo form_dropdown('analisis_like_residual', $cboLike, (empty($analisiData['residual_likelihood'])) ? '' : $analisiData['residual_likelihood'], 'class="form-control" data-mode="2" data-month="0" id="likeAnalisisResidual"'); ?>
+                                    </td>
+                                    <td class=" text-center">
                                         <span id="likeAnalisisResidualLabel">
                                             <span style="background-color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color'] : '#fff'; ?>;
                                                         color:<?php echo (count($analisiData['residual_level_text']) > 0) ? $analisiData['residual_level_text'][0]['color_text'] : '#000'; ?>;
@@ -595,13 +679,20 @@ if ($field['iskri'] == 0) {
                                     </td>
 
                                     <!-- Kolom untuk Target Risiko Residual (Bulan-bulan) -->
-                                    <?php for ($i = 1; $i <= 12; $i++) { ?>
+
+                                    <?php for ($i = 1; $i <= 12; $i++) { 
+                                        $datatarget = $this->db->where('id_detail', $id_edit)->where('bulan', $i)->get("bangga_analisis_risiko")->row_array();
+                                        
+                                        // Ambil nilai target_like dan target_impact dari $datatarget jika tersedia
+                                        $selected_target_like = !empty($datatarget['target_like']) ? $datatarget['target_like'] : '';
+                                        $selected_target_impact = !empty($datatarget['target_impact']) ? $datatarget['target_impact'] : '';
+                                    ?>
                                         <input type="hidden" name="month" id="month">
                                         <td class="text-center">
-                                            <?php echo form_dropdown('target_like', $cboLike, (empty($target_like[$i-1])) ? '' : $target_like[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
-                                        </td>
-                                        <td class="text-center">
-                                            <?php echo form_dropdown('target_impact', $cboImpact, (empty($target_impact[$i-1])) ? '' : $target_impact[$i-1], 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
+                                            <?php echo form_dropdown('target_impact[]', $cboImpact, $selected_target_impact, 'class="form-control" data-mode="3" data-month="' . $i . '" id="impactTargetResidual'.$i.'"'); ?>
+                                            </td>
+                                            <td class="text-center">
+                                            <?php echo form_dropdown('target_like[]', $cboLike, $selected_target_like, 'class="form-control" data-mode="3" data-month="' . $i . '" id="likeTargetResidual'.$i.'"'); ?>
                                         </td>
                                         <td class="text-center">
                                             <span id="targetResidualLabel<?= $i ?>">
@@ -615,11 +706,10 @@ if ($field['iskri'] == 0) {
                                         </td>
                                     <?php } ?>
                                     </tr>
+                                    
                                 </tbody>
                                 </table>
-
-
-
+                                
                             </div>
 
                             <div class="x_footer <?= $analysisacthide ?>">
@@ -644,14 +734,120 @@ if ($field['iskri'] == 0) {
                         <section class="x_panel">
                             <div class="x_content">
                                 <div class="table-responsive">
-                                    <?php
-                                    foreach ($level_resiko as $row) { ?>
-                                        <div class="col-md-3 col-sm-3 col-xs-3"><?= $row['label'] ?></div>
-                                        <div class="col-md-9 col-sm-9 col-xs-9">
-                                            <div class="form-group form-inline"><?= $row['isi'] ?></div>
+                                <?php
+                                    // Contoh data JSON dari database
+                                    $note_control_json = $detail['note_control'] ?? '[]'; // Pastikan default adalah array kosong
+                                    $note_control_array = json_decode($note_control_json, true); // Decode JSON ke array
+
+                                    // Jika decoding gagal atau data bukan array, gunakan array kosong
+                                    if (!is_array($note_control_array)) {
+                                        $note_control_array = [];
+                                    }
+                                ?>
+                                   <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="note_control"><?= lang('msg_field_existing_control'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div id="note_control_wrapper">
+                                            <?php foreach ($note_control_array as $note) : ?>
+                                                <div class="form-group note-control-group" style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                                    <textarea id="note_control" name="note_control[]" class="form-control" style="width:100%; height:150px; text-align:left; padding:10px;" <?= $readonly ?>><?= htmlspecialchars($note, ENT_QUOTES, 'UTF-8') ?></textarea>
+                                                    <button type="button" class="btn btn-danger btn-sm remove-note-control">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            <?php endforeach; ?>
+                                            <!-- Jika tidak ada data, tambahkan textarea default -->
+                                            <?php if (empty($note_control_array)) : ?>
+                                                <div class="form-group note-control-group" style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                                    <textarea id="note_control" name="note_control[]" class="form-control" style="width:100%; height:150px; text-align:left; padding:10px;" <?= $readonly ?>></textarea>
+                                                    <button type="button" class="btn btn-danger btn-sm remove-note-control">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
-                                    <?php } ?>
-                                </div>
+                                        <button type="button" class="btn btn-info btn-sm" id="add_note_control_button">
+                                            <i class="fa fa-plus"></i> Tambah Note
+                                        </button>
+                                    </div>
+
+
+                               
+
+                                
+                                    <!-- COA -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="coa"><?= lang('msg_field_coa'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="input-group">
+                                            <span id="span_dampak" class="input-group-addon">Rp.</span>
+                                            <input type="text" id="coa" name="coa" class="form-control rupiah text-right" style="width:100%;" 
+                                                value="<?= ($detail) ? number_format($detail['coa'], 0, ',', ',') : '' ?>">
+                                        </div>
+                                    </div>
+                              
+
+                                
+                                    <!-- Kode Jasa -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="kode_jasa"><?= lang('msg_field_kode_jasa'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="form-group">
+                                            <input type="text" id="kode_jasa" name="kode_jasa" class="form-control" style="width:100%;" 
+                                                value="<?= ($detail) ? $detail['kode_jasa'] : '' ?>">
+                                        </div>
+                                    </div>
+                                
+
+                                
+                                    <!-- Keterangan COA -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="keterangan_coa"><?= lang('msg_field_ket_coa'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="form-group">
+                                            <textarea id="keterangan_coa" name="keterangan_coa" class="form-control" style="width:100%;height:150px" <?= $readonly ?>><?= ($detail) ? $detail['keterangan_coa'] : '' ?></textarea>
+                                        </div>
+                                    </div>
+                                
+
+                                
+                                    <!-- Risk Control Assessment -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="risk_control_assessment"><?= lang('msg_field_risk_control_assessment'); ?></label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="form-group">
+                                            <select id="risk_control_assessment" name="risk_control_assessment" class="form-control select2" style="width:100%;" <?= $disabled ?>>
+                                                <?php foreach ($cboRiskControl as $key => $value) : ?>
+                                                    <option value="<?= $key ?>" <?= ($detail && $detail['risk_control_assessment'] == $key) ? 'selected' : '' ?>><?= $value ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                
+
+                                
+                                    <!-- Treatment -->
+                                    <div class="col-md-3 col-sm-3 col-xs-3">
+                                        <label for="treatment_no">Treatment:</label>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        <div class="form-group">
+                                            <select id="treatment_no" name="treatment_no" class="form-control select2" style="width:100%;" <?= $disabled ?>>
+                                                <?php 
+                                                $treatmentOptions = ($a == "Ekstrem") ? $cboTreatment1 : (($a == "Low") ? $cboTreatment2 : $cboTreatment);
+                                                foreach ($treatmentOptions as $key => $value) : ?>
+                                                    <option value="<?= $key ?>" <?= ($detail && $detail['treatment_no'] == $key) ? 'selected' : '' ?>><?= $value ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                
+
                             </div>
                             <div class="x_footer <?= $evaluasiacthide ?>">
                                 <ul class="nav navbar-right panel_toolbox ">
@@ -681,64 +877,140 @@ if ($field['iskri'] == 0) {
                             $isi_owner_no_action_accountable[] = $owner['rcsa_owner_no'];
                         }
 
-
+                            
                         ?>
 
-                        <?= form_open_multipart(base_url('rcsa/simpan_mitigasi'), array('id' => 'form_mitigasi'), ['id_detail' => $id_edit, 'id_edit_mitigasi' => $id_edit_mitigasi, 'rcsa_no' => $rcsa_no, 'rcsa_no_1' => $rcsa_no_1]); ?>
+                        <?= form_open_multipart(base_url('rcsa/simpan_mitigasi'), array('id' => 'form_mitigasi'), ['id_detail' => $id_edit, 'id_edit_mitigasi' => $id_edit_mitigasi, 'rcsa_no' => $rcsa_no, 'rcsa_no_1' => $rcsa_no_1,'owner_no'=>$parent['owner_no']]); ?>
                         <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
                         <section class="x_panel">
                             <div class="row">
                                 <div class="x_content table-responsive" style="overflow-x: auto;">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <!-- Kolom Treatment dengan posisi sticky di sebelah kiri -->
-                                                <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 0; background: white; width: 15%; z-index: 2;">
-                                                    Treatment
-                                                </th>
-                                                <?php
-                                                    $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                                                    foreach ($bulan as $bulanItem) { ?>
-                                                        <!-- Kolom Bulan (satu kolom per bulan) -->
-                                                        <th class="text-center"><?= $bulanItem ?></th>
-                                                    <?php } ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody><tr>
-                                                <!-- Konten Kolom Treatment -->
-                                                <td style="position: sticky; left: 0; background: white; width: 15%; z-index: 1000;">
-                                                    <?= form_textarea('proaktif', ($field) ? $field['proaktif'] : '', " id='proaktif' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 250px; height: 104px;'" . $readonly); ?>
-                                                </td>
-                                                <?php
-                                                    // Loop untuk setiap bulan, menambahkan satu kolom <td> per bulan
-                                                    for ($i = 1; $i <= 12; $i++):
-                                                         // Cek apakah data bulan tertentu ada dalam array $rcsa_treatment
-                                                        $target_progress = isset($rcsa_treatment[$i - 1]['target_progress_detail']) ? $rcsa_treatment[$i - 1]['target_progress_detail'] : '';
-                                                        $target_damp_loss = isset($rcsa_treatment[$i - 1]['target_damp_loss']) ? $rcsa_treatment[$i - 1]['target_damp_loss'] : '';
-                                                        $data['id']      = $field['rcsa_detail_no'];
-                                                        $data['rcsa_no'] = $rcsa_no;
-                                                        echo '<td>      
-                                                            <div class="input-group">
-                                                                <input style="width:100px !important;" type="number" name="target_progress'.$i.'" id="target_progress'.$i.'" class="form-control" placeholder="Progress %" value="'.$target_progress.'" aria-describedby="basic-addon2">
-                                                                <span class="input-group-addon" id="basic-addon2">%</span>
-                                                            </div>
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                                <input style="width:100px !important;" type="text" name="target_damp_loss'.$i.'" id="target_damp_loss'.$i.'" 
-                                                                value="'.number_format($target_damp_loss, 0, ',', ',').'" class="form-control numeric rupiah" placeholder="Damp Loss" aria-describedby="basic-addon1">
-                                                            </div>
-                                                        </td>';
-                                                    endfor;
-                                                ?>
-                                            </tr>
-                                            
-                                        </tbody>
-                                    </table>
+                                <table class="table table-striped table-bordered table-hover" id="dynamic_table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 50px; position: sticky; left: 0; background: white; z-index: 2;">Hapus</th>
+                                            <th class="text-center treatment-col" rowspan="2" style="position: sticky; left: 58px; background: white; width: 100px !important; z-index: 2;">
+                                                Treatment
+                                            </th>
+                                            <th class="text-center rencana-col" rowspan="2" style="position: sticky; left: 325px; background: white; width: 100px !important; z-index: 2;">
+                                                Kategori
+                                            </th>
+                                            <?php
+                                            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                                            foreach ($bulan as $bulanItem) { ?>
+                                                <th class="text-center"><?= $bulanItem ?></th>
+                                            <?php } ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Baris awal tanpa tombol hapus -->
+                                        <?php $index = 0; ?>
 
+                                        <!-- Cek apakah $rcsa_action kosong -->
+                                        <?php if (empty($rcsa_action)) : ?>
+                                            <tr class="data-row">
+                                                <td class="text-center" style="width: 50px !important; position: sticky; left: 0; background: white; z-index: 1000;">
+                                                    <button type="button" class="btn btn-danger btn-sm delete-row-button">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                                <td style="position: sticky; left: 58px; background: white; width: 100px !important; z-index: 1000;">
+                                                    <?= form_textarea('proaktif[' . $index . ']', '', "maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 250px; height: 104px;'"); ?>
+                                                </td>
+                                                <td style="position: sticky; left: 325px; background: white; width: 100px!important; z-index: 1000;">
+                                                    <select name="rencana[<?= $index; ?>]" class="form-control" style="width:100px !important;">
+                                                        <option value="proaktif">Proaktif</option>
+                                                        <option value="reaktif">Reaktif</option>
+                                                        <option value="keduanya">Keduanya</option>
+                                                    </select>
+                                                </td>
+                                                <?php for ($i = 1; $i <= 12; $i++) : ?>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input style="width:100px !important;" type="number" name="target_progress[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_progress, 0, ',', '.')); ?>" class="form-control" placeholder="Progress %" aria-describedby="basic-addon2">
+                                                            <span class="input-group-addon" id="basic-addon2">%</span>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                            <input style="width:100px !important;" type="text" name="target_damp_loss[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_damp_loss, 0, ',', '.')); ?>" class="form-control numeric rupiah" placeholder="Treatment Cost" aria-describedby="basic-addon1">
+                                                        </div>
+                                                        
+                                                    </td>
+                                                <?php endfor; ?>
+                                            </tr>
+                                        <?php else : ?>
+                                            <?php foreach($rcsa_action as $row_action) { ?>
+                                         
+                                                <tr class="data-row">
+                                                    <td class="text-center" style="width: 50px !important; position: sticky; left: 0; background: white; z-index: 1000;"><button type="button" class="btn btn-danger btn-sm delete-row-button">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button></td>
+                                                    <td style="position: sticky; left: 58px; background: white; width: 100px !important; z-index: 1000;">
+                                                        <?= form_textarea('proaktif['.$index.']', ($row_action['proaktif']) ? $row_action['proaktif'] : $row_action['reaktif'], "maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 250px; height: 104px;'"); ?>
+                                                    </td>
+                                                    <td style="position: sticky; left: 325px; background: white; width: 100px!important; z-index: 1000;">
+                                                        <select name="rencana[<?= $index;?>]" class="form-control" style="width:100px !important;">
+                                                            <option value="proaktif" <?= ($row_action['proaktif']) ? 'selected' :'';?>>Proaktif</option>
+                                                            <option value="reaktif" <?= ($row_action['reaktif']) ? 'selected' :'';?>>Reaktif</option>
+                                                            <option value="keduanya" <?= ($row_action['proaktif'] && $row_action['reaktif']) ? 'selected' :'';?>>Keduanya</option>
+                                                        </select>
+                                                        <input type="hidden" name="id_action[<?= $index;?>]" value="<?=$row_action['id'];?>">
+                                                    </td>
+                                                    <?php 
+
+                                                for ($i = 1; $i <= 12; $i++) : 
+                                                    // Ambil data dari database berdasarkan id_rcsa_action
+                                                    $rcsa_treatment = $this->db->where('id_rcsa_action', $row_action['id'])->get("bangga_rcsa_treatment")->result_array();
+
+                                                    // Inisialisasi variabel untuk menyimpan target_progress dan target_damp_loss
+                                                    $target_progress = '';
+                                                    $target_damp_loss = '';
+                                                    $id_treatment = '';
+
+                                                    // Cek apakah ada data dan cari nilai berdasarkan bulan
+                                                    if (!empty($rcsa_treatment)) {
+                                                        foreach ($rcsa_treatment as $treatment) {
+                                                            // Misalkan kolom 'bulan' ada dalam tabel bangga_rcsa_treatment
+                                                            if ($treatment['bulan'] == $i) {
+                                                                $id_treatment = $treatment['id'];
+                                                                $target_progress = $treatment['target_progress_detail'];
+                                                                $target_damp_loss = $treatment['target_damp_loss']; // Pastikan kolom ini ada
+                                                                break; // Hentikan loop jika sudah ditemukan
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input style="width:100px !important;" type="number" name="target_progress[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_progress, 0)); ?>" class="form-control" placeholder="Progress %" aria-describedby="basic-addon2">
+                                                            <span class="input-group-addon" id="basic-addon2">%</span>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon" id="basic-addon1">Rp.</span>
+                                                            <input style="width:100px !important;" type="text" name="target_damp_loss[<?= $index; ?>][<?= $i ?>]" value="<?= htmlspecialchars(number_format($target_damp_loss, 0)); ?>" class="form-control numeric rupiah" placeholder="Treatment Cost" aria-describedby="basic-addon1">
+                                                        </div>
+                                                        <!-- Input hidden untuk menyimpan ID -->
+                                                        <input type="hidden" name="id[<?= $index; ?>]" value="<?= $id_treatment; ?>">
+                                                    </td>
+                                                <?php endfor; ?>
+                                                </tr>
+                                                <?php $index++;} ?>
+                                        <?php endif;?>
+                                    </tbody>
+                                </table>
+
+                                    <!-- Tombol Tambah Row -->
+                                    <div class="add-button-wrapper" style="position: sticky; left: 0; background: white; width: 15%; z-index: 1000;">
+                                        <button type="button" class="btn btn-success btn-sm" id="add_row_button">
+                                            <i class="fa fa-plus"></i> Tambah Row
+                                        </button>
+                                    </div>
 
                                 </div>
                             </div>
                             <div class="clearfix"></div>
+                            <!-- Tombol Tambah Row -->
+                            
                             <div class="x_footer mt-5">
                                 <ul class="nav navbar-right panel_toolbox">
                                     <input class="btn btn-primary pointer <?= $hide_edit ?>" id="simpan_mitigasi" value="Simpan" />
@@ -746,6 +1018,8 @@ if ($field['iskri'] == 0) {
                                 <div class="clearfix"></div>
                             </div>
                         </section>
+
+
                         <?= form_close(); ?>
                     </div>
                 </div>
@@ -953,4 +1227,111 @@ if ($field['iskri'] == 0) {
         });
 
     });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const wrapper = document.getElementById('note_control_wrapper');
+    const addButton = document.getElementById('add_note_control_button');
+
+    // Event Listener untuk Menambah Textarea
+    addButton.addEventListener('click', function () {
+        // Buat grup baru untuk textarea dan tombol hapus
+        const newGroup = document.createElement('div');
+        newGroup.className = 'form-group note-control-group';
+        newGroup.style.marginBottom = '10px';
+        newGroup.style.display = 'flex';
+        newGroup.style.alignItems = 'flex-start';
+        newGroup.style.gap = '10px';
+
+        // Buat textarea baru
+        const newTextarea = document.createElement('textarea');
+        newTextarea.name = 'note_control[]';
+        newTextarea.className = 'form-control';
+        newTextarea.style.width = '100%';
+        newTextarea.style.height = '150px';
+        newTextarea.style.textAlign = 'left';
+        newTextarea.style.padding = '10px';
+
+        // Buat tombol hapus
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'btn btn-danger btn-sm remove-note-control';
+        deleteButton.innerHTML = '<i class="fa fa-trash"></i>';
+
+        // Tambahkan textarea dan tombol hapus ke grup
+        newGroup.appendChild(newTextarea);
+        newGroup.appendChild(deleteButton);
+
+        // Tambahkan grup ke wrapper
+        wrapper.appendChild(newGroup);
+    });
+
+    // Event Delegation untuk Fungsi Hapus
+    wrapper.addEventListener('click', function (event) {
+        if (event.target.classList.contains('remove-note-control') || event.target.closest('.remove-note-control')) {
+            const groupToRemove = event.target.closest('.note-control-group');
+            wrapper.removeChild(groupToRemove); // Hapus grup textarea
+        }
+    });
+});
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tableBody = document.querySelector('#dynamic_table tbody');
+    const addRowButton = document.getElementById('add_row_button');
+    let rowIndex = tableBody.querySelectorAll('.data-row').length; // Hitung jumlah baris awal
+
+    addRowButton.addEventListener('click', function () {
+        const newRow = document.createElement('tr');
+        newRow.classList.add('data-row');
+
+        // Tambahkan kolom dengan indeks rowIndex
+        newRow.innerHTML = `
+            <td class="text-center" style="width: 50px !important; position: sticky; left: 0; background: white; z-index: 3;">
+                <button type="button" class="btn btn-danger btn-sm delete-row-button">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+            <td style="position: sticky; left: 58px; background: white; width: 100px !important; z-index: 1000;">
+                <textarea name="proaktif[${rowIndex}]" class="form-control" rows="2" cols="5" style="overflow: hidden; width: 100%; height: 104px;"></textarea>
+            </td>
+            <td style="position: sticky; left: 325px; background: white; width: 100px !important; z-index: 1000;">
+                <select name="rencana[${rowIndex}]" class="form-control" style="width:100px !important;">
+                    <option value="proaktif">Proaktif</option>
+                    <option value="reaktif">Reaktif</option>
+                    <option value="keduanya">Keduanya</option>
+                </select>
+            </td>
+            ${[...Array(12)].map((_, i) => `
+                <td>
+                    <div class="input-group">
+                        <input style="width:100px !important;" type="number" name="target_progress[${rowIndex}][${i + 1}]" class="form-control" placeholder="Progress %" aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2">%</span>
+                    </div>
+                    <div class="input-group">
+                        <span  class="input-group-addon" id="basic-addon1">Rp.</span>
+                        <input style="width:100px !important;" type="text" name="target_damp_loss[${rowIndex}][${i + 1}]" class="form-control numeric rupiah" placeholder="Treatment Cost" aria-describedby="basic-addon1">
+                    </div>
+                </td>
+            `).join('')}
+        `;
+
+        // Tambahkan row baru ke tabel
+        tableBody.appendChild(newRow);
+        rowIndex++; // Tambahkan indeks untuk row berikutnya
+    });
+
+    tableBody.addEventListener('click', function (event) {
+        if (event.target.closest('.delete-row-button')) {
+            const rowToDelete = event.target.closest('.data-row');
+            rowToDelete.remove();
+        }
+    });
+});
+
+
+
 </script>

@@ -18,6 +18,59 @@ if ($status) : ?>
 
 		foreach ($field as $keys => $row) :
 			if ($rcsa !== $row['rcsa_no']) {
+				$residual_level = $this->data->get_master_level(true, $row['residual_level']);
+				$tema               = $this->db->where('id', $row['tema'])->get(_TBL_LIBRARY)->row_array();
+						$inherent_level = $this->data->get_master_level(true, $row['inherent_level']);
+						$control_as = $this->db->where('id', $row['risk_control_assessment'])->get('bangga_data_combo')->row_array();
+						$pic = $this->db->where('id', $row['pic'])->get('bangga_owner')->row_array();
+		
+						$like = $this->db
+							->where('id', $residual_level['likelihood'])
+							->get('bangga_level')->row_array();
+		
+						$impact = $this->db
+							->where('id', $residual_level['impact'])
+							->get('bangga_level')->row_array();
+						// doi::dump($impact['level']);
+						$likeinherent = $this->db
+							->where('id', $inherent_level['likelihood'])
+							->get('bangga_level')->row_array();
+		
+						$impactinherent = $this->db
+							->where('id', $inherent_level['impact'])
+							->get('bangga_level')->row_array();
+
+							$act = $this->db
+							->where('rcsa_detail_no', $row['id'])
+							->get('bangga_rcsa_action')->result_array();
+						
+						$treatments = [];
+						$kategori = [];
+						$d_id_action = []; 
+						
+						// Pastikan $act tidak kosong
+						if (!empty($act)) {
+							foreach ($act as $item) {
+								// Cek kondisi untuk proaktif dan reaktif
+								if (!empty($item['proaktif']) && empty($item['reaktif'])) {
+									$treatments[] = $item['proaktif']; // Tambahkan proaktif ke array
+									$kategori[] = 'Proaktif'; // Tambahkan proaktif ke array
+									$d_id_action[] = $item['id']; // Tambahkan ID ke array (gunakan [] untuk menambahkan)
+								} elseif (!empty($item['reaktif']) && empty($item['proaktif'])) {
+									$treatments[] = $item['reaktif']; // Tambahkan reaktif ke array
+									$kategori[] = 'Reaktif'; // Tambahkan reaktif ke array
+									$d_id_action[] = $item['id']; // Tambahkan ID ke array
+								} else {
+									$treatments[] = $item['proaktif']; // Atau bisa juga $item['reaktif'] jika ingin
+									$kategori[] = 'Keduanya'; // Atau bisa juga $item['reaktif'] jika ingin
+									$d_id_action[] = $item['id']; // Tambahkan ID ke array
+								}
+							}
+						} else {
+							$treatments = ''; // Atau nilai default lainnya jika tidak ada hasil
+							$kategori = ''; // Set kategori ke string kosong atau nilai default
+							$d_id_action = ''; // Set ID action ke string kosong atau nilai default
+						}
 				if (!$first) { ?>
 					</tbody>
 					<tfoot>
@@ -78,9 +131,9 @@ if ($status) : ?>
 						<th rowspan="1" colspan="6"><label>Analisis Risiko</label></th>
 						<th rowspan="1" colspan="3"><label>Evaluasi Risiko</label></th>
 						<th rowspan="1" colspan="2"><label>Treatment Risiko</label></th>
-						<th rowspan="2"><label class="w100">Accountable Unit</label></th>
+						<!-- <th rowspan="2"><label class="w100">Accountable Unit</label></th>
 						<th rowspan="2"><label class="w80">Sumber Daya</label></th>
-						<th rowspan="2"><label class="w80">Deadline</label></th>
+						<th rowspan="2"><label class="w80">Deadline</label></th> -->
 					</tr>
 					<tr>
 						<th colspan="2">Probabilitas</th>
@@ -89,8 +142,8 @@ if ($status) : ?>
 						<th><label class="w150">PIC</label></th>
 						<th>Existing Control</th>
 						<th>Risk Control<br>Assessment</th>
-						<th><label class="w150">Proaktif</label></th>
-						<th><label class="w150">Reaktif</label></th>
+						<th><label class="w250">Program Perlakuan Risiko (Risk Treatment)</label></th>
+						<th><label>Kategori Treatment (Treatment Category)</label></th>
 					</tr>
 				</thead>
 				<tbody id="risk-register">
@@ -100,10 +153,8 @@ if ($status) : ?>
 					<td><i class="pointer text-danger icon-square-up" title=" Pindah posisi Keatas "></i><i class="pointer text-primary icon-square-down" title=" Pindah posisi Kebawah "></i> </td>
 					<td class="hide"> <button data-urgency="<?= $row['id_rcsa_detail']; ?>" data-rcsa="<?= $row['rcsa_no']; ?>" value="<?= $row['urgensi_no']; ?>" class="btn btn-xs btn-success move">select</button></td>
 					<td style="width: 50%"><?= $row['area_name']; ?></td>
+					<td><?= $tema['description']; ?></td>
 					<td><?= $row['kategori']; ?></td>
-					<td ><?= ($row['subrisiko'] == 1) ? 'negatif' : 'positif' ?></td>
-
-					<!-- <td><?= $row['sub_kategori']; ?></td> -->
 					<td><?= $row['event_name']; ?></td>
 					<!-- 								<td><?= format_list($row['couse'], '###'); ?></td>
 								<td><?= format_list($row['impact'], '###'); ?></td> -->
@@ -124,13 +175,13 @@ if ($status) : ?>
 					<td><?= $tmp[4]; ?></td>
 					<td><?= $tmp[5]; ?></td>
 					<td class="urgensi text-center"> <?= $row['urgensi_no_kadiv']; ?> </td>
-					<td><?= $row['level_like']; ?></td>
-					<td><?= $row['like_ket']; ?></td>
-					<td><?= $row['level_impact']; ?></td>
-					<td><?= $row['impact_ket']; ?></td>
-					<td><?= intval($row['level_like']) * intval($row['level_impact']); ?></td>
-					<td><?= $row['level_mapping']; ?></td>
-					<td><?= format_list($row['penanggung_jawab'], "###"); ?></td>
+					<td valign="top" style="text-align: center;"><?= $likeinherent['code']; ?></td>
+						<td valign="top" style="text-align: center;"><?= $likeinherent['level']; ?></td>
+						<td valign="top" style="text-align: center;"><?= $impactinherent['code']; ?></td>
+						<td valign="top" style="text-align: center;"><?= $impactinherent['level']; ?></td>
+						<td valign="top" style="text-align: center;"><?= intval($likeinherent['code']) * intval($impactinherent['code']); ?></td>
+						<td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?></td>
+						<td valign="top"><?= $pic['name']; ?></td>
 
 					
 
@@ -144,9 +195,35 @@ if ($status) : ?>
 						<td><?= $cn; ?></td>
 					<?php endif; ?>
 					<!-- <td><?= format_list($row['control_name'], '###'); ?></td> -->
-					<td><?= $row['control_ass']; ?></td>
-					<td><?= $row['proaktif']; ?></td>
-					<td><?= $row['reaktif']; ?></td>
+					<td valign="top"><?= $control_as['data']; ?></td>
+					<td valign="top" width="100">
+                        <?php if (!empty($treatments)): ?>
+                            <table style="width: 100%;">
+                                    <?php foreach ($treatments as $index => $treatment): ?>
+                                        <tr>
+                                            <td width="2%" style="border: none;"><?= $index + 1 .'.'; ?></td>
+                                            <td style="border: none;"><?= $treatment; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                            </table>
+                                <?php else: ?>
+                            <?= '-';?>
+                        <?php endif; ?>
+                    </td>
+                    <td valign="top">
+                        <?php if (!empty($kategori)): ?>
+                            <table style="width: 100%;">
+                                <?php foreach ($kategori as $index => $kat): ?>
+                                    <tr>
+                                        <td style="border: none;"><?= $index + 1 .'.'; ?></td>
+                                        <td style="border: none;"><?= $kat; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
+                                <?php else: ?>
+                                <?= '-';?>
+                        <?php endif; ?>
+                    </td>
 					<?php
 					//  doi::dump($row);
 					$act = $this->db
@@ -172,10 +249,10 @@ if ($status) : ?>
 					}
 					?>
 
-					<td valign="top"><?= format_list($ownersString); ?></td>
+					<!-- <td valign="top"><?= format_list($ownersString); ?></td>
 					<td><?= $row['sumber_daya']; ?></td>
 					<?php $originalDate = $row['target_waktu']; ?>
-					<td valign="top"><?= date("d-m-Y", strtotime($originalDate)); ?></td>
+					<td valign="top"><?= date("d-m-Y", strtotime($originalDate)); ?></td> -->
 				</tr>
 			<?php endforeach; ?>
 				</tbody>

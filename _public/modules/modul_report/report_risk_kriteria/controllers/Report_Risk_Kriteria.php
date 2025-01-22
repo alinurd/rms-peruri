@@ -237,11 +237,6 @@ class Report_Risk_Kriteria extends BackendController {
 		return $result;
 	}
 	
-	// function list_MANIPULATE_PERSONAL_ACTION($tombol, $rows){
-	// 	$url=base_url('report-risk-register/print-report/');
-	// 	$tombol['print']=array("default"=>false,"url"=>$url,"label"=>"Print Preview");
-	// 	return $tombol;
-	// }
 	
 	function SIDEBAR_LEFTx(){
 		return TRUE;

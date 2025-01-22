@@ -25,14 +25,14 @@ class Data extends MX_Model {
 //    }else{
 //    		$rows['bobo'] = $this->db->where('owner_no',$post['owner_no'])->where('period_no',$post['periode_no'])->where('sts_next >',0)->order_by('inherent_analisis','ASC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 //    }
-		$rows['bobo'] = $this->db->where('owner_no', $post['owner_no'])->where('period_no', $post['periode_no'])->where('sts_next >', 0)->order_by('inherent_analisis', 'ASC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		$rows['bobo'] = $this->db->where('owner_no', $post['owner_no'])->where('period_no', $post['periode_no'])->order_by('inherent_analisis', 'ASC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 
  	  $rows['baba'] = array();
 		foreach ($rows['bobo'] as $key => $value) {
 			if ($b == 3) {
 		$this->db->where('owner_no',$post['owner_no']);
 	}else{
-		$this->db->where('owner_no',$post['owner_no']);
+		$this->db->where('owner_no',$post['owner_no']); 
 	}
 		$this->db->where('period_no',$post['periode_no']);
 		$this->db->where('bulan',$post['bulan']);
@@ -42,7 +42,13 @@ class Data extends MX_Model {
 
 		if ($row) {
 					foreach ($row as $key1 => $value1) {
-
+						// doi::dump($value1);
+			$rows['baba'][$value['id']]['residual_likelihood_action']=$value1['residual_likelihood_action'];
+			$rows['baba'][$value['id']]['residual_impact_action']=$value1['residual_impact_action'];
+			// $rows['baba'][$value['id']]['warna_residual']=$value1['warna_residual'];
+			// $rows['baba'][$value['id']]['warna_text_residual']=$value1['warna_text_residual'];
+			// $rows['baba'][$value['id']]['type_name']=$value1['type_name'];
+			// $rows['baba'][$value['id']]['progress_detail']=$value1['progress_detail'];
 			$rows['baba'][$value['id']]['status_action_detail']=$value1['status_action_detail'];
 			$rows['baba'][$value['id']]['residual_analisis']=$value1['residual_analisis'];
 			$rows['baba'][$value['id']]['warna_residual']=$value1['warna_residual'];
@@ -51,6 +57,8 @@ class Data extends MX_Model {
 			$rows['baba'][$value['id']]['progress_detail']=$value1['progress_detail'];
 		}
 		}else{
+			$rows['baba'][$value['id']]['residual_likelihood_action']="";
+			$rows['baba'][$value['id']]['residual_impact_action']="";
 			$rows['baba'][$value['id']]['status_action_detail']="";
 			$rows['baba'][$value['id']]['residual_analisis']="";
 			$rows['baba'][$value['id']]['warna_residual']="";
@@ -65,6 +73,14 @@ class Data extends MX_Model {
     return $rows;
 
     }
+
+	function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        
+		// doi::dump($rows);
+        return $rows;
+	}
     
 }
 /* End of file app_login_model.php */

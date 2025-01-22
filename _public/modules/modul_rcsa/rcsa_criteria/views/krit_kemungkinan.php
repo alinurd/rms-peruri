@@ -5,6 +5,7 @@ $units      = $this->authentication->get_info_user('param_level');
 $groups     = $this->authentication->get_info_user('group');
 $info_owner = $this->authentication->get_info_user('group_owner');
 // var_dump($id);
+// doi::dump($test);
 ?>
 
 <section class="wrapper site-min-height">
@@ -35,7 +36,7 @@ $info_owner = $this->authentication->get_info_user('group_owner');
                                         <?php foreach ($kemungkinan as $kem): ?>
                                             <tr>
                                                 <td>
-                                                    <?= form_textarea('kemungkinan[]', $kem['data'], "maxlength='10000' class='form-control' rows='2' style='overflow: hidden; height: 104px;'"); ?>
+                                                <?= form_textarea('kemungkinan[]', $kem['data'], "maxlength='10000' class='form-control auto-resize' rows='2' style='overflow:hidden;'"); ?>
                                                 </td>
                                                 <?php foreach ($kriteria as $kee => $k): ?>
                                                     <td>
@@ -48,7 +49,8 @@ $info_owner = $this->authentication->get_info_user('group_owner');
                                                         ?>
                                                         <!-- Input hidden untuk menyimpan data kriteria -->
                                                         <input type="hidden" name="kriteria[<?= $kee ?>][name]" value="<?= $kee ?>">
-                                                        <?= form_textarea('area['.$kee.'][]', isset($kemu['area']) ?  html_entity_decode($kemu['area']) : '', "maxlength='10000' class='form-control' rows='2' style='overflow: hidden; height: 104px;'"); ?>
+                                                        <?= form_textarea('area['.$kee.'][]', isset($kemu['area']) ?  html_entity_decode($kemu['area']) : '', "maxlength='10000' class='form-control auto-resize' rows='2' style='overflow:hidden;'"); ?>
+
                                                     </td>
                                                 <?php endforeach; ?>
                                                 <td><button type="button" class="btn btn-danger removeRowBtn"><i class="fa fa-trash"></i></button></td>
@@ -68,21 +70,36 @@ $info_owner = $this->authentication->get_info_user('group_owner');
 </section>
 
 <script>
-    // Menggunakan jQuery untuk menambahkan row baru
-    $('#addRowBtn').click(function() {
-        // Dapatkan tabel dan tbody
-        var tbody = $('#kemungkinanBody');
+   // Fungsi untuk mengubah ukuran textarea sesuai konten
+    function autoResizeTextarea(textarea) {
+        textarea.style.height = 'auto'; // Reset tinggi
+        textarea.style.height = (textarea.scrollHeight) + 'px'; // Sesuaikan tinggi dengan konten
+    }
 
-        // Buat baris baru
+    // Inisialisasi semua textarea saat halaman dimuat
+    $(document).ready(function () {
+        $('.auto-resize').each(function () {
+            autoResizeTextarea(this);
+        });
+    });
+
+    // Event listener untuk resize otomatis saat pengguna mengetik
+    $(document).on('input', '.auto-resize', function () {
+        autoResizeTextarea(this);
+    });
+
+    // Menggunakan jQuery untuk menambahkan row baru
+    $('#addRowBtn').click(function () {
+        var tbody = $('#kemungkinanBody');
         var newRow = $('<tr></tr>');
 
         // Tambah cell untuk textarea kemungkinan
-        var newCellKemungkinan = $('<td></td>').html("<textarea name='kemungkinan[]' maxlength='10000' class='form-control' rows='2' style='overflow: hidden; height: 104px;'></textarea>");
+        var newCellKemungkinan = $('<td></td>').html("<textarea name='kemungkinan[]' maxlength='10000' class='form-control auto-resize' rows='2' style='overflow:hidden;'></textarea>");
         newRow.append(newCellKemungkinan);
 
         // Tambah cell untuk setiap kriteria dan buat textarea
         <?php foreach ($kriteria as $kee => $k): ?>
-        var newCell = $('<td></td>').html("<textarea name='area[<?= $kee ?>][]' maxlength='10000' class='form-control' rows='2' style='overflow: hidden; height: 104px;'></textarea>");
+        var newCell = $('<td></td>').html("<textarea name='area[<?= $kee ?>][]' maxlength='10000' class='form-control auto-resize' rows='2' style='overflow:hidden;'></textarea>");
         newRow.append(newCell);
         <?php endforeach; ?>
 
@@ -93,14 +110,20 @@ $info_owner = $this->authentication->get_info_user('group_owner');
         // Tambah row ke tabel
         tbody.append(newRow);
 
+        // Inisialisasi auto-resize untuk textarea baru
+        newRow.find('.auto-resize').each(function () {
+            autoResizeTextarea(this);
+        });
+
         // Tambah event listener untuk tombol remove
-        newCellAction.find('.removeRowBtn').click(function() {
+        newCellAction.find('.removeRowBtn').click(function () {
             newRow.remove();
         });
     });
 
-    // Event listener untuk tombol remove yang sudah ada pada tabel
-    $(document).on('click', '.removeRowBtn', function() {
+     // Event listener untuk tombol remove yang sudah ada pada tabel
+     $(document).on('click', '.removeRowBtn', function() {
         $(this).closest('tr').remove();
     });
+
 </script>

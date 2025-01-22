@@ -10,7 +10,7 @@ class Rcsa_Appetite extends BackendController
 	var $sts_cetak = false;
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(); 
 		$this->load->helper('text');
 
 		$this->load->model('Data'); //membuat load model data
@@ -1615,7 +1615,7 @@ class Rcsa_Appetite extends BackendController
 		$halaman = $this->uri->segment(4); //halaman edit
 
 		$this->data->delete_sasaran($this->uri->segment(3));
-		redirect('/rcsa-context/edit/' . $halaman);
+		redirect('/rcsa-appetite/edit/' . $halaman);
 	}
 
 	function delete_stakeholder()

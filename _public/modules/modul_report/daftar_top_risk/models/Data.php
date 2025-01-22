@@ -8,15 +8,24 @@ class Data extends MX_Model {
 	}
 	
 	function get_kategori($id){
-		$this->db->select('data');
-		$this->db->from(_TBL_DATA_COMBO);
+		$this->db->select('description');
+		$this->db->from(_TBL_LIBRARY);
+		$this->db->where('type',4);
 		$this->db->where('id',$id);
 
 		
 		$query=$this->db->get()->row();
-		$result=$query->data;
+		$result=$query->description;
 				// Doi::dump($this->db->last_query());die();
 		return $result;
+	}
+
+	function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        
+		// doi::dump($rows);
+        return $rows;
 	}
 	// function get_event($id){
 	// 	$this->db->select('description');

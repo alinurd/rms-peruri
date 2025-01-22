@@ -43,11 +43,6 @@ class Kpmr extends BackendController
 
 	public function index() { 
  		$data['kompositData'] = $this->data->getKompositData();
-		//  $data['realisasi'] = $this->db 
-		// //  ->where('owner', $this->owner)
-		//  ->where('tw', $this->tw)
-        //              ->get('bangga_indexkom_realisasi')
-        //             ->result_array();
 		$data['owner']=$this->owner;
 		$data['tw']=$this->tw;
 		$data['bln']=$this->bln;
@@ -61,14 +56,8 @@ class Kpmr extends BackendController
 	public function simpan(){
 		$post 	= $this->input->post();
 		$id = $this->data->simpan($post, $this->owner, $this->tw, $this->periode);
-		echo json_encode($id);
+		$this->session->set_userdata('result_proses',' Data berhasil disimpan');
+		redirect(base_url(_MODULE_NAME_REAL_));
 	}
 	
-	 
-
-	
-
 }
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */

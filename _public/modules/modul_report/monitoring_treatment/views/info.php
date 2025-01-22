@@ -37,12 +37,12 @@
 						<?=form_dropdown('risk_context', $risk_context, 0, ' class="form-control select2" id="risk_context" style="width:100%;"');?>
 					</div>
 				</div> -->
-				<div class="col-md-3 col-sm-3 col-xs-3">Bulan</div>
+				<!-- <div class="col-md-3 col-sm-3 col-xs-3">Bulan</div>
 				<div class="col-md-9 col-sm-9 col-xs-9">
 					<div class="form-group form-inline">
 						<?=form_dropdown('bulan', $bulan, date('n'), ' class="form-control select2" id="bulan" style="width:100%;"');?>
 					</div>
-				</div>
+				</div> -->
 				<!-- <div class="col-md-3 col-sm-3 col-xs-3">Sampai Bulan</div>
 				<div class="col-md-9 col-sm-9 col-xs-9">
 					<div class="form-group form-inline">

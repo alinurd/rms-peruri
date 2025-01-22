@@ -1,8 +1,24 @@
 <?php
+if ($this->session->userdata('result_proses')){
+    $info = $this->session->userdata('result_proses');
+    $this->session->set_userdata(array('result_proses'=>''));
+    $sts_input='info';
+}
 
-    // doi::dump($judulAssesment);
-
+if ($this->session->userdata('result_proses_error')){
+    $info =  $this->session->userdata('result_proses_error');
+    $this->session->set_userdata(array('result_proses_error'=>''));
+    $sts_input='danger';
+}
 ?>
+<script>
+	$(function() {
+		var err="<?php echo $info;?>";
+		var sts="<?php echo $sts_input;?>";
+		if (err.length>0)
+			pesan_toastr(err,sts);
+	});
+</script>
 <div class="row">
     <div class="col-md-12">
         <!-- ==========================================

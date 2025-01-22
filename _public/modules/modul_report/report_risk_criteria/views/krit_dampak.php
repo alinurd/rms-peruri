@@ -15,7 +15,6 @@ $info_owner = $this->authentication->get_info_user('group_owner');
 // }
 ?>
 
-<section id="main-content">
 	<section class="wrapper site-min-height">
 		<div class="x_panel">
 			<div class="row">
@@ -24,60 +23,54 @@ $info_owner = $this->authentication->get_info_user('group_owner');
 						<aside class="profile-info col-md-12">
 
 							<div class="x_content" style="overflow-x:auto;">
-								<table class="table table-bordered">
+								<table class="table table-bordered" style="width: 100%; table-layout: fixed;">
 									<thead>
 										<tr>
 											<th>Kategori</th>
 											<th>Dampak</th>
-											<?php
-											foreach ($kriteria as $k) {
-											?>
+											<?php foreach ($kriteria as $k): ?>
 												<td width="15%" bgcolor="<?= $k['color'] ?>" class="text-center" style="color: #000;">
 													<?= $k['name'] ?>
 												</td>
-											<?php
-											}
-											?>
+											<?php endforeach; ?>
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach ($dampak as $dam) {
+										<?php foreach ($dampak as $dam): 
 											$subDampak = $this->db->where('kelompok', 'sub-kriteria-dampak')
-												->where('pid', $dam['id'])->get(_TBL_DATA_COMBO)->result_array()
+																->where('pid', $dam['id'])
+																->get(_TBL_DATA_COMBO)
+																->result_array();
 										?>
-											<?php foreach ($subDampak as $key => $subd) {
-											?>
+											<?php foreach ($subDampak as $key => $subd): ?>
 												<tr>
-													<?php if ($key + 1 == 1) : ?>
+													<?php if ($key + 1 == 1): ?>
 														<td rowspan="<?= count($subDampak) ?>"><?= $dam['data'] ?></td>
-													<?php endif ?>
+													<?php endif; ?>
 													<td><?= $subd['data'] ?></td>
-													<?php
-													foreach ($kriteria as $kee => $k) {
-													?>
+													<?php foreach ($kriteria as $kee => $k): ?>
 														<td>
 															<?php
-															$damp = $this->db->where('sub_dampak_id', $subd['id'])->where('criteria_risiko', $kee)->order_by('criteria_risiko')->get(_TBL_AREA)->row_array();
+															$damp = $this->db->where('sub_dampak_id', $subd['id'])
+																->where('criteria_risiko', $kee)
+																->order_by('criteria_risiko')
+																->get(_TBL_AREA)
+																->row_array();
 															?>
-															<?php if ($damp) : ?>
+															<?php if ($damp): ?>
 																<?= $damp['area'] ?>
-															<?php endif ?>
+															<?php endif; ?>
 														</td>
-													<?php
-													}
-													?>
+													<?php endforeach; ?>
 												</tr>
-											<?php
-											} ?>
-										<?php
-										} ?>
+											<?php endforeach; ?>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
+						</aside>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
-	</div>
-	</div>
-	</div>
-	</div>
-</section>
-</section>

@@ -1,4 +1,3 @@
-
 <!-- START CSS -->
 <style>
     .table {
@@ -10,26 +9,27 @@
     .table th, .table td {
         text-align: center;
         vertical-align: middle;
-        /* border: 1px solid #ddd; */
     }
 
     .form-control {
         resize: none;
         overflow: hidden;
-        /* height: 104px; */
     }
 
-    .file_upload > input{display:none;}
-   input[type=text]{width:50px;height:auto;}
+    .file_upload > input {
+        display: none;
+    }
 
+    input[type=text] {
+        width: 50px;
+        height: auto;
+    }
 
-   
-    .bs-container dropdown bootstrap-select open {
+    .bs-container.dropdown.bootstrap-select.open {
         margin-top: -50px;
     }
-        
 
-    .bootstrap-select{
+    .bootstrap-select {
         height: 40px !important;
     }
 
@@ -38,7 +38,6 @@
     }
 </style>
 <!-- END STYLE CSS -->
-
 <?php
     $cboPengujian = [
         '1' => 'Inquery',
@@ -63,17 +62,16 @@
         '2' => '#06D001',    // Sebagian
         '3' => '#FEEC37',    // Cukup & Tidak Efektif
         '4' => '#ffa000',    // Tidak Cukup & Efektif Sebagian
-        '5' => '#B8001F'   // Tidak Cukup & Tidak Efektif
+        '5' => '#B8001F'     // Tidak Cukup & Tidak Efektif
     ];
-
 ?>
 
 <table class="table table-bordered" id="tbl_sasaran_new">
     <thead class="sticky-thead">
         <tr>
             <th rowspan="2" width="3%">No.</th>
-            <th rowspan="2" width="20%">Bussines Process</th>
-            <th colspan="6" width="75%" >Metode & Control</th>
+            <th rowspan="2" width="20%">Business Process</th>
+            <th colspan="6" width="75%">Metode & Control</th>
             <th rowspan="2" width="5%">Aksi</th>
         </tr>
         <tr>
@@ -82,248 +80,212 @@
             <th width="19%">Penilaian Internal Control</th>
             <th width="19%">Kelemahan Control</th>
             <th width="19%">Rencana Tindak Lanjut</th>
-            <th width="2%">Aksi</th>
+            <th width="2%">Dokumen</th>
         </tr>
     </thead>
     
     <tbody id="rcm_body">
-        <?php $i = 0; ?>
-        <?php 
+        
+        <?php            
+            // Populate dropdown options for Business Process
+            $options = [];
+            foreach ($test as $row) {
+                $options[$row['proses_bisnis']] = $row['proses_bisnis'];
+            }
+            $i = 0;
+            
+
             foreach ($bisnis_proses as $key => $row): $i++; 
-            $exiting_control = $this->db->where('rcm_id', $row['id'])->get(_TBL_EXISTING_CONTROL)->result_array();
+                $exiting_control = $this->db->where('rcm_id', $row['id'])->get(_TBL_EXISTING_CONTROL)->result_array();
+                // doi::dump($row['bussines_process']);
         ?>
         
-            <tr id="rcm_<?= $i; ?>">
+        <tr id="rcm_<?= $i; ?>">
 
-                <td style="text-align:center;"><?= $i; ?></td>
+            <td style="text-align:center;"><?= $i; ?></td>
 
-                <td>
-                    <input type="hidden" name="bisnisProseslama[<?=$i;?>]" value="<?= $row['id']?>">
-                    <?= form_textarea("bisnisProses[{$i}]", $row['bussines_process'], [
-                        'maxlength' => '10000',
-                        'class'     => 'form-control',
-                        'rows'      => '2',
-                        'style'     => 'overflow: hidden; height: 104px;','required' => 'required'
-                    ]); ?>
-                </td>
+            <td>
+                <input type="hidden" name="bisnisProseslama[<?=$i;?>]" value="<?= $row['id']?>">
+                <!-- <?= form_dropdown("bisnisProses[{$i}]", $options, $row['bussines_process'], [
+                    'class'     => 'form-control',
+                    'required'  => 'required',
+                    'readonly' => true
+                ]); ?> -->
+                 <?= form_textarea("bisnisProses[{$i}]", $row['bussines_process'], [
+                    'maxlength' => '10000',
+                    'class'     => 'form-control',
+                    'rows'      => '2',
+                    'style'     => 'overflow: hidden; height: 104px;', 'required' => 'required','readonly' => true
+                ]); ?>
                 
-                <td colspan="6" style="padding: 0px;">
+            </td>
+            
+            <td colspan="6" style="padding: 0px;">
 
-                    <table class="table table-borderless">    
-                        <tbody id="metode_<?= $i; ?>">
-                        <?php foreach ($exiting_control as $key => $ex): ?>
-                            <tr>
-                                <td>
-                                    <input type="hidden" name="exixtingControllama[<?=$i;?>][]" value="<?= $ex['id']?>">
-                                    <?= form_textarea("exixtingControl[{$i}][]", $ex['component'], [
-                                        'maxlength' => '10000',
-                                        'class'     => 'form-control',
-                                        'rows'      => '2',
-                                        'style'     => 'overflow: hidden; height: 104px;','required' => 'required'
-                                    ]); ?>
-                                </td>
+                <table class="table table-borderless">    
+                    <tbody id="metode_<?= $i; ?>">
+                    <?php 
+                        $j = 0;
+                        foreach ($exiting_control as $ex): 
+                            $j++; 
+                        
+                    ?>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="exixtingControllama[<?=$i;?>][]" value="<?= $ex['id']?>">
+                                <?= form_textarea("exixtingControl[{$i}][]", $ex['component'], [
+                                    'maxlength' => '10000',
+                                    'class'     => 'form-control',
+                                    'rows'      => '2',
+                                    'style'     => 'overflow: hidden; height: 104px;', 'required' => 'required'
+                                ]); ?>
+                            </td>
 
-                                <td style="vertical-align: middle;">
-                                    <?= form_dropdown("metodePengujian[{$i}][]", $cboPengujian, $ex['metode_pengujian'], [
-                                        'class'     => 'form-control selectpicker ',
-                                        'data-style' => 'btn btn-light', // Menjaga tampilan sederhana tanpa warna
-                                        'data-size' => '7',
-                                        'data-container' => 'body',
-                                        'style'     => 'width:100%;',
-                                        'required'  => 'required'
-                                    ]); ?>
-                                </td>
+                            <td style="vertical-align: middle;">
+                                <?= form_dropdown("metodePengujian[{$i}][]", $cboPengujian, $ex['metode_pengujian'], [
+                                    'class'     => 'form-control selectpicker',
+                                    'data-style' => 'btn btn-light',
+                                    'data-size' => '7',
+                                    'data-container' => 'body',
+                                    'style'     => 'width:100%;',
+                                    'required'  => 'required'
+                                ]); ?>
+                            </td>
 
+                            <td style="vertical-align: middle;">
+                                <select name="penilaianControl[<?= $i; ?>][]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
+                                    <?php foreach ($cboPenilaian as $key => $value): ?>
+                                        <option value="<?= $key; ?>"
+                                                data-content="<span class='badge' style='background-color: <?= htmlspecialchars($comboColor[$key], ENT_QUOTES); ?>; color: <?= ($comboColor[$key] == '#00712D' || $comboColor[$key] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;'><?= htmlspecialchars($value, ENT_QUOTES); ?></span>"
+                                                <?= ($ex['penilaian_intern_control'] == $key) ? 'selected' : ''; ?>>
+                                            <?= $value; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+
+                            <td>
+                                <?= form_textarea("kelemahanControl[{$i}][]", $ex['kelemahan_control'], [
+                                    'maxlength' => '10000',
+                                    'class'     => 'form-control',
+                                    'rows'      => '2',
+                                    'style'     => 'overflow: hidden; height: 104px;', 'required' => 'required'
+                                ]); ?>
+                            </td>
+
+                            <td>
+                                <?= form_textarea("tindakLanjut[{$i}][]", $ex['rencana_tindak_lanjut'], [
+                                    'maxlength' => '10000',
+                                    'class'     => 'form-control',
+                                    'rows'      => '2',
+                                    'style'     => 'overflow: hidden; height: 104px;', 'required' => 'required'
+                                ]); ?>
+                            </td>
+
+                            <td style="vertical-align: middle; text-align: center;">
+                                <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?= $ex['dokumen'] ?>" multiple />
+                                
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
+                                    <?php $filePath = './themes/upload/crm/' . htmlspecialchars($ex['dokumen']); ?>
                                     
-                                <td style="vertical-align: middle;">
-                                    <select name="penilaianControl[<?= $i; ?>][]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
-                                        <?php foreach ($cboPenilaian as $key => $value): ?>
-                                            <option value="<?= $key; ?>" 
-                                                    data-content="<span class='badge' style='background-color: <?= htmlspecialchars($comboColor[$key], ENT_QUOTES); ?>; color: <?= ($comboColor[$key] == '#00712D' || $comboColor[$key] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;'><?= htmlspecialchars($value, ENT_QUOTES); ?></span>"
-                                                    <?= ($ex['penilaian_intern_control'] == $key) ? 'selected' : ''; ?>>
-                                                <?= $value; ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
-
-                                <td>
-                                    <?= form_textarea("kelemahanControl[{$i}][]", $ex['kelemahan_control'], [
-                                        'maxlength' => '10000',
-                                        'class'     => 'form-control',
-                                        'rows'      => '2',
-                                        'style'     => 'overflow: hidden; height: 104px;','required' => 'required'
-                                    ]); ?>
-                                </td>
-
-                                <td>
-                                    <?= form_textarea("tindakLanjut[{$i}][]", $ex['rencana_tindak_lanjut'], [
-                                        'maxlength' => '10000',
-                                        'class'     => 'form-control',
-                                        'rows'      => '2',
-                                        'style'     => 'overflow: hidden; height: 104px;','required' => 'required'
-                                    ]); ?>
-                                </td>
-
-                                <td style="vertical-align: middle; text-align: center;">
-                                    <input type="hidden" name="fileuploadlama[<?= $i; ?>][]" id="userfilelama_<?= $i; ?>" value="<?= $ex['dokumen'] ?>" multiple />
+                                    <!-- Label untuk Menampilkan Nama File -->
+                                    <label id="file-name-label-<?= $i; ?>-<?= $j; ?>" style="margin-bottom: 10px; color: #555; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        
+                                    </label>
                                     
-                                    <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                        <?php $filePath = './themes/upload/crm/' . htmlspecialchars($ex['dokumen']);?>
-                                        <?php if (empty($ex['dokumen']) || !file_exists($filePath)) : ?>
-                                            <label class="file_upload" style="margin: 0;">
-                                                <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>" style="display: none;" accept=".pdf"/>
-                                                <a class="btn btn-warning btn-xs" rel="nofollow">
-                                                    <i class="fa fa-upload"></i>
-                                                </a>
-                                            </label>
-                                        <?php else : ?>
-                                            <a href="<?= base_url('rcsa_control_matric/download/'.$ex['dokumen']) ?>" class="btn btn-success btn-xs" rel="nofollow">
+                                    <!-- Tombol Upload dan Download Sejajar -->
+                                    <div style="display: flex; justify-content: center; width: 100%; gap: 10px;">
+                                        
+                                        <!-- File Upload -->
+                                        <label class="file_upload" style="margin: 0; text-align: center;">
+                                            <input type="file" name="fileupload[<?= $i; ?>][]" id="userfile_<?= $i; ?>_<?= $j; ?>" style="display: none;" accept=".pdf" onchange="updateFileNameLabel(<?= $i; ?>,<?= $j; ?>)"/>
+                                            <a class="btn btn-warning btn-xs" rel="nofollow" style="display: inline-block; text-align: center;">
+                                                <i class="fa fa-upload"></i>
+                                            </a>
+                                        </label>
+                                        
+                                        <?php if (isset($ex['dokumen']) && file_exists($filePath)): ?>
+                                            <!-- Download Link -->
+                                            <a href="<?= base_url('rcsa_control_matric/download/'.$ex['dokumen']) ?>" class="btn btn-success btn-xs" rel="nofollow" style="text-align: center;">
                                                 <i class="fa fa-download"></i>
                                             </a>
                                         <?php endif; ?>
-
-                                        <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
                                     </div>
 
-                                </td>
+                                    <!-- Tombol Preview (Jika File Ada) -->
+                                    <div style="display: flex; justify-content: center; width: 100%; gap: 10px;">
+                                        <?php if (isset($ex['dokumen']) && file_exists($filePath)): ?>
+                                            <!-- Preview Link -->
+                                            <a href="<?= base_url('themes/upload/crm/'.$ex['dokumen']) ?>" target="_blank" class="btn btn-info btn-xs" style="text-align: center;">
+                                                <i class="fa fa-eye"></i> Preview
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
 
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <center>
-                        <button class="btn btn-info" type="button" onclick="addMetode(<?= $i; ?>);">
-                            <i class="fa fa-plus"></i> Metode & Control
-                        </button>
-                    </center>
-                </td>
-                <td class="text-center" style="vertical-align: middle;">
-                    <button class="btn btn-danger btn-sm" type="button" onclick="removeRCM(<?= $i; ?>);">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
+        
+                            </td>
+
+
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </td>
+            <td class="text-center" style="vertical-align: middle;">
+                <button class="btn btn-danger btn-sm" type="button" onclick="removeRCM(<?= $i; ?>);">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
-
 <center>
     <button id="addRCM" class="btn btn-primary" type="button">
         <i class="fa fa-plus"></i> Add RCM
     </button>
 </center>
-
 <script type="text/javascript">
     var rcmCount = <?= $i; ?>;
+    $("#addRCM").click(function () {
+        var options = <?php echo json_encode($test); ?>;
 
-    // Add new Metode row
-    function addMetode(rcmIndex) {
-        var metodeTable = document.getElementById('metode_' + rcmIndex);
-        var newRow = `
-            <tr>
-                <td>
-                    <input type="hidden" name="exixtingControllama[${rcmIndex}][]" >
-                    <textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
-                </td>
-                <td style="vertical-align: middle;">
-                    <select name="metodePengujian[${rcmIndex}][]" class="form-control selectpicker" style="width:100%;" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
-                        <?php foreach ($cboPengujian as $key => $value): ?>
-                            <option value="<?= $key; ?>"><?= $value; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </td>
-                <td style="vertical-align: middle;">
-                    <select name="penilaianControl[${rcmIndex}][]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
-                        <?php foreach ($cboPenilaian as $key => $value): ?>
-                            <option value="<?= $key; ?>" data-content="<span class='badge' style='background-color: <?= htmlspecialchars($comboColor[$key], ENT_QUOTES); ?>; color: <?= ($comboColor[$key] == '#00712D' || $comboColor[$key] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;'><?= $value; ?></span>">
-                                <?= $value; ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </td>
-                <td><textarea name="kelemahanControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
-                <td><textarea name="tindakLanjut[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
-                <td style="vertical-align: middle;">
-                    <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                        <label class="file_upload" style="margin: 0;">
-                            <input type="file" name="fileupload[${rcmIndex}][]" accept=".pdf" id="userfile_${rcmIndex}" style="display: none;" />
-                            <a class="btn btn-warning btn-xs" rel="nofollow">
-                                <i class="fa fa-upload"></i>
-                            </a>
-                        </label>
+        // Generating dropdown options dynamically
+        var optionsHTML = '';
+        options.forEach(function (row) {
+            let noteControlArray = [];
+            try {
+                noteControlArray = JSON.parse(row.note_control); 
+            } catch (error) {
+                noteControlArray = row.note_control ? row.note_control.split(',').map(item => item.trim()) : [];
+            }
 
-                        <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>`;
-        metodeTable.insertAdjacentHTML('beforeend', newRow);
-        $('.selectpicker').selectpicker();
-    }
+            const noteCount = noteControlArray.length;
 
-    // Remove specific Metode row
-    function removeMetode(button) {
-        button.closest('tr').remove();
-    }
+            optionsHTML += `
+                <option value="${row.proses_bisnis}" 
+                        data-note="${noteControlArray.join(',')}" 
+                        data-note-count="${noteCount}">
+                    ${row.proses_bisnis}
+                </option>`;
+        });
 
-    // Add new RCM row
-    $("#addRCM").click(function() {
         rcmCount++;
         var newRCM = `
             <tr id="rcm_${rcmCount}">
                 <td style="text-align:center;">${rcmCount}</td>
-                
-                <td><input type="hidden" name="bisnisProseslama[${rcmCount}]"><textarea name="bisnisProses[${rcmCount}]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
+                <td>
+                    <input type="hidden" name="bisnisProseslama[${rcmCount}]">
+                    <select name="bisnisProses[${rcmCount}]" class="form-control" required="required" onchange="updateNoteControl(${rcmCount});">
+                    <option>
+                        --Pilih--
+                    </option>
+                        ${optionsHTML}
+                    </select>
+                </td>
                 <td colspan="6">
-                    <table class="table table-border">
-                        <tbody id="metode_${rcmCount}">
-                            <tr>
-                            <td>
-                                <input type="hidden" name="exixtingControllama[${rcmCount}][]" >
-                                <textarea name="exixtingControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
-                            </td>
-                                <td style="vertical-align: middle;">
-                                    <select name="metodePengujian[${rcmCount}][]" class="form-control selectpicker" style="width:100%;" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
-                                        <?php foreach ($cboPengujian as $key => $value): ?>
-                                            <option value="<?= $key; ?>"><?= $value; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
-                                <td style="vertical-align: middle;">
-                                    <select name="penilaianControl[${rcmCount}][]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
-                                        <?php foreach ($cboPenilaian as $key => $value): ?>
-                                            <option value="<?= $key; ?>" data-content="<span class='badge' style='background-color: <?= htmlspecialchars($comboColor[$key], ENT_QUOTES); ?>; color: <?= ($comboColor[$key] == '#00712D' || $comboColor[$key] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;'><?= $value; ?></span>">
-                                                <?= $value; ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
-                                <td><textarea name="kelemahanControl[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
-                                <td><textarea name="tindakLanjut[${rcmCount}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea></td>
-                               <td style="vertical-align: middle;">
-                                  <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                                    <label class="file_upload" style="margin: 0;">
-                                        <input type="file" name="fileupload[${rcmCount}][]" id="userfile_${rcmCount}" style="display: none;" accept=".pdf" />
-                                        <a class="btn btn-warning btn-xs" rel="nofollow">
-                                            <i class="fa fa-upload"></i>
-                                        </a>
-                                    </label>
-
-                                    <button class="btn btn-danger btn-xs" type="button" onclick="removeMetode(this);">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <center>
-                        <button class="btn btn-info" type="button" onclick="addMetode(${rcmCount});"><i class="fa fa-plus"></i> Metode & Control</button>
-                    </center>
+                    <table class="table table-border" id="metode_${rcmCount}"></table>
                 </td>
                 <td class="text-center" style="vertical-align: middle;">
                     <button class="btn btn-danger btn-sm" type="button" onclick="removeRCM(${rcmCount});">
@@ -331,19 +293,94 @@
                     </button>
                 </td>
             </tr>`;
-        $("#rcm_body").append(newRCM);
-        $('.selectpicker').selectpicker();
+
+        $("#rcm_body").append(newRCM); // Append new RCM row to the table
+        $('.selectpicker').selectpicker(); // Reinitialize selectpicker
     });
 
-    // Remove specific RCM row
-    function removeRCM(rcmIndex) {
-        $("#rcm_" + rcmIndex).remove();
+    // Update control notes dynamically based on selected option
+    function updateNoteControl(rcmIndex) {
+        var selectedOption = $(`select[name="bisnisProses[${rcmIndex}]"] option:selected`);
+        var noteControlValue = selectedOption.data('note');
+        var noteCount = selectedOption.data('note-count');
+
+        if (!noteControlValue || noteCount <= 0) {
+            $(`#metode_${rcmIndex}`).empty();
+            return;
+        }
+
+        var noteControlArray = noteControlValue.split(',').map(function (item) {
+            return item.trim();
+        });
+
+        $(`#metode_${rcmIndex}`).empty();
+
+        noteControlArray.forEach(function (item, index) {
+            var newRow = `
+                <tr>
+                    <td style="padding-bottom:10px;padding-right:10px;">
+                        <input type="hidden" name="exixtingControllama[${rcmIndex}][]">
+                        <textarea name="exixtingControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="5" style="overflow: hidden; height: 104px;" required="required">${item}</textarea>
+                    </td>
+                    <td style="vertical-align: middle; padding-bottom:10px;padding-right:10px;">
+                        <select name="metodePengujian[${rcmIndex}][]" class="form-control selectpicker" style="width:100%;" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
+                            <?php foreach ($cboPengujian as $key => $value): ?>
+                                <option value="<?= $key; ?>"><?= $value; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td style="vertical-align: middle; padding-bottom:10px;padding-right:10px;">
+                        <select name="penilaianControl[${rcmIndex}][]" class="selectpicker form-control" data-style="btn btn-outline-primary" data-width="100%" data-size="7" data-container="body" required>
+                            <?php foreach ($cboPenilaian as $key => $value): ?>
+                                <option value="<?= $key; ?>" data-content="<span class='badge' style='background-color: <?= htmlspecialchars($comboColor[$key], ENT_QUOTES); ?>; color: <?= ($comboColor[$key] == '#00712D' || $comboColor[$key] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;'><?= $value; ?></span>">
+                                    <?= $value; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td style="padding-bottom:10px;padding-right:10px;">
+                        <textarea name="kelemahanControl[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
+                    </td>
+                    <td style="padding-bottom:10px;padding-right:10px;">
+                        <textarea name="tindakLanjut[${rcmIndex}][]" maxlength="10000" class="form-control" rows="2" style="overflow: hidden; height: 104px;" required="required"></textarea>
+                    </td>
+                    <td style="vertical-align: middle;padding-bottom:10px;padding-right:10px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
+                            <label id="file-name-label-${rcmIndex}-${index+1}" style="margin-bottom: 10px; color: #555; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            </label>
+                            <div style="display: flex; justify-content: center; width: 100%; gap: 10px;">
+                                <label class="file_upload" style="margin: 0;">
+                                    <input type="file" name="fileupload[${rcmIndex}][]" id="userfile_${rcmIndex}_${index+1}" style="display: none;" accept=".pdf" onchange="updateFileNameLabel(${rcmIndex},${index+1})" />
+                                    <a class="btn btn-warning btn-xs" rel="nofollow">
+                                        <i class="fa fa-upload"></i>
+                                    </a>
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            $(`#metode_${rcmIndex}`).append(newRow);
+        });
+
+        $('.selectpicker').selectpicker();
     }
 
-    $(document).ready(function() {
-        $('.selectpicker').selectpicker(); // Mengaktifkan Bootstrap Select
-       // Menonaktifkan semua popover
-        $('[data-toggle="popover"]').popover('dispose'); 
-    });
+    // Function to remove RCM row
+    function removeRCM(rcmIndex) {
+        $(`#rcm_${rcmIndex}`).remove();
+    }
 
+    // Fungsi untuk memperbarui label nama file ketika file dipilih
+    function updateFileNameLabel(i,index) {
+        var fileInput = document.getElementById('userfile_'+ i + '_' + index);
+        var fileName = fileInput.files[0] ? fileInput.files[0].name : 'No file selected';
+        var label = document.getElementById('file-name-label-'+ i + '-' + index);
+        label.textContent = fileName;
+    }
+
+    // Initialize selectpicker
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+    });
 </script>

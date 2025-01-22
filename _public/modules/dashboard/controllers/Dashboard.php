@@ -265,8 +265,7 @@ class Dashboard extends BackendController
 
 		// Jika 'owner' lebih dari 0 dan 'kel' adalah 'inherent', melakukan query berdasarkan level tertentu
 		} elseif ($post['owner'] > 0 && $post['kel'] == 'inherent') {
-			doi::dump($b);
-			
+	
 			if ($b == 3) { // Jika level_no adalah 3, menambahkan kondisi untuk 'parent_no'
 				$rows = $this->db->where('sts_propose', 4)
 					->where('urgensi_no', 0)

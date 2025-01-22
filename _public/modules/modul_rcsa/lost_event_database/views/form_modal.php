@@ -13,13 +13,15 @@ if(!$lost_event){
 
 
 ?>
-
+<form method="POST" id='form-lost' enctype="multipart/form-data"  action="<?= base_url(_MODULE_NAME_REAL_ . '/simpan_lost_event');?>">
 <!-- ================ KEJADIAN RISIKO ====================== -->
 <div class="row">
     <div style="background-color: white; padding: 10px; border-radius: 10px;">
         <h5 class="text-center" style="color: #343a40;">Kejadian Risiko</h5>
         <table class="table table-bordered" style="background-color: white;">
             <input type="hidden" name="rcsa_no_e" id="rcsa_no_e" value="<?=$lost_event ? $lost_event['rcsa_no'] : $rcsa_no ?>">
+            <input type="hidden" name="id_edit" id="id_edit" value="<?= ($type != 'add') ? $lost_event['id'] : '';?>">
+            <input type="hidden" name="type" id="type" value="<?= $type;?>">
             <input type="hidden" name="event_no" id="event_no" >
             <thead class="thead-light">
             <tr>
@@ -61,7 +63,7 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Identifikasi Kejadian</th>
                     <td colspan="2">
-                        <textarea class="form-control" id="identifikasi_kejadian" cols="30" rows="5" required><?= $lost_event['identifikasi_kejadian'];?></textarea>
+                        <textarea name="identifikasi_kejadian" class="form-control" id="identifikasi_kejadian" cols="30" rows="5"><?= $lost_event['identifikasi_kejadian'];?></textarea>
                         <div class="text-danger" id="error-identifikasi_kejadian"></div>
                     </td>
                 </tr>
@@ -75,21 +77,21 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Sumber Penyebab</th>
                     <td colspan="2">
-                        <input type="text" class="form-control" id="sumber_penyebab" name="sumber_penyebab" required value="<?= $lost_event['sumber_penyebab'];?>">
+                        <input type="text" class="form-control" id="sumber_penyebab" name="sumber_penyebab" value="<?= $lost_event['sumber_penyebab'];?>">
                         <div class="text-danger" id="error-sumber_penyebab"></div>
                     </td>
                 </tr>
                 <tr>
                     <th width="20%">Penyebab Kejadian</th>
                     <td colspan="2">
-                        <textarea class="form-control" id="penyebab_kejadian" cols="30" rows="5" required><?= $lost_event['penyebab_kejadian'];?></textarea>
+                        <textarea class="form-control" name="penyebab_kejadian" id="penyebab_kejadian" cols="30" rows="5"><?= $lost_event['penyebab_kejadian'];?></textarea>
                         <div class="text-danger" id="error-penyebab_kejadian"></div>
                     </td>
                 </tr>
                 <tr>
                     <th width="20%">Penanganan Saat Kejadian</th>
                     <td colspan="2">
-                        <textarea class="form-control" id="penanganan" cols="30" rows="5" required><?= $lost_event['penanganan'];?></textarea>
+                        <textarea class="form-control" name="penanganan" id="penanganan" cols="30" rows="5"><?= $lost_event['penanganan'];?></textarea>
                         <div class="text-danger" id="error-penanganan"></div>
                     </td>
                 </tr>
@@ -115,7 +117,7 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Hubungan Kejadian Risk Event</th>
                     <td colspan="3">
-                        <input type="text" class="form-control" id="hub_kejadian_risk_event" name="hub_kejadian_risk_event" required value="<?= $lost_event['hub_kejadian_risk_event'];?>">
+                        <input type="text" class="form-control" id="hub_kejadian_risk_event" name="hub_kejadian_risk_event" value="<?= $lost_event['hub_kejadian_risk_event'];?>">
                         <div class="text-danger" id="error-hub_kejadian_risk_event"></div>
                     </td>
                 </tr>
@@ -147,11 +149,11 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Target Residual</th>
                     <td>
-                        <?= form_dropdown('Target_Res_dampak', $cboLike, (empty($lost_event['target_res_dampak'])) ? '' : $lost_event['target_res_dampak'], 'class="form-control" id="Target_Res_dampak"'); ?>
+                        <?= form_dropdown('target_res_dampak', $cboLike, (empty($lost_event['target_res_dampak'])) ? '' : $lost_event['target_res_dampak'], 'class="form-control" id="target_res_dampak"'); ?>
                         <div class="text-danger" id="error-Target_Res_dampak"></div>
                     </td>
                     <td>
-                        <?= form_dropdown('Target_Res_prob', $cboImpact, (empty($lost_event['target_res_prob'])) ? '' : $lost_event['target_res_prob'], 'class="form-control" id="Target_Res_prob"'); ?>
+                        <?= form_dropdown('target_res_prob', $cboImpact, (empty($lost_event['target_res_prob'])) ? '' : $lost_event['target_res_prob'], 'class="form-control" id="target_res_prob"'); ?>
                         <div class="text-danger" id="error-Target_Res_prob"></div>
                     </td>
                     <td align="center">
@@ -214,20 +216,20 @@ if(!$lost_event){
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" class="form-control" id="status_asuransi" name="status_asuransi" value="<?= $lost_event['status_asuransi'];?>" required>
+                        <input type="text" class="form-control" id="status_asuransi" name="status_asuransi" value="<?= $lost_event['status_asuransi'];?>">
                         <div class="text-danger" id="error-status_asuransi"></div>
                     </td>
                     <td>
                         <div class="input-group">
                             <span class="input-group-addon">Rp.</span>
-                            <input type="text" class="form-control rupiah" id="nilai_premi" name="nilai_premi" value="<?= ($lost_event['nilai_premi']) ? number_format($lost_event['nilai_premi'],0,',',',') : "";?>" required>
+                            <input type="text" class="form-control rupiah" id="nilai_premi" name="nilai_premi" value="<?= ($lost_event['nilai_premi']) ? number_format($lost_event['nilai_premi'],0,',',',') : "";?>">
                         </div>
                         <div class="text-danger" id="error-nilai_premi"></div>
                     </td>
                     <td>
                         <div class="input-group">
                             <span class="input-group-addon">Rp.</span>
-                            <input type="text" class="form-control rupiah" id="nilai_klaim" name="nilai_klaim" value="<?= ($lost_event['nilai_klaim']) ? number_format($lost_event['nilai_klaim'],0,',',',') : "";?>" required>
+                            <input type="text" class="form-control rupiah" id="nilai_klaim" name="nilai_klaim" value="<?= ($lost_event['nilai_klaim']) ? number_format($lost_event['nilai_klaim'],0,',',',') : "";?>">
                         </div>
                         <div class="text-danger" id="error-nilai_klaim"></div>
                     </td>
@@ -252,11 +254,11 @@ if(!$lost_event){
             <tbody>
                 <tr>
                     <td>
-                        <textarea class="form-control" id="rencana_perbaikan_mendatang" cols="30" rows="5" required><?= $lost_event['rencana_perbaikan_mendatang'];?></textarea>
+                        <textarea class="form-control" name="rencana_perbaikan_mendatang" id="rencana_perbaikan_mendatang" cols="30" rows="5"><?= $lost_event['rencana_perbaikan_mendatang'];?></textarea>
                         <div class="text-danger" id="error-rencana_perbaikan_mendatang"></div>
                     </td>
                     <td>
-                        <input type="text" class="form-control" id="pihak_terkait" name="pihak_terkait" value="<?= $lost_event['pihak_terkait'];?>"  required>
+                        <input type="text" class="form-control" id="pihak_terkait" name="pihak_terkait" value="<?= $lost_event['pihak_terkait'];?>" >
                         <div class="text-danger" id="error-pihak_terkait"></div>
                     </td>
                 </tr>
@@ -274,7 +276,7 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Penjelasan Kerugian</th>
                     <td>
-                        <textarea class="form-control" id="penjelasan_kerugian" cols="30" rows="5" required><?= $lost_event['penjelasan_kerugian'];?></textarea>
+                        <textarea class="form-control" name="penjelasan_kerugian" id="penjelasan_kerugian" cols="30" rows="5"><?= $lost_event['penjelasan_kerugian'];?></textarea>
                         <div class="text-danger" id="error-penjelasan_kerugian"></div>
                     </td>
                 </tr>
@@ -283,7 +285,7 @@ if(!$lost_event){
                     <td>
                         <div class="input-group">
                             <span class="input-group-addon">Rp.</span>
-                            <input type="text" class="form-control rupiah" id="nilai_kerugian" name="nilai_kerugian" value="<?= ($lost_event['nilai_kerugian']) ? number_format($lost_event['nilai_kerugian'],0,',',',') : "";?>" required>
+                            <input type="text" class="form-control rupiah" id="nilai_kerugian" name="nilai_kerugian" value="<?= ($lost_event['nilai_kerugian']) ? number_format($lost_event['nilai_kerugian'],0,',',',') : "";?>">
                         </div>
                         <div class="text-danger" id="error-nilai_kerugian"></div>
                     </td>
@@ -303,6 +305,13 @@ if(!$lost_event){
                         <div class="text-danger" id="error-frekuensi_kejadian"></div>
                     </td>
                 </tr>
+                <tr>
+                    <th width="20%">Upload File</th>
+                    <td>
+                        <input type="hidden" name="file_upload_lama" class="form-control" id="file_upload_lama" style="width:100%;" value="<?=$lost_event['file_path'];?>" />
+                        <input type="file" name="file_upload" class="form-control" id="userfile" style="width:100%;"   />
+                    </td>
+                </tr>
             </thead>
         </table>
     </div>
@@ -310,7 +319,7 @@ if(!$lost_event){
 
 <div class="row text-center">
     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-    <a href="#" id="btn-simpan" class="btn btn-primary" data-edit="<?= ($type != 'add') ? $lost_event['id'] : '';?>"  data-type = "<?= $type;?>" >Simpan</a>
+    <button type="submit" id="btn-simpan" class="btn btn-primary"  >Simpan</button>
 </div>
 <!-- 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
@@ -339,6 +348,142 @@ if(!$lost_event){
             $('#peristiwabaru').val('');
 
             
+        });
+
+        $("#form-lost").on("submit", function(event) {
+        let isValid = true; // Menandakan apakah form valid
+
+
+        // Array of required fields with error messages
+        const requiredFields = [
+            {
+            id: "#identifikasi_kejadian",
+            errorId: "#error-identifikasi_kejadian",
+            message: "Identifikasi Kejadian wajib diisi.",
+            },
+            {
+            id: "#kategori",
+            errorId: "#error-kategori",
+            message: "Pilih kategori kejadian.",
+            },
+            {
+            id: "#sumber_penyebab",
+            errorId: "#error-sumber_penyebab",
+            message: "Sumber penyebab wajib diisi.",
+            },
+            {
+            id: "#penyebab_kejadian",
+            errorId: "#error-penyebab_kejadian",
+            message: "Penyebab kejadian wajib diisi.",
+            },
+            {
+            id: "#penanganan",
+            errorId: "#error-penanganan",
+            message: "Penanganan wajib diisi.",
+            },
+            {
+            id: "#kat_risiko",
+            errorId: "#error-kat_risiko",
+            message: "Pilih kategori risiko.",
+            },
+            {
+            id: "#hub_kejadian_risk_event",
+            errorId: "#error-hub_kejadian_risk_event",
+            message: "Hubungan kejadian wajib diisi.",
+            },
+            {
+            id: "#skal_dampak_in",
+            errorId: "#error-skal_dampak_in",
+            message: "Pilih skala dampak inheren.",
+            },
+            {
+            id: "#skal_prob_in",
+            errorId: "#error-skal_prob_in",
+            message: "Pilih skala probabilitas inheren.",
+            },
+            {
+            id: "#target_res_dampak",
+            errorId: "#error-Target_Res_dampak",
+            message: "Pilih skala dampak target residual.",
+            },
+            {
+            id: "#target_res_prob",
+            errorId: "#error-Target_Res_prob",
+            message: "Pilih skala probabilitas target residual.",
+            },
+            {
+            id: "#mitigasi_rencana",
+            errorId: "#error-mitigasi_rencana",
+            message: "Mitigasi yang direncanakan wajib diisi.",
+            },
+            {
+            id: "#mitigasi_realisasi",
+            errorId: "#error-mitigasi_realisasi",
+            message: "Mitigasi realisasi wajib diisi.",
+            },
+            {
+            id: "#status_asuransi",
+            errorId: "#error-status_asuransi",
+            message: "Status asuransi wajib diisi.",
+            },
+            {
+            id: "#nilai_premi",
+            errorId: "#error-nilai_premi",
+            message: "Nilai premi wajib diisi.",
+            },
+            {
+            id: "#nilai_klaim",
+            errorId: "#error-nilai_klaim",
+            message: "Nilai klaim wajib diisi.",
+            },
+            {
+            id: "#rencana_perbaikan_mendatang",
+            errorId: "#error-rencana_perbaikan_mendatang",
+            message: "Rencana perbaikan wajib diisi.",
+            },
+            {
+            id: "#pihak_terkait",
+            errorId: "#error-pihak_terkait",
+            message: "Pihak terkait wajib diisi.",
+            },
+            {
+            id: "#penjelasan_kerugian",
+            errorId: "#error-penjelasan_kerugian",
+            message: "Penjelasan kerugian wajib diisi.",
+            },
+            {
+            id: "#nilai_kerugian",
+            errorId: "#error-nilai_kerugian",
+            message: "Nilai kerugian wajib diisi.",
+            },
+            {
+            id: "#frekuensi_kejadian",
+            errorId: "#error-frekuensi_kejadian",
+            message: "Pilih frekuensi kejadian.",
+            },
+        ];
+
+        // Validate required fields
+        requiredFields.forEach((field) => {
+            const input = $(field.id);
+            const errorDiv = $(field.errorId);
+
+            if (input.val().trim() === "") {
+            errorDiv.text(field.message); // Show error message
+            input.addClass("is-invalid"); // Add invalid class
+            isValid = false; // Mark as invalid
+            } else {
+            errorDiv.text(""); // Clear error message
+            input.removeClass("is-invalid"); // Remove invalid class
+            }
+        });
+
+        // Stop submission if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        }
+
+
         });
     });
 </script>

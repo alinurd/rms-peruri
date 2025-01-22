@@ -99,7 +99,7 @@ if ($mode == "view") {
 			<tr>
 				<th rowspan="2">No</th>
 				<th class="text-center" rowspan="2">Proses Management Risiko</th>
-				<th colspan="12" class="text-center">Waktu Implementasi 2023</th>
+				<th colspan="12" class="text-center">Waktu Implementasi</th>
 				<th class="text-center" rowspan="2">Keterangan</th>
 			</tr>
 			<tr>
@@ -138,13 +138,14 @@ if ($mode == "view") {
 					$implementasi = [];
 
 					for ($i = 0; $i < 12; $i++) {
-						$month = date('m', strtotime("January +$i months"));
+						$month = date('m', strtotime("January +$i months")); //old
+						$month = str_pad($i, 2, '0', STR_PAD_LEFT); // Two-digit month format (01, 02, ..., 12)
+
 						$datbln = date('M', strtotime("January +$i months"));
 						$blntl = date('F', strtotime("January +$i months"));
 						$checkboxId = 'checkbox-' . ($no + $i) . '-code-' . $data['kode'];
 
-						$idlop = $month . strval($data['id']);
-						if ($id) {
+						$idlop = $month . strval($data['id']);						if ($id) {
 							$imp = $this->db
 								->select('jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec,ket')
 								->where('rcsa_no', $id)
@@ -169,7 +170,7 @@ if ($mode == "view") {
 						// doi::dump($checked);
 					?>
 						<td class="custom-checkbox">
-							<input type="checkbox" id="<?= $idlop ?>" name="implementasi[<?= $data['id'] ?>][bulan][]" value="<?= $datbln ?>##<?= $month ?>" <?= $checked ?> disabled>
+							<input type="checkbox" id="<?= $idlop ?>" name="implementasi[<?= $data['id'] ?>][bulan][]" value="<?= $datbln ?>##<?= $month ?>" <?= $checked ?> <?= $disabled ?>>
 							<label for="<?= $idlop ?>" title="<?= $blntl ?>"></label>
 						</td>
 					<?php
@@ -177,7 +178,7 @@ if ($mode == "view") {
 					?>
 
 					<td>
-						<textarea placeholder="keterangan" title="keterangan proses management risiko" class="disabled readonly" disabled name="implementasi[<?= $data['id'] ?>][ket]" id="" cols="3" rows="2"><?= isset($imp) ? $imp['ket'] : '' ?></textarea>
+						<textarea placeholder="keterangan" title="keterangan proses management risiko" class="<?= $disabled ?>" name="implementasi[<?= $data['id'] ?>][ket]" id="" cols="3" rows="2"><?= isset($imp) ? $imp['ket'] : '' ?></textarea>
 					</td>
 
 
