@@ -105,34 +105,72 @@ class Rcsa extends BackendController
 		$this->set_Close_Setting();
 	}
 
+	public function updateBox_KRITERIA_KEMUNGKINAN_RISIKO($field)
+	{
+		$id = $this->uri->segment(3); 
+		$content = $this->get_kriteria_kemungkinan_risiko($id);
+		return $content;
+	}
+
+	function updateBox_KRITERIA_DAMPAK_RISIKO($field)
+	{
+		$id = $this->uri->segment(3);
+		$content = $this->get_kriteria_dampak_risiko($id);
+		return $content;
+	}
+
 	function insertBox_KRITERIA_KEMUNGKINAN_RISIKO($field)
 	{
 		$content = $this->get_kriteria_kemungkinan_risiko();
 		return $content;
 	}
+
 	function get_kriteria_kemungkinan_risiko($id = 0)
 	{
-		$data['kriteria'] = [1 => [
-			'name' => 'Sangat Kecil',
-			'color' => 'green',
-		], 2 => [
-			'name' => 'Kecil',
-			'color' => 'lightgreen'
-		], 3 => [
-			'name' => 'Sedang',
-			'color' => 'yellow'
-		], 4 => [
-			'name' => 'Besar',
-			'color' => 'orange'
-		], 5 => [
-			'name' => 'Sangat Besar',
-			'color' => 'red'
-		]];
-		$data['kemungkinan'] = $this->db->where('kelompok', 'kriteria-kemungkinan')->get(_TBL_DATA_COMBO)->result_array();
+		// Ambil data kriteria dari database
+		$kriteriaData = $this->db->where('category', 'likelihood')->get(_TBL_LEVEL)->result_array();
 
-		$result = $this->load->view('krit_kemungkinan',  $data, true);
+		// Definisi warna default berdasarkan level
+		$defaultColors = [
+			1 => 'green',
+			2 => 'lightgreen',
+			3 => 'yellow',
+			4 => 'orange',
+			5 => 'red'
+		];
+
+		// Tambahkan warna ke data kriteria berdasarkan level
+		$data['kriteria'] = [];
+		foreach ($kriteriaData as $item) {
+			$level = (int)$item['code']; // Pastikan level berupa integer
+			$data['kriteria'][$level] = [
+				'name' => $item['level'], // Nama diambil dari database
+				'color' => $defaultColors[$level] ?? 'gray' // Warna berdasarkan defaultColors
+			];
+		}
+
+		// Query untuk mengambil data kemungkinan berdasarkan kelompok dan param1
+		$data['kemungkinan'] = $this->db
+			->where('kelompok', 'kriteria-kemungkinan')
+			->where('param1', $id)  // Menambahkan kondisi untuk field param1
+			->get(_TBL_DATA_COMBO)
+			->result_array();
+
+		// Jika data `kemungkinan` kosong, ambil data dengan `param1` kosong
+		if (empty($data['kemungkinan'])) {
+			$data['kemungkinan'] = $this->db
+				->where('kelompok', 'kriteria-kemungkinan')
+				->where('param1', NULL)  // Menambahkan kondisi untuk field param1 kosong
+				->or_where('param1', '') // Jika kosong bisa berupa NULL atau string kosong
+				->get(_TBL_DATA_COMBO)
+				->result_array();
+		}
+
+		// Menampilkan data pada view
+		$result = $this->load->view('krit_kemungkinan', $data, true);
 		return $result;
 	}
+
 	function insertBox_KRITERIA_DAMPAK_RISIKO($field)
 	{
 		$content = $this->get_kriteria_dampak_risiko();
@@ -141,26 +179,50 @@ class Rcsa extends BackendController
 
 	function get_kriteria_dampak_risiko($id = 0)
 	{
-		$data['kriteria'] = [1 => [
-			'name' => 'Sangat Kecil',
-			'color' => 'green',
-		], 2 => [
-			'name' => 'Kecil',
-			'color' => 'lightgreen'
-		], 3 => [
-			'name' => 'Sedang',
-			'color' => 'yellow'
-		], 4 => [
-			'name' => 'Besar',
-			'color' => 'orange'
-		], 5 => [
-			'name' => 'Sangat Besar',
-			'color' => 'red'
-		]];
-		$data['dampak'] = $this->db->where('kelompok', 'kriteria-dampak')->get(_TBL_DATA_COMBO)->result_array();
-		// $data['field'] = $this->db->where('risiko_no', $id)->get(_TBL_SUBRISIKO)->result_array();
-		$result = $this->load->view('krit_dampak',  $data, true);
-		return $result;
+		// Ambil data kriteria dari database
+		$kriteriaData = $this->db->where('category', 'impact')->get(_TBL_LEVEL)->result_array();
+
+		// Definisi warna default berdasarkan level
+		$defaultColors = [
+			1 => 'green',
+			2 => 'lightgreen',
+			3 => 'yellow',
+			4 => 'orange',
+			5 => 'red'
+		];
+
+		// Tambahkan warna ke data kriteria berdasarkan level
+		$data['kriteria'] = [];
+		foreach ($kriteriaData as $item) {
+			$level = (int)$item['code']; // Pastikan level berupa integer
+			$data['kriteria'][$level] = [
+				'name' => $item['level'], // Nama diambil dari database
+				'color' => $defaultColors[$level] ?? 'gray' // Warna berdasarkan defaultColors
+			];
+		}
+
+			// Query untuk mengambil data dampak berdasarkan kelompok dan param1
+			$data['dampak'] = $this->db
+			->where('kelompok', 'kriteria-dampak')
+			->where('param1', $id)  // Menambahkan kondisi untuk field param1
+			->get(_TBL_DATA_COMBO)
+			->result_array();
+
+			// Jika data `dampak` kosong, ambil data dengan `param1` kosong
+			if (empty($data['dampak'])) {
+			$data['dampak'] = $this->db
+				->where('kelompok', 'kriteria-dampak')
+				->group_start()               // Memulai grouping kondisi untuk NULL atau string kosong
+					->where('param1', NULL)
+					->or_where('param1', '')  // Jika kosong bisa berupa NULL atau string kosong
+				->group_end()                 // Mengakhiri grouping kondisi
+				->get(_TBL_DATA_COMBO)
+				->result_array();
+			}
+
+
+			$result = $this->load->view('krit_dampak',  $data, true);
+			return $result;
 	}
 
 	function update_OPTIONAL_CMD($id, $row)
@@ -855,8 +917,7 @@ if($dtkri){
 		// $data['level_resiko'][] = ['label' => lang('msg_field_coa'), 'isi' => '<div class="input-group"><span  id="span_dampak" class="input-group-addon">Rp. </span>' . form_input('coa', ($data['detail']) ? number_format($data['detail']['coa'],0,',',',') : '', ' class="form-control rupiah text-right" id="coa" style="width:100%;"') . '</div>'];
 		// $data['level_resiko'][] = ['show' => true, 'label' => lang('msg_field_kode_jasa'), 'isi' => form_input('kode_jasa', ($data['detail']) ? $data['detail']['kode_jasa'] : '', 'class="form-control" style="width:100%;" id="kode_jasa"')];
 		// $data['level_resiko'][] = ['label' => lang('msg_field_ket_coa'), 'isi' =>   form_textarea("keterangan_coa", ($data['detail']) ? $data['detail']['keterangan_coa'] : '', ' class="form-control" style="width:100%;height:150px"' . $readonly) . ' '];
-		// $data['level_resiko'][] = ['label' => lang('msg_field_risk_control_assessment'), 'isi' => form_dropdown('risk_control_assessment', $cboRiskControl, ($data['detail']) ? $data['detail']['risk_control_assessment'] : '', ' class="form-control select2" id="risk_control_assessment" style="width:100%;"' . $disabled)];
-
+		// $data['level_resiko'][] = ['label' => lang('msg_field_risk_control_assessment'), 'isi' => form_dropdown('risk_control_assessment', $cboRiskControl, ($data['detail']) ? $data['detail']['risk_con
 		// // $data['level_resiko'][] = ['label' => lang('msg_field_residual_risk'), 'isi' => ' Kemungkinan : ' . form_dropdown('residual_likelihood', $cboLike, ($data['detail']) ? $data['detail']['residual_likelihood'] : '', ' class="form-control select2" id="residual_likelihoodx" style="width:35%;"' . $disabled) . ' Dampak: ' . form_dropdown('residual_impact', $cboImpact, ($data['detail']) ? $data['detail']['residual_impact'] : '', ' class="form-control select2" id="residual_impactx" style="width:35%;"' . $disabled)];
 		// // $data['level_resiko'][] = ['label' => lang('msg_field_residual_level'), 'isi' => '<span id="residual_level_label"><span style="background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">&nbsp;' . $residual_level['level_mapping'] . '&nbsp;</span></span>' . form_hidden(['residual_level' => ($data['detail']) ? $data['detail']['residual_level'] : 0]) . form_hidden(['residual_name' => ($data['detail']) ? $arl : ''])];
 
@@ -896,9 +957,12 @@ if($dtkri){
 		if($detail['tema']){
 			$data['kategori'] = $this->get_combo('tasktonimi', 't2', $detail['tema']);
 		}
+
+		
 		if($detail['kategori_no']){
 			$data['subkategori'] = $this->get_combo('tasktonimi', 't3', $detail['kategori_no']);
 		}
+
 		if($detail['event_no']){
  			$cbogroup = $this->get_combo('tasktonimi',['t5', 'cause', $detail['event_no']] );
 			$cbogroup1 = $this->get_combo('tasktonimi',['t5', 'impact', $detail['event_no']] );
@@ -1690,35 +1754,59 @@ if($dtkri){
 
 	function simpan_peristiwa()
 	{
-		$post = $this->input->post();
+		$post 	= $this->input->post();
+		
 		$detail = $this->db->where('id', $post['id_edit'])->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
-// 		doi::dump($detail['event_no']);
-// doi::dump($post);
-// die('cek');
+		// doi::dump($detail);
+		// die;
 		if (($post['sasaran'] == 0)) {
-			doi::dump($post['sasaran']);
-			$result['combo'] = '	<script>
-			alert("Sasaran tidak boleh ada yang kosong")
-			</script>';
-
+			$result['sasaran'] 	= 0;
+			$result['back'] 	= false;
+			echo json_encode($result);
+		} elseif ($post['tema'] == 0) {
+			$result['tema'] 	= 0;
+			$result['back'] 	= false;
+			echo json_encode($result);
+		}elseif ($post['kategori'] == 0) {
+			$result['kategori'] = 0;
+			$result['back'] 	= false;
+			echo json_encode($result);
+		}elseif ($post['sub_kategori'] == 0 && $detail['sub_kategori'] == "" ) {
+			$result['sub_kategori'] = 0;
+			$result['back'] 		= false;
+			echo json_encode($result);
+		}elseif ($post['subrisiko'] == 0) {
+			$result['subrisiko'] 	= 0;
+			$result['back'] 		= false;
+			echo json_encode($result);
+		}elseif ($post['proses_bisnis'] == "") {
+			$result['proses_bisnis'] 	= 0;
+			$result['back'] 			= false;
+			echo json_encode($result);
+		}elseif ($post['event_no'] == 0 && $post['peristiwabaru'] == "") {
+			$result['event_no'] 	= 0;
+			$result['back'] 		= false;
+			echo json_encode($result);
+		}elseif (is_array($post['risk_couse_no']) && count($post['risk_couse_no']) === 1 && $post['risk_couse_no'][0] == 0 &&
+			(is_array($post['new_cause']) && count($post['new_cause']) && $post['new_cause'][0] == "")) {
+			$result['risk_couse_no'] = 0;
 			$result['back'] = false;
-		} elseif ($post['kategori'] == 0) {
-			doi::dump($post['kategori']);
-			$result['combo'] = '	<script>
-			alert("kategori tidak boleh ada yang kosong")
-			</script>';
-
+			echo json_encode($result);
+		} elseif (is_array($post['risk_impact_no']) && count($post['risk_impact_no']) === 1 && $post['risk_impact_no'][0] == 0 &&
+			(is_array($post['new_impact']) && count($post['new_impact']) && $post['new_impact'][0] == "")) {
+			$result['risk_impact_no'] = 0;
 			$result['back'] = false;
-		} elseif ($post['event_no'] == "" && $post['peristiwabaru'] == "") {
-			doi::dump("event_no: " . $post['event_no'] . "peristiwabaru: " . $post['peristiwabaru']);
-			$result['combo'] = '<script>
-                    alert("Event No dan peristiwabaru tidak boleh kosong");
-                    </script>';
-
-			$result['back'] = false;
-		} else {
-
-			//		var_dump($post['risk_couse_no']);
+			echo json_encode($result);
+		}elseif ($post['kategori_dampak'] == "kuantitatif" && $post['risk_asumsi_perhitungan_dampak'] == "") {
+			$result['risk_asumsi_perhitungan_dampak'] 	= 0;
+			$result['back'] 			= false;
+			echo json_encode($result);
+			
+		}elseif ($post['pic'] == 0) {
+			$result['pic'] 	= 0;
+			$result['back'] 			= false;
+			echo json_encode($result);
+		}else {
 			if ($post['event_no'] == 0) {
 				$post['event_no'] = $detail['event_no']; 
 			}
@@ -1739,9 +1827,6 @@ if($dtkri){
 			$this->session->set_flashdata('rcsa_no', $post['rcsa_no']);
 			header('location:' . base_url($this->modul_name . '/tes/'));
 			}
-
-
-
 			
 		}
 	}
@@ -1760,6 +1845,16 @@ if($dtkri){
 
 
 		$post = $this->input->post();
+		if ($post['risk_control_assessment'] === "") {
+			echo json_encode(['sts' => false, 'message' => 'Risk control assesment wajib diisi.']);
+			return;
+		}
+
+		if ($post['treatment_no'] === "") {
+			echo json_encode(['sts' => false, 'message' => 'Treatment  wajib diisi..']);
+			return;
+			
+		}
 
 		$id = $this->data->simpan_risk_level($post);
 		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
@@ -1781,10 +1876,80 @@ if($dtkri){
 	function simpan_mitigasi()
 	{
 		$post 	= $this->input->post();
+		// doi::dump($post);
+		// die;
+		if (isset($post['proaktif']) && is_array($post['proaktif'])) {
+			foreach ($post['proaktif'] as $index => $value) {
+				if (empty($value)) {
+					// $errors['proaktif'][$index] = "Proaktif di index $index tidak boleh kosong.";
+					echo json_encode(['sts' => false, 'message' => "Treatment tidak boleh kosong."]);
+					return;
+				}
+			}
+		} else {
+			echo json_encode(['sts' => false, 'message' => "Input minimal 1 treatment."]);
+			return;
+		}
+
+		$bulan_nama = [
+			1 => 'Januari',
+			2 => 'Februari',
+			3 => 'Maret',
+			4 => 'April',
+			5 => 'Mei',
+			6 => 'Juni',
+			7 => 'Juli',
+			8 => 'Agustus',
+			9 => 'September',
+			10 => 'Oktober',
+			11 => 'November',
+			12 => 'Desember'
+		];
+		
+		$errors = []; // Menyiapkan array untuk error
+		
+		// Validasi untuk 'target_progress' dan 'target_damp_loss' per bulan
+		for ($month = 1; $month <= 12; $month++) {
+			// Validasi untuk 'target_progress'
+			if (isset($post['target_progress']) && is_array($post['target_progress'])) {
+				foreach ($post['target_progress'] as $index => $months) {
+					// Cek apakah bulan valid
+					if (!isset($bulan_nama[$month])) {
+						echo json_encode(['sts' => false, 'message' => "Bulan tidak valid untuk index $index."]);
+						return;
+					}
+		
+					$value = isset($months[$month]) ? $months[$month] : null;
+		
+					// Validasi target_progress: Angka antara 0 dan 100
+					if (empty($value) || !is_numeric($value) || $value < 0 || $value > 100) {
+						echo json_encode(['sts' => false, 'message' => "Progress di bulan " . $bulan_nama[$month] . " harus berupa angka antara 0 dan 100."]);
+						return;
+					}
+				}
+			}
+		
+			// Validasi untuk 'target_damp_loss'
+			if (isset($post['target_damp_loss']) && is_array($post['target_damp_loss'])) {
+				foreach ($post['target_damp_loss'] as $index => $months) {
+					// Cek apakah bulan valid
+					if (!isset($bulan_nama[$month])) {
+						echo json_encode(['sts' => false, 'message' => "Bulan tidak valid untuk index $index."]);
+						return;
+					}
+		
+					$value = isset($months[$month]) ? $months[$month] : null;
+		
+					// Validasi target_damp_loss: Pastikan angka valid
+					if (empty($value) || !is_numeric(str_replace([',', '.'], '', $value))) {
+						echo json_encode(['sts' => false, 'message' => "Treatment Cost di bulan " . $bulan_nama[$month] . " harus berupa angka yang valid."]);
+						return;
+					}
+				}
+			}
+		}
+		
 		$id 	= $this->data->simpan_mitigasi($post);
-		// doi::dump($id);
-		// doi::dump($_FILES);
-		// die('control');
 		$data['parent'] = $this->db->where('id', $post['rcsa_no'])->get(_TBL_VIEW_RCSA)->row_array();
 		$data['field'] = $this->data->get_peristiwa($post['rcsa_no']);
 
@@ -2212,74 +2377,188 @@ if($dtkri){
 		}
 	}
 
-	public function simpan_analisis(){
-
-		$post = $this->input->post();
-		// doi::dump($post);
-		// die;
-		$updPI['inherent_likelihood'] 		= $post['analisis_like_inherent'];
-		$updPI['inherent_impact'] 			= $post['analisis_impact_inherent'];
-		$updPI['residual_likelihood'] 		= $post['analisis_like_residual'];
-		$updPI['residual_impact'] 			= $post['analisis_impact_residual'];
-		$updPI['nilai_in_impact']			= str_replace(',', '',$post['nilai_in_impact']);
-		$updPI['nilai_in_likelihood']		= str_replace(',', '',$post['nilai_in_likelihood']);
-		$updPI['nilai_in_exposure']			= str_replace(',', '',$post['nilai_in_exposure']);
-		$updPI['nilai_res_impact']			= str_replace(',', '',$post['nilai_res_impact']);
-		$updPI['nilai_res_likelihood']		= str_replace(',', '',$post['nilai_res_likelihood']);
-		$updPI['nilai_res_exposure']		= str_replace(',', '',$post['nilai_res_exposure']);
-		$updPI['inherent_level'] 			= $post['inherent_level'];
-		$updPI['residual_level'] 			= $post['residual_level'];
-		$updPI['update_user'] 				= $this->authentication->get_info_user('username');
-		$res=false;
-		$add=false;
-
-			foreach ($post['month'] as $key => $month) {
-				$target_impact 		= isset($post['target_impact'][$key]) ? $post['target_impact'][$key] : null;
-				$target_like 		= isset($post['target_like'][$key]) ? $post['target_like'][$key] : null;
-				$nilai_impact 		= isset($post['nilai_impact'][$key]) ? $post['nilai_impact'][$key] : null;
-				$nilai_likelihood 	= isset($post['nilai_likelihood'][$key]) ? $post['nilai_likelihood'][$key] : null;
-				$nilai_exposure 	= isset($post['nilai_exposure'][$key]) ? $post['nilai_exposure'][$key] : null;
-				$nilai_impact		= str_replace(',', '',$nilai_impact);
-				$nilai_likelihood	= str_replace(',', '',$nilai_likelihood);
-				$nilai_exposure		= str_replace(',', '',$nilai_exposure);
+	public function simpan_analisis() {
+		$bulan_nama = [
+			1 => 'Januari',
+			2 => 'Februari',
+			3 => 'Maret',
+			4 => 'April',
+			5 => 'Mei',
+			6 => 'Juni',
+			7 => 'Juli',
+			8 => 'Agustus',
+			9 => 'September',
+			10 => 'Oktober',
+			11 => 'November',
+			12 => 'Desember'
+		];
+		$post 			= $this->input->post();
+		$rcsa_detail  	= $this->db->select('kategori_dampak')->where('id', $post['id_detail'])->get('bangga_view_rcsa_detail')->row_array();
 		
-				// Memeriksa apakah data bulan sudah ada di tabel analisis_risiko
-				$cek_data = $this->db->where('id_detail', $post['id_detail'])
-									->where('bulan', $month)
-									->get('bangga_analisis_risiko')
-									->row_array();
+		if ($post['analisis_impact_inherent'] === "") {
+			echo json_encode(['sts' => false, 'message' => 'Skala impact inherent wajib diisi.']);
+			return;
+		}
+
+		if ($post['analisis_like_inherent'] === "") {
+			echo json_encode(['sts' => false, 'message' => 'Skala likelihood inherent wajib diisi..']);
+			return;
+			
+		}
 		
-				if ($cek_data) {
-					$update_bulan = [
-						'target_impact' => $target_impact,
-						'target_like' 	=> $target_like,
-						'nilai_impact' 	=> $nilai_impact,
-						'nilai_likelihood' 	=> $nilai_likelihood,
-						'nilai_exposure' 	=> $nilai_exposure
-					];
-					$update_bulan['update_by'] = $this->authentication->get_info_user('username');
-					$res = $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $update_bulan, 'where' => array('id_detail' => $post['id_detail'], 'bulan' => $month), 'type' => 'update'));
-				} else {
-					$upd = [
-						'id_detail' 	=> $post['id_detail'],
-						'bulan' 		=> $month,
-						'target_impact' => $target_impact,
-						'target_like' 	=> $target_like,
-						'nilai_impact' 	=> $nilai_impact,
-						'nilai_likelihood' 	=> $nilai_likelihood,
-						'nilai_exposure' 	=> $nilai_exposure
-					];
-					$updPI['pi'] = 3;
-					$upd['create_by'] 			= $this->authentication->get_info_user('username');
-					$res = $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $upd, 'type' => 'add'));
-				}
+		if ($post['analisis_like_residual'] === "") {
+			echo json_encode(['sts' => false, 'message' => 'Skala likelihood residual wajib diisi..']);
+			return;
+		}
+		if ($post['analisis_impact_residual'] === "") {
+			echo json_encode(['sts' => false, 'message' => 'Skala impact residual wajib diisi..']);
+			return;
+		}
+
+		if (empty($post['target_impact']) || !is_array($post['target_impact'])) {
+			echo json_encode(['sts' => false, 'message' => 'Skala impact januari sampai desember wajib diisi..']);
+			return;
+		}
+		if (empty($post['target_like']) || !is_array($post['target_like'])) {
+			echo json_encode(['sts' => false, 'message' => 'Skala likelihood januari sampai desember wajib diisi..']);
+			return;
+		}
+
+		for ($i = 1; $i <= 12; $i++) {
+			$target_impact 		= isset($post['target_impact'][$i - 1]) ? $post['target_impact'][$i - 1] : null;
+			$target_like 		= isset($post['target_like'][$i - 1]) ? $post['target_like'][$i - 1] : null;
+	
+			if (empty($target_impact )) {
+				echo json_encode(['sts' => false, 'message' => 'Skala impact untuk bulan ' . $bulan_nama[$i] . ' belum diisi.']);
+				return;
 			}
-			$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updPI, 'where' => array('id' => $post['id_detail']), 'type' => 'update'));
-			$result['sts'] = $res;
-			$result['add'] = $add;
+	
+			if (empty($target_like)) {
+				echo json_encode(['sts' => false, 'message' => 'Skala likelihood untuk bulan ' . $bulan_nama[$i] . ' belum diisi.']);
+				return;
+			}
+		}
+		
+		if($rcsa_detail['kategori_dampak'] === "kuantitatif"){
+			if (empty($post['nilai_in_impact'])) {
+				echo json_encode(['sts' => false, 'message' => 'Nilai impact inherent wajib diisi.']);
+				return;
+			}
+			if (empty($post['nilai_in_likelihood'])) {
+				echo json_encode(['sts' => false, 'message' => 'Nilai likelihood inherent wajib diisi.']);
+				return;
+			}
+			if (empty($post['nilai_in_exposure'])) {
+				echo json_encode(['sts' => false, 'message' => 'Nilai exposure inherent wajib diisi.']);
+				return;
+			}
+			if (empty($post['nilai_res_impact'])) {
+				echo json_encode(['sts' => false, 'message' => 'Nilai impact residual wajib diisi.']);
+				return;
+			}
+			if (empty($post['nilai_res_likelihood'])) {
+				echo json_encode(['sts' => false, 'message' => 'Nilai likelihood residual wajib diisi.']);
+				return;
+			}
+			if (empty($post['nilai_res_exposure'])) {
+				echo json_encode(['sts' => false, 'message' => 'Nilai exposure residual wajib diisi.']);
+				return;
+			}
+	
+			if (empty($post['nilai_impact']) || !is_array($post['nilai_impact'])) {
+				echo json_encode(['sts' => false, 'message' => 'Nilai impact januari sampai desember wajib diisi.']);
+				return;
+			}
+			if (empty($post['nilai_likelihood']) || !is_array($post['nilai_likelihood'])) {
+				echo json_encode(['sts' => false, 'message' => 'Nilai likelihood januari sampai desember wajib diisi..']);
+				return;
+			}
+			
+		
+			for ($i = 1; $i <= 12; $i++) {
+				$nilai_impact 		= isset($post['nilai_impact'][$i - 1]) ? $post['nilai_impact'][$i - 1] : null;
+				$nilai_likelihood 	= isset($post['nilai_likelihood'][$i - 1]) ? $post['nilai_likelihood'][$i - 1] : null;
+				if (empty($nilai_impact )) {
+					echo json_encode(['sts' => false, 'message' => 'Nilai impact untuk bulan ' . $bulan_nama[$i] . ' belum diisi.']);
+					return;
+				}
+		
+				if (empty($nilai_likelihood)) {
+					echo json_encode(['sts' => false, 'message' => 'Nilai likelihood untuk bulan ' . $bulan_nama[$i] . ' belum diisi.']);
+					return;
+				}
+		
+			}
+		}
 
-			$result['post'] = $post;
-			echo json_encode($result);
+		
+
+		
+		
+		// Proses data jika semua validasi berhasil
+		$updPI['inherent_likelihood'] = $post['analisis_like_inherent'];
+		$updPI['inherent_impact'] = $post['analisis_impact_inherent'];
+		$updPI['residual_likelihood'] = $post['analisis_like_residual'];
+		$updPI['residual_impact'] = $post['analisis_impact_residual'];
+		$updPI['nilai_in_impact'] = str_replace(',', '', $post['nilai_in_impact']);
+		$updPI['nilai_in_likelihood'] = str_replace(',', '', $post['nilai_in_likelihood']);
+		$updPI['nilai_in_exposure'] = str_replace(',', '', $post['nilai_in_exposure']);
+		$updPI['nilai_res_impact'] = str_replace(',', '', $post['nilai_res_impact']);
+		$updPI['nilai_res_likelihood'] = str_replace(',', '', $post['nilai_res_likelihood']);
+		$updPI['nilai_res_exposure'] = str_replace(',', '', $post['nilai_res_exposure']);
+		$updPI['inherent_level'] = $post['inherent_level'];
+		$updPI['residual_level'] = $post['residual_level'];
+		$updPI['update_user'] = $this->authentication->get_info_user('username');
+		$res = false;
+		$add = false;
+	
+		foreach ($post['month'] as $key => $month) {
+			$target_impact = isset($post['target_impact'][$key]) ? $post['target_impact'][$key] : null;
+			$target_like = isset($post['target_like'][$key]) ? $post['target_like'][$key] : null;
+			$nilai_impact = isset($post['nilai_impact'][$key]) ? $post['nilai_impact'][$key] : null;
+			$nilai_likelihood = isset($post['nilai_likelihood'][$key]) ? $post['nilai_likelihood'][$key] : null;
+			$nilai_exposure = isset($post['nilai_exposure'][$key]) ? $post['nilai_exposure'][$key] : null;
+			$nilai_impact = str_replace(',', '', $nilai_impact);
+			$nilai_likelihood = str_replace(',', '', $nilai_likelihood);
+			$nilai_exposure = str_replace(',', '', $nilai_exposure);
+	
+			// Memeriksa apakah data bulan sudah ada di tabel analisis_risiko
+			$cek_data = $this->db->where('id_detail', $post['id_detail'])
+				->where('bulan', $month)
+				->get('bangga_analisis_risiko')
+				->row_array();
+	
+			if ($cek_data) {
+				$update_bulan = [
+					'target_impact' => $target_impact,
+					'target_like' => $target_like,
+					'nilai_impact' => $nilai_impact,
+					'nilai_likelihood' => $nilai_likelihood,
+					'nilai_exposure' => $nilai_exposure
+				];
+				$update_bulan['update_by'] = $this->authentication->get_info_user('username');
+				$res = $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $update_bulan, 'where' => array('id_detail' => $post['id_detail'], 'bulan' => $month), 'type' => 'update'));
+			} else {
+				$upd = [
+					'id_detail' => $post['id_detail'],
+					'bulan' => $month,
+					'target_impact' => $target_impact,
+					'target_like' => $target_like,
+					'nilai_impact' => $nilai_impact,
+					'nilai_likelihood' => $nilai_likelihood,
+					'nilai_exposure' => $nilai_exposure
+				];
+				$updPI['pi'] = 3;
+				$upd['create_by'] = $this->authentication->get_info_user('username');
+				$res = $this->crud->crud_data(array('table' => 'bangga_analisis_risiko', 'field' => $upd, 'type' => 'add'));
+			}
+		}
+		$this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $updPI, 'where' => array('id' => $post['id_detail']), 'type' => 'update'));
+		$result['sts'] = $res;
+		$result['add'] = $add;
+		$result['post'] = $post;
+		echo json_encode($result);
+	
 	}
 	
 	public function simpan_treatment(){

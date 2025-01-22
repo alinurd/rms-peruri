@@ -579,34 +579,7 @@ $(function () {
   });
 
   $(document).on("click", "#simpan_peristiwa", function () {
-    var id = $(this).data("id");
-    var kri = $("#kri").val();
-    var satuan = $("#satuan").val();
-    var min_tinggi = $("#min_tinggi").val();
-    var max_tinggi = $("#max_tinggi").val();
-    var min_menengah = $("#min_menengah").val();
-    var max_menengah = $("#max_menengah").val();
-    var min_rendah = $("#min_rendah").val();
-    var max_rendah = $("#max_rendah").val();
-    var event_no = $("#event_no").val();
-    var tab = $(this).data("tab");
-    var realisasi = 0;
-    // var realisasi = $("#realisasi").val();
-
-    var data = {
-      tab: tab,
-      kri: kri,
-      satuan: satuan,
-      min_tinggi: min_tinggi,
-      max_tinggi: max_tinggi,
-      min_rendah: min_rendah,
-      max_menengah: max_menengah,
-      min_menengah: min_menengah,
-      max_rendah: max_rendah,
-      realisasi: realisasi,
-      event_no: event_no,
-    };
-
+  
     data = $("form#form_peristiwa").serialize();
 
     var parent = $(this).parent();
@@ -626,29 +599,29 @@ $(function () {
     cari_ajax_combo("post", parent, data, "", url, "result_save_peristiwa");
   });
 
-  $(document).on("click", "#simpan_mitigasi", function () {
-    var id = $(this).data("id");
-
-    var form = $("#form_mitigasi").get(0);
-    var data = new FormData(form);
-    // var data = $("form#form_mitigasi").serialize();
-    var parent = $(this).parent();
-    var target_combo = "";
-    var url = modul_name + "/simpan-mitigasi";
-    cari_ajax_combo_file("post", "#form_mitigasi", data, "", url, "sukses");
-    // cari_ajax_combo_file("post", '#mitigasi_form', data, "", url, 'sukses');
-
-    // cari_ajax_combo("post", parent, data, '', url, 'result_save_peristiwa');
-  });
   // $(document).on("click", "#simpan_mitigasi", function () {
-  // 	var id = $(this).data('id');
-  // 	var data = $("form#form_mitigasi").serialize();
-  // 	var parent = $(this).parent();
-  // 	var target_combo = "";
-  // 	var url = modul_name + "/simpan-mitigasi";
+  //   var id = $(this).data("id");
 
-  // 	cari_ajax_combo("post", parent, data, '', url, 'result_save_peristiwa');
-  // })
+  //   var form = $("#form_mitigasi").get(0);
+  //   var data = new FormData(form);
+  //   // var data = $("form#form_mitigasi").serialize();
+  //   var parent = $(this).parent();
+  //   var target_combo = "";
+  //   var url = modul_name + "/simpan-mitigasi";
+  //   cari_ajax_combo_file("post", "#form_mitigasi", data, "", url, "sukses");
+  //   // cari_ajax_combo_file("post", '#mitigasi_form', data, "", url, 'sukses');
+
+  //   // cari_ajax_combo("post", parent, data, '', url, 'result_save_peristiwa');
+  // });
+  $(document).on("click", "#simpan_mitigasi", function () {
+  	var id = $(this).data('id');
+  	var data = $("form#form_mitigasi").serialize();
+  	var parent = $(this).parent();
+  	var target_combo = "";
+  	var url = modul_name + "/simpan-mitigasi";
+
+  	cari_ajax_combo("post", parent, data, '', url, 'result_save_peristiwa');
+  })
 
   // $(document).on("change", "#residual_impact, #residual_likelihood", function () {
   // 	var likelihood = $("#residual_likelihood").val();
@@ -1225,94 +1198,91 @@ $(function () {
   }
 
   $(document).on("click", "#simpan_analisis", function () {
-    var id_detail = $("#id_detail").val();
-    var analisis_like_inherent = $("#likeAnalisisInheren").val();
-    var analisis_impact_inherent = $("#impactAnalisisInheren").val();
-    var analisis_like_residual = $("#likeAnalisisResidual").val();
-    var analisis_impact_residual = $("#impactAnalisisResidual").val();
-    var inherent_level = $("#inherent_level").val();
-    var residual_level = $("#residual_level").val();
+      var id_detail                 = $("#id_detail").val();
+      var analisis_like_inherent    = $("#likeAnalisisInheren").val();
+      var analisis_impact_inherent  = $("#impactAnalisisInheren").val();
+      var analisis_like_residual    = $("#likeAnalisisResidual").val();
+      var analisis_impact_residual  = $("#impactAnalisisResidual").val();
+      var inherent_level            = $("#inherent_level").val();
+      var residual_level            = $("#residual_level").val();
+      var nilai_in_impact           = $("#nilai_in_impact").val();
+      var nilai_in_likelihood       = $("#nilai_in_likelihood").val();
+      var nilai_in_exposure         = $("#nilai_in_exposure").val();
+      var nilai_res_impact          = $("#nilai_res_impact").val();
+      var nilai_res_likelihood      = $("#nilai_res_likelihood").val();
+      var nilai_res_exposure        =   $("#nilai_res_exposure").val();
+      var target_like               = [];
+      var target_impact             = [];
+      var month                     = [];
+      var nilai_impact_array        = []; 
+      var nilai_likelihood_array    = []; 
+      var nilai_exposure_array      = [];
 
-    var nilai_in_impact = $("#nilai_in_impact").val();
-    var nilai_in_likelihood = $("#nilai_in_likelihood").val();
-    var nilai_in_exposure = $("#nilai_in_exposure").val();
-    var nilai_res_impact = $("#nilai_res_impact").val();
-    var nilai_res_likelihood = $("#nilai_res_likelihood").val();
-    var nilai_res_exposure = $("#nilai_res_exposure").val();
+      // Loop untuk 12 bulan
+      for (var i = 1; i <= 12; i++) {
+          var like_value        = $("#likeTargetResidual" + i).val();
+          var impact_value      = $("#impactTargetResidual" + i).val();
+          var month_value       = $("#likeTargetResidual" + i).data("month");
+          var nilai_impact      = $("#nilai_impact" + i).val();
+          var nilai_likelihood  = $("#nilai_likelihood" + i).val();
+          var nilai_exposure    = $("#nilai_exposure" + i).val();
 
-    var target_like = [];
-    var target_impact = [];
-    var month = [];
-    var nilai_impact_array = []; // Mengganti nama variabel untuk menghindari konflik
-    var nilai_likelihood_array = []; // Mengganti nama variabel untuk menghindari konflik
-    var nilai_exposure_array = []; // Mengganti nama variabel untuk menghindari konflik
+          // Menyimpan bulan yang terisi
+          if (like_value !== "" || impact_value !== "") {
+              month.push(month_value);
+          }
 
-    // Loop untuk 12 bulan
-    for (var i = 1; i <= 12; i++) {
-        var like_value = $("#likeTargetResidual" + i).val();
-        var impact_value = $("#impactTargetResidual" + i).val();
-        var month_value = $("#likeTargetResidual" + i).data("month");
+          // Menambahkan target_like jika terisi
+          if (like_value !== "") {
+              target_like.push(like_value);
+          }
 
-        var nilai_impact = $("#nilai_impact" + i).val();
-        var nilai_likelihood = $("#nilai_likelihood" + i).val();
-        var nilai_exposure = $("#nilai_exposure" + i).val();
+          // Menambahkan target_impact jika terisi
+          if (impact_value !== "") {
+              target_impact.push(impact_value);
+          }
 
-        // Menyimpan bulan yang terisi
-        if (like_value !== "" || impact_value !== "") {
-            month.push(month_value);
-        }
+          // Menambahkan nilai jika terisi
+          if (nilai_impact !== "") {
+              nilai_impact_array.push(nilai_impact);
+          }
+          if (nilai_likelihood !== "") {
+              nilai_likelihood_array.push(nilai_likelihood);
+          }
+          if (nilai_exposure !== "") {
+              nilai_exposure_array.push(nilai_exposure);
+          }
+      }
 
-        // Menambahkan target_like jika terisi
-        if (like_value !== "") {
-            target_like.push(like_value);
-        }
+      // Siapkan data yang akan dikirimkan
+      var data = {
+          id_detail: id_detail,
+          analisis_like_inherent: analisis_like_inherent,
+          analisis_impact_inherent: analisis_impact_inherent,
+          analisis_like_residual: analisis_like_residual,
+          analisis_impact_residual: analisis_impact_residual,
+          nilai_in_impact: nilai_in_impact,
+          nilai_in_likelihood: nilai_in_likelihood,
+          nilai_in_exposure: nilai_in_exposure,
+          nilai_res_impact: nilai_res_impact,
+          nilai_res_likelihood: nilai_res_likelihood,
+          nilai_res_exposure: nilai_res_exposure,
+          inherent_level: inherent_level,
+          residual_level: residual_level,
+          target_impact: target_impact,
+          target_like: target_like,
+          nilai_impact: nilai_impact_array, // Menggunakan array yang benar
+          nilai_likelihood: nilai_likelihood_array, // Menggunakan array yang benar
+          nilai_exposure: nilai_exposure_array, // Menggunakan array yang benar
+          month: month,
+      };
 
-        // Menambahkan target_impact jika terisi
-        if (impact_value !== "") {
-            target_impact.push(impact_value);
-        }
+      // Kirim data dengan ajax
+      var parent = $(this).parent();
+      var url = modul_name + "/simpan-analisis";
 
-        // Menambahkan nilai jika terisi
-        if (nilai_impact !== "") {
-            nilai_impact_array.push(nilai_impact);
-        }
-        if (nilai_likelihood !== "") {
-            nilai_likelihood_array.push(nilai_likelihood);
-        }
-        if (nilai_exposure !== "") {
-            nilai_exposure_array.push(nilai_exposure);
-        }
-    }
-
-    // Siapkan data yang akan dikirimkan
-    var data = {
-        id_detail: id_detail,
-        analisis_like_inherent: analisis_like_inherent,
-        analisis_impact_inherent: analisis_impact_inherent,
-        analisis_like_residual: analisis_like_residual,
-        analisis_impact_residual: analisis_impact_residual,
-        nilai_in_impact: nilai_in_impact,
-        nilai_in_likelihood: nilai_in_likelihood,
-        nilai_in_exposure: nilai_in_exposure,
-        nilai_res_impact: nilai_res_impact,
-        nilai_res_likelihood: nilai_res_likelihood,
-        nilai_res_exposure: nilai_res_exposure,
-        inherent_level: inherent_level,
-        residual_level: residual_level,
-        target_impact: target_impact,
-        target_like: target_like,
-        nilai_impact: nilai_impact_array, // Menggunakan array yang benar
-        nilai_likelihood: nilai_likelihood_array, // Menggunakan array yang benar
-        nilai_exposure: nilai_exposure_array, // Menggunakan array yang benar
-        month: month,
-    };
-
-    // Kirim data dengan ajax
-    var parent = $(this).parent();
-    var url = modul_name + "/simpan-analisis";
-
-    cari_ajax_combo("post", parent, data, parent, url, "simpan_analisis");
-});
+      cari_ajax_combo("post", parent, data, parent, url, "simpan_analisis");
+  });
 });
 
 function simpan_analisis(hasil) {
@@ -1339,8 +1309,10 @@ function simpan_analisis(hasil) {
       location.reload(false);
     }
   } else {
+    // Menampilkan pesan kesalahan yang diterima dari server
+    var errorMessage = hasil.message || "Terjadi kesalahan!";
     pesan_toastr(
-      "terjadi kesalahan!",
+      errorMessage,
       "err",
       "Error",
       "toast-top-center",
@@ -1461,10 +1433,140 @@ function show_event(hasil) {
 
 function result_save_peristiwa(hasil) {
   $("#list_peristiwa").html(hasil.combo);
-  // $("#modal_general").modal("hide");
-  if (hasil.back) {
-    $("#modal_general").modal("hide");
-  }
+    if(hasil.sasaran == 0){
+      pesan_toastr(
+        "Sasaran wajib dipilih!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#sasaran').focus();
+    }
+
+    if(hasil.tema == 0){
+      pesan_toastr(
+        "Kategori Risiko (T2) wajib dipilih!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#tema').focus();
+    }
+
+    if(hasil.kategori == 0){
+      pesan_toastr(
+        "Kelompok Risiko (T3) wajib dipilih!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#kategori').focus();
+    }
+
+    if(hasil.sub_kategori == 0){
+      pesan_toastr(
+        "Sub-Kelompok Risiko (T4) wajib dipilih!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#sub_kategori').focus();
+    }
+
+    if(hasil.subrisiko == 0){
+      pesan_toastr(
+        "Jenis Risiko wajib dipilih!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#subrisiko').focus();
+    }
+
+    if(hasil.proses_bisnis == 0){
+      pesan_toastr(
+        "Proses Bisnis wajib diisi!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#proses_bisnis').focus();
+    }
+
+    if(hasil.event_no == 0){
+      pesan_toastr(
+        "Detail Peristiwa Risiko (T5) wajib dipilih!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#event_no').focus();
+    }
+
+    if(hasil.risk_couse_no == 0){
+      pesan_toastr(
+        "Penyebab wajib diisi!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#risk_couse_no').focus();
+    }
+
+    if(hasil.risk_impact_no == 0){
+      pesan_toastr(
+        "Dampak wajib diisi!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#risk_impact_no').focus();
+    }
+    if(hasil.risk_asumsi_perhitungan_dampak == 0){
+      pesan_toastr(
+        "Asumsi Perhitungan Dampak wajib diisi!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#risk_asumsi_perhitungan_dampak').focus();
+    }
+    if(hasil.pic == 0){
+      pesan_toastr(
+        "PIC wajib diisi!",
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+      $('#pic').focus();
+    }
+
+    if (hasil.sts == false) {
+      var errorMessage = hasil.message;
+      pesan_toastr(
+        errorMessage,
+        "err",
+        "Error",
+        "toast-top-center",
+        true
+      );
+
+    }
+    
+    if (hasil.back) {
+      $("#modal_general").modal("hide");
+    }
 }
 
 function result_level(hasil) {

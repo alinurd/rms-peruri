@@ -43,6 +43,15 @@ if ($status) : ?>
 							$act = $this->db
 							->where('rcsa_detail_no', $row['id'])
 							->get('bangga_rcsa_action')->result_array();
+
+							$risk_level_inherent = $this->db->select('score')
+							->where('likelihood', $likeinherent['id'])
+							->where('impact', $impactinherent['id'])
+							->get('bangga_level_color')->row_array();
+							$risk_level_residual = $this->db->select('score')
+							->where('likelihood', $like['id'])
+							->where('impact', $impact['id'])
+							->get('bangga_level_color')->row_array();
 						
 						$treatments = [];
 						$kategori = [];
@@ -179,7 +188,7 @@ if ($status) : ?>
 						<td valign="top" style="text-align: center;"><?= $likeinherent['level']; ?></td>
 						<td valign="top" style="text-align: center;"><?= $impactinherent['code']; ?></td>
 						<td valign="top" style="text-align: center;"><?= $impactinherent['level']; ?></td>
-						<td valign="top" style="text-align: center;"><?= intval($likeinherent['code']) * intval($impactinherent['code']); ?></td>
+						<td valign="top" style="text-align: center;"><?= intval(intval($risk_level_inherent['score'])); ?></td>
 						<td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?></td>
 						<td valign="top"><?= $pic['name']; ?></td>
 
