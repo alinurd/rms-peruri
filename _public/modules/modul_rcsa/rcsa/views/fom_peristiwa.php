@@ -626,7 +626,7 @@ if ($field['iskri'] == 0) {
                                         <td>
                                             <label>Nilai Likelihood</label>
                                             <div class="input-group">
-                                                <input style="width:100px !important;" type="text" name="nilai_res_likelihood" id="nilai_res_likelihood" maxlength="3" value="<?= (empty($analisiData['nilai_res_impact'])) ? '' : number_format($analisiData['nilai_res_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon2" placeholder="Nilai Likelihood">
+                                                <input style="width:100px !important;" type="text" name="nilai_res_likelihood" id="nilai_res_likelihood" maxlength="3" value="<?= (empty($analisiData['nilai_res_likelihood'])) ? '' : number_format($analisiData['nilai_res_likelihood']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon2" placeholder="Nilai Likelihood">
                                                 <span class="input-group-addon" id="basic-addon2">%</span>
                                             </div>
                                         </td>
@@ -634,7 +634,7 @@ if ($field['iskri'] == 0) {
                                             <label>Nilai Exposure</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="basic-addon1">Rp.</span>
-                                                <input style="width:100px !important;" type="text" name="nilai_res_exposure" id="nilai_res_exposure" value="<?= (empty($analisiData['nilai_res_impact'])) ? '' : number_format($analisiData['nilai_res_impact']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1" readonly placeholder="Nilai Exposure">
+                                                <input style="width:100px !important;" type="text" name="nilai_res_exposure" id="nilai_res_exposure" value="<?= (empty($analisiData['nilai_res_exposure'])) ? '' : number_format($analisiData['nilai_res_exposure']) ;?>" class="form-control numeric rupiah" aria-describedby="basic-addon1" readonly placeholder="Nilai Exposure">
                                             </div>
                                         </td>
                                         <?php for ($i = 1; $i <= 12; $i++) { 
