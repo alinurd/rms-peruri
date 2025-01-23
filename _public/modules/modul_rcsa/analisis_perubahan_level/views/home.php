@@ -7,7 +7,7 @@
             <div class="col-sm-4" style="text-align:right">
                 <ul class="breadcrumb">
                     <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="#">Level Risiko</a></li>
+                    <li><a href="#">Analisis Perubahan Level</a></li>
                 </ul>
             </div>
         </div>

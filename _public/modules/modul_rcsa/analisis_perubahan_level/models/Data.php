@@ -58,27 +58,30 @@ class Data extends MX_Model
     function getMonthlyMonitoringGlobal($id, $month, $inh)
     {
         $act                = $this->db->select('id')->where('rcsa_detail_no', $id)->get('bangga_rcsa_action')->row_array();
-        $monitoring       = $this->db->where('rcsa_action_no', $act['id'])->where('bulan', $month)->get('bangga_view_rcsa_action_detail')->row_array();
-        $l        = $this->data->level_action($monitoring['residual_likelihood_action'], $monitoring['residual_impact_action']);
-        $resLv    = $l['like']['code'] . ' x ' . $l['impact']['code'];
-        $keterangan_pl=$monitoring['keterangan_pl'];
+        $monitoring         = $this->db->where('rcsa_action_no', $act['id'])->where('bulan', $month)->get('bangga_view_rcsa_action_detail')->row_array();
+        $l                  = $this->data->level_action($monitoring['residual_likelihood_action'], $monitoring['residual_impact_action']);
+        $cek_score1 		= $this->data->cek_level_new($monitoring['residual_likelihood_action'], $monitoring['residual_impact_action']);
+        $residual_level 	= $this->data->get_master_level(true,$cek_score1['id']);
+        $resLv              = $cek_score1['code_likelihood'] . ' x ' . $cek_score1['code_impact'];
+        // doi::dump($cek_score1);
+        $keterangan_pl      = $monitoring['keterangan_pl'];
         $lv = '
         <a class="btn" data-toggle="popover" data-content="
         <center>
-        ' . $resLv . '<br> 
-        ' . $monitoring['inherent_analisis_action'] . '
+        '. $resLv .'<br>
+        ' . $cek_score1['tingkat'] . '
         </center>
-        " style="padding:4px; height:4px 8px;width:100%;background-color:' . $monitoring['warna_action'] . ';color:' . $monitoring['warna_text_action'] . ';"> &nbsp;</a>';
+        " style="padding:4px; height:4px 8px;width:100%;background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';"> &nbsp;</a>';
         $r = 0;
-        if ($monitoring['inherent_analisis_action'] == "High") {
+        if ($residual_level['level_mapping'] == "High") {
             $r = 5;
-        } elseif ($monitoring['inherent_analisis_action'] == "Moderate to High") {
+        } elseif ($residual_level['level_mapping'] == "Moderate to High") {
             $r = 4;
-        } elseif ($monitoring['inherent_analisis_action'] == "Moderate") {
+        } elseif ($residual_level['level_mapping'] == "Moderate") {
             $r = 3;
-        } elseif ($monitoring['inherent_analisis_action'] == "Low to Moderate") {
+        } elseif ($residual_level['level_mapping'] == "Low to Moderate") {
             $r = 2;
-        } elseif ($monitoring['inherent_analisis_action'] == "Low") {
+        } elseif ($residual_level['level_mapping'] == "Low") {
             $r = 1;
         }
 
@@ -151,6 +154,12 @@ class Data extends MX_Model
 
         return $result;
     }
+
+    function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        return $rows;
+	}
 
     function simpan_realisasi($data){
         $upd                                = [];
