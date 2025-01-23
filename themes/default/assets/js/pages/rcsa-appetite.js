@@ -9,10 +9,31 @@ $(function () {
 		row.append('<tr><td class="text-center">' + edit + '</td><td>' + sasaran + '</td><td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_install(this,0)"><i class="fa fa-cut"></span></td></tr>');
 	});
 
+	// $("#add_sasaran_new").click(function () {
+	// 	var row = $("#tbl_sasaran_new > tbody");
+	// 	// row.append('<tr><td class="text-center">' + edit + '</td><td>' + sasaran + '</td><td>' + statement + '</td><td>' + appetite + '</td><td>-</td><td>' + appetite_max + '</td><td>' + tolerance + '</td><td>-</td><td>' + tolerance_max + '</td><td>' + limit + '</td><td>-</td><td>' + limit_max + '</td><td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_installx(this,0)"><i class="fa fa-cut"></span></td></tr>');
+	// 	row.append('<tr><td class="text-center">' + edit + '</td><td>' + sasaran + '</td><td>' + statement + '</td><td>' + appetite + '</td><td>-</td><td>' + appetite_max + '</td><td>' + tolerance + '</td><td>-</td><td>' + tolerance_max + '</td><td>' + limit + '</td><td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_installx(this,0)"><i class="fa fa-cut"></span></td></tr>');
+	// });
+
 	$("#add_sasaran_new").click(function () {
 		var row = $("#tbl_sasaran_new > tbody");
-		// row.append('<tr><td class="text-center">' + edit + '</td><td>' + sasaran + '</td><td>' + statement + '</td><td>' + appetite + '</td><td>-</td><td>' + appetite_max + '</td><td>' + tolerance + '</td><td>-</td><td>' + tolerance_max + '</td><td>' + limit + '</td><td>-</td><td>' + limit_max + '</td><td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_installx(this,0)"><i class="fa fa-cut"></span></td></tr>');
-		row.append('<tr><td class="text-center">' + edit + '</td><td>' + sasaran + '</td><td>' + statement + '</td><td>' + appetite + '</td><td>-</td><td>' + appetite_max + '</td><td>' + tolerance + '</td><td>-</td><td>' + tolerance_max + '</td><td>' + limit + '</td><td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_installx(this,0)"><i class="fa fa-cut"></span></td></tr>');
+		var rowCount = row.children().length;  // Menghitung jumlah baris yang ada
+	
+		// Menyusun HTML untuk baris baru, dengan nomor urut yang benar
+		var newRow = '<tr>';
+		newRow += '<td class="text-center">' + (rowCount + 1) + edit + '</td>';  // Menambahkan nomor urut
+		newRow += '<td>' + sasaran + '</td>';
+		newRow += '<td>' + statement + '</td>';
+		newRow += '<td>' + appetite + '</td>';
+		newRow += '<td>-</td>';
+		newRow += '<td>' + appetite_max + '</td>';
+		newRow += '<td>' + tolerance + '</td>';
+		newRow += '<td>-</td>';
+		newRow += '<td>' + tolerance_max + '</td>';
+		newRow += '<td>' + limit + '</td>';
+		newRow += '<td class="text-center"><span class="text-primary" nilai="0" style="cursor:pointer;" onclick="remove_installx(this,0)"><i class="fa fa-cut"></i></span></td>';
+		newRow += '</tr>';
+		row.append(newRow);
 	});
 
 
@@ -1025,3 +1046,8 @@ function remove_install_impact(t, iddel) {
 	}
 	return false;
 }
+
+function remove_installx(element, id) {
+	$(element).closest('tr').remove();
+}
+

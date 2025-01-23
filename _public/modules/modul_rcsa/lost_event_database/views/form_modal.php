@@ -13,6 +13,11 @@ if(!$lost_event){
 
 
 ?>
+<style>
+    .mandatory{
+        color : red;
+    }
+</style>
 <form method="POST" id='form-lost' enctype="multipart/form-data"  action="<?= base_url(_MODULE_NAME_REAL_ . '/simpan_lost_event');?>">
 <!-- ================ KEJADIAN RISIKO ====================== -->
 <div class="row">
@@ -25,7 +30,7 @@ if(!$lost_event){
             <input type="hidden" name="event_no" id="event_no" >
             <thead class="thead-light">
             <tr>
-                <th width="20%">Nama Kejadian (Event)</th>
+                <th width="20%">Nama Kejadian (Event) <span class="mandatory">*</span></th>
                 <?php if($type === "edit") : ?>
                     <td colspan="2">
                         <?= $data_event['event_name']?>
@@ -61,35 +66,35 @@ if(!$lost_event){
             </tr>
 
                 <tr>
-                    <th width="20%">Identifikasi Kejadian</th>
+                    <th width="20%">Identifikasi Kejadian <span class="mandatory">*</span></th>
                     <td colspan="2">
                         <textarea name="identifikasi_kejadian" class="form-control" id="identifikasi_kejadian" cols="30" rows="5"><?= $lost_event['identifikasi_kejadian'];?></textarea>
                         <div class="text-danger" id="error-identifikasi_kejadian"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th width="20%">Kategori Kejadian</th>
+                    <th width="20%">Kategori Kejadian <span class="mandatory">*</span></th>
                     <td colspan="2">
                         <?= form_dropdown('kategori', $kategori_kejadian, ($lost_event) ? $lost_event['kategori'] : '', 'class="select2 form-control" style="width:100%;" id="kategori"' . $disable); ?>
                         <div class="text-danger" id="error-kategori"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th width="20%">Sumber Penyebab</th>
+                    <th width="20%">Sumber Penyebab <span class="mandatory">*</span></th>
                     <td colspan="2">
                         <input type="text" class="form-control" id="sumber_penyebab" name="sumber_penyebab" value="<?= $lost_event['sumber_penyebab'];?>">
                         <div class="text-danger" id="error-sumber_penyebab"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th width="20%">Penyebab Kejadian</th>
+                    <th width="20%">Penyebab Kejadian <span class="mandatory">*</span></th>
                     <td colspan="2">
                         <textarea class="form-control" name="penyebab_kejadian" id="penyebab_kejadian" cols="30" rows="5"><?= $lost_event['penyebab_kejadian'];?></textarea>
                         <div class="text-danger" id="error-penyebab_kejadian"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th width="20%">Penanganan Saat Kejadian</th>
+                    <th width="20%">Penanganan Saat Kejadian <span class="mandatory">*</span></th>
                     <td colspan="2">
                         <textarea class="form-control" name="penanganan" id="penanganan" cols="30" rows="5"><?= $lost_event['penanganan'];?></textarea>
                         <div class="text-danger" id="error-penanganan"></div>
@@ -108,33 +113,33 @@ if(!$lost_event){
         <table class="table table-bordered" style="background-color: white;">
             <thead class="thead-light">
                 <tr>
-                    <th width="20%">Kategori Risiko</th>
+                    <th width="20%">Kategori Risiko <span class="mandatory">*</span></th>
                     <td colspan="3">
                     <?= form_dropdown('kat_risiko', $kat_risiko, ($lost_event) ? $lost_event['kat_risiko'] : '', 'class="select2 form-control" style="width:100%;" id="kat_risiko"' . $disable); ?>
                         <div class="text-danger" id="error-kat_risiko"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th width="20%">Hubungan Kejadian Risk Event</th>
+                    <th width="20%">Hubungan Kejadian Risk Event <span class="mandatory">*</span></th>
                     <td colspan="3">
                         <input type="text" class="form-control" id="hub_kejadian_risk_event" name="hub_kejadian_risk_event" value="<?= $lost_event['hub_kejadian_risk_event'];?>">
                         <div class="text-danger" id="error-hub_kejadian_risk_event"></div>
                     </td>
                 </tr>
                 <tr>
-                    <th width="20%">Analisis Risiko</th>
+                    <th width="20%">Analisis Risiko <span class="mandatory">*</span></th>
                     <td class="text-center" style="background-color: #e9ecef;">Skala Dampak</td>
                     <td class="text-center" style="background-color: #e9ecef;">Skala Probabilitas</td>
                     <td class="text-center" style="background-color: #e9ecef;">Level Risiko</td>
                 </tr>
                 <tr>
-                    <th width="20%">Inheren</th>
+                    <th width="20%">Inheren <span class="mandatory">*</span></th>
                     <td>
-                        <?= form_dropdown('skal_dampak_in', $cboLike, (empty($lost_event['skal_dampak_in'])) ? '' : $lost_event['skal_dampak_in'], 'class="form-control" id="skal_dampak_in"'); ?>
+                        <?= form_dropdown('skal_dampak_in', $cboImpact, (empty($lost_event['skal_dampak_in'])) ? '' : $lost_event['skal_dampak_in'], 'class="form-control" id="skal_dampak_in"'); ?>
                         <div class="text-danger" id="error-skal_dampak_in"></div>
                     </td>
                     <td>
-                        <?= form_dropdown('skal_prob_in', $cboImpact, (empty($lost_event['skal_prob_in'])) ? '' : $lost_event['skal_prob_in'], 'class="form-control" id="skal_prob_in"'); ?>
+                        <?= form_dropdown('skal_prob_in', $cboLike, (empty($lost_event['skal_prob_in'])) ? '' : $lost_event['skal_prob_in'], 'class="form-control" id="skal_prob_in"'); ?>
                         <div class="text-danger" id="error-skal_prob_in"></div>
                     </td>
                     <td align="center">
@@ -147,13 +152,13 @@ if(!$lost_event){
                     </td>
                 </tr>
                 <tr>
-                    <th width="20%">Target Residual</th>
+                    <th width="20%">Target Residual <span class="mandatory">*</span></th>
                     <td>
-                        <?= form_dropdown('target_res_dampak', $cboLike, (empty($lost_event['target_res_dampak'])) ? '' : $lost_event['target_res_dampak'], 'class="form-control" id="target_res_dampak"'); ?>
+                        <?= form_dropdown('target_res_dampak', $cboImpact, (empty($lost_event['target_res_dampak'])) ? '' : $lost_event['target_res_dampak'], 'class="form-control" id="target_res_dampak"'); ?>
                         <div class="text-danger" id="error-Target_Res_dampak"></div>
                     </td>
                     <td>
-                        <?= form_dropdown('target_res_prob', $cboImpact, (empty($lost_event['target_res_prob'])) ? '' : $lost_event['target_res_prob'], 'class="form-control" id="target_res_prob"'); ?>
+                        <?= form_dropdown('target_res_prob', $cboLike, (empty($lost_event['target_res_prob'])) ? '' : $lost_event['target_res_prob'], 'class="form-control" id="target_res_prob"'); ?>
                         <div class="text-danger" id="error-Target_Res_prob"></div>
                     </td>
                     <td align="center">
@@ -179,7 +184,7 @@ if(!$lost_event){
         <table class="table table-bordered" style="background-color: white;">
             <thead class="thead-light">
                 <tr>
-                    <th class="text-center">Mitigasi Yang Direncanakan</th>
+                    <th class="text-center">Mitigasi Yang Direncanakan <span class="mandatory">*</span></th>
                 </tr>
                 <tr>
                     <td>
@@ -189,7 +194,7 @@ if(!$lost_event){
                     </td>
                 </tr>
                 <tr>
-                    <th class="text-center">Realisasi Mitigasi</th>
+                    <th class="text-center">Realisasi Mitigasi <span class="mandatory">*</span></th>
                 </tr>
                 <tr>
                     <td>
@@ -243,11 +248,11 @@ if(!$lost_event){
 <div class="row">
      <!-- Perbaikan Mendatang -->
      <div style="background-color: white; padding: 10px; border-radius: 10px;">
-        <h5 class="text-center" style="color: #343a40;">Perbaikan Mendatang</h5>
+        <h5 class="text-center" style="color: #343a40;">Perbaikan Mendatang </h5>
         <table class="table table-bordered" style="background-color: white;">
             <thead class="thead-light">
                 <tr>
-                    <th class="text-center">Rencana Perbaikan Mendatang</th>
+                    <th class="text-center">Rencana Perbaikan Mendatang <span class="mandatory">*</span></th>
                     <th width="20%" class="text-center">Pihak Terkait</th>
                 </tr>
             </thead>

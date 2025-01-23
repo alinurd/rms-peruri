@@ -170,10 +170,10 @@ class Lost_Event_Database extends BackendController
             $data['lost_event'] = $detailedit;
             $data['data_event'] = $data_event;
             $data['type'] = 'edit';
-
-            // Load risk level labels
-            $row_in  = $this->db->where('impact_no', $detailedit['skal_prob_in'])->where('like_no', $detailedit['skal_dampak_in'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
-            $row_res = $this->db->where('impact_no', $detailedit['target_res_prob'])->where('like_no', $detailedit['target_res_dampak'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+            
+            // Load risk level labels 
+            $row_in  = $this->db->where('impact_no',$detailedit['skal_dampak_in'] )->where('like_no', $detailedit['skal_prob_in'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+            $row_res = $this->db->where('impact_no', $detailedit['target_res_dampak'] )->where('like_no',$detailedit['target_res_prob'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
 
             $data['label_in'] = "<span style='background-color:" . $row_in['warna_bg'] . ";color:" . $row_in['warna_txt'] . ";'>&nbsp;" . $row_in['tingkat'] . "&nbsp;</span>";
             $data['label_res'] = "<span style='background-color:" . $row_res['warna_bg'] . ";color:" . $row_res['warna_txt'] . ";'>&nbsp;" . $row_res['tingkat'] . "&nbsp;</span>";
@@ -202,7 +202,8 @@ class Lost_Event_Database extends BackendController
     function cek_level() {
         $post = $this->input->post();
         $rows = $this->db->where('impact_no', $post['impact'])->where('like_no', $post['likelihood'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
-
+        // doi::dump($rows);
+        // die;
         $result['level_text'] = '-';
         $result['level_no'] = 0;
         $result['level_resiko'] = '-';
@@ -236,6 +237,7 @@ class Lost_Event_Database extends BackendController
     // ==========================================
     public function simpan_lost_event() {
         $post = $this->input->post();
+        
         $result = []; // Pastikan ini adalah array kosong
     
         // Cek apakah data sudah ada di tbl_library
@@ -259,17 +261,43 @@ class Lost_Event_Database extends BackendController
     
 
     public function get_mitigasi() {
-        $post   = $this->input->post("id_detail"); 
-        $hasil = $this->db->select('bangga_rcsa_action.proaktif AS proaktif, bangga_rcsa_detail.event_no AS event_no')
-        ->from('bangga_rcsa_action')
-        ->join('bangga_rcsa_detail', 'bangga_rcsa_action.rcsa_detail_no = bangga_rcsa_detail.id', 'left') // ganti sesuai kondisi join (inner, left, right)
-        ->where('bangga_rcsa_action.rcsa_detail_no', $post)
-        ->get()
-        ->row_array();
-
-
-        echo json_encode($hasil);
+        $post = $this->input->post("id_detail"); 
+        $hasil = $this->db->select('bangga_rcsa_action.proaktif AS proaktif, bangga_rcsa_action.reaktif AS reaktif, bangga_rcsa_detail.event_no AS event_no')
+                          ->from('bangga_rcsa_action')
+                          ->join('bangga_rcsa_detail', 'bangga_rcsa_action.rcsa_detail_no = bangga_rcsa_detail.id', 'left') 
+                          ->where('bangga_rcsa_action.rcsa_detail_no', $post)
+                          ->get()
+                          ->result_array();
+    
+        $mitigasi = [];
+        $index = 1;
+    
+        // Loop through all the results
+        foreach ($hasil as $row) {
+            // Assign the treatment value
+            if (!empty($row['proaktif'])) {
+                $treatment = $row['proaktif'];
+            } elseif (!empty($row['reaktif'])) {
+                $treatment = $row['reaktif'];
+            } else {
+                $treatment = ''; // In case both are empty, you can choose to leave it empty or handle differently
+            }
+            
+            // Create the mitigasi entry with the index
+            $mitigasi[] = $index . ". " . $treatment; // Append to mitigasi array
+            $index++;  // Increment number
+        }
+    
+        // Ensure that the 'event_no' is present from the first result if available
+        $event_no = !empty($hasil) ? $hasil[0]['event_no'] : '';
+    
+        // Convert the mitigasi array to a string or return it as is
+        $mitigasi_str = implode("\n", $mitigasi);  // Join the list into a string with newline separation
+    
+        // Return the result as JSON
+        echo json_encode(['mitigasi' => $mitigasi_str, 'event_no' => $event_no]);
     }
+    
 
 
     public function get_judul_assesment(){

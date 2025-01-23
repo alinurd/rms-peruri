@@ -25,9 +25,6 @@ class Data extends MX_Model {
 
 	function save_detail($newid, $data, $mode, $old=[]){
 		$updf['id'] = $newid;
-// doi::dump($data);
-doi::dump($mode);
-// die($newid);
 		$implementasi = $data['implementasi'];
  		foreach ($implementasi as $index => $item) {
 

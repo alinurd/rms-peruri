@@ -89,8 +89,8 @@ $(function () {
     });
 
     function updateRiskLevel(
-      likelihoodSelector,
       impactSelector,
+      likelihoodSelector,
       resultFunction
     ) {
       const data = {
@@ -170,7 +170,7 @@ function result_modal_data(hasil) {
 }
 
 function resultGetmitigasi(hasil) {
-  $("#mitigasi_rencana").val(hasil.proaktif);
+  $("#mitigasi_rencana").val(hasil.mitigasi);
   $("#event_no").val(hasil.event_no);
 }
 
@@ -204,7 +204,7 @@ function resultDelete(hasil) {
 //       "Berhasil disimpan...",
 //       "success",
 //       "Success",
-//       "toast-top-center",
+//       "toast-top-center", 
 //       true
 //     );
 //     // Tambahkan waktu penundaan sebelum halaman di-reload
