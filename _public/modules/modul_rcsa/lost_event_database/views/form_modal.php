@@ -10,6 +10,7 @@ if(!$lost_event){
     }
 }
 
+doi::dump($lost_event);
 
 
 ?>
@@ -313,6 +314,10 @@ if(!$lost_event){
                 <tr>
                     <th width="20%">Upload File</th>
                     <td>
+                        <a href="<?= base_url('themes/upload/lost_event/').$lost_event['file_path'];?>" 
+                        onclick="window.open('<?= base_url('themes/upload/lost_event/').$lost_event['file_path'];?>', '_blank', 'width=700,height=700,scrollbars=yes,menubar=no,status=yes,resizable=yes,screenx=50,screeny=40'); return false;">
+                        <?=$lost_event['file_path'];?>
+                        </a>
                         <input type="hidden" name="file_upload_lama" class="form-control" id="file_upload_lama" style="width:100%;" value="<?=$lost_event['file_path'];?>" />
                         <input type="file" name="file_upload" class="form-control" id="userfile" style="width:100%;"   />
                     </td>
