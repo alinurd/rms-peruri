@@ -123,7 +123,7 @@ class Data extends MX_Model {
 			->from('bangga_library')
 				->where('type', $type)
 
-			->where_in('id', $subkelompokArray)
+			// ->where_in('id', $subkelompokArray) //un komen kalo pake mapping
 			->get();
 
 			if ($sql === false) {
