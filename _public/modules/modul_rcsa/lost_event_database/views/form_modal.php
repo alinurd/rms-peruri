@@ -10,7 +10,7 @@ if(!$lost_event){
     }
 }
 
-doi::dump($lost_event);
+// doi::dump($lost_event);
 
 
 ?>

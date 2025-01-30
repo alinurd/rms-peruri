@@ -73,15 +73,18 @@ class Top_Risk extends BackendController
 	{
 		$post = $this->input->post();
 		$a = $this->db->select('id,level_no')->where('id', $post['owner'])->get(_TBL_OWNER)->result_array();
+		
 		$b = array();
 		foreach ($a as $key => $value) {
 			$b = $value['level_no'];
 		}
 
+		// doi::dump($b);
+		// die;
+
 		if ($post['kel'] == 'inherent') {
 			$this->db->where('inherent_likelihood', $post['like']);
 			$this->db->where('inherent_impact', $post['impact']);
-			// $this->db->where('inherent_level', $post['id']);
 			if ($post['bulan'] > 0) {
 				$this->db->where("bulan = {$post['bulan']}");
 			}
@@ -102,8 +105,6 @@ class Top_Risk extends BackendController
 				->order_by('residual_impact', 'DESC')
 				->get(_TBL_VIEW_RCSA_DETAIL)
 				->result_array();
-			// $rows = $this->db->where('sts_propose', 4)->where('urgensi_no', 0)->order_by('inherent_analisis_id', 'DESC')->order_by('residual_analisis_id', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			// doi::dump($rows);
 
 		} elseif ($post['owner'] == 0 && $post['kel'] == 'residual') {
 			$rows['bobo'] = $this->db->where('sts_propose', 4)->where('urgensi_no', 0)->where('bulan >=', $post['bulan'])
@@ -242,13 +243,11 @@ class Top_Risk extends BackendController
 		$post = $this->input->post();
 		$a = $this->db->select('id,level_no')->where('id', $post['owner'])->get(_TBL_OWNER)->result_array();
 		$b = array();
-		// doi::dump($post);
 		foreach ($a as $key => $value) {
 			$b = $value['level_no'];
 		}
 
 		if ($post['kel'] == 'residual') {
-			// $this->db->where('residual_level', $post['id']);
 			$this->db->where('residual_likelihood', $post['like']);
 			$this->db->where('residual_impact', $post['impact']);
 			// $this->db->where('inherent_level', $post['id']);

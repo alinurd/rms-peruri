@@ -16,28 +16,36 @@ class Data extends MX_Model
 		if ($data) {
 			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
 			if ($data['id_owner'] > 0) {
-				$this->get_owner_child($data['id_owner']);
+                $this->get_owner_child($data['id_owner']);
 				$this->owner_child[] = $data['id_owner'];
-				$this->db->where_in('rcsa_owner_no', $this->owner_child);
-				$this->db->where('urgensi_no_kadiv >0');
-			} else {
+				$this->db->where_in('owner_no', $this->owner_child);
 			}
 			if ($data['id_period'] > 0) {
 				$this->db->where('period_no', $data['id_period']);
 			}
-			$rows = $this->db->select('inherent_level, count(inherent_level) as jml')->group_by(['inherent_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			// doi::dump($mapping);
-			$arrData = [];
-			// die($this->db->last_query());
-			foreach ($rows as &$ros) {
-				$arrData[$ros['inherent_level']] = $ros['jml'];
-			}
+			$rows = $this->db->select('inherent_likelihood, inherent_impact, COUNT(*) as jml')
+			->from(_TBL_VIEW_RCSA_DETAIL)
+			->where('sts_propose', 4)
+			->where('sts_heatmap', '1')
+			->group_by(['inherent_likelihood', 'inherent_impact'])
+			->get()
+			->result_array();
 
+			$arrData = [];
+			foreach ($rows as $ros) {
+                if (isset($ros['inherent_likelihood'], $ros['inherent_impact'])) {
+					$key = $ros['inherent_likelihood'] . '-' . $ros['inherent_impact']; // Gabungkan likelihood dan impact
+					$arrData[$key] = $ros['jml'];
+				}
+			}
+			// === Update Mapping with Inherent Values ===
 			foreach ($mapping as &$row) {
-				if (array_key_exists($row['id'], $arrData))
-					$row['nilai'] = $arrData[$row['id']];
-				else
-					$row['nilai'] = '';
+				// Pastikan kolom likelihood dan impact ada dalam $mapping
+				if (isset($row['like_no'], $row['impact_no'])) {
+					$key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+					
+				}
 			}
 			unset($row);
 			$hasil['inherent'] = $this->data->draw_rcsa($mapping);
@@ -45,28 +53,47 @@ class Data extends MX_Model
 			// residual
 			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
 			if ($data['id_owner'] > 0) {
-				$this->get_owner_child($data['id_owner']);
+                $this->get_owner_child($data['id_owner']);
 				$this->owner_child[] = $data['id_owner'];
-				$this->db->where_in('rcsa_owner_no', $this->owner_child);
-				$this->db->where('urgensi_no_kadiv >0');
-			} else {
-			}
-			if ($data['id_period'] > 0) {
-				$this->db->where('period_no', $data['id_period']);
-			}
-			$rows = $this->db->select('residual_level, count(residual_level) as jml')->group_by(['residual_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			// doi::dump($mapping);
-			$arrData = [];
-			// die($this->db->last_query());
-			foreach ($rows as &$ros) {
-				$arrData[$ros['residual_level']] = $ros['jml'];
+				$this->db->where_in('owner_no', $this->owner_child);
 			}
 
+			if ($data['id_period'] > 0) {
+				$this->db->where('a.period_no', $data['id_period']);
+			}
+
+			// // Validasi bulan dan bulanx
+			if (isset($data['bulan']) && $data['bulan'] > 0) {
+				$this->db->where("b.bulan",$data['bulan']);
+			}else{
+				$this->db->where('b.bulan', $current_month);
+			}
+
+			$rows = $this->db->select('b.residual_likelihood_action as residual_like, b.residual_impact_action as residual_impact, COUNT(*) as jml')
+			->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
+			->join('bangga_rcsa_action_detail b', 'a.id = b.rcsa_detail', 'inner') 
+			->where('a.sts_propose', 4)
+			->where('a.sts_heatmap', '1')
+			->group_by(['b.residual_likelihood_action', 'b.residual_impact_action']) 
+			->get()
+			->result_array();
+   
+			$arrData = [];
+			foreach ($rows as $ros) {
+				if (isset($ros['residual_like'], $ros['residual_impact'])) {
+					$key = $ros['residual_like'] . '-' . $ros['residual_impact'];
+					$arrData[$key] = $ros['jml'];
+				}
+			}
+
+			// === Update Mapping with Residual Values ===
 			foreach ($mapping as &$row) {
-				if (array_key_exists($row['id'], $arrData))
-					$row['nilai'] = $arrData[$row['id']];
-				else
-					$row['nilai'] = '';
+				// Pastikan kolom likelihood dan impact ada dalam $mapping
+				if (isset($row['like_no'], $row['impact_no'])) {
+					$key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+					
+				}
 			}
 			unset($row);
 			$hasil['residual'] = $this->data->draw_rcsa_res($mapping);
@@ -120,9 +147,8 @@ class Data extends MX_Model
         // === Filter by Owner ===
         if (isset($data['id_owner']) && $data['id_owner'] > 0) {
             $this->get_owner_child($data['id_owner']);
-            $this->owner_child[] = $data['id_owner'];
-            $this->db->where_in('a.rcsa_owner_no', $this->owner_child);
-            $this->db->where('a.urgensi_no_kadiv > 0');
+			$this->owner_child[] = $data['id_owner'];
+			$this->db->where_in('owner_no', $this->owner_child);
         }
 
         // === Filter by Period ===
@@ -130,19 +156,14 @@ class Data extends MX_Model
             $this->db->where('a.period_no', $data['id_period']);
         }
 
-        // Validasi bulan dan bulanx
-        if (isset($data['bulan']) && $data['bulan'] > 0) {
-            $this->db->where("b.bulan",$data['bulan']);
-        }
-
-    $rows = $this->db->select('b.target_like as target_like, b.target_impact as target_impact, COUNT(*) as jml')
-        ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
-        ->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner') // Perbaiki alias di sini
-        ->where('a.sts_propose', 4)
-        ->where('a.sts_heatmap', '1')
-        ->group_by(['b.target_like', 'b.target_impact']) 
-        ->get()
-        ->result_array();
+        $rows = $this->db->select('b.target_like as target_like, b.target_impact as target_impact, COUNT(*) as jml')
+            ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
+            ->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner') // Perbaiki alias di sini
+            ->where('a.sts_propose', 4)
+            ->where('a.sts_heatmap', '1')
+            ->group_by(['b.target_like', 'b.target_impact']) 
+            ->get()
+            ->result_array();
   
         $arrData = [];
         foreach ($rows as $ros) {
