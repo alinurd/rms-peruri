@@ -103,10 +103,10 @@ class MX_Model extends CI_Model
 				}elseif($param[0]=='t5'){
 					$where = "";
 					if($param[1]){
-						$where = "where child_type='" . $param[1] . "'";
+						// $where = "where child_type='" . $param[1] . "'"; unComent kalo penyebab menggunakan data mapping
 					}
 					if($param[2]){
-						$where.= "and event_no='" . $param[2] . "'";
+						// $where.= "and event_no='" . $param[2] . "'"; unComent kalo dampak menggunakan data mapping
 					}
 					$query = "SELECT  child_id as id, child_description as name FROM " . _TBL_VIEW_MAP_LIBRARY . " {$where} order by child_code";
 				}
