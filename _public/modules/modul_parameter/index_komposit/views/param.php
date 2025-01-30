@@ -6,7 +6,7 @@
             <th>Parameter</th>
             <th width="10%">Skala</th>
             <th width="10%">Hasil Penilaian</th>
-            <th width="10px">Bobot</th>
+            <th width="10%">Bobot</th>
             <th width="5%">Aksi</th>
         </tr>
     </thead>
