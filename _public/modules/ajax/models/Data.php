@@ -105,7 +105,7 @@ class Data extends MX_Model {
 		$dt = $this->db
 			->select('id, library_no, child_no')
 			->from('bangga_library_detail')
-			->where('library_no', $id)
+			// ->where('library_no', $id) //unkomen kalo menggunakna mapping
  			->get()
 			->result_array();
 
