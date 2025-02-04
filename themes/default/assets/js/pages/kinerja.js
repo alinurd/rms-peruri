@@ -133,9 +133,13 @@ function updatePercentage(id) {
     let percentage = 0;
 
     if (isAbsolute) {
+        console.log("isAbsolute=>"+ isAbsolute)
         if (targetValue !== 0) {
-            percentage = ((targetValue - (realisasiValue - targetValue)) / targetValue) * 100;
+            percentage = ((realisasiValue - (targetValue - realisasiValue)) / realisasiValue) * 100;
         }
+        console.log("percentage=>"+ percentage)
+        console.log("percentage=>"+ percentage)
+        console.log("targetValue=>"+ targetValue)
     } else {
         if (targetValue !== 0) {
             percentage = (targetValue /  realisasiValue) * 100;
