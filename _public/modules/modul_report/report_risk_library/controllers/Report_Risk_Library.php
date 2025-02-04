@@ -108,6 +108,80 @@ class Report_Risk_Library extends BackendController {
 		return $hasil;
 	}
 
+
+	function export_excel(){
+		$x=$this->uri->segment(3);
+		if($x=="03b1c481204dde3b5409239b7840475d"){
+		header("Content-Type: application/vnd.ms-excel");
+		header("Content-Disposition: attachment; filename=trttftftf.xls");
+		$query = $this->db->select('a.id, a.description, a.code, a.create_date, a.t1, a.t2, a.t3, b.child_no, b.library_no')
+						  ->from(_TBL_LIBRARY . ' as a')
+						  ->join(_TBL_LIBRARY_DETAIL . ' as b', 'b.library_no = a.id', 'left')
+						  ->where('a.type', 1)
+						  ->get()
+						  ->result_array();
+	
+ 		$lib = [];
+		$all_child_no = []; 
+	
+		foreach ($query as $row) {
+			$id = $row['id'];
+	
+			if (!isset($lib[$id])) {
+				$lib[$id] = [
+					'id' => $row['id'],
+					'peristiwa' => $row['description'],
+					't1' => $row['t1'],
+					't2' => $row['t2'],
+					't3' => $row['t3'],
+					'create_date' => $row['create_date'],
+					'code' => $row['code'],
+					'child_no' => []
+				];
+			}
+	
+			if (!is_null($row['child_no'])) {
+				$lib[$id]['child_no'][] = $row['child_no'];
+				$all_child_no[] = $row['child_no'];  
+			}
+		}
+	
+ 		$lib = array_values($lib);
+	
+ 		if (!empty($all_child_no)) {
+			$rows = $this->db->select('id, description, type')
+							 ->where_in('id', $all_child_no)
+							 ->get(_TBL_LIBRARY)
+							 ->result_array();
+	
+ 			$child_details = [];
+			foreach ($rows as $row) {
+				$child_details[$row['id']] = [
+					'description' => $row['description'],
+					'type' => $row['type']
+				];
+			}
+	
+ 			foreach ($lib as &$item) {
+				foreach ($item['child_no'] as &$child) {
+					$child = [
+						'id' => $child,
+						'description' => isset($child_details[$child]) ? $child_details[$child]['description'] : null,
+						'type' => isset($child_details[$child]) ? $child_details[$child]['type'] : null
+					];
+				}
+			}
+		}
+	
+ 		$data['library_data'] = $lib;
+	 
+		$result = $this->load->view('reportx', $data, true);
+		echo $result;
+		}else{
+			header('location:' . base_url($this->modul_name));
+		}
+	}
+
 }
 
 /* End of file welcome.php */
