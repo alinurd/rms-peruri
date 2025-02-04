@@ -138,7 +138,7 @@ function updatePercentage(id) {
         }
     } else {
         if (targetValue !== 0) {
-            percentage = (realisasiValue / targetValue) * 100;
+            percentage = (targetValue /  realisasiValue) * 100;
         }
     }
     console.log(percentage)
