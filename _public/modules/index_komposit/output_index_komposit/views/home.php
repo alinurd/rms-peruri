@@ -16,7 +16,7 @@
 </div>
 <section class="x_panel">
     <div class="x_title">
-        <h3>Output Index Komposit</h3>
+        <h3>Output Peringkat Komposit Risiko</h3>
         <div class="clearfix"></div>
         <form method="GET" action="<?= site_url(_MODULE_NAME_REAL_.'/index'); ?>">
             <div class="row">
@@ -69,11 +69,11 @@
                                 <table class="display table table-bordered" id="tbl_event">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Indikator</th>
-                                            <th>Bobot</th>
-                                            <th>Hasil Penilaian</th>
-                                            <th>Skor Penilaian</th>
+                                        <th class="text-center">No</th>
+                                            <th class="text-center">Indikator</th>
+                                            <th class="text-center">Bobot</th>
+                                            <th class="text-center">Hasil Penilaian</th>
+                                            <th class="text-center">Skor Penilaian</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -190,11 +190,11 @@
                                 <table class="display table table-bordered" id="tbl_event">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Indikator</th>
-                                            <th>Bobot</th>
-                                            <th>Hasil Penilaian</th>
-                                            <th>Skor Penilaian</th>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Indikator</th>
+                                            <th class="text-center">Bobot</th>
+                                            <th class="text-center">Hasil Penilaian</th>
+                                            <th class="text-center">Skor Penilaian</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -305,7 +305,7 @@
             <div class="col-md-12">
                 <section class="x_panel">
                 <div class="x_title">
-                    <center><i>Map Output Index Komposit</i></center>                
+                    <center><i>Matriks Peringkat Komposit Risiko</i></center>                
                     <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -341,7 +341,7 @@
             <div class="col-md-6">
                 <section class="x_panel">
                     <div class="x_title">
-                        <center><i>Conversi Skor Penilaian Terhadap KPMR</i></center>
+                        <center><i>Konversi Skor Penilaian Terhadap KPMR</i></center>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -388,7 +388,7 @@
             <div class="col-md-6">
                 <section class="x_panel">
                     <div class="x_title">
-                        <center><i>Conversi Skor Penilaian Terhadap Pencapaian Kinerja</i></center>
+                        <center><i>Konversi Skor Penilaian Terhadap Pencapaian Kinerja</i></center>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -398,9 +398,9 @@
                                 <table class="display table table-bordered" id="tbl_event">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Kinerja</th>
-                                            <th>Skor Penilaian</th>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Kinerja</th>
+                                            <th class="text-center">Skor Penilaian</th>
                                         </tr>
                                     </thead>
                                     <tbody>
