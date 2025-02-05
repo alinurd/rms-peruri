@@ -34,7 +34,7 @@ class Data extends MX_Model
 			$arrData = [];
 			foreach ($rows as $ros) {
                 if (isset($ros['inherent_likelihood'], $ros['inherent_impact'])) {
-					$key = $ros['inherent_likelihood'] . '-' . $ros['inherent_impact']; // Gabungkan likelihood dan impact
+					$key = $ros['inherent_likelihood'] . '-' . $ros['inherent_impact']; 
 					$arrData[$key] = $ros['jml'];
 				}
 			}
@@ -188,5 +188,52 @@ class Data extends MX_Model
        
         return $hasil;
     }
+	
+	public function get_child_owner($data) {
+        // Memastikan $data adalah integer
+        $owner_id = intval($data);
+
+        // Melakukan query untuk mendapatkan pemilik anak
+        $this->db->select('*');
+        $this->db->from('bangga_owner'); // Ganti dengan nama tabel yang sesuai
+        $this->db->where('parent_no', $owner_id);
+        $this->db->where('status', 1); // Misalnya, hanya mengambil yang aktif
+
+        // Menjalankan query
+        $query = $this->db->get();
+
+        // Memeriksa apakah query berhasil
+        if ($query !== false) {
+            return $query->result_array(); // Mengembalikan hasil sebagai array asosiatif
+        } else {
+            // Jika query gagal, Anda bisa menangani kesalahan di sini
+            log_message('error', 'Query failed: ' . $this->db->last_query());
+            return $this->db->last_query(); // Mengembalikan array kosong jika terjadi kesalahan
+        }
+    }
+
+	function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        
+		// doi::dump($rows);
+        return $rows;
+	}
+
+	public function level_action($like, $impact)
+	{
+		// doi::dump($like);
+		// doi::dump($impact);
+		$result['like'] = $this->db
+			->where('id', $like)
+ 			->get('bangga_level')->row_array();
+
+		$result['impact'] = $this->db
+			->where('id', $impact)
+ 			->get('bangga_level')->row_array();
+
+		return $result;
+
+	}
 }
 /* End of file app_login_model.php */

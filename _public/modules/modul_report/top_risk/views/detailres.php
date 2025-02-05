@@ -33,19 +33,20 @@
 			<?php
 			$no = 0;
 			foreach ($data as $row) :
+				// doi::dump($row);
 				$couse = $row['ket_likelihood'];
 				$impact = $row['ket_impact'];
 
 
-				$residual_level = $this->data->get_master_level(true, $row['residual_level']);
+				// $residual_level = $this->data->get_master_level(true, $row['residual_level']);
 				$inherent_level = $this->data->get_master_level(true, $row['inherent_level']);
-				$like = $this->db
-					->where('id', $residual_level['likelihood'])
-					->get('bangga_level')->row_array();
+				// $like = $this->db
+				// 	->where('id', $residual_level['likelihood'])
+				// 	->get('bangga_level')->row_array();
 
-				$impactx = $this->db
-					->where('id', $residual_level['impact'])
-					->get('bangga_level')->row_array();
+				// $impactx = $this->db
+				// 	->where('id', $residual_level['impact'])
+				// 	->get('bangga_level')->row_array();
 				$likeinherent = $this->db
 					->where('id', $inherent_level['likelihood'])
 					->get('bangga_level')->row_array();
@@ -53,6 +54,15 @@
 				$impactinherent = $this->db
 					->where('id', $inherent_level['impact'])
 					->get('bangga_level')->row_array();
+
+				$cek_score2 = $this->data->cek_level_new($row['residual_likelihood_action'], $row['residual_impact_action']);
+            	$realisasi_level_risiko = $this->data->get_master_level(true, $cek_score2['id']);
+				$realisasi_code = $this->data->level_action($row['residual_likelihood_action'], $row['residual_impact_action']);
+				if ($realisasi_code['impact']['code']) {
+					$realisasi = $realisasi_level_risiko['level_mapping'] . '<br>[ ' . $realisasi_code['impact']['code'] . '-' . $realisasi_code['like']['code'] . ' ]';
+				} else {
+					$realisasi = "<p class='text-danger'>-</p>";
+				}
 
 				// doi::dump($residual_level);
 			?>
@@ -64,7 +74,7 @@
 
 					<td style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?> <br>[&nbsp;<?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;]</td>
 
-					<td style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= $residual_level['level_mapping']; ?> <br>[&nbsp;<?= $like['code']; ?> x <?= $impactx['code']; ?>&nbsp;]</td>
+					<td style="text-align: center; background-color:<?= $realisasi_level_risiko['color']; ?>;color:<?= $realisasi_level_risiko['color_text']; ?>;"><?= $realisasi; ?></td>
 
 
 				</tr>
