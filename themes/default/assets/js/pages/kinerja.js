@@ -116,6 +116,7 @@ function calculateDropdown(element) {
 
 
 function updatePercentage(id) {
+    const x = document.getElementById(`target-${id}`);
     console.log(id)
     const targetInput = document.getElementById(`target-${id}`);
     const isAbsolute = document.getElementById(`isAbsolute-${id}-1`).checked;
@@ -136,6 +137,9 @@ function updatePercentage(id) {
         console.log("isAbsolute=>"+ isAbsolute)
         if (targetValue !== 0) {
             percentage = ((realisasiValue - (targetValue - realisasiValue)) / realisasiValue) * 100;
+            if(id==62){
+                percentage = ((targetValue - (realisasiValue - targetValue)) / targetValue) * 100;
+            }
         }
         console.log("percentage=>"+ percentage)
         console.log("percentage=>"+ percentage)
