@@ -76,8 +76,8 @@
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="15%" colspan="2">Parameter</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Skala</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Hasil Penilaian</th>
-             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Target RKAP <?=$periode-1?></th>
-             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Realisasi Tw <?=$tw?>  <?=$periode?></th>
+             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Target</th>
+             <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Realisasi</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">%</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="5%">Skala</th>
              <th class="text-center" style="position: sticky; top: 0; background: #fff; z-index: 1;" width="10%">Hasil</th>
@@ -255,7 +255,7 @@
                  <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
              </button>
          </th>
-         <th class="" style="font-weight:bold; color:#fff; text-align:center" colspan="2">Hasil Perhitungan Indikator: </th>
+         <th class="" style="font-weight:bold; color:#fff; text-align:center" colspan="2">Hasil Perhitungan Indikator Kinerja: </th>
          <th class="text-center" style="background:yellow; color:#000;">
              <span id="totalPerhitunganText">0</span>
              <input class="form-control " type="hidden" id="totalPerhitungan" name="totalPerhitungan" readonly>

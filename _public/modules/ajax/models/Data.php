@@ -105,7 +105,7 @@ class Data extends MX_Model {
 		$dt = $this->db
 			->select('id, library_no, child_no')
 			->from('bangga_library_detail')
-			->where('library_no', $id)
+			// ->where('library_no', $id) //unkomen kalo menggunakna mapping
  			->get()
 			->result_array();
 
@@ -123,7 +123,7 @@ class Data extends MX_Model {
 			->from('bangga_library')
 				->where('type', $type)
 
-			->where_in('id', $subkelompokArray)
+			// ->where_in('id', $subkelompokArray) //un komen kalo pake mapping
 			->get();
 
 			if ($sql === false) {
