@@ -82,9 +82,17 @@ $(function () {
   $(document).on("click", ".sub_detail", function () {
     var parent = $(this).parent().parent();
     var id = $(this).data("id");
+    var kel =  $(this).data("kel");
     var data = { id: id };
     var target_combo = $("#sub_detail");
     var url = modul_name + "/get-subdetail";
+    if(kel == "Target"){
+      var bulan =  $(this).data("bulan");
+      var data = { id: id , bulan:bulan };
+      var target_combo = $("#sub_detail_target");
+      var url = modul_name + "/get-subdetailTarget";
+    }
+    
 
     cari_ajax_combo("post", parent, data, target_combo, url);
   });
@@ -144,6 +152,11 @@ function hoho(e) {
     if (kel == "residual") {
       var target_combo = $("#detail_map");
       var url = modul_name + "/get-detail-map-res";
+      // get_detail_map_res
+    }
+    if (kel == "Target") {
+      var target_combo = $("#detail_map");
+      var url = modul_name + "/get-detail-map-target";
       // get_detail_map_res
     }
     console.log(kel);
