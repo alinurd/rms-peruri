@@ -1,6 +1,6 @@
 <?php
 			
-$lang['msg_title']						= "Drafting Risk Context & Criteria";
+$lang['msg_title']						= "Drafting Risk Context";
 $lang['msg_sub_title']					= "Daftar Identifikasi Risiko Rutin";
 $lang['msg_field_owner_no']				= "Risk Owner";
 $lang['msg_field_nm_file']				= "Upload Dokumen";

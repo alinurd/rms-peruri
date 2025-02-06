@@ -134,6 +134,9 @@ class Lost_Event_Database extends BackendController
     public function get_detail_modal() {
 
         $id                 = $this->input->post("id_edit");
+        // doi::dump($id);
+        // die;
+        $detail = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
         $type               = $this->input->post("type");
         $param              = $this->input->post("rcsa");
         $data['rcsa_no']    = $this->input->post("rcsa");
@@ -141,7 +144,8 @@ class Lost_Event_Database extends BackendController
         $data['cboImpact']  = $this->cboImpact;
         $data['kategori_kejadian'] = $this->get_combo('data-combo', 'kat-kejadian');
         $data['frekuensi_kejadian'] = $this->get_combo('data-combo', 'frek-kejadian');
-        $data['kat_risiko'] = $this->get_combo('data-combo', 'kel-library');
+        // $data['kat_risiko'] =$this->get_combo('library_t1');
+        $data['kat_risiko'] = $this->get_combo('tasktonimi', 'kategori_risiko_loss', '');
         $data['type']       = 'add';
     
         // If editing, load existing data
@@ -237,26 +241,25 @@ class Lost_Event_Database extends BackendController
     // ==========================================
     public function simpan_lost_event() {
         $post = $this->input->post();
-        
-        $result = []; // Pastikan ini adalah array kosong
-    
-        // Cek apakah data sudah ada di tbl_library
-        $this->db->select('id');
-        $this->db->from(_TBL_LIBRARY);
-        $this->db->where('description', $post['peristiwabaru']);
-        $query = $this->db->get();
-        $result = $query->result_array();  // Ambil hasil query sebagai array
-       
-        // Jika data sudah ada
-        if (count($result) > 0) {
-            $this->session->set_userdata('result_proses_error', 'Data sudah ada di database');
-            redirect(base_url(_MODULE_NAME_REAL_));
-        } else {
+        $result = [];
+
+        if($post['id_edit'] == '' && $post['peristiwabaru'] != ''){
+            $this->db->select('id');
+            $this->db->from(_TBL_LIBRARY);
+            $this->db->where('description', $post['peristiwabaru']);
+            $query  = $this->db->get();
+            $result = $query->result_array();
+            if(count($result) > 0){
+                $this->session->set_userdata('result_proses_error', 'Data sudah ada di database');
+                redirect(base_url(_MODULE_NAME_REAL_));
+            }
+        }else{
             // Simpan data ke database
             $this->data->simpan_lost_event($post);
             $this->session->set_userdata('result_proses',' Data berhasil disimpan');
             redirect(base_url(_MODULE_NAME_REAL_));
         }
+    
     }
     
 

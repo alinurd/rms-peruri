@@ -109,6 +109,13 @@ class MX_Model extends CI_Model
 						// $where.= "and event_no='" . $param[2] . "'"; unComent kalo dampak menggunakan data mapping
 					}
 					$query = "SELECT  child_id as id, child_description as name FROM " . _TBL_VIEW_MAP_LIBRARY . " {$where} order by child_code";
+				}else if($param=='kategori_risiko_loss'){
+					if($param2){
+						$where = " and dc.pid='" . $param2 . "'";
+					}
+ 					$query = "SELECT dp.data, dc.id as id,  CONCAT(lib.description ,' - ', dp.data, ' - ', dc.data) AS name FROM " . _TBL_DATA_COMBO . " AS dc JOIN " . _TBL_DATA_COMBO . " dp ON dp.id = dc.pid JOIN bangga_library AS lib ON lib.id = dp.pid WHERE dc.aktif = '1' and dc.kelompok='kelompok-risiko' ORDER BY dc.urut, dc.data";
+					//  doi::dump($this->db->last_query());
+					//  die;
 				}
 				if($tbl=="library"){
 					if($param2){
@@ -247,7 +254,7 @@ class MX_Model extends CI_Model
 
 				$query = "SELECT  id, description as name FROM " . _TBL_LIBRARY . " where status=1 and type=4 order by code";
 
-				break;
+				break; 
 			case  "peristiwa":
 
 				$query = "SELECT  id, description as name FROM " . _TBL_LIBRARY . " where status=1 and type=1 order by code";
