@@ -58,51 +58,66 @@
 								<?php  echo form_close();?>
 							</div>
 						</div>
-<span class="btn btn-warning btn-flat"><a href="#" style="color:#ffffff;" id="export_data"><i class="fa fa-file-pdf-o"></i> Export To PDF </a></span>
-						<!--state overview start-->
+						<span class="btn btn-warning btn-flat"><a href="#" style="color:#ffffff;" id="export_data"><i class="fa fa-file-pdf-o"></i> Export To PDF </a></span>
 						<div class="row" id="diagram">
-<table class="table table-bordered table-sm"  id="golum" border="5" style="display: none;">
+							<table class="table table-bordered table-sm"  id="golum" border="5" style="display: none;">
 
-<thead>
-<tr>
-<td colspan="3" rowspan="3" style="text-align: left;border-right:none;" ><img src="<?=img_url('logo.png');?>" width="90"></td>
-<td colspan="6" rowspan="3" style="text-align: center;border-left:none;vertical-align: middle !important;" >CORPORATE RISK</td>
-<td colspan="4" style="text-align: left;">No.</td>
-<td style="text-align: left;">: 010/RM-FORM/I/<span class="tahun2"></span></td>
-</tr>
-<tr>
-<td colspan="4" style="text-align: left;">Revisi</td>
-<td style="text-align: left;">: 1</td>
-</tr>
-<tr>
-<td colspan="4" style="text-align: left;">Tanggal Revisi</td>
-<td style="text-align: left;">: 31 Januari <span class="tahun2"></span></td>
-</tr>
-<tr>
-<td colspan="2" style="text-align: left;">Risk Owner </td>
-<td colspan="12" style="text-align: left;">: <span class="owner"></span></td>
-</tr>
-<tr>
-<td colspan="2" style="text-align: left;">Bulan </td>
-<td colspan="12" style="text-align: left;">: <span class="bulan2"></span></td>
-</tr>
-</thead>
-</table>
+								<thead>
+									<tr>
+										<td colspan="3" rowspan="3" style="text-align: left;border-right:none;" ><img src="<?=img_url('logo.png');?>" width="90"></td>
+										<td colspan="6" rowspan="3" style="text-align: center;border-left:none;vertical-align: middle !important;" >CORPORATE RISK</td>
+										<td colspan="4" style="text-align: left;">No.</td>
+										<td style="text-align: left;">: 010/RM-FORM/I/<span class="tahun2"></span></td>
+									</tr>
+									<tr>
+										<td colspan="4" style="text-align: left;">Revisi</td>
+										<td style="text-align: left;">: 1</td>
+									</tr>
+									<tr>
+										<td colspan="4" style="text-align: left;">Tanggal Revisi</td>
+										<td style="text-align: left;">: 31 Januari <span class="tahun2"></span></td>
+									</tr>
+									<tr>
+										<td colspan="2" style="text-align: left;">Risk Owner </td>
+										<td colspan="12" style="text-align: left;">: <span class="owner"></span></td>
+									</tr>
+									<tr>
+										<td colspan="2" style="text-align: left;">Bulan </td>
+										<td colspan="12" style="text-align: left;">: <span class="bulan2"></span></td>
+									</tr>
+								</thead>
+							</table>
+
 							<aside class="profile-info col-md-12">
-								<section class="x_panel">
-									<div class="profile-info col-md-6">
-										<strong>Inherent</strong>
-										<div class="x_content text-center" id="mapping_inherent">
-											<?=$mapping['inherent'];?>
-										</div>
-									</div>
-									<div class="profile-info col-md-6">
-										<strong>Residual</strong>
-										<div class="x_content text-center" id="mapping_residual">
-											<?=$mapping['residual'];?>
-										</div>
-									</div>
-								</section>
+								 <section class="x_panel">
+                                    <div class="x_title">
+                                        <strong>Inherent & Residual</strong>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li class="pull-right"><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a></li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content" style="overflow-x: auto;">
+                                        <div class="profile-info col-md-4">
+                                            <!-- <strong>Inherent </strong> -->
+                                            <div class="x_content text-center" style="max-width: 100%;" id="mapping_inherent">
+                                                <?= $mapping1['inherent']; ?>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="profile-info col-md-4">
+                                            <div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual">
+                                                <?= $mapping1['residual']; ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info col-md-4">
+                                            <div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual1">
+                                                <?= $mapping2['residual1']; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
 							</aside>
 						</div>
 						<div class="overlay hide" id="overlay_content">

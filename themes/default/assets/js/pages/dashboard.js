@@ -80,6 +80,7 @@ $(function () {
     var target_combo = $("#mapping");
     var url = modul_name + "/get_map";
   });
+  
   $(document).on("click", ".detail-aksi", function () {
     var id = $(this).data("id");
     var data = { id: id };

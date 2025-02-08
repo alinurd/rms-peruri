@@ -8,7 +8,7 @@ $info_owner = $this->authentication->get_info_user('group_owner');
 
 <!-- Dashboard Section -->
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12"> 
         <div class="row">
             <div class="col-sm-8 panel-heading">
                 <h3 style="padding-left:10px;">DASHBOARD</h3>
