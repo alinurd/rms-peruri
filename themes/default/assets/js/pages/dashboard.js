@@ -4,7 +4,7 @@ $(function () {
       var id_owner = $("#owner_no").val();
       var id_period = $("#period_no").val();
       var bulan = $("#bulan").val();
-      var bulanxx = $("#bulanx").val();
+      // var bulanxx = $("#bulanx").val();
       var tanggalxx = $("#datetimepickerx").val();
       var date = new Date(tanggalxx);
       var tanggal =
@@ -22,7 +22,7 @@ $(function () {
       var tua = $("#owner_no option:selected").text();
       var owner = tua.trim();
       // var tanggal = $("#datetimepicker option:selected").text();
-      var bulanx = $("#bulanx option:selected").text();
+      // var bulanx = $("#bulanx option:selected").text();
       var bulan2 = $("#bulan option:selected").text();
       var tahun2 = $("#period_no option:selected").text();
       var id =
@@ -31,15 +31,15 @@ $(function () {
         parseFloat(id_period) +
         "-" +
         parseFloat(bulan) +
-        "-" +
-        parseFloat(bulanxx) +
+        // "-" +
+        // parseFloat(bulanxx) +
         "-" +
         parseFloat(tanggal) +
         "-" +
         parseFloat(type_dash);
       $(".tahun2").text(tahun2);
       $(".bulan2").text(bulan2);
-      $(".bulanx").text(bulanx);
+      // $(".bulanx").text(bulanx);
       $(".tanggal").text(tanggal);
       $(".owner").text(owner);
       var parent = $(this).parent();
@@ -48,7 +48,7 @@ $(function () {
         id_owner: id_owner,
         id_period: id_period,
         bulan: bulan,
-        bulanx: bulanxx,
+        // bulanx: bulanxx,
         tanggal: tanggal,
       };
       console.log(data);
@@ -66,7 +66,7 @@ $(function () {
     var id_owner = "";
     var id_period = 14;
     var bulan = 1;
-    var bulanxx = 12;
+    // var bulanxx = 12;
     var tanggal = 1;
 
     var data = {
@@ -74,7 +74,7 @@ $(function () {
       id_period: id_period,
       bulan: bulan,
       tanggal: tanggal,
-      bulanx: bulanxx,
+      // bulanx: bulanxx,
     };
     console.log(data);
     var target_combo = $("#mapping");
@@ -92,9 +92,16 @@ $(function () {
   $(document).on("click", ".sub_detail", function () {
     var parent = $(this).parent().parent();
     var id = $(this).data("id");
+    var kel =  $(this).data("kel");
     var data = { id: id };
     var target_combo = $("#sub_detail");
     var url = modul_name + "/get-subdetail";
+    if(kel == "Target"){
+      var bulan =  $(this).data("bulan");
+      var data = { id: id , bulan:bulan };
+      var target_combo = $("#sub_detail_target");
+      var url = modul_name + "/get-subdetailTarget";
+    }
 
     cari_ajax_combo("post", parent, data, target_combo, url);
   });
@@ -111,13 +118,13 @@ function hoho(e) {
     var owner = $("#owner_no").val();
     var tahun = $("#period_no").val();
     var bulan = $("#bulan").val();
-    var bulanx = $("#bulanx").val();
+    // var bulanx = $("#bulanx").val();
     // console.log(kel + '2')
     var data = {
       id: id,
       owner: owner,
       tahun: tahun,
-      bulanx: bulanx,
+      // bulanx: bulanx,
       bulan: bulan,
       kel: kel,
       like: like,
@@ -135,6 +142,12 @@ function hoho(e) {
     if (kel == "residual") {
       var target_combo = $("#detail_map");
       var url = modul_name + "/get-detail-map-res";
+      // get_detail_map_res
+    }
+
+    if (kel == "Target") {
+      var target_combo = $("#detail_map");
+      var url = modul_name + "/get-detail-map-target";
       // get_detail_map_res
     }
     console.log(kel);

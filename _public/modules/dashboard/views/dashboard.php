@@ -51,13 +51,13 @@ $info_owner = $this->authentication->get_info_user('group_owner');
                                                 <td><?php echo form_dropdown('period_no', $cbo_period, 14, ' id="period_no" class=" form-control" style=" width:100%;"'); ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Dari Bulan : </td>
+                                                <td>Bulan : </td>
                                                 <td><?php echo form_dropdown('bulan', $cbo_bulan, 1, ' id="bulan" class=" form-control select2" style=" width:100%;"'); ?></td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td>Sampai Bulan : </td>
                                                 <td><?php echo form_dropdown('bulanx', $cbo_bulan, 12, ' id="bulanx" class=" form-control select2 " style=" width:100%;"'); ?></td>
-                                            </tr>
+                                            </tr> -->
                                         </table>
                                     </div>
                                 </section>

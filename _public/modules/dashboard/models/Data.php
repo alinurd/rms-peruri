@@ -15,31 +15,26 @@ class Data extends MX_Model
 
 		if ($data) {
 			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
-			// === Filter by Owner ===
 			if ($data['id_owner'] > 0) {
                 $this->get_owner_child($data['id_owner']);
 				$this->owner_child[] = $data['id_owner'];
 				$this->db->where_in('owner_no', $this->owner_child);
 			}
-
-			// === Filter by Period ===
 			if ($data['id_period'] > 0) {
 				$this->db->where('period_no', $data['id_period']);
 			}
-
-			// === Fetch Inherent Data ===
-			$rows = $this->db->select('inherent_likelihood, inherent_impact, COUNT(*) as jml')
-			->from(_TBL_VIEW_RCSA_DETAIL) // Pastikan tabel didefinisikan
+			$rows = $this->db->select('residual_likelihood, residual_impact, COUNT(*) as jml')
+			->from(_TBL_VIEW_RCSA_DETAIL)
 			->where('sts_propose', 4)
 			->where('sts_heatmap', '1')
-			->group_by(['inherent_likelihood', 'inherent_impact']) // Kelompokkan berdasarkan kedua kolom
+			->group_by(['residual_likelihood', 'residual_impact'])
 			->get()
 			->result_array();
 
 			$arrData = [];
 			foreach ($rows as $ros) {
-                if (isset($ros['inherent_likelihood'], $ros['inherent_impact'])) {
-					$key = $ros['inherent_likelihood'] . '-' . $ros['inherent_impact']; // Gabungkan likelihood dan impact
+                if (isset($ros['residual_likelihood'], $ros['residual_impact'])) {
+					$key = $ros['residual_likelihood'] . '-' . $ros['residual_impact']; 
 					$arrData[$key] = $ros['jml'];
 				}
 			}
@@ -52,14 +47,10 @@ class Data extends MX_Model
 					
 				}
 			}
-			
-
+			unset($row);
 			$hasil['inherent'] = $this->data->draw_rcsa($mapping);
 
-			// ========================================================
-
-
-			// === Fetch Residual Data ===
+			// residual
 			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
 			if ($data['id_owner'] > 0) {
                 $this->get_owner_child($data['id_owner']);
@@ -71,25 +62,28 @@ class Data extends MX_Model
 				$this->db->where('a.period_no', $data['id_period']);
 			}
 
-            if ($data['bulan'] > 0) {
-                $this->db->where("b.bulan BETWEEN {$data['bulan']} AND {$data['bulanx']}");
-            }
+			// // Validasi bulan dan bulanx
+			if (isset($data['bulan']) && $data['bulan'] > 0) {
+				$this->db->where("b.bulan",$data['bulan']);
+			}else{
+				$this->db->where('b.bulan', $current_month);
+			}
 
 			$rows = $this->db->select('b.residual_likelihood_action as residual_like, b.residual_impact_action as residual_impact, COUNT(*) as jml')
-					->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
-					->join('bangga_rcsa_action_detail b', 'a.id = b.rcsa_detail', 'inner') 
-					->where('a.sts_propose', 4)
-					->where('a.sts_heatmap', '1')
-					->group_by(['b.residual_likelihood_action', 'b.residual_impact_action']) 
-					->get()
-					->result_array();
-           
+			->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
+			->join('bangga_rcsa_action_detail b', 'a.id = b.rcsa_detail', 'inner') 
+			->where('a.sts_propose', 4)
+			->where('a.sts_heatmap', '1')
+			->group_by(['b.residual_likelihood_action', 'b.residual_impact_action']) 
+			->get()
+			->result_array();
+   
 			$arrData = [];
 			foreach ($rows as $ros) {
 				if (isset($ros['residual_like'], $ros['residual_impact'])) {
-                    $key = $ros['residual_like'] . '-' . $ros['residual_impact'];
-                    $arrData[$key] = $ros['jml'];
-                }
+					$key = $ros['residual_like'] . '-' . $ros['residual_impact'];
+					$arrData[$key] = $ros['jml'];
+				}
 			}
 
 			// === Update Mapping with Residual Values ===
@@ -101,11 +95,11 @@ class Data extends MX_Model
 					
 				}
 			}
-
+			unset($row);
 			$hasil['residual'] = $this->data->draw_rcsa_res($mapping);
 		}
-
 		return $hasil;
+		// var_dump($hasil);
 	}
 
 
@@ -131,6 +125,7 @@ class Data extends MX_Model
             ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
             ->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner') // Perbaiki alias di sini
             ->where('a.sts_propose', 4)
+            ->where('b.bulan', 12)
             ->where('a.sts_heatmap', '1')
             ->group_by(['b.target_like', 'b.target_impact']) 
             ->get()
@@ -282,6 +277,22 @@ class Data extends MX_Model
         
 		// doi::dump($rows);
         return $rows;
+	}
+
+	public function level_action($like, $impact)
+	{
+		// doi::dump($like);
+		// doi::dump($impact);
+		$result['like'] = $this->db
+			->where('id', $like)
+ 			->get('bangga_level')->row_array();
+
+		$result['impact'] = $this->db
+			->where('id', $impact)
+ 			->get('bangga_level')->row_array();
+
+		return $result;
+
 	}
 
     // === Get Master Level ===

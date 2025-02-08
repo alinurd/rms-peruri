@@ -23,22 +23,30 @@
 			foreach ($data as $row) :
 				$couse 			= $row['ket_likelihood'];
 				$impact 		= $row['ket_impact'];
-				$residual_level = $this->data->get_master_level(true, $row['residual_level']);
-				$inherent_level = $this->data->get_master_level(true, $row['inherent_level']);
+				$inherent_level = $this->data->get_master_level(true, $row['residual_level']);
+				// $residual_level = $this->data->get_master_level(true, $row['residual_level']);
 				if (!$inherent_level) {
 					$inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
 				}
-
-				if (!$residual_level) {
-					$residual_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+				
+				$residual_level = $this->db->select('*')->where('rcsa_detail', $row['id'])->where('bulan', $bulan)->get(_TBL_RCSA_ACTION_DETAIL)->row_array();
+				
+				$cek_score 				= $this->data->cek_level_new($residual_level['residual_likelihood_action'], $residual_level['residual_impact_action']);
+				$residual_level_risiko  = $this->data->get_master_level(true, $cek_score['id']);
+				$residual_code 			= $this->data->level_action($residual_level['residual_likelihood_action'], $residual_level['residual_impact_action']);
+				$score_inh				= $this->db->select('score')->where('impact', $row['residual_impact'])->where('likelihood', $row['residual_likelihood'])->get(_TBL_LEVEL_COLOR)->row_array();
+				$score_res				= $this->db->select('score')->where('impact', $residual_level['residual_impact_action'])->where('likelihood', $residual_level['residual_likelihood_action'])->get(_TBL_LEVEL_COLOR)->row_array();
+				// doi::dump($residual_level_risiko);
+				// doi::dump($row);
+				if (!$residual_level_risiko) {
+					$residual_level_risiko = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
 				}
-
 				$like = $this->db
-				->where('id', $residual_level['likelihood'])
+				->where('id', $residual_level_risiko['likelihood'])
 					->get('bangga_level')->row_array();
 				
 				$impactx = $this->db
-				->where('id', $residual_level['impact'])
+				->where('id', $residual_level_risiko['impact'])
 				->get('bangga_level')->row_array();
 
 				$likeinherent = $this->db
@@ -54,8 +62,8 @@
 					<td><?= $row['name']; ?></td>
 					<td><?= $row['kategori']; ?></td>
 					<td><?= $row['event_name']; ?></td>
-					<td style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?> <br>[&nbsp;<?= $likeinherent['code']; ?> x <?= $impactinherent['code']; ?>&nbsp;]</td>
-					<td style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= $residual_level['level_mapping']; ?> <br>[&nbsp;<?= $like['code']; ?> x <?= $impactx['code']; ?>&nbsp;]</td>
+					<td style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?> <br>[&nbsp;<?= $score_inh['score']; ?>&nbsp;]</td>
+					<td style="text-align: center; background-color:<?= $residual_level_risiko['color']; ?>;color:<?= $residual_level_risiko['color_text']; ?>;"><?= $residual_level_risiko['level_mapping']; ?> <br>[&nbsp;<?= $score_res['score']; ?>&nbsp;]</td>
 				</tr>
 			<?php endforeach; ?>
 
