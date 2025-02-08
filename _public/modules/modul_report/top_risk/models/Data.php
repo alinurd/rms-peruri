@@ -23,18 +23,18 @@ class Data extends MX_Model
 			if ($data['id_period'] > 0) {
 				$this->db->where('period_no', $data['id_period']);
 			}
-			$rows = $this->db->select('inherent_likelihood, inherent_impact, COUNT(*) as jml')
+			$rows = $this->db->select('residual_likelihood, residual_impact, COUNT(*) as jml')
 			->from(_TBL_VIEW_RCSA_DETAIL)
 			->where('sts_propose', 4)
 			->where('sts_heatmap', '1')
-			->group_by(['inherent_likelihood', 'inherent_impact'])
+			->group_by(['residual_likelihood', 'residual_impact'])
 			->get()
 			->result_array();
 
 			$arrData = [];
 			foreach ($rows as $ros) {
-                if (isset($ros['inherent_likelihood'], $ros['inherent_impact'])) {
-					$key = $ros['inherent_likelihood'] . '-' . $ros['inherent_impact']; 
+                if (isset($ros['residual_likelihood'], $ros['residual_impact'])) {
+					$key = $ros['residual_likelihood'] . '-' . $ros['residual_impact']; 
 					$arrData[$key] = $ros['jml'];
 				}
 			}
@@ -160,6 +160,7 @@ class Data extends MX_Model
             ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
             ->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner') // Perbaiki alias di sini
             ->where('a.sts_propose', 4)
+            ->where('b.bulan', 12)
             ->where('a.sts_heatmap', '1')
             ->group_by(['b.target_like', 'b.target_impact']) 
             ->get()

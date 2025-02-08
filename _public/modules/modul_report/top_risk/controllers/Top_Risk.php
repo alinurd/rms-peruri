@@ -90,8 +90,8 @@ class Top_Risk extends BackendController
 		$owner_child=$this->data->owner_child;
 
 		if ($post['kel'] == 'inherent') {
-			$this->db->where('inherent_likelihood', $post['like']);
-			$this->db->where('inherent_impact', $post['impact']);
+			$this->db->where('residual_likelihood', $post['like']);
+			$this->db->where('residual_impact', $post['impact']);
 			
 			if ($post['tahun'] > 0) {
 				$this->db->where('period_no', $post['tahun']);
@@ -103,8 +103,6 @@ class Top_Risk extends BackendController
 			$rows = $this->db->where('sts_propose', 4)
 				->where('urgensi_no', 0)
 				->where('sts_heatmap', '1')
-				->order_by('inherent_likelihood', 'DESC')
-				->order_by('inherent_impact', 'DESC')
 				->order_by('residual_likelihood', 'DESC')
 				->order_by('residual_impact', 'DESC')
 				->get(_TBL_VIEW_RCSA_DETAIL)
@@ -116,8 +114,6 @@ class Top_Risk extends BackendController
 					->where('sts_heatmap', '1')
 					->where('parent_no', $post['owner'])
 					->where('period_no', $post['tahun'])
-					->order_by('inherent_likelihood', 'DESC')
-					->order_by('inherent_impact', 'DESC')
 					->order_by('residual_likelihood', 'DESC')
 					->order_by('residual_impact', 'DESC')
 					->get(_TBL_VIEW_RCSA_DETAIL)
@@ -133,8 +129,6 @@ class Top_Risk extends BackendController
 					->where('urgensi_no', 0)
 					->where('sts_heatmap', '1')
 					->where('period_no', $post['tahun'])
-					->order_by('inherent_likelihood', 'DESC')
-					->order_by('inherent_impact', 'DESC')
 					->order_by('residual_likelihood', 'DESC')
 					->order_by('residual_impact', 'DESC')
 					->get(_TBL_VIEW_RCSA_DETAIL)
@@ -142,38 +136,36 @@ class Top_Risk extends BackendController
 				
 			}
 		} else {
-			if ($b == 3) {
+			// if ($b == 3) {
 				$this->owner_child[] = $post['post'];
 				$this->db->where_in('rcsa_owner_no', $this->owner_child);
 				$rows = $this->db->where('sts_propose', 4)
 					->where('urgensi_no', 0)
 					->where('sts_heatmap', '1')
 					->where('period_no', $post['tahun'])
-					->order_by('inherent_likelihood', 'DESC')
-					->order_by('inherent_impact', 'DESC')
 					->order_by('residual_likelihood', 'DESC')
 					->order_by('residual_impact', 'DESC')
 					->get(_TBL_VIEW_RCSA_DETAIL)
 					->result_array();
-			} else {
-				$this->db->select('*,a.bulan, b.id') 
-						->from('bangga_analisis_risiko a') 
-						->join('bangga_view_rcsa_detail b', 'b.id = a.id_detail', 'left') 
-						->where('b.sts_propose', 4) 
-						->where('b.urgensi_no', 0) 
-						->where('b.sts_heatmap', '1') 
-						->where('a.bulan', $post['bulan']) 
-						->where('b.period_no', $post['tahun']) 
-						->order_by('a.target_impact', 'DESC') 
-						->order_by('a.target_like', 'DESC'); 
+			// } else {
+			// 	$this->db->select('*,a.bulan, b.id') 
+			// 			->from('bangga_analisis_risiko a') 
+			// 			->join('bangga_view_rcsa_detail b', 'b.id = a.id_detail', 'left') 
+			// 			->where('b.sts_propose', 4) 
+			// 			->where('b.urgensi_no', 0) 
+			// 			->where('b.sts_heatmap', '1') 
+			// 			->where('a.bulan', $post['bulan']) 
+			// 			->where('b.period_no', $post['tahun']) 
+			// 			->order_by('a.target_impact', 'DESC') 
+			// 			->order_by('a.target_like', 'DESC'); 
 
-				$query = $this->db->get();
-				$rows['bobo']= $query->result_array();
-			}
+			// 	$query = $this->db->get();
+			// 	$rows['bobo']= $query->result_array();
+			// }
 		}
 		
 		$a = $post['kel'];
-		$hasil['combo'] = $this->load->view('detail', ['data' => $rows, 'kel' => $a], true);
+		$hasil['combo'] = $this->load->view('detail', ['data' => $rows, 'kel' => $a,'bulan' => $post['bulan']], true);
 		echo json_encode($hasil);
 	}
 
@@ -355,10 +347,12 @@ class Top_Risk extends BackendController
 		if ($post['kel'] == 'Target') {
 			$this->db->where('bangga_analisis_risiko.target_like', $post['like']);
 			$this->db->where('bangga_analisis_risiko.target_impact', $post['impact']);
+			$this->db->where('bangga_analisis_risiko.bulan', 12);
 		
 			if ($post['tahun'] > 0) {
 				$this->db->where('bangga_view_rcsa_detail.period_no', $post['tahun']);
 			}
+
 		} else {
 			$this->db->where('bangga_view_rcsa_detail.risk_level_action', $post['id']);
 		}
