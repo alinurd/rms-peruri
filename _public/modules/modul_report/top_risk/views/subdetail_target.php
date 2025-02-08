@@ -67,11 +67,11 @@
             $cek_score1 = $this->data->cek_level_new($target_level_item['target_like'], $target_level_item['target_impact']);
             $target_level_risiko = $this->data->get_master_level(true, $cek_score1['id']);
             $target_code = $this->data->level_action($target_level_item['target_like'], $target_level_item['target_impact']);
-
+            $score_target				= $this->db->select('score')->where('impact', $target_level_item['target_impact'])->where('likelihood', $target_level_item['target_like'])->get(_TBL_LEVEL_COLOR)->row_array();
             // Membuat tampilan target level
             $target = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $target_level_risiko['color'] . ';color:' . $target_level_risiko['color_text'] . ';">';
             if ($target_level_risiko['level_mapping']) {
-                $target .= $target_level_risiko['level_mapping'] . '<br>[' . $target_code['impact']['code'] . '-' . $target_code['like']['code'] . ']';
+                $target .= $target_level_risiko['level_mapping'] . '<br>[' . $score_target['score'] . ']';
             } else {
                 $target .= "<p class='text-danger'>Data Belum diinput</p>";
             }
@@ -87,11 +87,11 @@
             $cek_score2 = $this->data->cek_level_new($realisasi_level['residual_likelihood_action'], $realisasi_level['residual_impact_action']);
             $realisasi_level_risiko = $this->data->get_master_level(true, $cek_score2['id']);
             $realisasi_code = $this->data->level_action($realisasi_level['residual_likelihood_action'], $realisasi_level['residual_impact_action']);
-
+            $score_res				= $this->db->select('score')->where('impact', $realisasi_level['residual_impact_action'])->where('likelihood', $realisasi_level['residual_likelihood_action'])->get(_TBL_LEVEL_COLOR)->row_array();
             // Membuat tampilan realisasi level
             $realisasi = '<span class="btn" style="padding:4px 8px;width:100%;background-color:' . $realisasi_level_risiko['color'] . ';color:' . $realisasi_level_risiko['color_text'] . ';">';
             if ($realisasi_code['impact']['code']) {
-                $realisasi .= $realisasi_level_risiko['level_mapping'] . '<br>[' . $realisasi_code['impact']['code'] . '-' . $realisasi_code['like']['code'] . ']';
+                $realisasi .= $realisasi_level_risiko['level_mapping'] . '<br>[' . $score_res['score'] . ']';
             } else {
                 $realisasi .= "<p class='text-danger'>Data Belum dimonitoring</p>";
             }

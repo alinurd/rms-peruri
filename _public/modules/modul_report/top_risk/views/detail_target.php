@@ -31,14 +31,15 @@
                 12 => 'Desember'
             ];
 			$no = 0;
-
+ 
 			foreach ($data as $row1) :
                 
                 $cek_score2 			= $this->data->cek_level_new($row1['target_like'], $row1['target_impact']);
             	$target_level_risiko    = $this->data->get_master_level(true, $cek_score2['id']);
 				$target_code            = $this->data->level_action($row1['target_like'], $row1['target_impact']);
+				$score_inh				= $this->db->select('score')->where('impact', $row1['target_impact'])->where('likelihood', $row1['target_like'])->get(_TBL_LEVEL_COLOR)->row_array();
 				if ($target_code['impact']['code']) {
-					$target 	        = $target_level_risiko['level_mapping'] . '<br>[ ' . $target_code['impact']['code'] . '-' . $target_code['like']['code'] . ' ]';
+					$target 	        = $target_level_risiko['level_mapping'] . '<br>[ ' . $score_inh['score'] . ' ]';
 				} else {
 					$target 	        = "<p class='text-danger'>-</p>";
 				}
