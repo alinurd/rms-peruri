@@ -121,6 +121,18 @@ class Rcsa_Appetite extends BackendController
 		$this->set_Close_Setting();
 	}
 
+	function updateBox_OWNER_NO($field, $rows, $value){ 
+		
+		$content = form_dropdown('owner_no', $this->cbo_parent, ($value) ? $value : '', 'class="form-control select2 "  style="width:100%;"id="cowner" disabled');
+
+	   return $content;
+   }
+	function updateBox_PERIOD_NO($field, $rows, $value){ 
+	   
+		$content = form_dropdown('period_no', $this->cbo_periode, ($value) ? $value : '', 'class="form-control select2 "  style="width:100%;"id="cowner" disabled');
+
+	   return $content;
+   }
 	// function update_OPTIONAL_CMD($id, $row)
 	// {
 	// 	$owner = $row['l_owner_no'];

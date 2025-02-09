@@ -91,10 +91,19 @@ function calculateDropdown(element) {
     var hasil = bobot > 0 ? (bobot / 100 * penilaian) : penilaian;
     var inputId = element.data('input-id');
     var rumusId = element.data('input-rumus-id');
+    var bobotParent = element.data('bobot-parent');
     var idParent = element.data('id-parent');
     var nc = element.data('nc');
     // console.log("jalan")
     $('#' + inputId).val(hasil.toFixed(2));
+
+    if(inputId=="perhitungan-A55"){
+        $('#skor-' + inputId).val(bobotParent/100*hasil.toFixed(2));
+    }else if(inputId=="perhitungan-A65"){
+        $('#skor-' + inputId).val(bobotParent/100*hasil.toFixed(2));
+    }else{
+        $('#skor-' + inputId).val(hasil.toFixed(2));
+    }
 
     var rumus = bobot > 0 ? `${bobot}% X ${penilaian}` : penilaian;
     $('#' + rumusId).val(rumus);
@@ -105,9 +114,10 @@ function calculateDropdown(element) {
     });
 	
     $('#totalDetail-' + nc).val(totalDetail.toFixed(2));
+    $('#skor-totalDetail-' + nc).val(bobotParent/100*totalDetail.toFixed(2));
 
     var totalPerhitungan = 0;
-    $('.perhitungan').each(function () {
+    $('.skor-perhitungan').each(function () {
         totalPerhitungan += parseFloat($(this).val()) || 0;
     });
     $('#totalPerhitungan').val(totalPerhitungan.toFixed(2));
@@ -117,7 +127,7 @@ function calculateDropdown(element) {
 
 function updatePercentage(id) {
     const x = document.getElementById(`target-${id}`);
-    console.log(id)
+ console.log(id)
     const targetInput = document.getElementById(`target-${id}`);
     const isAbsolute = document.getElementById(`isAbsolute-${id}-1`).checked;
     const realisasiInput = document.getElementById(`realisasitw-${id}`);
@@ -134,22 +144,25 @@ function updatePercentage(id) {
     let percentage = 0;
 
     if (isAbsolute) {
-        console.log("isAbsolute=>"+ isAbsolute)
+        // console.log("isAbsolute=>"+ isAbsolute)
         if (targetValue !== 0) {
-            percentage = ((realisasiValue - (targetValue - realisasiValue)) / realisasiValue) * 100;
-            if(id==62){
+            if(id==16){ 
+                percentage = ((targetValue - (realisasiValue - targetValue)) / targetValue) * 100;
+            }else if(id==19){ 
+                percentage = ((realisasiValue - (targetValue - realisasiValue)) / realisasiValue) * 100;
+             }else{
                 percentage = ((targetValue - (realisasiValue - targetValue)) / targetValue) * 100;
             }
         }
-        console.log("percentage=>"+ percentage)
-        console.log("percentage=>"+ percentage)
-        console.log("targetValue=>"+ targetValue)
+        // console.log("percentage=>"+ percentage)
+        // console.log("percentage=>"+ percentage)
+        // console.log("targetValue=>"+ targetValue)
     } else {
         if (targetValue !== 0) {
             percentage = (targetValue /  realisasiValue) * 100;
         }
     }
-    console.log(percentage)
+    // console.log(percentage)
     persentaseSpan.textContent = (percentage > 0 ? percentage.toFixed(2) : 0) + " %";
 }
  
