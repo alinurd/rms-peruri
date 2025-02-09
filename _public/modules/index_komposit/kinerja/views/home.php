@@ -121,7 +121,7 @@
                          <?php if (count($countDetailx) > 0) : ?>
                          colspan="8"
                          <?php endif; ?>>
-                         <?= $pk['parameter']; ?>
+                         <?= $pk['parameter']; ?>cxccccccccccccccccccc
                      </td>
 
                      <?php if (count($countDetailx) === 0) : ?>
@@ -138,7 +138,7 @@
                              <input type="hidden" name="idx[]" value="<?= $pk['id'] ?>">
                              <input type="checkbox" id="isAbsolute-<?= $pk['id']; ?>-1" name="absolut[]" value="1" <?= $resParents['absolut'] > 0 ? 'checked' : '' ?> onclick="updatePercentage(<?= $pk['id']; ?>)">
                              <label for="isAbsolute-<?= $pk['id']; ?>-1">Absolute</label>
-                                 <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>
+                                 <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>sssssss
                              </td>
                              <td rowspan="<?= count($c['parent']) ?>">
                                  <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>" style="width: 110px;"

@@ -117,7 +117,7 @@ function calculateDropdown(element) {
 
 function updatePercentage(id) {
     const x = document.getElementById(`target-${id}`);
-    console.log(id)
+ console.log(id)
     const targetInput = document.getElementById(`target-${id}`);
     const isAbsolute = document.getElementById(`isAbsolute-${id}-1`).checked;
     const realisasiInput = document.getElementById(`realisasitw-${id}`);
@@ -134,22 +134,25 @@ function updatePercentage(id) {
     let percentage = 0;
 
     if (isAbsolute) {
-        console.log("isAbsolute=>"+ isAbsolute)
+        // console.log("isAbsolute=>"+ isAbsolute)
         if (targetValue !== 0) {
-            percentage = ((realisasiValue - (targetValue - realisasiValue)) / realisasiValue) * 100;
-            if(id==62){
+            if(id==16){ 
+                percentage = ((targetValue - (realisasiValue - targetValue)) / targetValue) * 100;
+            }else if(id==19){ 
+                percentage = ((realisasiValue - (targetValue - realisasiValue)) / realisasiValue) * 100;
+             }else{
                 percentage = ((targetValue - (realisasiValue - targetValue)) / targetValue) * 100;
             }
         }
-        console.log("percentage=>"+ percentage)
-        console.log("percentage=>"+ percentage)
-        console.log("targetValue=>"+ targetValue)
+        // console.log("percentage=>"+ percentage)
+        // console.log("percentage=>"+ percentage)
+        // console.log("targetValue=>"+ targetValue)
     } else {
         if (targetValue !== 0) {
             percentage = (targetValue /  realisasiValue) * 100;
         }
     }
-    console.log(percentage)
+    // console.log(percentage)
     persentaseSpan.textContent = (percentage > 0 ? percentage.toFixed(2) : 0) + " %";
 }
  
