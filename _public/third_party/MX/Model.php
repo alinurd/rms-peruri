@@ -206,8 +206,8 @@ class MX_Model extends CI_Model
 				}
 
 				$query = "SELECT a.id, a.judul_assesment AS name 
-						FROM " . _TBL_RCSA . " AS a 
-						JOIN " . _TBL_PERIOD . " AS b ON a.period_no = b.id
+						FROM " . _TBL_RCSA . " a 
+						JOIN " . _TBL_PERIOD . " b ON a.period_no = b.id
 						WHERE a.judul_assesment IS NOT NULL 
 						AND a.judul_assesment != '' {$where}
 						ORDER BY a.judul_assesment";
