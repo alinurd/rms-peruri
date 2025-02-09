@@ -202,10 +202,10 @@ class MX_Model extends CI_Model
 			case 'judul_assesment_new':
 				$where = "AND a.owner_no = '".$this->db->escape($param)."'"; // Menggunakan escape untuk keamanan
 				if ($param2 > 0) {
-					$where .= " AND  b.periode_name = $param2";
+					$where .= " AND  periode_name = $param2";
 				}
 
-				$query = "SELECT a.id, a.judul_assesment AS name 
+				$query = "SELECT a.id, a.judul_assesment AS name , b.periode_name AS periode_name
 						FROM " . _TBL_RCSA . " a 
 						JOIN " . _TBL_PERIOD . " b ON a.period_no = b.id
 						WHERE a.judul_assesment IS NOT NULL 
