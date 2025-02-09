@@ -200,17 +200,17 @@ class MX_Model extends CI_Model
 
 
 			case 'judul_assesment_new':
-				$where = "AND a.owner_no = '".$this->db->escape($param)."'"; // Menggunakan escape untuk keamanan
+				$where = " AND r.owner_no = '".$param."'";
 				if ($param2 > 0) {
-					$where .= " AND  periode_name = $param2";
+					$where .= " AND o.periode_name = '".$param2."'";
 				}
 
-				$query = "SELECT a.id, a.judul_assesment AS name , b.periode_name AS periode_name
-						FROM " . _TBL_RCSA . " a 
-						JOIN " . _TBL_PERIOD . " b ON a.period_no = b.id
-						WHERE a.judul_assesment IS NOT NULL 
-						AND a.judul_assesment != '' {$where}
-						ORDER BY a.judul_assesment";
+				$query = "SELECT r.id, r.judul_assesment AS name, r.owner_name,o.periode_name 
+						FROM " . _TBL_RCSA . " AS r
+						INNER JOIN " . _TBL_PERIOD . " AS o ON r.period_no = o.id
+						WHERE r.judul_assesment IS NOT NULL 
+						AND r.judul_assesment != '' {$where}
+						ORDER BY r.judul_assesment";
 				break;
 			case 'officer':
 				$query = "select id, officer_name as name from " . _TBL_OFFICER . "";
