@@ -31,9 +31,6 @@ class Data extends MX_Model
 			->get()
 			->result_array();
 
-            doi::dump($this->db->last_query());
-            // die;
-
 			$arrData = [];
 			foreach ($rows as $ros) {
                 if (isset($ros['residual_likelihood'], $ros['residual_impact'])) {
