@@ -31,8 +31,8 @@ class Data extends MX_Model
 			->get()
 			->result_array();
 
-            doi::dump($rows);
-            die;
+            // doi::dump($rows);
+            // die;
 
 			$arrData = [];
 			foreach ($rows as $ros) {
