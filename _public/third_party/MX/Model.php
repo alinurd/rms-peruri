@@ -205,7 +205,7 @@ class MX_Model extends CI_Model
 					$where .= " AND o.periode_name = '".$param2."'";
 				}
 
-				$query = "SELECT r.id, r.judul_assesment AS name, r.owner_name,o.periode_name 
+				$query = "SELECT r.id, r.judul_assesment AS name,o.periode_name 
 						FROM " . _TBL_RCSA . " AS r
 						INNER JOIN " . _TBL_PERIOD . " AS o ON r.period_no = o.id
 						WHERE r.judul_assesment IS NOT NULL 
