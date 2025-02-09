@@ -202,7 +202,7 @@ class MX_Model extends CI_Model
 			case 'judul_assesment_new':
 				$where = "AND a.owner_no = '".$this->db->escape($param)."'"; // Menggunakan escape untuk keamanan
 				if ($param2 > 0) {
-					$where .= " AND b.periode_name LIKE '%".$this->db->escape_like_str($param2)."%'";
+					$where .= " AND  b.periode_name = $param2";
 				}
 
 				$query = "SELECT a.id, a.judul_assesment AS name 
