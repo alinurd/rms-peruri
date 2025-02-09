@@ -91,10 +91,19 @@ function calculateDropdown(element) {
     var hasil = bobot > 0 ? (bobot / 100 * penilaian) : penilaian;
     var inputId = element.data('input-id');
     var rumusId = element.data('input-rumus-id');
+    var bobotParent = element.data('bobot-parent');
     var idParent = element.data('id-parent');
     var nc = element.data('nc');
     // console.log("jalan")
     $('#' + inputId).val(hasil.toFixed(2));
+
+    if(inputId=="perhitungan-A55"){
+        $('#skor-' + inputId).val(bobotParent/100*hasil.toFixed(2));
+    }else if(inputId=="perhitungan-A65"){
+        $('#skor-' + inputId).val(bobotParent/100*hasil.toFixed(2));
+    }else{
+        $('#skor-' + inputId).val(hasil.toFixed(2));
+    }
 
     var rumus = bobot > 0 ? `${bobot}% X ${penilaian}` : penilaian;
     $('#' + rumusId).val(rumus);
@@ -105,9 +114,10 @@ function calculateDropdown(element) {
     });
 	
     $('#totalDetail-' + nc).val(totalDetail.toFixed(2));
+    $('#skor-totalDetail-' + nc).val(bobotParent/100*totalDetail.toFixed(2));
 
     var totalPerhitungan = 0;
-    $('.perhitungan').each(function () {
+    $('.skor-perhitungan').each(function () {
         totalPerhitungan += parseFloat($(this).val()) || 0;
     });
     $('#totalPerhitungan').val(totalPerhitungan.toFixed(2));

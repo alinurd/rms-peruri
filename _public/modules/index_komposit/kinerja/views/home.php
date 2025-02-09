@@ -101,7 +101,7 @@
             ?>
              <tr style="background-color:#d5edef;">
                  <td class="text-center" width="5%" rowspan="<?= $parentRowspan + $ss ?>"><?= $nc ?></td>
-                 <td colspan="9"><b><?= $c['data'] ?></b></td>
+                 <td colspan="9"><b><?= $c['data'] ?></b> - <?= $c['bobot'] ?>% => <?= $c['id'] ?></td>
              </tr>
 
              <?php foreach ($c['parent'] as $pKey => $pk) :
@@ -121,7 +121,7 @@
                          <?php if (count($countDetailx) > 0) : ?>
                          colspan="8"
                          <?php endif; ?>>
-                         <?= $pk['parameter']; ?>cxccccccccccccccccccc
+                         <?= $pk['parameter']; ?>
                      </td>
 
                      <?php if (count($countDetailx) === 0) : ?>
@@ -138,12 +138,13 @@
                              <input type="hidden" name="idx[]" value="<?= $pk['id'] ?>">
                              <input type="checkbox" id="isAbsolute-<?= $pk['id']; ?>-1" name="absolut[]" value="1" <?= $resParents['absolut'] > 0 ? 'checked' : '' ?> onclick="updatePercentage(<?= $pk['id']; ?>)">
                              <label for="isAbsolute-<?= $pk['id']; ?>-1">Absolute</label>
-                                 <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>sssssss
+                                 <br><span class="badge" id="persentase-<?= $pk['id']; ?>">0 %</span>
                              </td>
                              <td rowspan="<?= count($c['parent']) ?>">
                                  <select class="form-control skala-dropdown" name="realisasi[]" id="skala-<?= $pk['urut']; ?><?= $pk['id']; ?>" style="width: 110px;"
                                      data-bobot="<?= $pk['bobot']; ?>"
                                      data-id-parent="<?= $pk['id']; ?>"
+                                     data-bobot-parent="<?= $c['bobot']; ?>"
                                      data-input-id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>"
                                      data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $pk['id']; ?>">
                                      <option selected value="0" data-bobot="0" data-penilaian="0"> -Skala- </option>
@@ -161,7 +162,17 @@
                                  <input type="hidden" name="id[]" value="<?= $pk['id_combo'] ?>">
                                  <input type="hidden" name="urut[]" value="<?= $pk['urut'] ?>">
                                  <center>
-                                     <input class="form-control perhitungan" style="width: 100px; text-align: center;" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly>
+                                 <table>
+                                        <tr>
+                                            <td>perhitungan</td>
+                                            <td>skor</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input class="form-control perhitungan" style="width: 70px; text-align: center;" type="text" id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly></td>
+                                            <td><input class="form-control skor-perhitungan" style="width: 70px; text-align: center;" type="text" id="skor-perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" name="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>" readonly></td>
+                                        </tr>
+                                    </table>
+ 
                                  </center>
                              </td>
                          <?php endif; ?>
@@ -211,6 +222,7 @@
                                      data-urut="<?= $d['urut']; ?>"
                                      data-nc="<?= $nc; ?>"
                                      data-id-parent="<?= $d['id_param']; ?>"
+                                     data-bobot-parent="<?= $c['bobot']; ?>"
                                      data-input-id="perhitungan-<?= $pk['urut']; ?><?= $d['id']; ?>"
                                      data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $d['id']; ?>">
                                      <option selected value="0" data-bobot="0" data-penilaian="0"> -Skala- </option>
@@ -239,7 +251,18 @@
                  <tr>
                      <td class="text-center text-right" style="text-align: right;" colspan="8"><strong>Total Point <?= $nc ?>: </strong></td>
                      <td class="text-center">
-                         <input class="form-control perhitungan" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $nc; ?>" name="totalDetail-<?= $nc; ?>" readonly>
+                     <table>
+                                        <tr>
+                                            <td>perhitungan</td>
+                                            <td>skor</td>
+                                        </tr>
+                                        <tr>
+                                            <td> <input class="form-control perhitungan" style="width: 100px; text-align: center" type="text" id="totalDetail-<?= $nc; ?>" name="totalDetail-<?= $nc; ?>" readonly></td>
+                                            <td> <input class="form-control skor-perhitungan" style="width: 100px; text-align: center" type="text" id="skor-totalDetail-<?= $nc; ?>" name="totalDetail-<?= $nc; ?>" readonly></td>
+                                        </tr>
+                                    </table>
+
+                        
                      </td>
                  </tr>
              <?php endif; ?>
