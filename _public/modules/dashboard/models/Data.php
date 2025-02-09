@@ -31,7 +31,7 @@ class Data extends MX_Model
 			->get()
 			->result_array();
 
-            // doi::dump($rows);
+            doi::dump($rows);
             // die;
 
 			$arrData = [];
