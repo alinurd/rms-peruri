@@ -28,7 +28,7 @@ class Rcsa_Criteria extends BackendController
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
 		// $this->addField(array('field' => 'judul_assesment', 'size' => 100, 'search' => false));
 		$this->addField(array('field' => 'judul_assesment', 'show' => false));
-		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true));
+		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true, 'readonly' => true));
 		$this->addField(array('field' => 'officer_no', 'show' => false, 'default' => $this->authentication->get_info_user('identifier')));
 		$this->addField(array('field' => 'create_user', 'show' => false));
 		$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => false));
@@ -129,6 +129,19 @@ class Rcsa_Criteria extends BackendController
 	// 	$result[] = array('posisi' => 'right', 'content' => '<a class="btn btn-warning btn-flat" style="width:100%;" data-content="Detail Risk Register" data-toggle="popover" href="' . base_url($this->modul_name . '/risk-event/' . $owner . '/' . $id) . '" data-original-title="" title=""><strong style="text-shadow: 1px 2px #020202;">START<br/>Risk Register</strong></a>');
 	// 	return $result;
 	// }
+	function updateBox_OWNER_NO($field, $rows, $value){ 
+		
+ 		$content = form_dropdown('owner_no', $this->cbo_parent, ($value) ? $value : '', 'class="form-control select2 "  style="width:100%;"id="cowner" disabled');
+
+		return $content;
+	}
+ 	function updateBox_PERIOD_NO($field, $rows, $value){ 
+		
+ 		$content = form_dropdown('period_no', $this->cbo_periode, ($value) ? $value : '', 'class="form-control select2 "  style="width:100%;"id="cowner" disabled');
+
+		return $content;
+	}
+	 
 	function listBox_COPY($rows, $value)
 	{
 

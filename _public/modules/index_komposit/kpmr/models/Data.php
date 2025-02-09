@@ -20,6 +20,7 @@ class Data extends MX_Model {
         foreach ($combos as $combo) {
             $comboData = [
                 'data' => $combo['data'],
+                'bobot' => $combo['param1'],
                 'parent' => []
             ];
              $parents = $this->db->where('id_combo', $combo['id'])
