@@ -1045,7 +1045,7 @@ class CI_Upload {
 
 		if ( ! is_really_writable($this->upload_path))
 		{
-			doi::dump($this->upload_path);
+			doi::dump(is_really_writable($this->upload_path));
 			die;
 			$this->set_error('upload_not_writable', 'error');
 			return FALSE;
