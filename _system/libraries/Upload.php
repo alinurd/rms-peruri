@@ -1010,8 +1010,8 @@ class CI_Upload {
 	public function validate_upload_path($p)
 	{
 		$reqpatch= 'upload';
-		doi::dump($p);
-		die();
+		// doi::dump($p);
+		// die();
 		$this->upload_path= "./themes/file/$p/";
 		if($p =="news"){
 			$this->upload_path= "./themes/upload/$p/";
