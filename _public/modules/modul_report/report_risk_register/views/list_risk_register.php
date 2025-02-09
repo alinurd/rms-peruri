@@ -372,7 +372,7 @@
                                     ?>
                                         <tr>
                                             <td style="border: none;"><?= $index + 1 .'.'; ?></td>
-                                            <td style="border: none;"><?= $data_treatment['target_progress_detail']; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
+                                            <td style="border: none;"><?= number_format($data_treatment['target_progress_detail'])."%"; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>
