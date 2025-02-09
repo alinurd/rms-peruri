@@ -1010,8 +1010,8 @@ class CI_Upload {
 	public function validate_upload_path($p)
 	{
 		$reqpatch= 'upload';
-		// doi::dump($p);
-		// die();./themes/file/
+		doi::dump($p);
+		die();
 		$this->upload_path= "./themes/file/$p/";
 		if($p =="news"){
 			$this->upload_path= "./themes/upload/$p/";
@@ -1045,6 +1045,8 @@ class CI_Upload {
 
 		if ( ! is_really_writable($this->upload_path))
 		{
+			doi::dump($this->upload_path);
+			die;
 			$this->set_error('upload_not_writable', 'error');
 			return FALSE;
 		}
