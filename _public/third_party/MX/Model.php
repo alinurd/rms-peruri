@@ -207,9 +207,8 @@ class MX_Model extends CI_Model
 					$query = "SELECT id, judul_assesment AS name 
 							  FROM " . _TBL_RCSA . " 
 							  WHERE judul_assesment IS NOT NULL 
-							  AND judul_assesment != '' {$where}
+							  AND judul_assesment != '' {$where} AND WHERE id = 367
 							  ORDER BY judul_assesment";
-				doi::dump($this->db->last_query());
 				break;
 			case 'officer':
 				$query = "select id, officer_name as name from " . _TBL_OFFICER . "";
