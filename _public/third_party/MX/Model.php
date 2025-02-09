@@ -201,11 +201,11 @@ class MX_Model extends CI_Model
 
 			case 'judul_assesment_new':
 				$where = "AND owner_no = '".$param."'";
-				// if($param2> 0){
-				// 	$where .= "AND YEAR(create_date) LIKE '%".$param2."%'";
-				// }
+				if($param2> 0){
+					$where .= "AND b.periode_name LIKE '%".$param2."%'";
+				}
 					$query = "SELECT id, judul_assesment AS name 
-							  FROM " . _TBL_RCSA . " 
+							  FROM " . _TBL_RCSA . " AS a JOIN ". _TBL_PERIOD. " AS b ON a.period_no = b.id
 							  WHERE judul_assesment IS NOT NULL 
 							  AND judul_assesment != '' {$where}
 							  ORDER BY judul_assesment";
