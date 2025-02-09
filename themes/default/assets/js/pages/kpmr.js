@@ -91,9 +91,23 @@ function calculateDropdown(element) {
   var rumusId = element.data("input-rumus-id");
   var idParent = element.data("id-parent");
   var nc = element.data("nc");
+  var bobotParent = element.data('bobot-parent');
+  $('#' + inputId).val(hasil.toFixed(2));
 
-  $("#" + inputId).val(hasil.toFixed(2));
+  if(inputId=="perhitungan-A37"){
+    $('#skor-' + inputId).val(bobotParent/100*hasil.toFixed(2));
+}
+else if(inputId=="perhitungan-A40"){
+    $('#skor-' + inputId).val(bobotParent/100*hasil.toFixed(2));
+}
+else if(inputId=="perhitungan-A45"){
+    $('#skor-' + inputId).val(bobotParent/100*hasil.toFixed(2));
+}
+else{
+    $('#skor-' + inputId).val(hasil.toFixed(2));
+}
 
+ 
   var rumus = bobot > 0 ? `${bobot}% X ${penilaian}` : penilaian;
   $("#" + rumusId).val(rumus);
 
@@ -102,10 +116,11 @@ function calculateDropdown(element) {
     totalDetail += parseFloat($(this).val()) || 0;
   });
 
-  $("#totalDetail-" + nc).val(totalDetail.toFixed(2));
+    $('#totalDetail-' + nc).val(totalDetail.toFixed(2));
+    $('#skor-totalDetail-' + nc).val(bobotParent/100*totalDetail.toFixed(2));
 
   var totalPerhitungan = 0;
-  $(".perhitungan").each(function () {
+    $('.skor-perhitungan').each(function () {
     totalPerhitungan += parseFloat($(this).val()) || 0;
   });
   $("#totalPerhitungan").val(totalPerhitungan.toFixed(2));
