@@ -368,6 +368,7 @@
                                                                 ->get('bangga_rcsa_treatment')
                                                                 ->row_array();  // Ambil satu baris data saja
                                         // Cek apakah bulan valid dan ambil tanggal terakhir bulan tersebut
+                                        doi::dump($data_treatment);
                                         $tanggal_terakhir_bulan = '';
                                         if (!empty($i)) {
                                             // Dapatkan tanggal terakhir bulan menggunakan DateTime
