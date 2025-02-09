@@ -379,7 +379,7 @@
                                     ?>
                                         <tr>
                                             <td style="border: none;"><?= $index + 1 .'.'; ?></td>
-                                            <td style="border: none;"><?= $tanggal_terakhir_bulan; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
+                                            <td style="border: none;"><?= "ok"; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>
