@@ -209,6 +209,7 @@ class MX_Model extends CI_Model
 							  WHERE judul_assesment IS NOT NULL 
 							  AND judul_assesment != '' {$where}
 							  ORDER BY judul_assesment";
+				doi::dump($this->db->last_query());
 				break;
 			case 'officer':
 				$query = "select id, officer_name as name from " . _TBL_OFFICER . "";

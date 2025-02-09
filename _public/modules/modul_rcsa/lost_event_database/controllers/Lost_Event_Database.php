@@ -304,9 +304,9 @@ class Lost_Event_Database extends BackendController
 
 
     public function get_judul_assesment(){
-        $owner_no = $this->input->post("owner_no"); 
-        $tahun = $this->input->post("tahun"); 
-        $hasil = $this->get_combo('judul_assesment_new', $owner_no,$tahun);
+        $owner_no   = $this->input->post("owner_no"); 
+        $tahun      = $this->input->post("tahun"); 
+        $hasil      = $this->get_combo('judul_assesment_new', $owner_no,$tahun);
     
         // Array untuk menyimpan <option>
         $options = '';
