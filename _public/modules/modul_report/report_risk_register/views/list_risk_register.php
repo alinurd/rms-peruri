@@ -368,19 +368,11 @@
                                                                 ->get('bangga_rcsa_treatment')
                                                                 ->row_array();  // Ambil satu baris data saja
                                         // Cek apakah bulan valid dan ambil tanggal terakhir bulan tersebut
-                                        doi::dump($data_treatment);
-                                        $tanggal_terakhir_bulan = '';
-                                        if (!empty($i)) {
-                                            // Dapatkan tanggal terakhir bulan menggunakan DateTime
-                                            $date = new DateTime();
-                                            $date->setDate(date('Y'), $i, 1);  // Set bulan dan tahun sesuai
-                                            $date->modify('last day of this month');  // Modify menjadi tanggal terakhir bulan tersebut
-                                            $tanggal_terakhir_bulan = $date->format('d/m/y');  // Format tanggal
-                                        }
+                                      
                                     ?>
                                         <tr>
                                             <td style="border: none;"><?= $index + 1 .'.'; ?></td>
-                                            <td style="border: none;"><?= "ok"; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
+                                            <td style="border: none;"><?= $data_treatment['target_progress_detail']; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>
