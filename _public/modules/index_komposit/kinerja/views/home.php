@@ -101,7 +101,7 @@
             ?>
              <tr style="background-color:#d5edef;">
                  <td class="text-center" width="5%" rowspan="<?= $parentRowspan + $ss ?>"><?= $nc ?></td>
-                 <td colspan="9"><b><?= $c['data'] ?></b> - <?= $c['bobot'] ?>% => <?= $c['id'] ?></td>
+                 <td colspan="9"><b><?= $c['data'] ?></b> - <?= $c['bobot'] ?>%  </td>
              </tr>
 
              <?php foreach ($c['parent'] as $pKey => $pk) :
