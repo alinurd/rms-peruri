@@ -2034,22 +2034,18 @@ if($dtkri){
 
 	function get_register() 
 	{ 
-		$id_rcsa = $this->input->post('id');
-		$owner_no = $this->input->post('owner_no');
-		$data['field'] = $this->data->get_data_risk_register($id_rcsa);
-
-
-		$data['fieldxx'] = $this->data->get_data_risk_reg_acc($id_rcsa);
-
-		$data['tgl'] = $this->data->get_data_tanggal($id_rcsa);
-		$data['id_rcsa'] = $id_rcsa;
-		$data['id'] = $id_rcsa;
- 
-		$parent_no = $this->data->get_data_parent($owner_no);
-		$data['owner'] = $parent_no[0]['parent_no'];
-		$data['divisi'] = $this->data->get_data_divisi($parent_no);
-		$data['fields'] = $this->data->get_data_officer($id_rcsa);
-		$data['tipe'] = 'cetak';
+		$id_rcsa 			= $this->input->post('id');
+		$owner_no 			= $this->input->post('owner_no');
+		$data['field'] 		= $this->data->get_data_risk_register($id_rcsa);
+		$data['fieldxx'] 	= $this->data->get_data_risk_reg_acc($id_rcsa);
+		$data['tgl'] 		= $this->data->get_data_tanggal($id_rcsa);
+		$data['id_rcsa'] 	= $id_rcsa;
+		$data['id'] 		= $id_rcsa;
+		$parent_no 			= $this->data->get_data_parent($owner_no);
+		$data['owner'] 		= $parent_no[0]['parent_no'];
+		$data['divisi'] 	= $this->data->get_data_divisi($parent_no);
+		$data['fields'] 	= $this->data->get_data_officer($id_rcsa);
+		$data['tipe'] 		= 'cetak';
 		$xx = array('field' => $data['field'], 'rcsa' => $data['id_rcsa']);
 		$this->session->set_userdata('result_risk_register', $xx);
 		// $residual_level = $this->data->get_master_level(true, $data['field'][0]['residual_level']);

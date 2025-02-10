@@ -14,7 +14,7 @@
     }
 
     .w250 {
-        width: 250px;
+        width: 250px; 
     }
 
     .w150 {
@@ -367,33 +367,28 @@
                             
                     ?>
                         <td valign="top">
-                            <?php if (!empty($d_id_action)): ?>
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <?php foreach ($d_id_action as $index => $treat): 
-                                        // Ambil data treatment berdasarkan id action dan bulan
-                                        $data_treatment = $this->db->where('id_rcsa_action', $treat)
-                                                                ->where('bulan', $i)  // Pastikan bulan adalah variabel yang tepat
+                        <?php 
+                        if (!empty($d_id_action)): ?>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <?php foreach ($d_id_action as $index => $treat): 
+                                    $data_treatment = $this->db->select('target_damp_loss')->where('id_rcsa_action', $treat)
                                                                 ->get('bangga_rcsa_treatment')
-                                                                ->row_array();  // Ambil satu baris data saja
-                                        // Cek apakah bulan valid dan ambil tanggal terakhir bulan tersebut
-                                        $tanggal_terakhir_bulan = '';
-                                        if (!empty($i)) {
-                                            // Dapatkan tanggal terakhir bulan menggunakan DateTime
-                                            $date = new DateTime();
-                                            $date->setDate(date('Y'), $i, 1);  // Set bulan dan tahun sesuai
-                                            $date->modify('last day of this month');  // Modify menjadi tanggal terakhir bulan tersebut
-                                            $tanggal_terakhir_bulan = $date->format('d/m/y');  // Format tanggal
-                                        }
-                                    ?>
-                                        <tr>
-                                            <td style="border: none;"><?= $index + 1 .'.'; ?></td>
-                                            <td style="border: none;"><?= $tanggal_terakhir_bulan; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </table>
-                            <?php else: ?>
-                                <?= '-'; ?>
-                            <?php endif; ?>
+                                                                ->result_array(); 
+                                    $total_target_damp_loss = 0;
+                                    foreach ($data_treatment as $j => $dt){
+                                        $total_target_damp_loss += $data_treatment[$j]['target_damp_loss'];
+                                    }
+                                    
+                                ?>
+                                    <tr>
+                                        <td style="border: none;"><?= $index + 1 .'.'; ?></td>
+                                        <td style="border: none;"><?= !empty($total_target_damp_loss) ? number_format($total_target_damp_loss, 2) : '-'; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        <?php else: ?>
+                            <?= '-'; ?>
+                        <?php endif; ?>
                         </td>
 
                     <?php
