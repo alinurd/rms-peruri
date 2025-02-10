@@ -55,7 +55,7 @@
 <div class="double-scroll" style='height:550px;'>
     <table class="table table-bordered table-sm test" id="datatables_event" border="1">
     <thead>
-            <tr>
+            <tr> 
                 <td colspan="2" rowspan="6" style="text-align: left;border-right:none;vertical-align: middle;">
                 <?php
                     $relative_path = "themes/default/assets/images/logo.png";
