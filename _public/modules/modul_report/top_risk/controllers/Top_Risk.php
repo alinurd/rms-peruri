@@ -749,33 +749,43 @@ class Top_Risk extends BackendController
 	
 	function get_export_data()
 	{
-		$post = $this->input->post();
-		$bulan = $post['bulan'];
+		$post 	= $this->input->post();
+		$bulan 	= $post['bulan'];
 		$bulan2 = $post['bulan2'];
 		$tahun2 = $post['tahun2'];
-$a = $this->db->select('id,level_no')->where('id',$post['owner'])->get(_TBL_OWNER)->result_array();
-$b = array();
-foreach ($a as $key => $value) {
-$b = $value['level_no'];
-}			
+		$a = $this->db->select('id,level_no')->where('id',$post['owner'])->get(_TBL_OWNER)->result_array();
+		$b = array();
+		foreach ($a as $key => $value) {
+			$b = $value['level_no'];
+		}			
+		$owner	= $post['owner'];
+		$this->data->owner_child=array();
+
+		if ($owner>0){
+			$this->data->owner_child[]=$owner;
+		}
+
+		$this->data->get_owner_child($owner);
+		$owner_child=$this->data->owner_child;
+		// doi::dump($b);
+
 		if ($post['owner'] > 0) {
 			if ($b == 3) {
-				$rows['bobo'] = $this->db->where('urgensi_no >', 0)->where('urgensi_no_kadiv', 1)->where('parent_no', $post['owner'])->where('period_no', $post['tahun'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
+				$rows['bobo'] = $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('parent_no', $post['owner'])->where('period_no', $post['tahun'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
 			}else{
-				$rows['bobo'] = $this->db->where('urgensi_no >', 0)->where('urgensi_no_kadiv', 1)->where('owner_no', $post['owner'])->where('period_no', $post['tahun'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
+				$rows['bobo'] = $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('owner_no', $post['owner'])->where('period_no', $post['tahun'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
 			}
-			$this->db->where('owner_no', $post['owner']);
-			$this->db->where('period_no', $post['tahun']);
-			$this->db->where('bulan', $post['bulan']);
-			$this->db->where('risk_level >', 0);
-			$a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			// $this->db->where('owner_no', $post['owner']);
+			// $this->db->where('period_no', $post['tahun']);
+			// $this->db->where('bulan', $post['bulan']);
+			// $this->db->where('risk_level >', 0);
+			// $a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		}else {
-			$rows['bobo']= $this->db->where('urgensi_no >', 0)->where('urgensi_no_kadiv', 1)->where('period_no', $post['tahun'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			$this->db->where('period_no', $post['tahun']);
-			$this->db->where('bulan', $post['bulan']);
-			$this->db->where('risk_level >', 0);
-			$a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-
+			$rows['bobo']= $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('period_no', $post['tahun'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			// $this->db->where('period_no', $post['tahun']);
+			// $this->db->where('bulan', $post['bulan']);
+			// $this->db->where('risk_level >', 0);
+			// $a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		}
 		$owner = $this->db->where('id', $post['owner'])->get(_TBL_OWNER)->row_array();
 		if ($post['owner'] == 0) {
@@ -783,14 +793,17 @@ $b = $value['level_no'];
 		}else{
 			 $owner1 = $owner['name'];
 		}
-		$jon = array();
-		foreach ($rows['bobo'] as $key => $value) {
-		$this->db->where('rcsa_detail_no', $value['id']);
-		$row = $this->db->get(_TBL_VIEW_RCSA_MITIGASI)->result_array();
-		foreach ($row as $key1 => $value1) {
-			$jon[$value['id']][]=$value1['proaktif'];
+
+			$jon = array();
+			foreach ($rows['bobo'] as $key => $value) {
+			$this->db->where('rcsa_detail_no', $value['id']);
+			$row = $this->db->get(_TBL_VIEW_RCSA_MITIGASI)->result_array();
+			foreach ($row as $key1 => $value1) {
+				$jon[$value['id']][]=$value1['proaktif'];
+			}
 		}
-		}
+
+		
 		$rows['baba'] = array();
 
 		foreach ($rows['bobo'] as $key => $value) {
@@ -810,22 +823,27 @@ $b = $value['level_no'];
 				$this->db->where('rcsa_detail_no', $value['id']);
 			 }
 		
-		$this->db->where('period_no',$post['tahun']);
-		$this->db->where('bulan',$post['bulan']);
-		$this->db->where('rcsa_detail_no', $value['id']);
-		$row = $this->db->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-		if ($row) {
-			foreach ($row as $key1 => $value1) {
-			$rows['baba'][$value['id']]['inherent_analisis_action']=$value1['inherent_analisis_action'];
-			$rows['baba'][$value['id']]['warna_action']=$value1['warna_action'];
-			$rows['baba'][$value['id']]['warna_text_action']=$value1['warna_text_action'];
+			$this->db->where('period_no',$post['tahun']);
+			$this->db->where('bulan',$post['bulan']);
+			$this->db->where('rcsa_detail_no', $value['id']);
+			$row = $this->db->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
+			if ($row) {
+				foreach ($row as $key1 => $value1) {
+				$rows['baba'][$value['id']]['inherent_analisis_action']=$value1['inherent_analisis_action'];
+				$rows['baba'][$value['id']]['warna_action']=$value1['warna_action'];
+				$rows['baba'][$value['id']]['warna_text_action']=$value1['warna_text_action'];
+			}
+			}else{
+				$rows['baba'][$value['id']]['inherent_analisis_action']="";
+				$rows['baba'][$value['id']]['warna_action']="";
+				$rows['baba'][$value['id']]['warna_text_action']="";
+			}
+
+			$this->db->where('period_no',$post['tahun']);
+			$this->db->where('bulan',$post['bulan']);
+			$this->db->where('rcsa_detail_no', $value['id']);
+			$row = $this->db->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
 		}
-		}else{
-			$rows['baba'][$value['id']]['inherent_analisis_action']="";
-			$rows['baba'][$value['id']]['warna_action']="";
-			$rows['baba'][$value['id']]['warna_text_action']="";
-		}
-	}
 
 		$hasil['combo'] = $this->load->view('detail_data', ['data' => $rows,'filter' => $post,'proaktif'=>$jon,'bobo'=>$a,'owner1'=>$owner1,'bulan2'=>$bulan2,'tahun2'=>$tahun2,'bulan'=>$bulan], true);
 

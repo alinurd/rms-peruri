@@ -55,41 +55,92 @@
         <thead>
 
             <tr>
-            <td colspan="2" rowspan="3" style="text-align: left;border-right:none;" ><img src="<?=img_url('logo.png');?>" width="90"></td>
-            <td colspan="2" rowspan="3" style="text-align: center;font-size: 24px;border-left:none;">TOP RISK</td>
-            <td colspan="2" style="text-align: left;">No.</td>
-            <td style="text-align: left;">: 009/RM-FORM/I/<?= $tahun2;?></td>
-          </tr>
-          <tr>
-            <td colspan="2"  style="text-align: left;">Revisi</td>
-            <td style="text-align: left;">: 1</td>
-          </tr>
-          <tr>
-            <td colspan="2"  style="text-align: left;">Tanggal Revisi</td>
-            <td style="text-align: left;">: 31 Januari <?= $tahun2;?></td>
-          </tr>
-<tr>
-    <td colspan="2" style="text-align: left;">Risk Owner </td>
-    <td colspan="5" style="text-align: left;">: <?= $owner1;?></td>
-</tr>
-<tr>
-    <td colspan="2" style="text-align: left;">Bulan </td>
-    <td colspan="5" style="text-align: left;">: <?= $bulan2;?></td>
-</tr>
+                <td colspan="2" rowspan="3" style="text-align: left;border-right:none;" ><img src="<?=img_url('logo.png');?>" width="90"></td>
+                <td colspan="3" rowspan="3" style="text-align: center;font-size: 24px;border-left:none;">TOP RISK</td>
+                <td colspan="2" style="text-align: left;">No.</td>
+                <td style="text-align: left;">: 009/RM-FORM/I/<?= $tahun2;?></td>
+            </tr>
+            <tr>
+                <td colspan="2"  style="text-align: left;">Revisi</td>
+                <td style="text-align: left;">: 1</td>
+            </tr>
+            <tr>
+                <td colspan="2"  style="text-align: left;">Tanggal Revisi</td>
+                <td style="text-align: left;">: 31 Januari <?= $tahun2;?></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: left;">Risk Owner </td>
+                <td colspan="6" style="text-align: left;">: <?= $owner1;?></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: left;">Bulan </td>
+                <td colspan="7" style="text-align: left;">: <?= $bulan2;?></td>
+            </tr>
       </thead>
       <tbody>
             <tr>
-                <th class="text-center">No</th>
-                <th class="text-center">Risk Owner</th>
-                <th class="text-center">Kategori</th>
-                <th class="text-center">Peristiwa Risiko</th>
-                <th class="text-center">Inherent</th>
-                <th class="text-center">Residual</th>
-                <th class="text-center">Proaktif</th>
+                <th class="text-center" rowspan="2" style="vertical-align: middle;">No</th>
+                <th class="text-center" rowspan="2"  style="vertical-align: middle;">Risk Owner</th>
+                <th class="text-center" rowspan="2"  style="vertical-align: middle;">Kategori</th>
+                <th class="text-center" rowspan="2"  style="vertical-align: middle;">Peristiwa Risiko</th>
+                <th class="text-center" rowspan="2">Inherent</th>
+                <th class="text-center" colspan="2">Residual</th>
+                <th class="text-center" rowspan="2"  style="vertical-align: middle;">Treatment</th>
+            </tr>
+            <tr>
+                <th class="text-center">Target</th>
+                <th class="text-center">Realisasi</th>
             </tr>
             <?php
             $no=0;
             foreach($data['bobo'] as $row):
+                
+                $inherent_level = $this->data->get_master_level(true, $row['residual_level']);
+				if (!$inherent_level) {
+                    $inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+				}
+
+                $likeinherent = $this->db
+				->where('id', $inherent_level['likelihood'])
+				->get('bangga_level')->row_array();
+				
+				$impactinherent = $this->db
+				->where('id', $inherent_level['impact'])
+				->get('bangga_level')->row_array();
+
+                $residual_level = $this->db->select('*')->where('rcsa_detail', $row['id'])->where('bulan', $bulan)->get(_TBL_RCSA_ACTION_DETAIL)->row_array();
+				
+				$cek_score 				= $this->data->cek_level_new($residual_level['residual_likelihood_action'], $residual_level['residual_impact_action']);
+				$residual_level_risiko  = $this->data->get_master_level(true, $cek_score['id']);
+				$residual_code 			= $this->data->level_action($residual_level['residual_likelihood_action'], $residual_level['residual_impact_action']);
+
+                if (!$residual_level_risiko) {
+					$residual_level_risiko = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+				}
+				$like = $this->db
+				->where('id', $residual_level_risiko['likelihood'])
+					->get('bangga_level')->row_array();
+				
+				$impactx = $this->db
+				->where('id', $residual_level_risiko['impact'])
+				->get('bangga_level')->row_array();
+                // doi::dump($inherent_level);
+
+                $realisasi_level = $this->db->select('*')->where('id_detail', $row['id'])->where('bulan', $bulan)->get(_TBL_ANALISIS_RISIKO)->row_array();
+				
+				$cek_score_real 		= $this->data->cek_level_new($realisasi_level['target_like'], $realisasi_level['target_impact']);
+				$realisasi_level_risiko = $this->data->get_master_level(true, $cek_score_real['id']);
+				$realisasi_code         = $this->data->level_action($realisasi_level['target_like'], $realisasi_level['target_impact']);
+                if (!$realisasi_level_risiko) {
+					$realisasi_level_risiko = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+				}
+				$like = $this->db
+				->where('id', $realisasi_level_risiko['likelihood'])
+					->get('bangga_level')->row_array();
+				
+				$impactx = $this->db
+				->where('id', $realisasi_level_risiko['impact'])
+				->get('bangga_level')->row_array();
 
             ?>
             <tr>
@@ -97,26 +148,26 @@
                 <td style="text-align: left;"><?=$row['name'];?></td>
                 <td style="text-align: center;"><?=$row['kategori'];?></td>
                 <td><?=$row['event_name'];?></td>
-              <td style="background-color:<?=$row['warna'];?>;color:<?=$row['warna_text'];?>;"><?=$row['inherent_analisis'];?></td>
-          
-        <?php
-       $a = $data['baba'][$row['id']]['inherent_analisis_action'];
-       $b = $data['baba'][$row['id']]['warna_action'];
-       $c = $data['baba'][$row['id']]['warna_text_action'];
-       ?>
-       <td style="background-color:<?=$b;?>;color:<?=$c;?>;"><?=$a;?></td>
-                  
-                <td style="text-align: left;">
-                <?php $a = intval($row['id']); ?>
-                <?php if (isset($proaktif[$a])) : ?>
-                <?php foreach($proaktif[$a] as $row1): ?>
-                       <?=$row1;?> 
-                <?php endforeach;?>
-                <?php else: ?>
-                     <?= "";?>
-                 <?php endif;?>
+                <td style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?></td>
+                <td style="text-align: center; background-color:<?= $realisasi_level_risiko['color']; ?>;color:<?= $realisasi_level_risiko['color_text']; ?>;"><?= $realisasi_level_risiko['level_mapping']; ?></td>
+                <td style="text-align: center; background-color:<?= $residual_level_risiko['color']; ?>;color:<?= $residual_level_risiko['color_text']; ?>;"><?= $residual_level_risiko['level_mapping']; ?></td>
+                <td>
+                    <?php
+                    $no = 1;
+                    $mitigasi = $this->db->where('rcsa_detail_no', $row['id'])->get(_TBL_RCSA_ACTION)->result_array();
+                    foreach ($mitigasi as $rows):
+                    ?>
+                        <?php
+                            if (!empty($rows['proaktif'])) {
+                                echo $no++ .".".$rows['proaktif']."<br>";
+                            } elseif (!empty($rows['reaktif'])) {
+                                echo $no++ .".".$rows['reaktif']."<br>";
+                            }
+                        ?>
+                    <?php endforeach; ?>
                 </td>
             </tr>
+    
             <?php endforeach;?>  
           </tbody>   
     </table>
