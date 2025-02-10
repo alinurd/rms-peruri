@@ -368,7 +368,7 @@
                             
                     ?>
                         <td valign="top">
-                            <?php if (!empty($d_id_action)): ?>
+                        <?php if (!empty($d_id_action)): ?>
                                 <table style="width: 100%; border-collapse: collapse;">
                                     <?php foreach ($d_id_action as $index => $treat): 
                                         // Ambil data treatment berdasarkan id action dan bulan
@@ -377,18 +377,11 @@
                                                                 ->get('bangga_rcsa_treatment')
                                                                 ->row_array();  // Ambil satu baris data saja
                                         // Cek apakah bulan valid dan ambil tanggal terakhir bulan tersebut
-                                        $tanggal_terakhir_bulan = '';
-                                        if (!empty($i)) {
-                                            // Dapatkan tanggal terakhir bulan menggunakan DateTime
-                                            $date = new DateTime();
-                                            $date->setDate(date('Y'), $i, 1);  // Set bulan dan tahun sesuai
-                                            $date->modify('last day of this month');  // Modify menjadi tanggal terakhir bulan tersebut
-                                            $tanggal_terakhir_bulan = $date->format('d/m/y');  // Format tanggal
-                                        }
+                                      
                                     ?>
                                         <tr>
                                             <td style="border: none;"><?= $index + 1 .'.'; ?></td>
-                                            <td style="border: none;"><?= $tanggal_terakhir_bulan; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
+                                            <td style="border: none;"><?= number_format($data_treatment['target_progress_detail'])."%"; ?></td>  <!-- Menampilkan tanggal terakhir bulan -->
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>
