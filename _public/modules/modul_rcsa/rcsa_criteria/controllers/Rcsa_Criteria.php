@@ -28,7 +28,7 @@ class Rcsa_Criteria extends BackendController
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
 		// $this->addField(array('field' => 'judul_assesment', 'size' => 100, 'search' => false));
 		$this->addField(array('field' => 'judul_assesment', 'show' => false));
-		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => true, 'search' => true, 'readonly' => true));
+		$this->addField(array('field' => 'owner_no', 'input' => 'combo:search', 'combo' => $this->cbo_parent, 'size' => 100, 'required' => false, 'search' => true, 'readonly' => true));
 		$this->addField(array('field' => 'officer_no', 'show' => false, 'default' => $this->authentication->get_info_user('identifier')));
 		$this->addField(array('field' => 'create_user', 'show' => false));
 		$this->addField(array('field' => 'period_no', 'input' => 'combo', 'combo' => $this->cbo_periode, 'size' => 15, 'search' => true, 'required' => false));
