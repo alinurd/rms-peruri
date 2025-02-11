@@ -20,6 +20,8 @@ class Data extends MX_Model {
                 'id_combo' => $newid,
                 'urut' => $urut,
                 'parameter' => $data['param'][$index],
+                'min' => $data['min'][$index],
+                'max' => $data['max'][$index],
                 'skala' => $data['skala'][$index],
                 'penilaian' => $data['penilaian'][$index],
                 'bobot' => $data['bobot'][$index]
@@ -44,6 +46,8 @@ class Data extends MX_Model {
                         'urut' => $urut,
                         'parameter' => $data['detail_param'][$urut][$detailIndex],
                         'skala' => $data['detail_skala'][$urut][$detailIndex],
+                        'min' => $data['detail_min'][$urut][$detailIndex],
+                        'max' => $data['detail_max'][$urut][$detailIndex],
                         'penilaian' => $data['detail_penilaian'][$urut][$detailIndex]
                     ];
                      $xDetail = $this->db->where('id_param', $id)->where('urut', $urut)->get("bangga_index_komposit_detail")->row_array();

@@ -405,6 +405,13 @@ class Ajax extends FrontendController {
 		echo json_encode($x);
 		
 	}
+	function  getPersentaseKomposit(){
+		$id = $this->input->post('id');
+		$percentage = $this->input->post('percentage');
+		$x = $this->data->getPersentaseKomposit($id, $percentage);
+		echo json_encode($x);
+		
+	}
 	
 }
 

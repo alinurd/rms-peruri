@@ -2,12 +2,17 @@
 <table class="table table-bordered" id="tbl_sasaran_new">
     <thead class="sticky-thead">
         <tr>
-            <th width="7%">Urut</th>
-            <th>Parameter</th>
-            <th width="10%">Skala</th>
-            <th width="10%">Hasil Penilaian</th>
-            <th width="10%">Bobot</th>
-            <th width="5%">Aksi</th>
+            <th width="7%" rowspan="2">Urut</th>
+            <th rowspan="20%">Parameter</th>
+            <th width="10%" colspan="3" style="text-align: center;">Skala</th>
+            <th width="15%" rowspan="2">Hasil Penilaian</th>
+            <th width="10%" rowspan="2">Bobot</th>
+            <th width="5%" rowspan="2">Aksi</th>
+        </tr>
+        <tr> 
+            <th width="7%">-</th> 
+            <th width="7%">+</th> 
+            <th width="7%">Skala</th>  
         </tr>
     </thead>
     <tbody>
@@ -24,7 +29,11 @@
                 <input type="text" class="form-control" name="urut[]" value="<?= $p['urut'] ?>" readonly>
             </td>
             <td><input class="form-control" type="text" name="param[]" value="<?= $p['parameter'] ?>" placeholder="Parameter"></td>
-            <td><input class="form-control" type="number" name="skala[]" value="<?= $p['skala'] ?>" placeholder="Skala"></td>
+           
+            <td><input class="form-control"  name="min[]" value="<?= $p['min'] ?>" placeholder="min"></td>
+            <td><input class="form-control"  name="max[]" value="<?= $p['max'] ?>" placeholder="max"></td>
+            <td><input class="form-control"  name="skala[]" value="<?= $p['skala'] ?>" placeholder="Skala"></td>
+           
             <td><input class="form-control" type="number" name="penilaian[]" value="<?= $p['penilaian'] ?>" placeholder="Hasil Penilaian"></td>
             <td>
                 
@@ -45,7 +54,9 @@
                 <td>
                 <input type="hidden" class="form-control" name="detail_edit[<?= $p['urut'] ?>][]" value="<?= $detail['id'] ?>" readonly>
                 <input class="form-control" type="text" name="detail_param[<?= $p['urut'] ?>][]" value="<?= $detail['parameter'] ?>" placeholder="Detail Parameter"></td>
-                <td><input class="form-control" type="number" name="detail_skala[<?= $p['urut'] ?>][]" value="<?= $detail['skala'] ?>" placeholder="Detail Skala"></td>
+                <td><input class="form-control"  name="detail_min[<?= $p['urut'] ?>][]" value="<?= $detail['min'] ?>" placeholder="Detail Skala"></td>
+                <td><input class="form-control"  name="detail_max[<?= $p['urut'] ?>][]" value="<?= $detail['max'] ?>" placeholder="Detail Skala"></td>
+                <td><input class="form-control"  name="detail_skala[<?= $p['urut'] ?>][]" value="<?= $detail['skala'] ?>" placeholder="Detail Skala"></td>
                 <td><input class="form-control" type="number" name="detail_penilaian[<?= $p['urut'] ?>][]" value="<?= $detail['penilaian'] ?>" placeholder="Detail Penilaian"></td>
                 <td>
                     <button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button>
@@ -144,7 +155,9 @@ function findLastDetailRow(mainRow) {
     newRow.innerHTML = `
         <td rowspan="1"><input type="text" class="form-control" name="urut[]" value="${urutan}" readonly></td>
         <td><input class="form-control" type="text" name="param[]" placeholder="Parameter"></td>
-        <td><input class="form-control" type="number" name="skala[]" placeholder="Skala"></td>
+        <td><input class="form-control"  name="min[]" placeholder="min"></td>
+        <td><input class="form-control"  name="max[]" placeholder="max"></td>
+        <td><input class="form-control"  name="skala[]" placeholder="Skala"></td>
         <td><input class="form-control" type="number" name="penilaian[]" placeholder="Hasil Penilaian"></td>
         <td><input class="form-control" type="number" name="bobot[]" placeholder="bobot"></td>
         <td>
@@ -177,6 +190,8 @@ function findLastDetailRow(mainRow) {
 
         detailRow.innerHTML = `
             <td><input type="text" class="form-control" name="detail_param[${urutan}][]" placeholder="${urutan} Parameter"></td>
+            <td><input class="form-control" type="number" name="detail_skala[${urutan}][]" placeholder="Skala"></td>
+            <td><input class="form-control" type="number" name="detail_skala[${urutan}][]" placeholder="Skala"></td>
             <td><input class="form-control" type="number" name="detail_skala[${urutan}][]" placeholder="Skala"></td>
             <td><input class="form-control" type="number" name="detail_penilaian[${urutan}][]" placeholder="Hasil Penilaian"></td>
             <td><button type="button" class="btn btn-warning delete-detail-row"><i class="fa fa-trash"></i></button></td>

@@ -124,11 +124,10 @@ function calculateDropdown(element) {
     $('#totalPerhitunganText').html(totalPerhitungan.toFixed(2));
 }
 
-
 function updatePercentage(id) {
+
     const x = document.getElementById(`target-${id}`);
- console.log(id)
-    const targetInput = document.getElementById(`target-${id}`);
+     const targetInput = document.getElementById(`target-${id}`);
     const isAbsolute = document.getElementById(`isAbsolute-${id}-1`).checked;
     const realisasiInput = document.getElementById(`realisasitw-${id}`);
     const persentaseSpan = document.getElementById(`persentase-${id}`);
@@ -158,11 +157,87 @@ function updatePercentage(id) {
         // console.log("percentage=>"+ percentage)
         // console.log("targetValue=>"+ targetValue)
     } else {
+        console.log(id)
         if (targetValue !== 0) {
             percentage = (targetValue /  realisasiValue) * 100;
+
+            if(id==55){
+                percentage = (realisasiValue /targetValue  ) * 100;
+            }
+           else if(id==65){
+                percentage = (realisasiValue /targetValue  ) * 100;
+            }
+           else if(id==13){
+                percentage = (realisasiValue /targetValue  ) * 100;
+              }
+           else if(id==10){
+                percentage = (realisasiValue /targetValue  ) * 100;
+             }
+             else if(id==16){
+                percentage = (realisasiValue /targetValue  ) * 100;
+                // console.log("id 13")
+             }
+             else if(id==19){
+                percentage = ( targetValue/realisasiValue  ) * 100;
+                // console.log("id 13")
+             }
         }
     }
     // console.log(percentage)
     persentaseSpan.textContent = (percentage > 0 ? percentage.toFixed(2) : 0) + " %";
+    changePersentase(id, (percentage > 0 ? percentage.toFixed(2) : 0))
 }
- 
+
+
+function changePersentase(id, percentage) {
+    var data = {
+        'id': id,
+        'percentage': percentage
+    };
+     var parent = $(this).parent();
+     var url = "ajax/getPersentaseKomposit";
+     cari_ajax_combo("post", parent, data, parent, url, "changePersentaseResp");
+}
+
+function changePersentaseResp(res) {
+    console.log(res);
+
+    // Pastikan res dan res.head ada
+    if (!res || !res.head || !res.skala || !res.head.urut || !res.head.id) {
+        console.warn("Data tidak lengkap dalam response:", res);
+        return;
+    }
+
+    // Bentuk ID select berdasarkan urutan dan ID dari res.head
+    let selectId = "skala-" + res.head.urut + res.head.id;
+    let selectElement = document.getElementById(selectId);
+
+    // Coba cari dengan querySelector jika getElementById gagal
+    if (!selectElement) {
+        selectElement = document.querySelector(`[id^="skala-${res.head.urut}"]`);
+    }
+
+    if (selectElement) {
+        let options = selectElement.options;
+        let found = false;
+
+        // Loop semua opsi dalam select untuk mencocokkan skala
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value == res.skala) {
+                options[i].selected = true;
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            // Trigger event change supaya perubahan terdeteksi
+            selectElement.dispatchEvent(new Event("change"));
+        } else {
+            console.warn("Skala tidak ditemukan dalam dropdown:", res.skala);
+        }
+    } else {
+        console.warn("Dropdown tidak ditemukan dengan ID:", selectId);
+    }
+}
+
