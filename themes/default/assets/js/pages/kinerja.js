@@ -9,7 +9,11 @@ $(document).ready(function () {
         calculateDropdown($(this));
  
     });
-    
+   
+    $('input[name="idx[]"]').each(function() {
+         var id = $(this).val();
+        updatePercentage(id);
+    });
 
     
   
@@ -152,8 +156,7 @@ function updatePercentage(id) {
         // console.log("percentage=>"+ percentage)
         // console.log("percentage=>"+ percentage)
         // console.log("targetValue=>"+ targetValue)
-    } else {
-        console.log(id)
+    } else { 
         if (targetValue !== 0) {
             percentage = (targetValue /  realisasiValue) * 100;
 
@@ -196,7 +199,7 @@ function changePersentase(id, percentage) {
 }
 
 function changePersentaseResp(res) {
-    console.log(res);
+    
 
     // Pastikan res dan res.head ada
     if (!res || !res.head || !res.skala || !res.head.urut || !res.head.id) {
