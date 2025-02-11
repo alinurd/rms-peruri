@@ -9,11 +9,7 @@ $(document).ready(function () {
         calculateDropdown($(this));
  
     });
-   
-    $('input[name="idx[]"]').each(function() {
-         var id = $(this).val();
-        updatePercentage(id);
-    });
+    
 
     
   
