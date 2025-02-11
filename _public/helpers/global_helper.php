@@ -945,7 +945,11 @@ if ( ! function_exists('_menu_kiri'))
 				$url='';
 			}
 		}else{
-			$url="href='".base_url($ad['nm_modul'])."' ";
+			if ($ad['nm_modul']=='EYERISK2024'){
+				$url='href="https://rcsa.peruri.co.id/" target="_BLANK"';
+			}else{
+				$url="href='".base_url($ad['nm_modul'])."' ";
+			}
 		}
 		
 		$bahasa_mdl=lang('msg_mdl_'.str_replace('-','_',$ad['nm_modul']));
@@ -966,7 +970,7 @@ if ( ! function_exists('_menu_kiri'))
 		}
 		
 		$icon='<i class="'.$ad['icon'].'"></i> ';
-		
+	   
 		$isi = sprintf("<a %s title='%s'>%s %s %s</a>", $url, $bahasa_mdl, $icon, '<span>' . $bahasa_mdl . '</span>', $icon_down);
 		
 		$html = "<li data-modul='".$ad['nm_modul']."'>".$isi;
@@ -1010,8 +1014,58 @@ if ( ! function_exists('_menu_atas'))
 		}
 		
 		$icon='<i class="'.$ad['icon'].'"></i> ';
+		if ($ad['nm_modul'] == 'EYERISK2024') {
+			$isi = '
+			<div class="text-container">
+				<!-- Link dengan efek berjalan & gelombang -->
+				<a href="https://rcsa.peruri.co.id/" target="_BLANK" class="running-text wave-text">
+					' . $icon . $bahasa_mdl . '
+				</a>
+			</div>
+			
+			<style> 
+			/* Kontainer utama */
+			.text-container {
+				text-align: center;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+		 
+			.running-text {
+				display: inline-block;
+				font-size: 18px;
+
+				padding-top: 18px;
+
+				font-weight: bold;
+				color: rgb(7, 0, 109);
+				text-decoration: none;
+				animation: marquee 5s linear infinite;
+			}
 		
-		$isi = sprintf("<a href='%s' title='%s' %s>%s %s %s</a>", $url, $bahasa_mdl, $class, $icon, '<span>' . $bahasa_mdl . '</span>', $icon_down);
+			.wave-text {
+				display: inline-block;
+				animation: wave 2s infinite ease-in-out;
+			}
+		
+			@keyframes wave {
+				0% { transform: translateY(0px); }
+				50% { transform: translateY(-2px); }
+				100% { transform: translateY(0px); }
+			}
+			</style>
+			';
+		} else {
+			$isi = sprintf(
+				"<a href='%s' title='%s' %s>%s <span>%s</span> %s</a>",
+				$url,
+				$bahasa_mdl,
+				$class,
+				$icon,
+				$bahasa_mdl,
+				$icon_down
+			);
+		}
 		
 		if (array_key_exists('children', $ad)) {	
 			$html = "<li class='dropdown'>".$isi;
