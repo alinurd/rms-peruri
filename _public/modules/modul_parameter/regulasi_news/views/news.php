@@ -33,7 +33,7 @@
 </style>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" style="padding: 0px;">
         <div class="row">
             <div class="col-sm-8 panel-heading">
                 <h3 style="padding-left:10px;"><?= $title ?></h3>
