@@ -14,6 +14,7 @@
         display: inline-block; 
         animation: scroll 25s linear infinite; 
         color: white;
+        padding: 0px !important;
     }
 
     @keyframes scroll {
