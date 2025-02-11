@@ -4,7 +4,7 @@
         background-color:#d06aff;
         border-radius: 10px; 
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        padding: 5px; 
+        /* padding: 5px;  */
         margin: 20px 0; 
         overflow: hidden; 
     }
