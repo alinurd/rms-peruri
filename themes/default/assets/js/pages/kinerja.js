@@ -9,7 +9,12 @@ $(document).ready(function () {
         calculateDropdown($(this));
  
     });
-    
+   
+    $('input[name="idx[]"]').each(function() {
+         var id = $(this).val();
+         console.log(id)
+        updatePercentage(id);
+    });
 
     
   
@@ -152,8 +157,7 @@ function updatePercentage(id) {
         // console.log("percentage=>"+ percentage)
         // console.log("percentage=>"+ percentage)
         // console.log("targetValue=>"+ targetValue)
-    } else {
-        console.log(id)
+    } else { 
         if (targetValue !== 0) {
             percentage = (targetValue /  realisasiValue) * 100;
 
@@ -179,8 +183,7 @@ function updatePercentage(id) {
              }
         }
     }
-    // console.log(percentage)
-    persentaseSpan.textContent = (percentage > 0 ? percentage.toFixed(2) : 0) + " %";
+     persentaseSpan.textContent = (percentage > 0 ? percentage.toFixed(2) : 0) + " %";
     changePersentase(id, (percentage > 0 ? percentage.toFixed(2) : 0))
 }
 
@@ -196,8 +199,8 @@ function changePersentase(id, percentage) {
 }
 
 function changePersentaseResp(res) {
-    console.log(res);
-
+    
+console.log(res.skala, res.head.id)
     // Pastikan res dan res.head ada
     if (!res || !res.head || !res.skala || !res.head.urut || !res.head.id) {
         console.warn("Data tidak lengkap dalam response:", res);
@@ -210,7 +213,7 @@ function changePersentaseResp(res) {
 
     // Coba cari dengan querySelector jika getElementById gagal
     if (!selectElement) {
-        selectElement = document.querySelector(`[id^="skala-${res.head.urut}"]`);
+        selectElement = document.querySelector(`[id^="skala-${res.head.urut}${res.head.id})"]`);
     }
 
     if (selectElement) {
