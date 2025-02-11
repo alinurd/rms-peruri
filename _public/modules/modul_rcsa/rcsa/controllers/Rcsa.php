@@ -2063,32 +2063,22 @@ if($dtkri){
 
 	function get_rivis() 
 	{
-		$id_rcsa = $this->input->post('id');
-		$owner = $this->input->post('owner_no');
-		$data['field'] = $this->data->get_data_risk_register($id_rcsa);
-		// $tipe = $this->uri->segment(1);
-		// doi::dump($owner);
-		$data['fieldxx'] = $this->data->get_data_risk_reg_acc($id_rcsa);
-
-		$data['tgl'] = $this->data->get_data_tanggal($id_rcsa);
-		$data['id_rcsa'] = $id_rcsa;
-		$data['id'] = $id_rcsa;
-		$data['owner_no'] = $owner;
-
-		$parent_no = $this->data->get_data_parent($owner_no);
-		$data['owner'] = $parent_no[0]['parent_no'];
-		$data['divisi'] = $this->data->get_data_divisi($parent_no);
-		$data['fields'] = $this->data->get_data_officer($id_rcsa);
-		$data['tipe'] = 'cetak';
-		$xx = array('field' => $data['field'], 'rcsa' => $data['id_rcsa']);
-		$this->session->set_userdata('result_risk_register', $xx);
-		// $residual_level = $this->data->get_master_level(true, $data['field'][0]['residual_level']);
-		// $data['residual_level'] = $residual_level;
-		// $inherent_level = $this->data->get_master_level(true, $data['field'][0]['inherent_level']);
-		// $data['inherent_level'] = $inherent_level;
-
-		
- 		$data['log'] = $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_LOG_PROPOSE)->result_array();
+		$id_rcsa 			= $this->input->post('id');
+		$owner 				= $this->input->post('owner_no');
+		$data['field'] 		= $this->data->get_data_risk_register($id_rcsa);
+		$data['fieldxx'] 	= $this->data->get_data_risk_reg_acc($id_rcsa);
+		$data['tgl'] 		= $this->data->get_data_tanggal($id_rcsa);
+		$data['id_rcsa'] 	= $id_rcsa;
+		$data['id'] 		= $id_rcsa;
+		$data['owner_no'] 	= $owner;
+		$parent_no 			= $this->data->get_data_parent($owner);
+		$data['owner'] 		= $parent_no[0]['parent_no'];
+		$data['divisi'] 	= $this->data->get_data_divisi($parent_no);
+		$data['fields'] 	= $this->data->get_data_officer($id_rcsa);
+		$data['tipe'] 		= 'cetak';
+		$xx					= array('field' => $data['field'], 'rcsa' => $data['id_rcsa']);
+		$this->session->set_userdata('result_risk_register', $xx);		
+ 		$data['log'] 		= $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_LOG_PROPOSE)->result_array();
 		$result['register'] = $this->load->view('list_risk_revisi', $data, true);
 		echo json_encode($result);
 	}
