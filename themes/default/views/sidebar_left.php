@@ -31,7 +31,9 @@
   <div class="left_col scroll-view">
 	<div class="navbar nav_title" style="border: 0;">
 	  <a href="<?=base_url();?>" class="site_title" style="text-align:center;">
-		<img src="<?=img_url('logo-white.png');?>" width="50">
+	  	<div style="background-color:white;">
+			<img src="<?=img_url('logo-white.png');?>" width="50">
+		</div>
 		<span><?=$this->authentication->get_Preference('judul_atas');?></span></a>
 	</div> 
 
@@ -73,20 +75,22 @@
 	<!-- /sidebar menu -->
 
 	<!-- /menu footer buttons -->
-	<div class="sidebar-footer hidden-small">
-	  <a data-toggle="tooltip" data-placement="top" title="Frequently asked questions (FAQ)" href="<?=base_url('faq');?>">
-		<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-	  </a>
-	  <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-		<span class="glyphicon glyphicon-fullscreen full_screen" aria-hidden="true"></span>
-	  </a>
-	  <a data-toggle="tooltip" data-placement="top"  href="<?=base_url('lock-screen' . '?redirect_to=' . current_url());?>">
-		<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-	  </a>
-	  <a data-toggle="tooltip" data-placement="top" title="Logout" href="<?=base_url('auth/logout');?>">
-		<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-	  </a>
-	</div>
+	<div class="sidebar-footer hidden-small" style="display: flex; justify-content: center; align-items: center;">
+    <a data-toggle="tooltip" data-placement="top" title="Logout" href="<?=base_url('auth/logout');?>">
+        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+    </a>
+    <!-- Jika Anda ingin menambahkan kembali elemen yang dikomentari, Anda bisa melakukannya di sini
+    <a data-toggle="tooltip" data-placement="top" title="Frequently asked questions (FAQ)" href="<?=base_url('faq');?>">
+        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+    </a>
+    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+        <span class="glyphicon glyphicon-fullscreen full_screen" aria-hidden="true"></span>
+    </a>
+    <a data-toggle="tooltip" data-placement="top" href="<?=base_url('lock-screen' . '?redirect_to=' . current_url());?>">
+        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+    </a>
+    -->
+</div>
 	<!-- /menu footer buttons -->
   </div>
 </div>
