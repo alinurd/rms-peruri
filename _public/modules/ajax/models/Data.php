@@ -461,6 +461,44 @@ function get_cbotakstonomi($query, $type)
 		$rows = $this->db->where('kelompok', $id)->order_by('id')->get(_TBL_RISK_TYPE)->result_array();
 		return $rows;
 	}
+	function getPersentaseKomposit($id, $percentage) {
+		$head = $this->db->where('id', $id)->get("bangga_index_komposit")->row_array();
+		if (!$head) {
+			return ['percentage' => $percentage, 'skala' => null]; // Jika data head tidak ditemukan
+		}
+	
+		$data = $this->db->where('id_combo', $head['id_combo'])->get("bangga_index_komposit")->result_array();
+	
+		$closest = null;
+		foreach ($data as $row) {
+			// Cek apakah percentage berada dalam rentang min dan max
+			if ($percentage >= (float) $row['min'] && $percentage <= (float) $row['max']) {
+				return [
+					'percentage' => $percentage,
+					'skala' => $row['skala'],
+					'head' => $head,
+					'detail' => $data
+				];
+			}
+	
+			// Menentukan nilai skala terdekat jika tidak ada dalam rentang
+			if (!$closest || abs($percentage - (float) $row['penilaian']) < abs($percentage - (float) $closest['penilaian'])) {
+				$closest = $row;
+			}
+		}
+	
+		return [
+			'percentage' => $percentage,
+			'skala' => $closest ? $closest['skala'] : null,
+			'head' => $head,
+			'detail' => $data
+		];
+	}
+	
+	
+	 
+	
 }
+
 /* End of file app_login_model.php */
 /* Location: ./application/models/app_login_model.php */

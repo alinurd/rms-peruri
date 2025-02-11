@@ -125,7 +125,7 @@
                      </td>
 
                      <?php if (count($countDetailx) === 0) : ?>
-                         <td width="5%"><?= $pk['skala']; ?></td>
+                         <td width="5%"><?= $pk['skala']; ?> <?= $pk['min']; ?>- <?= $pk['max']; ?></td>
                          <td width="5%"><?= $pk['penilaian']; ?></td>
                          <?php if ($pKey === 0) : ?>
                              <td  rowspan="<?= count($c['parent']) ?>">
@@ -145,6 +145,8 @@
                                      data-bobot="<?= $pk['bobot']; ?>"
                                      data-id-parent="<?= $pk['id']; ?>"
                                      data-bobot-parent="<?= $c['bobot']; ?>"
+                                     data-min="min-<?= $pk['min']; ?>"
+                                     data-max="mix-<?= $pk['min']; ?>"
                                      data-input-id="perhitungan-<?= $pk['urut']; ?><?= $pk['id']; ?>"
                                      data-input-rumus-id="rumus-<?= $pk['urut']; ?><?= $pk['id']; ?>">
                                      <option selected value="0" data-bobot="0" data-penilaian="0"> -Skala- </option>

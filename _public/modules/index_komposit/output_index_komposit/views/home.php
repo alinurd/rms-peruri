@@ -154,11 +154,18 @@
                                             endif;
                                         endforeach;
                                         foreach ($levelKPMR as $level) {
-                                            if ($totalPenilaianCombo >= $level['min'] && $totalPenilaianCombo <= $level['max']) {
+                                            if ($totalPenilaianCombo >= (float)$level['min'] && $totalPenilaianKinerja < (float)$level['max'] + 1) {
                                                 $kualitasKPMR = $level['label'];
                                                 break;
                                             }
                                         }
+                                        
+                                        // foreach ($levelKPMR as $level) {
+                                        //     if ($totalPenilaianCombo >= $level['min'] && $totalPenilaianCombo <= $level['max']) {
+                                        //         $kualitasKPMR = $level['label'];
+                                        //         break;
+                                        //     }
+                                        // }
                                         ?>
                                         <tr style="background: #367FA9; color:#fff;">
                                             <th colspan="4" style="text-align: center;">Total Nilai</th>
@@ -276,11 +283,12 @@
                                             endif;
                                         endforeach;
                                         foreach ($levelKinerja as $level) {
-                                            if ($totalPenilaianKinerja >= $level['min'] && $totalPenilaianKinerja <= $level['max']) {
+                                            if ($totalPenilaianKinerja >= (float)$level['min'] && $totalPenilaianKinerja < (float)$level['max'] + 1) {
                                                 $kualitasKinerja = $level['label'];
                                                 break;
                                             }
                                         }
+                                        
                                         ?>
                                         <tr style="background: #367FA9; color:#fff;">
                                             <th colspan="4" style="text-align: center;">Total Nilai</th>

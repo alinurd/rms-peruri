@@ -99,7 +99,7 @@ class Daftar_Corporate_Risk extends BackendController {
 	{
 		$id = $rows['l_event_no'];
 		// $a = $rows['l_id'];
-		$url2 = base_url($this->modul_name="risk-event-library" . '/edit/'.$id);
+		$url2 = base_url($this->modul_name . '/edit/'.$id);
 		// $tombol['propose'] = array("default" => true, "url" => $url2,"target"=>"blank", "label" => '<i class="fa fa-search pointer"></i>');
 		$tombol['propose'] = array("default" => true, "url" => $url2,"target"=>"blank", "label" => 'Edit Risiko');
 		$tombol['edit'] = [];
