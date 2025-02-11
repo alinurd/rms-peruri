@@ -1,3 +1,37 @@
+<style>
+
+    .redirect-link {
+        background-color:#d06aff;
+        border-radius: 10px; 
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 5px; 
+        margin: 20px 0; 
+        overflow: hidden; 
+    }
+
+    .running-text {
+        white-space: nowrap; 
+        display: inline-block; 
+        animation: scroll 25s linear infinite; 
+        color: white;
+    }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(100%); /* Mulai dari luar kanan */
+        }
+        100% {
+            transform: translateX(-100%); /* Bergerak ke luar kiri */
+        }
+    }
+
+    .running-text p {
+        margin: 0; /* Menghapus margin default pada paragraf */
+        font-size: 18px; /* Ukuran font yang lebih besar */
+        color: #333; /* Warna teks */
+    }
+</style>
+
 <div class="row">
     <div class="col-md-12">
         <div class="row">
@@ -17,7 +51,16 @@
 
 <section id="main-content">
     <section class="wrapper site-min-height">
+    <div class="row redirect-link">
+        <div class="col-md-12">
+            <div class="running-text">
+                <p style="color: white !important;">Anda sedang menggunakan versi terbaru EYERISK PERURI. Jika Anda ingin kembali ke <a href="https://rcsa.peruri.co.id" style="color: yellow !important;">RCSA PERURI</a>, silakan klik di sini.</p>
+            </div>
+        </div>
+    </div>
         <div class="panel panel-default">
+            <style></style>
+        
             <!-- looping nya disini -->
             <?php foreach ($data as $datax) { // Ubah $data menjadi $datax 
             ?>

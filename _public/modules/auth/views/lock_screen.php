@@ -25,7 +25,7 @@ if (validation_errors()) {
         border-radius: 10px;
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
         max-width: 80%;
-        margin: 100px auto;
+        margin: 100px auto 40px;
         color: #fff;
     }
 
@@ -135,6 +135,32 @@ if (validation_errors()) {
       width: 100%; /* Memastikan grup login mengambil lebar penuh */
       max-width: 400px; /* Lebar maksimum untuk grup login */
   }
+
+  .countdown {
+    width: 100%; /* Lebar penuh */
+    max-width: 300px; /* Lebar maksimum */
+    border-radius: 10px;
+    padding: 10px; /* Padding */
+    margin: 0 auto; /* Memusatkan elemen */
+    box-sizing: border-box; /* Memastikan padding tidak menambah lebar */
+}
+
+    /* Media query untuk layar kecil */
+    @media (max-width: 600px) {
+        .countdown {
+            max-width: 100%; /* Lebar maksimum untuk layar kecil */
+            padding: 8px; /* Padding lebih kecil */
+            margin: auto;
+        }
+    }
+
+    /* Media query untuk layar sedang */
+    @media (min-width: 601px) and (max-width: 900px) {
+        .countdown {
+            max-width: 100%; /* Lebar maksimum untuk layar sedang */
+            padding: 10px; /* Padding normal */
+        }
+    }
 </style>
 
 <div class="screen-lock">
@@ -142,7 +168,7 @@ if (validation_errors()) {
         <img class="etc-logo-login" src="<?= base_url('themes/default/assets/images/logo-white.png'); ?>" title="">
         <div class="shine"></div>
     </div>
-    <p class="text-center bg-danger" style="max-width: 20%;border-radius:10px;" id="countdown"></p>
+    <p class="text-center bg-danger countdown" id="countdown"></p>
     <h1>SCREEN LOCKED</h1>
     <p style="color: red;">Please enter username & password to unlock.<br><i>The input data will be reset.</i></p>
     <?php echo form_open('auth/open_lock', $option); ?>

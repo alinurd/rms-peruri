@@ -13,6 +13,20 @@
 		  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 		  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 		<![endif]-->
+		<style>
+			.blinking-text {
+				animation: blink 2s infinite; /* Mengatur animasi kedap-kedip */
+			}
+
+			@keyframes blink {
+				0%, 100% {
+					opacity: 1; /* Teks terlihat */
+				}
+				50% {
+					opacity: 0; /* Teks tidak terlihat */
+				}
+			}
+		</style>
 	</head>
 	<body class="nav-md skin-blue">
 	<div class="loader"></div>
@@ -22,7 +36,7 @@
 			<?php echo $template['partials']['sidebar_left'];?>
 			<?php echo $template['partials']['header'];?>
 			<div class="right_col" role="main">
-				<div class="">
+				<div class="" style="padding-bottom: 50px !important;">
 					<?php echo $template['body'];?>
 				</div>
 			</div>
