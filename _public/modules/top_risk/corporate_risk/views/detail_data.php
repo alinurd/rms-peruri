@@ -51,72 +51,95 @@
 <input type="hidden" id="bulan2" name="bulan2" value="<?= $filter['bulan2'];?>">
 <input type="hidden" id="tahun2" name="tahun2" value="<?= $filter['tahun2'];?>">
 <div class="double-scroll">
-    <table class="table table-bordered table-sm"  border="1">
+<table class="table table-bordered table-sm"  border="1">
         <thead>
 
             <tr>
-            <td colspan="2" rowspan="3" style="text-align: left;border-right:none;" ><img src="<?=img_url('logo.png');?>" width="90"></td>
-            <td colspan="2" rowspan="3" style="text-align: center;font-size: 24px;border-left:none;" >CORPORATE RISK</td>
-            <td colspan="2" style="text-align: left;">No.</td>
-            <td style="text-align: left;">: 010/RM-FORM/I/<?= $tahun2;?></td>
-          </tr>
-          <tr>
-            <td colspan="2"  style="text-align: left;">Revisi</td>
-            <td style="text-align: left;">: 1</td>
-          </tr>
-          <tr>
-            <td colspan="2"  style="text-align: left;">Tanggal Revisi</td>
-            <td style="text-align: left;">: 31 Januari <?= $tahun2;?></td>
-          </tr>
-<tr>
-    <td colspan="2" style="text-align: left;">Risk Owner </td>
-    <td colspan="5" style="text-align: left;">: <?= $owner1;?></td>
-</tr>
-<tr>
-    <td colspan="2" style="text-align: left;">Bulan </td>
-    <td colspan="5" style="text-align: left;">: <?= $bulan2;?></td>
-</tr>
+                <td colspan="2" rowspan="3" style="text-align: left;border-right:none;" ><img src="<?=img_url('logo.png');?>" width="90"></td>
+                <td colspan="3" rowspan="3" style="text-align: center;font-size: 24px;border-left:none;">CORPORATE RISK</td>
+                <td colspan="2" style="text-align: left;">No.</td>
+                <td style="text-align: left;">: 009/RM-FORM/I/<?= $tahun2;?></td>
+            </tr>
+            <tr>
+                <td colspan="2"  style="text-align: left;">Revisi</td>
+                <td style="text-align: left;">: 1</td>
+            </tr>
+            <tr>
+                <td colspan="2"  style="text-align: left;">Tanggal Revisi</td>
+                <td style="text-align: left;">: 31 Januari <?= $tahun2;?></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: left;">Risk Owner </td>
+                <td colspan="6" style="text-align: left;">: <?= $owner1;?></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: left;">Bulan </td>
+                <td colspan="7" style="text-align: left;">: <?= $bulan2;?></td>
+            </tr>
       </thead>
       <tbody>
             <tr>
-                <th class="text-center">No</th>
-                <th class="text-center">Risk Owner</th>
-                <th class="text-center">Kategori</th>
-                <th class="text-center">Peristiwa Risiko</th>
-                <th class="text-center">Inherent</th>
-                <th class="text-center">Residual</th>
-                <th class="text-center">Proaktif</th>
+                <th class="text-center" rowspan="2" style="vertical-align: middle;">No</th>
+                <th class="text-center" rowspan="2"  style="vertical-align: middle;">Risk Owner</th>
+                <th class="text-center" rowspan="2"  style="vertical-align: middle;">Kategori</th>
+                <th class="text-center" rowspan="2"  style="vertical-align: middle;">Peristiwa Risiko</th>
+                <th class="text-center" rowspan="2">Inherent</th>
+                <th class="text-center" colspan="2">Residual</th>
+                <th class="text-center" rowspan="2"  style="vertical-align: middle;">Treatment</th>
+            </tr>
+            <tr>
+                <th class="text-center">Target</th>
+                <th class="text-center">Realisasi</th>
             </tr>
             <?php
             $no=0;
             foreach($data['bobo'] as $row):
+                
+                $inherent_level = $this->data->get_master_level(true, $row['residual_level']);
+				if (!$inherent_level) {
+                    $inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+				}
+
+                $likeinherent = $this->db
+				->where('id', $inherent_level['likelihood'])
+				->get('bangga_level')->row_array();
+				
+				$impactinherent = $this->db
+				->where('id', $inherent_level['impact'])
+				->get('bangga_level')->row_array();
+
 
             ?>
             <tr>
                 <td style="text-align: center;"><?=++$no;?></td>
                 <td style="text-align: left;"><?=$row['name'];?></td>
-                <td><?=$row['kategori'];?></td>
-                <td style="text-align: left;"><?=$row['event_name'];?></td>
-                <td style="background-color:<?=$row['warna'];?>;color:<?=$row['warna_text'];?>;"><?=$row['inherent_analisis'];?></td>
-              
-        <?php
-       $a = $data['baba'][$row['id']]['residual_analisis'];
-       $b = $data['baba'][$row['id']]['warna_residual'];
-       $c = $data['baba'][$row['id']]['warna_text_residual'];
-       ?>
-       <td style="background-color:<?=$b;?>;color:<?=$c;?>;"><?=$a;?></td>
-              
+                <td style="text-align: center;"><?=$row['kategori'];?></td>
+                <td><?=$row['event_name'];?></td>
+                <td style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?></td>
+                <?php
+                    $target_a   = $data['target'][$row['id']]['tar_level_mapping'];
+                    $target_b   = $data['target'][$row['id']]['tar_warna_action'];
+                    $target_c   = $data['target'][$row['id']]['tar_warna_text_action'];
+                ?>
+                <td style="text-align: center; background-color:<?= $target_b; ?>;color:<?= $target_c; ?>;"><?= $target_a; ?></td>
+                <?php
+                    $a = $data['baba'][$row['id']]['res_level_mapping'];
+                    $b = $data['baba'][$row['id']]['res_warna_action'];
+                    $c = $data['baba'][$row['id']]['res_warna_text_action'];
+                ?>
+                <td style="text-align: center; background-color:<?= $b; ?>;color:<?= $c; ?>;"><?= $a; ?></td>
                 <td style="text-align: left;">
-                <?php $a = intval($row['id']); ?>
-                <?php if (isset($proaktif[$a])) : ?>
-                <?php foreach($proaktif[$a] as $row1): ?>
-                       <?=$row1;?> 
-                <?php endforeach;?>
-                <?php else: ?>
-                     <?= "";?>
-                 <?php endif;?>
+                    <?php $a = intval($row['id']); ?>
+                    <?php if (isset($treatment[$a])) : ?>
+                    <?php $no=1; foreach($treatment[$a] as $row1): ?>
+                        <?= $no++.".".$row1."<br>";?> 
+                    <?php endforeach;?>
+                    <?php else: ?>
+                        <?= "";?>
+                    <?php endif;?>
                 </td>
             </tr>
+    
             <?php endforeach;?>  
           </tbody>   
     </table>
@@ -157,3 +180,4 @@ $("#downloadPdf").on('click', function() {
 
     });     
 </script>
+

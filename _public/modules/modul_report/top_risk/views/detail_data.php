@@ -108,39 +108,6 @@
 				->where('id', $inherent_level['impact'])
 				->get('bangga_level')->row_array();
 
-                $residual_level = $this->db->select('*')->where('rcsa_detail', $row['id'])->where('bulan', $bulan)->get(_TBL_RCSA_ACTION_DETAIL)->row_array();
-				
-				$cek_score 				= $this->data->cek_level_new($residual_level['residual_likelihood_action'], $residual_level['residual_impact_action']);
-				$residual_level_risiko  = $this->data->get_master_level(true, $cek_score['id']);
-				$residual_code 			= $this->data->level_action($residual_level['residual_likelihood_action'], $residual_level['residual_impact_action']);
-
-                if (!$residual_level_risiko) {
-					$residual_level_risiko = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-				}
-				$like = $this->db
-				->where('id', $residual_level_risiko['likelihood'])
-					->get('bangga_level')->row_array();
-				
-				$impactx = $this->db
-				->where('id', $residual_level_risiko['impact'])
-				->get('bangga_level')->row_array();
-                // doi::dump($inherent_level);
-
-                $realisasi_level = $this->db->select('*')->where('id_detail', $row['id'])->where('bulan', $bulan)->get(_TBL_ANALISIS_RISIKO)->row_array();
-				
-				$cek_score_real 		= $this->data->cek_level_new($realisasi_level['target_like'], $realisasi_level['target_impact']);
-				$realisasi_level_risiko = $this->data->get_master_level(true, $cek_score_real['id']);
-				$realisasi_code         = $this->data->level_action($realisasi_level['target_like'], $realisasi_level['target_impact']);
-                if (!$realisasi_level_risiko) {
-					$realisasi_level_risiko = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-				}
-				$like = $this->db
-				->where('id', $realisasi_level_risiko['likelihood'])
-					->get('bangga_level')->row_array();
-				
-				$impactx = $this->db
-				->where('id', $realisasi_level_risiko['impact'])
-				->get('bangga_level')->row_array();
 
             ?>
             <tr>
@@ -149,22 +116,27 @@
                 <td style="text-align: center;"><?=$row['kategori'];?></td>
                 <td><?=$row['event_name'];?></td>
                 <td style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?></td>
-                <td style="text-align: center; background-color:<?= $realisasi_level_risiko['color']; ?>;color:<?= $realisasi_level_risiko['color_text']; ?>;"><?= $realisasi_level_risiko['level_mapping']; ?></td>
-                <td style="text-align: center; background-color:<?= $residual_level_risiko['color']; ?>;color:<?= $residual_level_risiko['color_text']; ?>;"><?= $residual_level_risiko['level_mapping']; ?></td>
-                <td>
-                    <?php
-                    $no = 1;
-                    $mitigasi = $this->db->where('rcsa_detail_no', $row['id'])->get(_TBL_RCSA_ACTION)->result_array();
-                    foreach ($mitigasi as $rows):
-                    ?>
-                        <?php
-                            if (!empty($rows['proaktif'])) {
-                                echo $no++ .".".$rows['proaktif']."<br>";
-                            } elseif (!empty($rows['reaktif'])) {
-                                echo $no++ .".".$rows['reaktif']."<br>";
-                            }
-                        ?>
-                    <?php endforeach; ?>
+                <?php
+                    $target_a   = $data['target'][$row['id']]['tar_level_mapping'];
+                    $target_b   = $data['target'][$row['id']]['tar_warna_action'];
+                    $target_c   = $data['target'][$row['id']]['tar_warna_text_action'];
+                ?>
+                <td style="text-align: center; background-color:<?= $target_b; ?>;color:<?= $target_c; ?>;"><?= $target_a; ?></td>
+                <?php
+                    $a = $data['baba'][$row['id']]['res_level_mapping'];
+                    $b = $data['baba'][$row['id']]['res_warna_action'];
+                    $c = $data['baba'][$row['id']]['res_warna_text_action'];
+                ?>
+                <td style="text-align: center; background-color:<?= $b; ?>;color:<?= $c; ?>;"><?= $a; ?></td>
+                <td style="text-align: left;">
+                    <?php $a = intval($row['id']); ?>
+                    <?php if (isset($treatment[$a])) : ?>
+                    <?php $no=1; foreach($treatment[$a] as $row1): ?>
+                        <?= $no++.".".$row1."<br>";?> 
+                    <?php endforeach;?>
+                    <?php else: ?>
+                        <?= "";?>
+                    <?php endif;?>
                 </td>
             </tr>
     

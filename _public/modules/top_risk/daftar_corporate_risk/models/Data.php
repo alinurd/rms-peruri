@@ -52,6 +52,15 @@ class Data extends MX_Model {
 				// Doi::dump($this->db->last_query());die();
 		return $result;
 	}
+
+
+	function cek_level_new($like, $impact)
+	{
+		$rows = $this->db->where('impact_no', $impact)->where('like_no', $like)->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+        
+		// doi::dump($rows);
+        return $rows;
+	}
 }
 /* End of file app_login_model.php */
 /* Location: ./application/models/app_login_model.php */
