@@ -36,6 +36,8 @@ class Data extends MX_Model {
                     'id_combo' => $parent['id_combo'],
                     'urut' => $parent['urut'],
                     'parameter' => $parent['parameter'],
+                    'min' => $parent['min'],
+                    'max' => $parent['max'],
                     'skala' => $parent['skala'],
                     'penilaian' => $parent['penilaian'],
                     'bobot' => $parent['bobot'],
