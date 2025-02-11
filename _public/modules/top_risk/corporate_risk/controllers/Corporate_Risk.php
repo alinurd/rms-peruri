@@ -686,35 +686,45 @@ class Corporate_Risk extends BackendController
 		echo json_encode($hasil);
 	}
 
-		function get_export_data()
+	function get_export_data()
 	{
-		$post = $this->input->post();
-		$bulan = $post['bulan'];
+		$post 	= $this->input->post();
+		$bulan 	= $post['bulan'];
 		$bulan2 = $post['bulan2'];
 		$tahun2 = $post['tahun2'];
-$a = $this->db->select('id,level_no')->where('id',$post['owner'])->get(_TBL_OWNER)->result_array();
-$b = array();
-foreach ($a as $key => $value) {
-$b = $value['level_no'];
-}		
+		$a = $this->db->select('id,level_no')->where('id',$post['owner'])->get(_TBL_OWNER)->result_array();
+		$b = array();
+		foreach ($a as $key => $value) {
+			$b = $value['level_no'];
+		}			
+		$owner	= $post['owner'];
+		$this->data->owner_child=array();
+
+		if ($owner>0){
+			$this->data->owner_child[]=$owner;
+		}
+
+		$this->data->get_owner_child($owner);
+		$owner_child=$this->data->owner_child;
+		// doi::dump($b);
+
 		if ($post['owner'] > 0) {
 			if ($b == 3) {
-			$rows['bobo']= $this->db->where('sts_propose', 4)->where('urgensi_no >', 0)->where('parent_no', $post['owner'])->where('period_no', $post['tahun'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
+				$rows['bobo'] = $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('parent_no', $post['owner'])->where('period_no', $post['tahun'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
 			}else{
-			$rows['bobo']= $this->db->where('sts_propose', 4)->where('urgensi_no >', 0)->where('owner_no', $post['owner'])->where('period_no', $post['tahun'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			}	
-			$this->db->where('owner_no', $post['owner']);
-			$this->db->where('period_no', $post['tahun']);
-			$this->db->where('bulan', $post['bulan']);
-			$this->db->where('risk_level >', 0);
-			$a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+				$rows['bobo'] = $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('owner_no', $post['owner'])->where('period_no', $post['tahun'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
+			}
+			// $this->db->where('owner_no', $post['owner']);
+			// $this->db->where('period_no', $post['tahun']);
+			// $this->db->where('bulan', $post['bulan']);
+			// $this->db->where('risk_level >', 0);
+			// $a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		}else {
-			$rows['bobo']= $this->db->where('sts_propose', 4)->where('urgensi_no >', 0)->where('period_no', $post['tahun'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			$this->db->where('period_no', $post['tahun']);
-			$this->db->where('bulan', $post['bulan']);
-			$this->db->where('risk_level >', 0);
-			$a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-
+			$rows['bobo']= $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('period_no', $post['tahun'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			// $this->db->where('period_no', $post['tahun']);
+			// $this->db->where('bulan', $post['bulan']);
+			// $this->db->where('risk_level >', 0);
+			// $a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		}
 		$owner = $this->db->where('id', $post['owner'])->get(_TBL_OWNER)->row_array();
 		if ($post['owner'] == 0) {
@@ -722,14 +732,22 @@ $b = $value['level_no'];
 		}else{
 			 $owner1 = $owner['name'];
 		}
+
 		$jon = array();
 		foreach ($rows['bobo'] as $key => $value) {
-		$this->db->where('rcsa_detail_no', $value['id']);
-		$row = $this->db->get(_TBL_VIEW_RCSA_MITIGASI)->result_array();
-		foreach ($row as $key1 => $value1) {
-			$jon[$value['id']][]=$value1['proaktif'];
+			$this->db->where('rcsa_detail_no', $value['id']);
+			$row 	= $this->db->get(_TBL_RCSA_ACTION)->result_array();
+			foreach ($row as $key1 => $value1) {
+				// $jon[$value['id']][]=$value1['proaktif'];
+				if (!empty($value1['proaktif'])) {
+					$jon[$value['id']][] = $value1['proaktif'];
+				} elseif (!empty($value1['reaktif'])) {
+					$jon[$value['id']][] = $value1['reaktif'];
+				}
+			}
 		}
-		}
+
+		
 		$rows['baba'] = array();
 
 		foreach ($rows['bobo'] as $key => $value) {
@@ -749,89 +767,108 @@ $b = $value['level_no'];
 				$this->db->where('rcsa_detail_no', $value['id']);
 			 }
 		
+			$this->db->where('period_no',$post['tahun']);
+			$this->db->where('bulan',$post['bulan']);
+			$this->db->where('rcsa_detail_no', $value['id']);
+			$row 					= $this->db->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
+			$target_level 			= $this->db->select('*')->where('id_detail', $value['id'])->where('bulan', $bulan)->get(_TBL_ANALISIS_RISIKO)->row_array();
+			
+			
+			
+		
+			if ($row) {
+				foreach ($target_level as $key1 => $target) {
+					$cek_score_target 		= $this->data->cek_level_new($target_level['target_like'], $target_level['target_impact']);
+					$target_level_risiko 	= $this->data->get_master_level(true, $cek_score_target['id']);
+					$rows['target'][$value['id']]['tar_level_mapping'] = $target_level_risiko['level_mapping'];
+					$rows['target'][$value['id']]['tar_warna_action']=$target_level_risiko['color'];
+					$rows['target'][$value['id']]['tar_warna_text_action']=$target_level_risiko['color_text'];
+				}
 
-		$row = $this->db->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
+				foreach ($row as $key1 => $value1) {
+					$cek_score 				= $this->data->cek_level_new($value1['residual_likelihood_action'], $value1['residual_impact_action']);
+					$residual_level_risiko  = $this->data->get_master_level(true, $cek_score['id']);
+					$rows['baba'][$value['id']]['res_level_mapping'] = $residual_level_risiko['level_mapping'];
+					$rows['baba'][$value['id']]['res_warna_action']=$residual_level_risiko['color'];
+					$rows['baba'][$value['id']]['res_warna_text_action']=$residual_level_risiko['color_text'];
+				}
+			}else{
 
-		if ($row) {
-			foreach ($row as $key1 => $value1) {
-			$rows['baba'][$value['id']]['residual_analisis']=$value1['residual_analisis'];
-			$rows['baba'][$value['id']]['warna_residual']=$value1['warna_residual'];
-			$rows['baba'][$value['id']]['warna_text_residual']=$value1['warna_text_residual'];
+				$rows['target'][$value['id']]['tar_level_mapping'] = "";
+				$rows['target'][$value['id']]['tar_warna_action']="";
+				$rows['target'][$value['id']]['tar_warna_text_action']="";
+				$rows['baba'][$value['id']]['res_level_mapping']="";
+				$rows['baba'][$value['id']]['res_warna_action']="";
+				$rows['baba'][$value['id']]['res_warna_text_action']="";
+
+				
+			}
+
+			$this->db->where('period_no',$post['tahun']);
+			$this->db->where('bulan',$post['bulan']);
+			$this->db->where('rcsa_detail_no', $value['id']);
+			$row = $this->db->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
 		}
-		}else{
-			$rows['baba'][$value['id']]['residual_analisis']="";
-			$rows['baba'][$value['id']]['warna_residual']="";
-			$rows['baba'][$value['id']]['warna_text_residual']="";
-		}
-	}
-		// var_dump($value['id']);
-		// die();
-	// var_dump($rows['baba']);
-	// die();
 
-		$hasil['combo'] = $this->load->view('detail_data', ['data' => $rows,'filter' => $post,'proaktif'=>$jon,'bobo'=>$a,'owner1'=>$owner1,'bulan2'=>$bulan2,'tahun2'=>$tahun2,'bulan'=>$bulan], true);
+		
+
+		$hasil['combo'] = $this->load->view('detail_data', ['data' => $rows,'filter' => $post,'treatment'=>$jon,'bobo'=>$a,'owner1'=>$owner1,'bulan2'=>$bulan2,'tahun2'=>$tahun2,'bulan'=>$bulan], true);
 
 		echo json_encode($hasil);
 	}
 
 	function cetak_corporate()
 	{
-		// $post =array();
-		$tipe = $this->uri->segment(3);
-		$data['tipe'] = $tipe;
-		
-		$owner = $this->uri->segment(4);
-		$tahun = $this->uri->segment(5);
-		$bulan = $this->uri->segment(6);
-		$bulan2 = $this->uri->segment(7);
-		$tahun2 = $this->uri->segment(8);
+		$tipe 			= $this->uri->segment(3);
+		$data['tipe'] 	= $tipe;
+		$owner 			= $this->uri->segment(4);
+		$tahun 			= $this->uri->segment(5);
+		$bulan 			= $this->uri->segment(6);
+		$bulan2 		= $this->uri->segment(7);
+		$tahun2 		= $this->uri->segment(8);
+		$a 				= $this->db->select('id,level_no')->where('id',$owner)->get(_TBL_OWNER)->result_array();
+		$b 				= array();
+		foreach ($a as $key => $value) {
+			$b 			= $value['level_no'];
+		}
 
-$a = $this->db->select('id,level_no')->where('id',$owner)->get(_TBL_OWNER)->result_array();
-$b = array();
-foreach ($a as $key => $value) {
-$b = $value['level_no'];
-}
-		// $post['owner']=$owner;
-		// $post['tahun']=$tahun;
-		// $post['bulan']=$bulan;
-		// $post['bulan2']=$bulan2;
-		// $post['tahun2']=$tahun2;
-		// $rows = $this->db->where('id', $owner)->get(_TBL_OWNER)->row_array();
-		// $name = $rows['name'];
-		// $nama = $nama = 'Corporate-Risk-' . url_title($rows['name']);	
+		$owner	= $owner;
+		$this->data->owner_child=array();
 
-		// $post = $this->input->post();
+		if ($owner>0){
+			$this->data->owner_child[]=$owner;
+		}
+
+		$this->data->get_owner_child($owner);
+		$owner_child=$this->data->owner_child;
+	
 		if ($owner > 0) {
 			if ($b == 3) {
-			$rows['bobo'] = $this->db->where('sts_propose', 4)->where('urgensi_no >', 0)->where('parent_no', $owner)->where('period_no', $tahun)->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
+				$rows['bobo'] = $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('parent_no', $owner)->where('period_no', $tahun)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
 			}else{
-			$rows['bobo'] = $this->db->where('sts_propose', 4)->where('urgensi_no >', 0)->where('owner_no', $owner)->where('period_no', $tahun)->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			}	
-			// $this->db->where('owner_no', $owner);
-			$this->db->where('period_no', $tahun);
-			$this->db->where('bulan', $bulan);
-			$this->db->where('risk_level >', 0);
-			$a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+				$rows['bobo'] = $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('owner_no', $owner)->where('period_no', $tahun)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();	
+			}
 		}else {
-			$rows['bobo'] = $this->db->where('sts_propose', 4)->where('urgensi_no >', 0)->where('period_no', $tahun)->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			$this->db->where('period_no', $tahun);
-			$this->db->where('bulan', $bulan);
-			$this->db->where('risk_level >', 0);
-			$a = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-
+			$rows['bobo']= $this->db->where('urgensi_no', 0)->where('sts_heatmap', '1')->where('period_no', $tahun)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		}
+
 		$jon = array();
 		foreach ($rows['bobo'] as $key => $value) {
-		$this->db->where('rcsa_detail_no', $value['id']);
-		$row = $this->db->get(_TBL_VIEW_RCSA_MITIGASI)->result_array();
-		foreach ($row as $key1 => $value1) {
-			$jon[$value['id']][]=$value1['proaktif'];
+			$this->db->where('rcsa_detail_no', $value['id']);
+			$row 	= $this->db->get(_TBL_RCSA_ACTION)->result_array();
+			foreach ($row as $key1 => $value1) {
+				// $jon[$value['id']][]=$value1['proaktif'];
+				if (!empty($value1['proaktif'])) {
+					$jon[$value['id']][] = $value1['proaktif'];
+				} elseif (!empty($value1['reaktif'])) {
+					$jon[$value['id']][] = $value1['reaktif'];
+				}
+			}
 		}
-		}
+		
 		$rows['baba'] = array();
 
 		foreach ($rows['bobo'] as $key => $value) {
-
 			if($owner> 0 && $b == 3){
 				$this->db->where('parent_no',$owner);
 				$this->db->where('period_no',$tahun);
@@ -846,37 +883,58 @@ $b = $value['level_no'];
 				$this->db->where('period_no',$tahun);
 				$this->db->where('bulan',$bulan);
 				$this->db->where('rcsa_detail_no', $value['id']);
-			 }	
-
-		$row = $this->db->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-		if ($row) {
-			foreach ($row as $key1 => $value1) {
-			$rows['baba'][$value['id']]['residual_analisis']=$value1['residual_analisis'];
-			$rows['baba'][$value['id']]['warna_residual']=$value1['warna_residual'];
-			$rows['baba'][$value['id']]['warna_text_residual']=$value1['warna_text_residual'];
-		}
-		}else{
-			$rows['baba'][$value['id']]['residual_analisis']="";
-			$rows['baba'][$value['id']]['warna_residual']="";
-			$rows['baba'][$value['id']]['warna_text_residual']="";
-		}
+			 }
+			 $row 					= $this->db->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
+			 $target_level 			= $this->db->select('*')->where('id_detail', $value['id'])->where('bulan', $bulan)->get(_TBL_ANALISIS_RISIKO)->row_array();
+			 
+			 
+			 
+		 
+			 if ($row) {
+				 foreach ($target_level as $key1 => $target) {
+					 $cek_score_target 		= $this->data->cek_level_new($target_level['target_like'], $target_level['target_impact']);
+					 $target_level_risiko 	= $this->data->get_master_level(true, $cek_score_target['id']);
+					 $rows['target'][$value['id']]['tar_level_mapping'] = $target_level_risiko['level_mapping'];
+					 $rows['target'][$value['id']]['tar_warna_action']=$target_level_risiko['color'];
+					 $rows['target'][$value['id']]['tar_warna_text_action']=$target_level_risiko['color_text'];
+				 }
+ 
+				 foreach ($row as $key1 => $value1) {
+					 $cek_score 				= $this->data->cek_level_new($value1['residual_likelihood_action'], $value1['residual_impact_action']);
+					 $residual_level_risiko  = $this->data->get_master_level(true, $cek_score['id']);
+					 $rows['baba'][$value['id']]['res_level_mapping'] = $residual_level_risiko['level_mapping'];
+					 $rows['baba'][$value['id']]['res_warna_action']=$residual_level_risiko['color'];
+					 $rows['baba'][$value['id']]['res_warna_text_action']=$residual_level_risiko['color_text'];
+				 }
+			 }else{
+ 
+				 $rows['target'][$value['id']]['tar_level_mapping'] = "";
+				 $rows['target'][$value['id']]['tar_warna_action']="";
+				 $rows['target'][$value['id']]['tar_warna_text_action']="";
+				 $rows['baba'][$value['id']]['res_level_mapping']="";
+				 $rows['baba'][$value['id']]['res_warna_action']="";
+				 $rows['baba'][$value['id']]['res_warna_text_action']="";
+ 
+				 
+			 }
 	}
 		$owner = $this->db->where('id', $owner)->get(_TBL_OWNER)->row_array();
 		if ($owner == 0) {
-			$nama = $nama = 'Corporate-Risk-Peruri';
+			$nama = $nama = 'Top-Risk-Peruri'; 
 			$owner1 = 'Perum Peruri';
 
 		}else{
-			 $nama = $nama = 'Corporate-Risk-' . url_title($owner['name']);
+			 $nama = $nama = 'Top-Risk-' . url_title($owner['name']);
 			 $owner1 = $owner['name'];
 		}
-	
-		$hasil = $this->load->view('detail_data', ['data' => $rows,'filter' => $post,'proaktif'=>$jon,'bobo'=>$a,'owner1'=>$owner1,'bulan2'=>$bulan2,'tahun2'=>$tahun2,'bulan'=>$bulan], true);
 
+		$hasil = $this->load->view('detail_data', ['data' => $rows,'filter' => $post,'treatment'=>$jon,'bobo'=>$a,'owner1'=>$owner1,'bulan2'=>$bulan2,'tahun2'=>$tahun2,'bulan'=>$bulan], true);
 		$cetak = 'corporate_' . $tipe;
 
 		$this->$cetak($hasil, $nama);
 	}
+
+	
 	function corporate_pdf($data, $nama = "Corporate-Risk")
 	{
 	
