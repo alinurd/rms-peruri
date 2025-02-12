@@ -53,11 +53,11 @@ class Daftar_Corporate_Risk extends BackendController {
 		$this->set_Field_Primary('id');
 		$this->set_Join_Table(array('pk' => $this->tbl_master,'id_pk'=>'event_no','sp'=>$this->tbl_library,'id_sp'=>'id'));
 		$this->set_Where_Table($this->tbl_master, 'urgensi_no', '=', $this->urgensi);
-		$this->set_Table_List($this->tbl_master, 'name','Risk Owner',15);
-		$this->set_Table_List($this->tbl_master, 'kategori_no','Kategori');
-		$this->set_Table_List($this->tbl_master, 'event_name','Risk Event');
-		$this->set_Table_List($this->tbl_master, 'inherent_analisis_id','Risk Level Inherent',15);
-		$this->set_Table_List($this->tbl_master, 'residual_analisis_id','Risk Level Residual',15);
+		$this->set_Table_List($this->tbl_master, 'name','Risk Owner',10);
+		$this->set_Table_List($this->tbl_master, 'kategori_no','Kategori',10);
+		$this->set_Table_List($this->tbl_master, 'event_name','Risk Event',20);
+		$this->set_Table_List($this->tbl_master, 'inherent_analisis_id','Risk Level Inherent',10);
+		$this->set_Table_List($this->tbl_master, 'residual_analisis_id','Risk Level Residual',10);
 		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'rcsa_owner_no');
 		$this->_CHANGE_TABLE_MASTER(_TBL_LIBRARY);
 		$this->_SET_PRIVILEGE('add', false);
@@ -128,6 +128,78 @@ class Daftar_Corporate_Risk extends BackendController {
 		}
 		$hasil =$a;
 		return $hasil;
+	}
+
+	function listBox_EVENT_NAME($row, $value) {
+		$id_detail = $row['l_id'];
+		$this->db->where('id_detail', $id_detail);
+		$cek_event = $this->db->get(_TBL_LOG_UP_RISK_EVENT); 
+		$event_name = '';
+	
+		if ($this->authentication->get_Info_User('is_admin') == 1) {
+			if ($cek_event->num_rows() == 0) {
+				$event_name = $row['l_event_name'];
+			} else { 
+				$this->db->where('id_detail', $id_detail);
+				$this->db->order_by('create_date', 'DESC');
+				$this->db->limit(1);
+				$row_event 	= $this->db->get(_TBL_LOG_UP_RISK_EVENT); 
+				$data_log 	= $row_event->row();
+				$event_no 	= $data_log->event_no;
+				$e_name 	= $this->db->select('description')->where('id',$event_no)->get(_TBL_LIBRARY)->row();
+				$event_name = $e_name->description;
+			}
+		} else {
+			$event_name = $row['l_event_name'];
+		}
+	
+		$result = $event_name;
+
+		if ($this->authentication->get_Info_User('is_admin') == 1) {
+			$result .= '<button class="btn btn-info btn-xs" type="button" style="float: right; border-radius: 50%; width: 25px; height: 25px; padding: 0; display: flex; align-items: center; justify-content: center;" id="ModalEditEvent" data-id="' . $row['l_id'] . '">
+							<i class="fa fa-edit" style="font-size: 12px;"></i>
+						</button>';
+		}
+	
+		return $result;
+	}
+	public function get_detail_edit()
+	{
+		$id 				= $this->input->post('id');
+		$detail 			= $this->db->where('id', $id)->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
+		$data['field'] 		= $this->data->get_data_risk_register($id);
+		$data['cboper'] 	= [0=>lang('msg_cbo_select')];
+		$data['detail'] 	= $detail;
+
+		$this->db->where('id_detail', $id);
+		$cek_event = $this->db->get(_TBL_LOG_UP_RISK_EVENT);
+		$event_name = '';
+		if($cek_event->num_rows() == 0){
+			$event_name = $detail['sub_kategori'];
+			$e_no = $detail['event_no'];
+		}else{
+			$this->db->where('id_detail', $id);
+			$this->db->order_by('create_date', 'DESC');
+			$this->db->limit(1);
+			$row_event 	= $this->db->get(_TBL_LOG_UP_RISK_EVENT); 
+			$data_log 	= $row_event->row();
+			$event_no 	= $data_log->t3;
+			$event_name = $event_no;
+			$e_no		= $data_log->event_no;
+		}
+
+		$data['selected'] 	= $e_no; 
+		$data['cboper'] 	= $this->get_combo('tasktonimi', 't4', $event_name);
+		$data['log'] 		= $this->db->where('id_detail', $id)->get(_TBL_LOG_UP_RISK_EVENT)->result_array();
+		$hasil['detail'] 	=  $this->load->view('detail_edit', $data, true);
+		echo json_encode($hasil);
+	}
+
+	public function Simpan_Risk_event(){
+		$data = $this->input->post();
+		$id = $this->data->simpan_risk_event($data);
+		$hasil['id'] = $id;
+		echo json_encode($hasil);
 	}
 	
 	
