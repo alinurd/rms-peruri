@@ -141,7 +141,7 @@ class Cetak
 		$pdfFilePath = download_path_relative($nmFile);
 		
 		// die($pdfFilePath);
-		$html ='<table width="100%"><tr><td rowspan="3"><img src="'.img_url('logo-lap-lama.png').'"></td>';
+		$html ='<table width="100%"><tr><td rowspan="3"><img src="'.img_url('logo-lap.png').'"></td>';
 		$html .='<td>'.$this->preference['nama_kantor'].'</td></tr>';
 		$html .='<tr><td>'.$this->preference['alamat_kantor'].'</td></tr>';
 		$html .='<tr><td>Telp: '.$this->preference['telp_kantor'].' email: '.$this->preference['email_kantor'].'</td></tr></table><br/>';
@@ -210,7 +210,7 @@ class Cetak
 		}
 		$html .="</tr></tbody></table>";
 		
-		// die($html);
+		die($html);
 		$pdf = $this->_ci->pdf->load();
 		$pdf->SetHeader('');
 		$pdf->SetFooter($_SERVER['HTTP_HOST'].'|{PAGENO}|'.date(DATE_RFC822)); 
