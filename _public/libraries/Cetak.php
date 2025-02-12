@@ -210,7 +210,7 @@ class Cetak
 		}
 		$html .="</tr></tbody></table>";
 		
-		die($html);
+		// die($html);
 		$pdf = $this->_ci->pdf->load();
 		$pdf->SetHeader('');
 		$pdf->SetFooter($_SERVER['HTTP_HOST'].'|{PAGENO}|'.date(DATE_RFC822)); 
