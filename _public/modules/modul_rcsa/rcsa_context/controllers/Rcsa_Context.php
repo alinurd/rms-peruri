@@ -10,6 +10,8 @@ class Rcsa_Context extends BackendController
 	var $sts_cetak = false;
 	public function __construct()
 	{
+		php_info();
+		die;
 		parent::__construct();
 		$this->load->helper('text');
 
