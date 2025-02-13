@@ -576,6 +576,7 @@ $msg="risk impcat yang anda masukan sudah ada";
 		$upd['proses_bisnis'] = $data['proses_bisnis'];
 		$upd['risk_asumsi_perhitungan_dampak'] = $data['risk_asumsi_perhitungan_dampak'];
 		$upd['kategori_dampak'] = $data['kategori_dampak'];
+		$upd['tema_risiko'] = $data['tema_risiko'];
 		// $upd['sts_heatmap'] = $data['sts_heatmap'];
 
 		// $upd['risk_impact_kuantitatif'] = str_replace(',', '', $data['risk_impact_kuantitatif']);
@@ -648,7 +649,7 @@ $msg="risk impcat yang anda masukan sudah ada";
 			// doi::dump($cek_error);
 			// doi::dump('id_edit ' . $id);
 			// doi::dump($upd);
-
+ 
 			// // Contoh:
 			// if ($id > 0
 			// ) {
