@@ -5,23 +5,22 @@
 
 class Rcsa extends BackendController
 {
-	var $table = "";
-	var $post = array();
-	var $sts_cetak = false;
+	var $table 		= "";
+	var $post 		= array();
+	var $sts_cetak 	= false;
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->helper('text');
 
 		$this->load->model('Data'); //membuat load model data
-		// Doi::dump($this->authentication->get_info_user());
-		$this->nil_tipe = 1;
+		$this->nil_tipe			= 1;
 		$this->set_Tbl_Master(_TBL_VIEW_RCSA);
-		$this->cbo_periode = $this->get_combo('periode');
-		$this->cbo_parent = $this->get_combo('parent-input');
-		$this->cbo_parent_all = $this->get_combo('parent-input-all');
-		$this->cbo_type = $this->get_combo('type-project');
-		$this->cbo_bulan = $this->get_combo('bulan');
+		$this->cbo_periode 		= $this->get_combo('periode');
+		$this->cbo_parent 		= $this->get_combo('parent-input');
+		$this->cbo_parent_all 	= $this->get_combo('parent-input-all');
+		$this->cbo_type 		= $this->get_combo('type-project');
+		$this->cbo_bulan 		= $this->get_combo('bulan');
 
 		$this->set_Open_Tab('General Information');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
@@ -43,12 +42,12 @@ class Rcsa extends BackendController
 		$this->addField(array('field' => 'register', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 		$this->addField(array('field' => 'pi', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
 		$this->addField(array('field' => 'progres', 'input' => 'free', 'type' => 'free', 'show' => false, 'size' => 15));
-		// $this->addField(array('field' => 'status', 'input' => 'boolean', 'size' => 15));
 		$this->addField(array('field' => 'name', 'show' => false));
 		$this->addField(array('field' => 'periode_name', 'show' => false));
 		$this->addField(array('field' => 'sts_propose_text', 'show' => false));
 		$this->addField(array('field' => 'sts_propose', 'show' => false));
 		$this->set_Close_Tab();
+
 		$this->set_Open_Tab('Isu Internal');
 		$this->addField(array('field' => 'man', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'method', 'input' => 'multitext', 'size' => 10000));
@@ -58,6 +57,7 @@ class Rcsa extends BackendController
 		$this->addField(array('field' => 'market', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'stakeholder_internal', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
+
 		$this->set_Open_Tab('Isu External');
 		$this->addField(array('field' => 'politics', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'economics', 'input' => 'multitext', 'size' => 10000));
@@ -67,12 +67,15 @@ class Rcsa extends BackendController
 		$this->addField(array('field' => 'legal', 'input' => 'multitext', 'size' => 10000));
 		$this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
+
 		$this->set_Open_Tab('Dokumen Lainnnya');
 		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf', 'file_random' => false));
 		$this->set_Close_Tab();
+
 		$this->set_Open_Tab('Kriteria Kemungkinan Risiko ');
 		$this->addField(array('field' => 'kriteria_kemungkinan_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
+
 		$this->set_Open_Tab('Kriteria Dampak Risiko ');
 		$this->addField(array('field' => 'kriteria_dampak_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
@@ -83,26 +86,262 @@ class Rcsa extends BackendController
 		$this->set_Bid(array('nmtbl' => $this->tbl_master, 'field' => 'anggaran_rkap', 'span_right_addon' => ' Rp ', 'align' => 'right'));
 		$this->set_Bid(array('nmtbl' => $this->tbl_master, 'field' => 'create_user', 'readonly' => true));
 
-		// $this->set_Sort_Table($this->tbl_master, 'bulan_rcsa','DESC');
- 
 		$this->set_Sort_Table($this->tbl_master, 'name', 'ASC');
 		$this->set_Table_List($this->tbl_master, 'judul_assesment', 'Judul Assessment ', 10);
 		$this->set_Table_List($this->tbl_master, 'name', 'Risk Owner', 20);
-		$this->set_Table_List($this->tbl_master, 'sasaran', 'Jumlah Sasaran', 5, 'center');
+		$this->set_Table_List($this->tbl_master, 'man', 'Jumlah Sasaran', 5, 'center');
 		$this->set_Table_List($this->tbl_master, 'tupoksi', 'Jumlah Peristiwa', 5, 'center');
 		$this->set_Table_List($this->tbl_master, 'periode_name', 'Periode', 5, 'center');
-		$this->set_Table_List($this->tbl_master, 'progres', 'Progress', 5, 'center');
+		$this->set_Table_List($this->tbl_master, 'status', 'Progress', 5, 'center');
 		$this->set_Table_List($this->tbl_master, 'sts_propose_text', 'Status', 0, 'center');
-		// $this->set_Table_List($this->tbl_master, 'item_use', '', 8, 'center');
-		$this->set_Table_List($this->tbl_master, 'register', 'Risk Register', 5, 'center');
+		$this->set_Table_List($this->tbl_master, 'id', 'Risk Register', 5, 'center');
 
 		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
-		// $this->set_Where_Table($this->tbl_master, 'type', '=', $this->nil_tipe);
 		$this->_CHANGE_TABLE_MASTER(_TBL_RCSA);
 		$this->_SET_PRIVILEGE('add', false);
 		$this->_SET_PRIVILEGE('edit', false);
 
 		$this->set_Close_Setting();
+	}
+
+	public function MASTER_DATA_LIST($arrId, $rows)
+	{
+		$this->use_list = $this->data->cari_total_dipakai($arrId);
+	}
+	
+	// MOD LIST TABLE PERIODE
+	function listBox_PERIODE_NAMEx($rows, $value)
+	{
+		$value .= '<br/>' . $this->cbo_bulan[$rows['l_bulan_rcsa']] . ' - ' . $rows['l_tahun_rcsa'];
+		return $value;
+	}
+
+	// MOD LIST TABLE JUMLAH SASARAN
+	function listBox_MAN($rows, $value)
+	{
+		$id 	= $rows['l_id'];
+		$jml 	= '';
+		if (array_key_exists($id, $this->use_list['sasaran'])) {
+			$jml = $this->use_list['sasaran'][$id];
+		}
+
+		return $jml;
+	}
+
+	// MOD LIST TABLE JUMLAH PERISTIWA
+	function listBox_TUPOKSI($rows, $value)
+	{
+		$id = $rows['l_id'];
+		$jml = '';
+		if (array_key_exists($id, $this->use_list['peristiwa'])) {
+			$jml = $this->use_list['peristiwa'][$id];
+		}
+
+		return $jml;
+	}
+
+	// MOD LIST TABLE STATUS
+	function listBox_STS_PROPOSE_TEXT($row, $value, $res_nilai)
+	{
+		$nilai 	= intval($row['l_sts_propose']);
+		$id 	= $row['l_id'];
+		$owner 	= $row['l_owner_no'];
+		$jml 	= '';
+		if (array_key_exists($id, $this->use_list['peristiwa'])) {
+			$jml = $this->use_list['peristiwa'][$id];
+		}
+		if (empty($jml)) {
+			$hasil = '';
+		} else {
+			switch ($nilai) {
+				case 1:
+					$hasil = '<span class="label label-info"> ' . $value . ' </span>';
+					break;
+				case 2:
+					$hasil = '<span class="label label-success"> ' . $value . ' </span>';
+					break;
+				case 3:
+					$hasil = '<span class="label label-warning"> ' . $value . ' </span>';
+					break;
+				case 4:
+					$hasil = '<span class="label label-primary"> ' . $value . ' </span>';
+					break;
+				case 5:
+					$hasil = '<i class="label label-danger fa fa-sticky-note showRevisi pointer" data-id="' . $id . '"data-owner="' . $owner . '" aria-hidden="true" title="lihat catatan revisi"> ' . $value . '</i>';
+					break;
+					default:
+					$hasil = '<span class="label label-danger"> ' . $value . ' </span>';
+ 					break;
+			}
+		}
+		
+		return $hasil;
+	}
+
+
+	function listBox_ID($row, $value)
+	{
+		$id 	= $row['l_id'];
+		$owner 	= $row['l_owner_no'];
+		$result = '<i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '">  </i>';
+		return $result;
+	}
+	
+	function listBox_STATUS($rows, $value)
+	{
+		$id 	= $rows['l_id'];
+		$jml 	= '';
+		if (array_key_exists($id, $this->use_list['peristiwa'])) {
+			$jml = $this->use_list['peristiwa'][$id];
+		}
+
+		$dt 		= $this->db->select('pi, rcsa_no')->where('rcsa_no', $id)	->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		$dtkri 		= $this->db->where('rcsa_no', $id)->where('iskri', 1)->where('pi ', 6)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		$jmldtkr 	= count($dtkri);
+		foreach($dtkri as $ii){
+			$actkri[] = $this->db->where('id', $ii['kri'])->get('bangga_data_combo')->row_array();
+		}
+		$jmlactkri	= count($actkri);
+		$ttlkr		= $jmldtkr- $jmlactkri;
+
+		if($dtkri){
+			$jml 		= $jml-$ttlkr;
+		}
+
+		$dt 			= $this->db->select('pi, rcsa_no')->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		$groupedData 	= array();
+		$totals 		= array(); // Array untuk melacak total nilai berdasarkan 'rcsa_no'
+
+		foreach ($dt as $datax) {
+			$rcsa_no = $datax['rcsa_no'];
+
+			// Mengassign nilai-nilai berdasarkan kondisi 'pi'
+			if ($datax['pi'] == 1) {
+				$bg = 'danger';
+				$nilai = '25';
+				$inf = 'risk identity';
+			} elseif ($datax['pi'] == 2) {
+				$bg = 'warning';
+				$nilai = '30';
+				$inf = 'risk analysis';
+			} elseif ($datax['pi'] == 3) {
+				$bg = 'primary';
+				$nilai = '55';
+				$inf = 'risk evaluation';
+			} elseif ($datax['pi'] == 4) {
+				$bg = 'info';
+				$nilai = '75';
+				$inf = 'risk treatment';
+			} elseif($datax['pi'] >= 5) {
+
+				$bg = 'success';
+				$nilai = '100';
+				$inf = 'progress treatment';
+			}
+
+			// Menjumlahkan nilai berdasarkan 'rcsa_no'
+			if (isset($totals[$rcsa_no])) {
+				$totals[$rcsa_no] += (int)$nilai;
+			} else {
+				$totals[$rcsa_no] = (int)$nilai;
+			}
+		}
+
+		// Menampilkan total nilai berdasarkan 'rcsa_no'
+		$res_nilai=0;
+		$res_text = 'danger';
+		$iskri = 'hide';
+		$cl = " #6c757d";
+		$tl = "data kri belum ada";
+		foreach ($totals as $rcsa_no => $total_nilai) {
+			// doi::dump($jml);
+ 			$res_nilai = round($total_nilai / $jml);
+			if ($res_nilai<35) {
+				$res_bg = 'danger';
+				$res_text = '';
+  			}	
+			elseif ($res_nilai<55) {
+				$res_bg = 'waring';
+								$res_text = '';
+
+  			} elseif ($res_nilai < 65) {
+				$res_bg = 'primary';
+				$res_text = '';
+
+			} elseif ($res_nilai < 85) {
+				$res_bg = 'info';
+				$res_text = '';
+
+			} elseif ($res_nilai < 99) {
+				$res_bg = 'info';
+				$res_text = '';
+				
+
+			} elseif ($res_nilai > 100) {
+				$res_bg = 'success';
+				$res_text = '';
+				$iskri = '';
+				$res_nilai=99; 
+			}
+			else{
+				// $res_nilai=97;
+				$res_bg = 'success';
+				
+				// $res_text = 'white';
+
+			}
+			$kirim = "nilai: " . $res_nilai . " id: " . $rcsa_no;
+
+		}
+
+		if (
+			$rows['l_sts_propose'] == 2 || $rows['l_sts_propose'] == 3
+		) {
+			$result = '
+    	<div class="progress">
+        <div class="progress-bar bg-' . $res_bg . '" role="progressbar" style="width: ' . $res_nilai . '%" aria-valuenow="' . $res_nilai . '" aria-valuemin="0" aria-valuemax="100">
+            ' . $res_nilai . '% 
+        </div> 
+    	</div>';
+		}
+
+		elseif ($res_nilai == 100 && $rows['l_sts_propose'] < 4) {
+			$submiter= $this->authentication->get_info_user('group');
+			if($submiter['group']['id']!=45 && $submiter['group']['id']!=1){
+
+				$result = '<span class="label label-warning"> Need Submiter </span>';
+			}else{
+				$result = '<a href="' . base_url('rcsa/propose/' . $rows['l_id']) . '"><span class="label label-danger"> Submit  Risk </span> 
+				 <span clas=" '.$iskri. '  " style="font-weight: bold; font-size: 25px; color: '. $cl.'; " title="'. $tl.'">
+            	<i class="fa fa-key ' . $iskri . '"></i>
+            </span></a> ';
+
+			}
+					}
+		elseif ($rows['l_sts_propose']==4){
+			$result = '
+    	<div class="progress">
+        <div class="progress-bar bg-' . $res_bg . '" role="progressbar" style="width: ' . $res_nilai . '%" aria-valuenow="' . $res_nilai . '" aria-valuemin="0" aria-valuemax="100">
+            ' . $res_nilai . '%   
+        </div>
+    	</div> <span clas=" ' . $iskri . '  " style="font-weight: bold; font-size: 25px; color: ' . $cl . '; " title="' . $tl . '">
+            	<i class="fa fa-key ' . $iskri . '"></i>
+            </span>';
+		}
+		else{
+			$result = '
+			 
+    	<div class="progress">
+        <div class="progress-bar text-' . $res_text . ' bg-' . $res_bg . '" role="progressbar" style="width: ' . $res_nilai . '%" aria-valuenow="' . $res_nilai . '" aria-valuemin="0" aria-valuemax="100">
+            ' . $res_nilai . '%      
+        </div> 
+    	</div>
+		    <span clas=" '.$iskri. '  " style="font-weight: bold; font-size: 25px; color: '. $cl.'; " title="'. $tl.'">
+            	<i class="fa fa-key ' . $iskri . '"></i>
+            </span>
+		';
+		}
+		return $result;
 	}
 
 	public function updateBox_KRITERIA_KEMUNGKINAN_RISIKO($field)
@@ -231,79 +470,8 @@ class Rcsa extends BackendController
 		$result[] = array('posisi' => 'right', 'content' => '<a class="btn btn-warning btn-flat" style="width:100%;" data-content="Detail Risk Register" data-toggle="popover" href="' . base_url($this->modul_name . '/risk-event/' . $owner . '/' . $id) . '" data-original-title="" title=""><strong style="text-shadow: 1px 2px #020202;">START<br/>Risk Register</strong></a>');
 		return $result;
 	}
-	public function MASTER_DATA_LIST($arrId, $rows)
-	{
-		$this->use_list = $this->data->cari_total_dipakai($arrId);
-	}
-	function listBox_PERIODE_NAMEx($rows, $value)
-	{
-		$value .= '<br/>' . $this->cbo_bulan[$rows['l_bulan_rcsa']] . ' - ' . $rows['l_tahun_rcsa'];
-		return $value;
-	}
-	function listBox_SASARAN($rows, $value)
-	{
-		$id = $rows['l_id'];
-		$jml = '';
-		if (array_key_exists($id, $this->use_list['sasaran'])) {
-			$jml = $this->use_list['sasaran'][$id];
-		}
-
-		return $jml;
-	}
-
-	function listBox_TUPOKSI($rows, $value)
-	{
-		$id = $rows['l_id'];
-		$jml = '';
-		if (array_key_exists($id, $this->use_list['peristiwa'])) {
-			$jml = $this->use_list['peristiwa'][$id];
-		}
-
-		return $jml;
-	}
-
-
-	function listBox_STS_PROPOSE_TEXT($row, $value, $res_nilai)
-	{
- 
-//  doi::dump($row);
-		$nilai = intval($row['l_sts_propose']);
-		$id = $row['l_id'];
-		$owner = $row['l_owner_no'];
-		$jml = '';
-		if (array_key_exists($id, $this->use_list['peristiwa'])) {
-			$jml = $this->use_list['peristiwa'][$id];
-		}
-		if (empty($jml)) {
-			$hasil = '';
-		} else {
-			switch ($nilai) {
-				case 1:
-					$hasil = '<span class="label label-info"> ' . $value . ' </span>';
-					break;
-				case 2:
-					$hasil = '<span class="label label-success"> ' . $value . ' </span>';
-					break;
-				case 3:
-					$hasil = '<span class="label label-warning"> ' . $value . ' </span>';
-					break;
-				case 4:
-					$hasil = '<span class="label label-primary"> ' . $value . ' </span>';
-					break;
-				case 5:
-					// $result = '<i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '">  </i>';
-					
-					$hasil = '<i class="label label-danger fa fa-sticky-note showRevisi pointer" data-id="' . $id . '"data-owner="' . $owner . '" aria-hidden="true" title="lihat catatan revisi"> ' . $value . '</i>';
-					break;
-					default:
-					$hasil = '<span class="label label-danger"> ' . $value . ' </span>';
- 					break;
-			}
-		}
-		
-		return $hasil;
-		// return $nilai;
-	}
+	
+	
 
 	function propose()
 	{
@@ -338,195 +506,7 @@ class Rcsa extends BackendController
 		header('location:' . base_url('rcsa'));
 	}
 
-	function listBox_REGISTER($row, $value)
-	{
-		$id = $row['l_id'];
-		$owner = $row['l_owner_no'];
-		$result = '<i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '">  </i>';
-		return $result;
-	}
 	
-	function listBox_PROGRES($rows, $value)
-	{
-		// doi::dump($rows);
-
-		$id = $rows['l_id'];
-		$jml = '';
-		if (array_key_exists($id, $this->use_list['peristiwa'])) {
-			$jml = $this->use_list['peristiwa'][$id];
-		}
-
-		$dt = $this->db->select('pi, rcsa_no')
-			->where('rcsa_no', $id)
-			->get(_TBL_VIEW_RCSA_DETAIL)
-			->result_array();
-		$dtkri = $this->db
-			->where('rcsa_no', $id)
- 
-			->where('iskri', 1)
-->where('pi ', 6)
-
-			->get(_TBL_VIEW_RCSA_DETAIL)
-			->result_array();
-		$jmldtkr = count($dtkri);
-	foreach($dtkri as $ii){
-			// $jumlahtdk[] = $ii['nilai'];
-			$actkri[] = $this->db->where('id', $ii['kri'])->get('bangga_data_combo')->row_array();
-		}
-		//$actkri = $this->db->where('rcsa_no', $id)->where('aktif', 1)->get('bangga_kri')->result_array();
-		$jmlactkri=count($actkri);
-		$ttlkr= $jmldtkr- $jmlactkri;
-		// doi::dump($dtkri);	
-if($dtkri){
-		$jml= $jml-$ttlkr;
-
-}
-// doi::dump($jmldtkr);
-		$dt = $this->db->select('pi, rcsa_no')
-			->where('rcsa_no', $id)
-			->get(_TBL_VIEW_RCSA_DETAIL)
-			->result_array();
-		$groupedData = array();
-
-		$totals = array(); // Array untuk melacak total nilai berdasarkan 'rcsa_no'
-
-		foreach ($dt as $datax) {
-			$rcsa_no = $datax['rcsa_no'];
-
-			// Mengassign nilai-nilai berdasarkan kondisi 'pi'
-			if ($datax['pi'] == 1) {
-				$bg = 'danger';
-				$nilai = '25';
-				$inf = 'risk identity';
-			} elseif ($datax['pi'] == 2) {
-				$bg = 'warning';
-				$nilai = '30';
-				$inf = 'risk analysis';
-			} elseif ($datax['pi'] == 3) {
-				$bg = 'primary';
-				$nilai = '55';
-				$inf = 'risk evaluation';
-			} elseif ($datax['pi'] == 4) {
-				$bg = 'info';
-				$nilai = '75';
-				$inf = 'risk treatment';
-			} elseif($datax['pi'] >= 5) {
-
-				$bg = 'success';
-				$nilai = '100';
-				$inf = 'progress treatment';
-			}
-
-			// Menjumlahkan nilai berdasarkan 'rcsa_no'
-			if (isset($totals[$rcsa_no])) {
-				$totals[$rcsa_no] += (int)$nilai;
-			} else {
-				$totals[$rcsa_no] = (int)$nilai;
-			}
-		}
-
-		// Menampilkan total nilai berdasarkan 'rcsa_no'
-		$res_nilai=0;
-		$res_text = 'danger';
-		$iskri = 'hide';
-		$cl = " #6c757d";
-		$tl = "data kri belum ada";
-		foreach ($totals as $rcsa_no => $total_nilai) {
-			// doi::dump($jml);
- 			$res_nilai = round($total_nilai / $jml);
-			if ($res_nilai<35) {
-				$res_bg = 'danger';
-				$res_text = '';
-  			}	
-			elseif ($res_nilai<55) {
-				$res_bg = 'waring';
-								$res_text = '';
-
-  			} elseif ($res_nilai < 65) {
-				$res_bg = 'primary';
-				$res_text = '';
-
-			} elseif ($res_nilai < 85) {
-				$res_bg = 'info';
-				$res_text = '';
-
-			} elseif ($res_nilai < 99) {
-				$res_bg = 'info';
-				$res_text = '';
-				
-
-			} elseif ($res_nilai > 100) {
-				$res_bg = 'success';
-				$res_text = '';
-				$iskri = '';
-				$res_nilai=99; 
-			}
-			else{
-				// $res_nilai=97;
-				$res_bg = 'success';
-				
-				// $res_text = 'white';
-
-			}
-			$kirim = "nilai: " . $res_nilai . " id: " . $rcsa_no;
-			// $result = $this->listBox_SUBMIT($rows, $kirim);
-
-		}
-		// doi::dump($rows);
-
-		// $thislistBox_STS_PROPOSE_TEXT($res_nilai);
-
-		if (
-			$rows['l_sts_propose'] == 2 || $rows['l_sts_propose'] == 3
-		) {
-			$result = '
-    	<div class="progress">
-        <div class="progress-bar bg-' . $res_bg . '" role="progressbar" style="width: ' . $res_nilai . '%" aria-valuenow="' . $res_nilai . '" aria-valuemin="0" aria-valuemax="100">
-            ' . $res_nilai . '% 
-        </div> 
-    	</div>';
-		}
-
-		elseif ($res_nilai == 100 && $rows['l_sts_propose'] < 4) {
-			$submiter= $this->authentication->get_info_user('group');
-			// id grup submiter=>45
-			// doi::dump($submiter['group']['id']);
-			if($submiter['group']['id']!=45 && $submiter['group']['id']!=1){
-
-				$result = '<span class="label label-warning"> Need Submiter </span>';
-			}else{
-				$result = '<a href="' . base_url('rcsa/propose/' . $rows['l_id']) . '"><span class="label label-danger"> Submit  Risk </span> 
-				 <span clas=" '.$iskri. '  " style="font-weight: bold; font-size: 25px; color: '. $cl.'; " title="'. $tl.'">
-            	<i class="fa fa-key ' . $iskri . '"></i>
-            </span></a> ';
-
-			}
-					}
-		elseif ($rows['l_sts_propose']==4){
-			$result = '
-    	<div class="progress">
-        <div class="progress-bar bg-' . $res_bg . '" role="progressbar" style="width: ' . $res_nilai . '%" aria-valuenow="' . $res_nilai . '" aria-valuemin="0" aria-valuemax="100">
-            ' . $res_nilai . '%   
-        </div>
-    	</div> <span clas=" ' . $iskri . '  " style="font-weight: bold; font-size: 25px; color: ' . $cl . '; " title="' . $tl . '">
-            	<i class="fa fa-key ' . $iskri . '"></i>
-            </span>';
-		}
-		else{
-			$result = '
-			 
-    	<div class="progress">
-        <div class="progress-bar text-' . $res_text . ' bg-' . $res_bg . '" role="progressbar" style="width: ' . $res_nilai . '%" aria-valuenow="' . $res_nilai . '" aria-valuemin="0" aria-valuemax="100">
-            ' . $res_nilai . '%      
-        </div> 
-    	</div>
-		    <span clas=" '.$iskri. '  " style="font-weight: bold; font-size: 25px; color: '. $cl.'; " title="'. $tl.'">
-            	<i class="fa fa-key ' . $iskri . '"></i>
-            </span>
-		';
-		}
-		return $result;
-	}
 
 	function listBox_PROGRESx($rows, $value)
 	{
