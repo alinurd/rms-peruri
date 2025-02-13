@@ -225,19 +225,25 @@ class Data extends MX_Model {
 			->where('id',$q['id'])
  			->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
 			
-		$blnnow = date('m');
-		$thnRcsa   = substr( $detail['periode_name'], 0, 4 );
-		$tgl           = 01;
+		$blnnow     = date('n');
+		$thnRcsa    = substr( $detail['periode_name'], 0, 4 );
+		$tgl        = 01;
+        // Membuat objek DateTime untuk tanggal RCSA
+        $dateRcsa = new DateTime($thnRcsa . '-' . $month . '-' . $tgl);
 
-		$dateRcsa  = new DateTime( $thnRcsa . '-' . $month . '-' . $tgl );
-		$hariIni   = new DateTime();
-		// doi::dump($dateRcsa);
-		// doi::dump($hariIni);
-		if($hariIni >= $dateRcsa ){
+        // Membuat objek DateTime untuk hari ini
+        $hariIni = new DateTime();
+
+        // Set waktu kedua objek menjadi 00:00:00
+        $dateRcsa->setTime(0, 0, 0);
+        $hariIni->setTime(0, 0, 0);
+		
+        // doi::dump($hariIni >= $dateRcsa);
+		// if($hariIni >= $dateRcsa ){
 			
 		
 
-		// if ($blnnow >= $month) {
+		if (intval($month) >= $month) {
 
 
 			$data['before'] = $this->db
