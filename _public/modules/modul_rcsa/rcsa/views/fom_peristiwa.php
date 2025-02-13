@@ -197,7 +197,7 @@ if ($field['iskri'] == 0) {
                     <?= form_hidden('pi', ($detail) ? ($detail['pi']) : '0', 'class="form-control text-right" id="pi"'); ?>
                     <?= form_hidden('id_edit_baru', ($id_edit) ? ($id_edit) : '0', 'class="form-control text-right" id="id_edit"'); ?>
                     <div class="col-md-12 col-sm-12 col-xs-12" id="input_peristiwa">
-                        <section class="x_panel">
+                        <section class="x_panel"> 
                             <div class="x_content">
                                 <table class="table table-borderless" id="tbl_peristiwa">
                                     <tbody>
@@ -207,7 +207,7 @@ if ($field['iskri'] == 0) {
                                         </tr>
                                         <tr>
                                             <td width="25%">Tema Risiko (T1) <span class="mandatory">*</span></td> 
-                                            <td colspan="2"><?= form_input('tema_risiko', ($detail) ? ($detail['tema_risiko']) : 'Bisnis BUMN', 'class="form-control" placeholder="Input Proses Bisnis" id="tema_risiko" readonly'); ?>
+                                            <td colspan="2"><?= form_input('tema_risiko', ($detail['tema_risiko'] !== NULL) ? ($detail['tema_risiko']) : 'Bisnis BUMN', 'class="form-control" id="tema_risiko" readonly'); ?>
                                         </td>
                                             
                                             
