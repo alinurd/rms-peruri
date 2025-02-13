@@ -183,7 +183,7 @@ class Data extends MX_Model
 
 	function get_data_risk_register($id)
 	{
-		$rows = $this->db->where('rcsa_no', $id)->order_by('id', 'DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		$rows = $this->db->where('rcsa_no', $id)->order_by('id', 'ASC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 
 		// $rows = $this->db->where('rcsa_no', $id)->get(_TBL_VIEW_REGISTER)->result_array();
 		// doi::dump($rows)
