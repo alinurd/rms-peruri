@@ -1033,7 +1033,7 @@ $msg="risk impcat yang anda masukan sudah ada";
 
 	function get_data_risk_register_propose($id)
 	{
-		$rows = $this->db->where('id', $id)->get(_TBL_RCSA)->row_array();
+		$rows = $this->db->where('id', $id)->order_by('id', 'ASC')->get(_TBL_RCSA)->row_array();
 		$rows =
 			$hasil['user'] = $this->authentication->get_info_user();
 
