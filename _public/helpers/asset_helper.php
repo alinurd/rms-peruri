@@ -135,7 +135,7 @@ if ( ! function_exists('img_url'))
     {
 		// die($value);
         $CI =& get_instance();
-        return FCPATH . 'themes/' . $CI->config->item('theme') . '/' . $CI->config->item('img_path') . $value;
+        return base_url()  . 'themes/' . $CI->config->item('theme') . '/' . $CI->config->item('img_path') . $value;
     }
 }
 
