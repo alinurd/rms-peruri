@@ -2122,8 +2122,8 @@ class Rcsa extends BackendController
 
 	function register_excel($data, $nama = "Risk-Assesment")
 	{
-		// header("Content-type:appalication/vnd.ms-excel");
-		// header("content-disposition:attachment;filename=" . $nama . ".xls");
+		header("Content-type:appalication/vnd.ms-excel");
+		header("content-disposition:attachment;filename=" . $nama . ".xls");
 
 		$html = $data;
 		echo $html;
