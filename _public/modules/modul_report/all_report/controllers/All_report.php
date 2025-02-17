@@ -206,15 +206,15 @@ class All_Report extends BackendController {
                 $decoded_image  = base64_decode($base64_string);
                 $image_path     = "themes/upload/grafik/{$type}_image_" . time() . ".png";
                 
-                // Menyimpan gambar ke direktori
-                if (file_put_contents($image_path, $decoded_image) === false) {
-                    log_message('error', "Gagal menyimpan gambar {$type}: " . $image_path);
-                    $image_path = null;
-                } else {
-                    // Menambahkan permission 0644 untuk file yang disimpan
+                // Periksa apakah file berhasil disimpan sebelum mengatur permission
+                if (file_put_contents($image_path, $decoded_image) !== false) { 
+                    // Mengatur permission ke 0644 (baca/tulis pemilik, baca untuk yang lain)
                     if (!chmod($image_path, 0644)) {
                         log_message('error', "Gagal mengatur permission untuk file gambar {$image_path}");
                     }
+                } else {
+                    log_message('error', "Gagal menyimpan gambar {$type}: " . $image_path);
+                    $image_path = null;
                 }
             }
             
