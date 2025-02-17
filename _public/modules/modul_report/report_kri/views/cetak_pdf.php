@@ -1,6 +1,6 @@
 <?php
 $pdf = new PdfTcp('L', 'mm', 'Letter', true, 'UTF-8', false);
-$pdf->SetTitle('Riask_Register');
+$pdf->SetTitle('Risk_Register_KRI');
 $pdf->SetTopMargin(20);
 // $pdf->setFooterMargin(20);
 $pdf->SetAutoPageBreak(true);
@@ -47,7 +47,7 @@ $html = '
 
 </tr>
 <tr>
-    <td colspan="23" style="border: none;"></td>
+    <td colspan="25" style="border: none;"></td>
 </tr>
 
 <tr>
@@ -59,7 +59,7 @@ $html = '
     <td colspan="23" style="border: none;">: ' . $row1['officer_name'] . '</td>
 </tr>
 <tr>
-    <td colspan="23" style="border: none;"></td>
+    <td colspan="25" style="border: none;"></td>
 </tr>
 <tr>
 <th style="background-color: #f6c111; color:#000; text-align:center" rowspan="2">No</th>
@@ -237,7 +237,7 @@ endforeach;
             $html .= ' <tbody></table>';
             $pdf->writeHTML($html, true, false, true, false, '');
             ob_end_clean();
-            $pdf->Output('Risk_Register.pdf', 'I');
+            $pdf->Output('Risk_Register_KRI.pdf', 'I');
 
             echo $html;
             // 
