@@ -137,17 +137,11 @@ class Cetak
 	
 	public function cetak_pdf($data=array(), $title=array(), $nmfile='', $size=array(), $field=array())
 	{
-		doi::dump(download_path_relative($nmFile));
-		doi::dump(img_url('logo-lap.png'));
-		die(realpath(FCPATH . 'themes/default/assets/images/logo-lap.png'));
-
-
-		die;
 		$nmFile=$nmfile.".pdf";
 		$pdfFilePath = download_path_relative($nmFile);
 		
 		// die($pdfFilePath);
-		$html ='<table width="100%"><tr><td rowspan="3"><img src="'.img_url('logo-lap.png').'"></td>';
+		$html ='<table width="100%"><tr><td rowspan="3"><img src="'.realpath(FCPATH . 'themes/default/assets/images/logo-lap.png').'"></td>';
 		$html .='<td>'.$this->preference['nama_kantor'].'</td></tr>';
 		$html .='<tr><td>'.$this->preference['alamat_kantor'].'</td></tr>';
 		$html .='<tr><td>Telp: '.$this->preference['telp_kantor'].' email: '.$this->preference['email_kantor'].'</td></tr></table><br/>';
