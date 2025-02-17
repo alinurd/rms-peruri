@@ -57,7 +57,7 @@
     <thead>
             <tr> 
                 <td colspan="2" rowspan="6" style="text-align: left;border-right:none;vertical-align: middle;">
-                <!-- <?php
+                <?php
                     $relative_path = "themes/default/assets/images/logo.png";
                     if (file_exists($relative_path)) {
                         ?><img src="<?= base_url().$relative_path ?>" width="200"></td>
@@ -66,7 +66,7 @@
                         echo $relative_path.'<br>File does not exist.';
                     }
 
-                ?> -->
+                ?>
                 <td colspan="40" rowspan="6" style="text-align:center;border-left:none;vertical-align: middle;">
                     <h1>RISK REGISTER</h1>
                 </td>
