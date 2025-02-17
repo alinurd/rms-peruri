@@ -2132,62 +2132,14 @@ class Rcsa extends BackendController
 
 	function register_pdf($data, $nama = "Risk-Assesment")
 	{
-		$this->load->library('pdf');
-		$tgl = date('d-m-Y');
-		// $this->nmFile = _MODULE_NAME_ . '-' . $nama .'-'.$tgl.".pdf";
-		$this->nmFile = $nama . '-' . $tgl . ".pdf";
-		$this->pdfFilePath = download_path_relative($this->nmFile);
-
-		$html = '<style>
-				table {
-					border-collapse: collapse;
-				}
-
-				.test th, 
-				.test td {
-					border: 1px solid black;
-				}
-
-				</style>';
+		header("Content-type: application/pdf");
+header("Content-Disposition: attachment; filename=" . $nama . ".pdf");
 
 
-		// $html .= '<table width="100%" border="1"><tr><td width="100%" style="padding:20px;">';
-		$html .= $data;
-		// $html .= '</td></tr></table>';
-
-		// die($html);
-		$align = array();
-		$format = array();
-		$no_urut = 0;
-
-		// die($html);
-		$pdf = $this->pdf->load();
-		$pdf->AddPage(
-			'L', // L - landscape, P - portrait
-			'',
-			'',
-			'',
-			'',
-			10, // margin_left
-			10, // margin right
-			10, // margin top
-			10, // margin bottom
-			5, // margin header
-			5
-		); // margin footer
-		$pdf->SetHeader('');
-		// $pdf->SetHTMLHeader('');
-		// $pdf->SetFooter($_SERVER['HTTP_HOST'] . '|{PAGENO}|' . date(DATE_RFC822));
-		// $pdf->SetHTMLFooter('<h1>ini Footer</h1>');
-		$pdf->SetFooter('|{PAGENO} Dari {nb} Halaman|');
-		$pdf->debug = true;
-		$pdf->WriteHTML($html);
-		ob_clean();
-
-		$pdf->Output($this->pdfFilePath, 'F');
-		redirect($this->pdfFilePath);
-
-		return true;
+		$html = $data;
+		echo $html;
+		exit;
+		 
 	}
 
 
