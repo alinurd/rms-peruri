@@ -266,6 +266,7 @@ class All_Report extends BackendController {
         $pdf->fontdata = array_merge($pdf->fontdata, $font);
         $pdf->default_font = 'fontawesome';
         $pdf->AddPage('L', '', '', '', '', 10, 10, 10, 10, 5, 5);
+        $pdf->setTitle($nama);
         $pdf->SetHeader('');
         $pdf->setFooter('|{PAGENO} Dari {nb} Halaman|');
         $pdf->WriteHTML($html);

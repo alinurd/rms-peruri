@@ -9,7 +9,7 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        table-layout: fixed;
+        table-layout: auto;
         page-break-inside: avoid;
     }
 
@@ -66,7 +66,7 @@ if($parent) :
     <table>
       <thead>
         <tr>
-          <td colspan="2" rowspan="3" style="text-align: center;border-right:none;padding-left: 10px;"><img src="<?= img_url('logo.png'); ?>" width="90"></td>
+          <td colspan="2" rowspan="3" ><img src="<?= img_url('logo.png'); ?>" ></td>
           <td colspan="4" rowspan="3" style="border-left: none; text-align: center;vertical-align: middle;"><h4>RISK CONTEXT</h4></td>
           <td>No.</td>
           <td>: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
