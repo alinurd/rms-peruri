@@ -137,6 +137,7 @@ class Cetak
 	
 	public function cetak_pdf($data=array(), $title=array(), $nmfile='', $size=array(), $field=array())
 	{
+		$this->_ci->load->library('pdf');
 		$nmFile=$nmfile.".pdf";
 		$pdfFilePath = download_path_relative($nmFile);
 		
