@@ -210,7 +210,8 @@ class All_Report extends BackendController {
                 // Simpan gambar ke file
                 if (file_put_contents($image_path, $decoded_image) !== false) {
                     // Set permission file ke 644 (pemilik bisa membaca & menulis, lainnya hanya membaca)
-                    if (!chmod($image_path, 0644)) {
+                    chmod($image_path, 0777);
+                    if (!chmod($image_path, 0777)) {
                         log_message('error', "Gagal mengatur permission untuk file gambar: " . $image_path);
                     }
                 } else {
