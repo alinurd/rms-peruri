@@ -139,6 +139,9 @@ class Cetak
 	{
 		doi::dump(download_path_relative($nmFile));
 		doi::dump(img_url('logo-lap.png'));
+		die(realpath(FCPATH . 'themes/default/assets/images/logo-lap.png'));
+
+
 		die;
 		$nmFile=$nmfile.".pdf";
 		$pdfFilePath = download_path_relative($nmFile);
