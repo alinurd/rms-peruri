@@ -137,6 +137,9 @@ class Cetak
 	
 	public function cetak_pdf($data=array(), $title=array(), $nmfile='', $size=array(), $field=array())
 	{
+		doi::dump(download_path_relative($nmFile));
+		doi::dump(img_url('logo-lap.png'));
+		die;
 		$nmFile=$nmfile.".pdf";
 		$pdfFilePath = download_path_relative($nmFile);
 		
