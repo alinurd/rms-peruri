@@ -28,7 +28,7 @@ class All_Report extends BackendController {
 		$result['progress_treatment']			= $this->risk_progress_treatment($data_progress_treatment);
 		$result['loss_event_database']			= $this->lost_event_database($data_parent);
 		$result['early_warning']				= $this->risk_early_warning($data_early_warning);
-		$result['perubahan_level']				= $this->perubahan_level($post);
+		$result['perubahan_level']				= $this->perubahan_level($post); 
 		$result['heatmap']						= $this->heatmap($post);
 		$result['risk_distribution']			= $this->risk_distribution($post);
 		$result['risk_categories']				= $this->risk_categories($post);
