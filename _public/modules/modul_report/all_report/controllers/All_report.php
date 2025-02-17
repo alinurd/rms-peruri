@@ -8,7 +8,7 @@ class All_Report extends BackendController {
     // INDEX
     public function index()
     {
-		$data['korporasi'] 		= $this->get_combo('parent-input');;
+		$data['korporasi'] 		= $this->get_combo('parent-input');
 		$data['periode']		= $this->get_combo('periode');
         $this->template->build('all_report',$data);
     }
