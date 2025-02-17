@@ -199,28 +199,18 @@ class All_Report extends BackendController {
             }
         }
     
-       // Function to save base64 image
+        // Function to save base64 image
         $saveImage = function($base64_string, $type, &$image_path) {
             if ($base64_string) {
-                // Hapus prefix Base64 jika ada
-                $base64_string  = preg_replace('/^data:image\/\w+;base64,/', '', $base64_string);
+                $base64_string  = str_replace('data:image/png;base64,', '', $base64_string);
                 $decoded_image  = base64_decode($base64_string);
                 $image_path     = "themes/upload/grafik/{$type}_image_" . time() . ".png";
-
-                // Simpan gambar ke file
-                if (file_put_contents($image_path, $decoded_image) !== false) {
-                    // Set permission file ke 644 (pemilik bisa membaca & menulis, lainnya hanya membaca)
-                    chmod($image_path, 0777);
-                    if (!chmod($image_path, 0777)) {
-                        log_message('error', "Gagal mengatur permission untuk file gambar: " . $image_path);
-                    }
-                } else {
+                if (file_put_contents($image_path, $decoded_image) === false) {
                     log_message('error', "Gagal menyimpan gambar {$type}: " . $image_path);
                     $image_path = null;
                 }
             }
         };
-
     
         // Save images
         $saveImage($grafik_heatmap, 'heatmap', $image_paths['heatmap']);
