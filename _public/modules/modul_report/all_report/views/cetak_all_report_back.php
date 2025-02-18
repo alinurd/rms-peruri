@@ -1,134 +1,83 @@
 <!-- STYLE CSS -->
 <style>
   body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      font-size: 10px;
-  }
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: auto;
+        page-break-inside: avoid;
+    }
 
-  table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed; 
-  }
+    th, td {
+        border: 1px solid black;
+        word-wrap: break-word;
+    }
 
-  thead {
-      display: table-header-group; 
-  }
+    th {
+        background-color: #BFBFBF;
+    }
 
-  .header th, .header td {
-      border: 1px solid black;
-      
-  }
+    .no-border td, .no-border th {
+        border: none !important;
+        padding: 0px !important;
+        margin: 0px;
+    }
 
-  .header th {
-      background-color: #BFBFBF;
-      text-align: center;
-  }
+    .page-break {
+        page-break-after: always;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
 
-  .page-break {
-      page-break-after: always;
-      margin: 0px !important;
-      padding: 0px !important;
-  }
+    .no-border td, .no-border th {
+        border: none !important;
+    }
 
-  .judul{
-    text-align: left;
-    font-weight: bold;
-    padding-bottom: 0px !important;
-    margin-bottom: 0px;
-  }
+    .sasaran-table td {
+        padding: 6px 10px;
+        vertical-align: top;
+    }
 
-  .context-umum {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed; 
-  }
+    .sasaran-table .number {
+        text-align: right;
+        padding-right: 5px;
+        width: 5px;
+    }
 
-  .context-umum th{
-    border: 1px solid black;
-  }
-
-  .context-umum td{
-    border: 1px solid black; 
-    word-wrap: break-word; 
-  }
-
-
-
-
-
-  .sasaran-table {
-      width: 100%;
-      border: none;
-  }
-
-  .sasaran-table td {
-      padding: 0px;
-      vertical-align: top;
-      border: none;
-  }
-
-  .sasaran-table .number {
-      text-align: right;
-      padding-right: 5px;
-      width: 5px;
-  }
-
-  .sasaran-table .text {
-      text-align: left;
-      text-indent: 10px;
-  }
-
-  .kriteria{
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed; 
-  }
-
-  .kriteria th{
-    border: 1px solid black;
-  }
-
-  .kriteria td{
-    border: 1px solid black; 
-    word-wrap: break-word; 
-  }
-
-  th,td{
-    border: 1px solid black; 
-    word-wrap: break-word;
-  }
+    .sasaran-table .text {
+        text-align: left;
+        text-indent: 10px;
+    }
 
 
 </style>
 
 
-<!-- RISK CONTEXT -->
 <?php
 if($parent) :
   foreach ($parent as $d) {
 ?>
-    <!-- Table Header -->
-    <table class="header">
+    <!-- RISK CONTEXT -->
+    <table>
+      <thead>
         <tr>
-          <td colspan="2" rowspan="3" style="width:20%;text-align: center;border-right:none;padding-left: 10px;">
-            <img src="<?= img_url('logo.png'); ?>" width="90">
-          </td>
-          <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-            <h4>RISK CONTEXT</h4>
-          </td>
-          <td style="width: 10%;">No.</td>
-          <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
+          <td colspan="2" rowspan="3" ><img src="<?= img_url('logo.png'); ?>" ></td>
+          <td colspan="4" rowspan="3" style="border-left: none; text-align: center;vertical-align: middle;"><h4>RISK CONTEXT</h4></td>
+          <td>No.</td>
+          <td>: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
         </tr>
         <tr>
           <td>Revisi</td>
-          <td colspan="3">: 1</td>
+          <td>: 1</td>
         </tr>
         <tr>
           <td>Tanggal Revisi</td>
-          <td colspan="3">: 31 Januari <?= $d['periode_name'];?></td>
+          <td>: 31 Januari <?= $d['periode_name'];?></td>
         </tr>
         <tr>
           <td colspan="6" style="border: none;">Risk Owner</td>
@@ -139,189 +88,181 @@ if($parent) :
           <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
         </tr>
         <tr>
-          <td colspan="10" style="padding-top: 10px;border: none;"></td>
+          <td colspan="8" style="padding-top: 20px;border: none;"></td>
         </tr>
-    </table>
 
-    <table class="context-umum">
-      <tr>
-        <td colspan="10" style="text-align: left;border: none;font-weight: bold;">A.Umum</td>
-      </tr>
-      <tr>
-        <th style="background-color: #BFBFBF;text-align: center;width: 5px;">No</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;width:100px;">Area</th>
-        <th colspan="7" style="background-color: #BFBFBF;text-align: center;width:550px">Konteks</th>
+        <!-- A UMUM -->
+        <tr>
+          <td colspan="8" style="text-align: left;border: none;font-weight: bold;">A.Umum</td>
+        </tr>
+        <tr>
+          <th style="background-color: #BFBFBF;text-align: center;width: 5% !important;vertical-align: middle !important;">No</th>
+          <th colspan="4" style="background-color: #BFBFBF;text-align: center;">Area</th>
+          <th colspan="3" style="background-color: #BFBFBF;text-align: center;">Konteks</th>
+        </tr>
+        <tr>
+          <td style="text-align: center;">1</td>
+          <td colspan="4">Anggaran RKAP</td>
+          <td colspan="3"><?= "Rp " . number_format($d['anggaran_rkap']); ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">2</td>
+          <td colspan="4">Pemimpin Unit Kerja</td>
+          <td colspan="3"><?= $d['owner_pic']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">3</td>
+          <td colspan="4">Anggota Unit Kerja</td>
+          <td colspan="3"><?= $d['anggota_pic']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">4</td>
+          <td colspan="4">Tugas Pokok Dan Fungsi</td>
+          <td colspan="3"><?= $d['tugas_pic']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">5</td>
+          <td colspan="4">Pekerjaan Di Luar Tupoksi</td>
+          <td colspan="3"><?= $d['tupoksi']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;vertical-align: middle !important;">6</td>
+          <td colspan="4">Sasaran</td>
+          <td colspan="3">
+            <table class="sasaran-table no-border">
+                <?php
+                $sasaran = $this->db->where('rcsa_no', $d['id'])->get(_TBL_RCSA_SASARAN)->result_array();
+                $no = 1;
+                foreach ($sasaran as $s) {
+                ?>
+                    <tr>
+                        <td class="number"><?= $no++; ?>.</td>
+                        <td class="text"><?= $s['sasaran']; ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="8" style="padding-top: 20px;border: none;"></td>
+        </tr>
+
+        <!-- B Konteks Internal -->
+        <tr>
+          <td colspan="8" style="text-align: left;border: none;font-weight: bold;">B.Konteks Internal</td>
+        </tr>
+        <tr>
+          <th style="background-color: #BFBFBF;text-align: center;width: 5% !important;vertical-align: middle !important;">No</th>
+          <th colspan="4" style="background-color: #BFBFBF;text-align: center;">Area</th>
+          <th colspan="3" style="background-color: #BFBFBF;text-align: center;">Konteks</th>
+        </tr>
+        <tr>
+          <td style="text-align: center;">1</td>
+          <td colspan="4">Man</td>
+          <td colspan="3"><?= $d['man']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">2</td>
+          <td colspan="4">Method</td>
+          <td colspan="3"><?= $d['method']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">3</td>
+          <td colspan="4">Machine</td>
+          <td colspan="3"><?= $d['machine']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">4</td>
+          <td colspan="4">Money</td>
+          <td colspan="3"><?= $d['money']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">5</td>
+          <td colspan="4">Material</td>
+          <td colspan="3"><?= $d['material']; ?></td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">6</td>
+          <td colspan="4">Market</td>
+          <td colspan="3"><?= $d['market']; ?></td>
+        </tr>
+
+        <tr>
+          <td colspan="8" style="padding-top: 20px;border: none;"></td>
+        </tr>
+
+        <!-- C Konteks Eksternal -->
+        <tr>
+          <td colspan="8" style="text-align: left;border: none;font-weight: bold;">C.Konteks Eksternal</td>
+        </tr>
+        <tr>
+        <th style="background-color: #BFBFBF;text-align: center; width:5%;">No</th>
+        <th colspan="4" style="background-color: #BFBFBF;text-align: center;">Area</th>
+        <th colspan="3" style="background-color: #BFBFBF;text-align: center;">Konteks</th>
       </tr>
       <tr>
         <td style="text-align: center;">1</td>
-        <td colspan="2">Anggaran RKAP</td>
-        <td colspan="7"><?= "Rp " . number_format($d['anggaran_rkap']); ?></td>
+        <td colspan="4">Politics</td>
+        <td colspan="3"><?= $d['politics']; ?></td>
       </tr>
       <tr>
         <td style="text-align: center;">2</td>
-        <td colspan="2">Pemimpin Unit Kerja</td>
-        <td colspan="7"><?= $d['owner_pic']; ?></td>
+        <td colspan="4">Economics</td>
+        <td colspan="3"><?= $d['economics']; ?></td>
       </tr>
       <tr>
         <td style="text-align: center;">3</td>
-        <td colspan="2">Anggota Unit Kerja</td>
-        <td colspan="7"><?= $d['anggota_pic']; ?></td>
+        <td colspan="4">Social</td>
+        <td colspan="3"><?= $d['social']; ?></td>
       </tr>
       <tr>
         <td style="text-align: center;">4</td>
-        <td colspan="2">Tugas Pokok Dan Fungsi</td>
-        <td colspan="7"><?=  $d['tugas_pic'];?></td>
+        <td colspan="4">Tecnology</td>
+        <td colspan="3"><?= $d['tecnology']; ?></td>
       </tr>
       <tr>
         <td style="text-align: center;">5</td>
-        <td colspan="2">Pekerjaan Di Luar Tupoksi</td>
-        <td colspan="7"><?= $d['tupoksi']; ?></td>
+        <td colspan="4">Environment</td>
+        <td colspan="3"><?= $d['environment']; ?></td>
       </tr>
       <tr>
         <td style="text-align: center;">6</td>
-        <td colspan="2">Sasaran</td>
-        <td colspan="7">
-          <table class="sasaran-table no-border">
-              <?php
-              $sasaran = $this->db->where('rcsa_no', $d['id'])->get(_TBL_RCSA_SASARAN)->result_array();
-              $no = 1;
-              foreach ($sasaran as $s) {
-              ?>
-                  <tr>
-                      <td class="number"><?= $no++; ?>.</td>
-                      <td class="text"><?= $s['sasaran']; ?></td>
-                  </tr>
-              <?php
-              }
-              ?>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="10" style="padding-top: 10px;border: none;"></td>
-      </tr>
-      <tr>
-        <td colspan="10" style="text-align: left;border: none;font-weight: bold;">B.Konteks Internal</td>
-      </tr>
-      <tr>
-        <th style="background-color: #BFBFBF;text-align: center;width: 5px;">No</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;width:100px;">Area</th>
-        <th colspan="7" style="background-color: #BFBFBF;text-align: center;width:550px;">Konteks</th>
-      </tr>
-      <tr>
-        <td style="text-align: center;">1</td>
-        <td colspan="2">Man</td>
-        <td colspan="7"><?= $d['man']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">2</td>
-        <td colspan="2">Method</td>
-        <td colspan="7"><?= $d['method']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">3</td>
-        <td colspan="2">Machine</td>
-        <td colspan="7"><?= $d['machine']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">4</td>
-        <td colspan="2">Money</td>
-        <td colspan="7"><?= $d['money']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">5</td>
-        <td colspan="2">Material</td>
-        <td colspan="7"><?= $d['material']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">6</td>
-        <td colspan="2">Market</td>
-        <td colspan="7"><?= $d['market']; ?></td>
-      </tr>
-      <tr>
-        <td colspan="10" style="padding-top: 10px;border: none;"></td>
-      </tr>
-      <tr>
-        <td colspan="10" style="text-align: left;border: none;font-weight: bold;">C.Konteks Eksternal</td>
-      </tr>
-      <tr>
-        <th style="background-color: #BFBFBF;text-align: center; width:5px;">No</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;width:100px;">Area</th>
-        <th colspan="7" style="background-color: #BFBFBF;text-align: center;width:550px;">Konteks</th>
-      </tr>
-      <tr>
-        <td style="text-align: center;">1</td>
-        <td colspan="2">Politics</td>
-        <td colspan="7"><?= $d['politics']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">2</td>
-        <td colspan="2">Economics</td>
-        <td colspan="7"><?= $d['economics']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">3</td>
-        <td colspan="2">Social</td>
-        <td colspan="7"><?= $d['social']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">4</td>
-        <td colspan="2">Tecnology</td>
-        <td colspan="7"><?= $d['tecnology']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">5</td>
-        <td colspan="2">Environment</td>
-        <td colspan="7"><?= $d['environment']; ?></td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">6</td>
-        <td colspan="2">Legal</td>
-        <td colspan="7"><?= $d['legal']; ?></td>
+        <td colspan="4">Legal</td>
+        <td colspan="3"><?= $d['legal']; ?></td>
       </tr>
 
       <tr>
-        <td colspan="10" style="padding-top: 10px;border: none;"></td>
-      </tr>
-      <tr>
-        <td colspan="10" style="text-align: left;border: none;font-weight: bold;">D.Stakeholder Internal</td>
-      </tr>
-      <tr>
-        <th style="background-color: #BFBFBF;text-align: center;width: 5px;">No</th>
-        <th colspan="3" style="background-color: #BFBFBF;text-align: center;">Stakeholder Internal</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;">Peran/Fungsi</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;">Komunikasi Yang dipilih</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;">Potensi Gangguan / Hambatan</th>
+        <td colspan="8" style="padding-top: 20px;border: none;"></td>
       </tr>
 
-      <?php
-      $stakholder_internal  = $this->db->where('rcsa_no', $d['id'])->where('stakeholder_type', 1)->get(_TBL_RCSA_STAKEHOLDER)->result_array();
-      $no                   = 1;
-      foreach ($stakholder_internal as $key => $rows1) {
-      ?>
+      <!-- D Stakeholder Internal -->
       <tr>
-        <td style="text-align: center;"><?= $no++ ?></td>
-        <td colspan="3"><?= $rows1['stakeholder']; ?></td>
-        <td colspan="2"><?= $rows1['peran']; ?></td>
-        <td colspan="2" valign="top"><?= $rows1['komunikasi']; ?></td>
-        <td colspan="2" valign="top"><?= $rows1['komunikasi']; ?></td>
-      </tr>
-      <?php
-      }
-      ?>
-      <tr>
-        <td colspan="10" style="padding-top: 10px;border: none;"></td>
-      </tr>
-      <tr>
-        <td colspan="10" style="text-align: left;border: none;font-weight: bold;">E.Stakeholder Eksternal</td>
+        <td colspan="8" style="text-align: left;border: none;font-weight: bold;">D.Stakeholder Internal</td>
       </tr>
 
       <tr>
-        <th style="background-color: #BFBFBF;text-align: center;width: 5px;">No</th>
-        <th colspan="3" style="background-color: #BFBFBF;text-align: center;">Stakeholder Internal</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;">Peran/Fungsi</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;">Komunikasi Yang dipilih</th>
-        <th colspan="2" style="background-color: #BFBFBF;text-align: center;">Potensi Gangguan / Hambatan</th>
+        <th style="background-color: #BFBFBF;text-align: center;width: 5%;">No</th>
+        <th colspan="4" style="background-color: #BFBFBF;text-align: center;">Stakeholder Internal</th>
+        <th style="background-color: #BFBFBF;text-align: center;">Peran/Fungsi</th>
+        <th style="background-color: #BFBFBF;text-align: center;">Komunikasi Yang dipilih</th>
+        <th style="background-color: #BFBFBF;text-align: center;">Potensi Gangguan / Hambatan</th>
+      </tr>
+
+     
+
+      <!-- E Stakeholder Eksternal -->
+      <tr>
+        <td colspan="8" style="text-align: left;border: none;font-weight: bold;">E.Stakeholder Eksternal</td>
+      </tr>
+
+      <tr>
+        <th style="background-color: #BFBFBF;text-align: center;width: 5%;">No</th>
+        <th colspan="4" style="background-color: #BFBFBF;text-align: center;">Stakeholder Internal</th>
+        <th style="background-color: #BFBFBF;text-align: center;">Peran/Fungsi</th>
+        <th style="background-color: #BFBFBF;text-align: center;">Komunikasi Yang dipilih</th>
+        <th style="background-color: #BFBFBF;text-align: center;">Potensi Gangguan / Hambatan</th>
       </tr>
       <?php
       $no = 1;
@@ -330,46 +271,49 @@ if($parent) :
       ?>
         <tr>
           <td style="text-align: center;"><?= $no++ ?></td>
-          <td colspan="3"><?= $rows2['stakeholder']; ?></td>
-          <td colspan="2"><?= $rows2['peran']; ?></td>
-          <td colspan="2"><?= $rows2['komunikasi']; ?></td>
-          <td colspan="2"><?= $rows2['komunikasi']; ?></td>
+          <td colspan="4"><?= $rows2['stakeholder']; ?></td>
+          <td><?= $rows2['peran']; ?></td>
+          <td><?= $rows2['komunikasi']; ?></td>
+          <td><?= $rows2['komunikasi']; ?></td>
         </tr>
       <?php
       }
       ?>
+      </thead>
     </table>
-    <div class="page-break"></div>
-    <?php
+
+<?php
   }
 endif;
 ?>
 
 
 
-<!-- RISK KRITERIA  -->
+<div class="page-break"></div>
+
+
+
 <?php
   if($parent) :
+  // RISK KRITERIA 
   foreach ($parent as $d) {
 ?>
-    <table class="header">
+    <table>
+      <thead>
+        <!-- PARENT KRITERIA -->
         <tr>
-          <td colspan="2" rowspan="3" style="width:20%;text-align: center;border-right:none;padding-left: 10px;">
-            <img src="<?= img_url('logo.png'); ?>" width="90">
-          </td>
-          <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-            <h4>RISK CRITERIA</h4>
-          </td>
-          <td style="width: 10%;">No.</td>
-          <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
+          <td colspan="2" rowspan="3" style="text-align: center;border-right:none;padding-left: 10px;"><img src="<?= img_url('logo.png'); ?>" width="90"></td>
+          <td colspan="4" rowspan="3" style="border-left: none; text-align: center;vertical-align: middle;"><h4>RISK CRITERIA</h4></td>
+          <td>No.</td>
+          <td>: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
         </tr>
         <tr>
           <td>Revisi</td>
-          <td colspan="3">: 1</td>
+          <td>: 1</td>
         </tr>
         <tr>
           <td>Tanggal Revisi</td>
-          <td colspan="3">: 31 Januari <?= $d['periode_name'];?></td>
+          <td>: 31 Januari <?= $d['periode_name'];?></td>
         </tr>
         <tr>
           <td colspan="6" style="border: none;">Risk Owner</td>
@@ -380,28 +324,47 @@ endif;
           <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
         </tr>
         <tr>
-          <td colspan="10" style="padding-top: 10px;border: none;"></td>
+          <td colspan="8" style="padding-top: 20px;border: none;"></td>
         </tr>
-    </table>
-    <table class="kriteria">
+        
         <!-- Kriteria Kemungkinan -->
         <tr>
-          <td colspan="10" style="text-align: left;border: none;font-weight: bold;">A.Kriteria Kemungkinan</td>
+          <td colspan="8" style="text-align: left;border: none;font-weight: bold;">A.Kriteria Kemungkinan</td>
         </tr>
         <?php
         $kriteriaData   = $this->db->where('category', 'likelihood')->get(_TBL_LEVEL)->result_array();
-        $defaultColors 	= [1 => 'green',2 => 'lightgreen',3 => 'yellow',4 => 'orange',5 => 'red'];
+        $defaultColors 	= [
+                            1 => 'green',
+                            2 => 'lightgreen',
+                            3 => 'yellow',
+                            4 => 'orange',
+                            5 => 'red'
+                          ];
+    
         $kriteria_kem   = [];
         foreach ($kriteriaData as $item) {
           $level                = (int)$item['code'];
-          $kriteria_kem[$level] = [ 'name' => $item['level'],'color' => $defaultColors[$level] ?? 'gray'];
+          $kriteria_kem[$level] = [
+                                    'name' => $item['level'],
+                                    'color' => $defaultColors[$level] ?? 'gray'
+                                  ];
         }
-        $kemungkinan            = $this->db->where('kelompok', 'kriteria-kemungkinan')->where('param1', $d['id'])->get(_TBL_DATA_COMBO)->result_array();
+        $kemungkinan            = $this->db
+                                  ->where('kelompok', 'kriteria-kemungkinan')
+                                  ->where('param1', $d['id'])  // Menambahkan kondisi untuk field param1
+                                  ->get(_TBL_DATA_COMBO)
+                                  ->result_array();
     
         if (empty($kemungkinan)) {
-          $kemungkinan          = $this->db->where('kelompok', 'kriteria-kemungkinan')->where('param1', NULL)->or_where('param1', '')->get(_TBL_DATA_COMBO)->result_array();
+          $kemungkinan          = $this->db
+                                  ->where('kelompok', 'kriteria-kemungkinan')
+                                  ->where('param1', NULL)  // Menambahkan kondisi untuk field param1 kosong
+                                  ->or_where('param1', '') // Jika kosong bisa berupa NULL atau string kosong
+                                  ->get(_TBL_DATA_COMBO)
+                                  ->result_array();
         }
-        ?>
+    
+      ?>
         <tr>
           <th colspan="3">Kemungkinan</th>
           <?php
@@ -415,7 +378,7 @@ endif;
           ?>
         </tr>
 
-        <?php foreach ($kemungkinan as $kem) { ?>
+      <?php foreach ($kemungkinan as $kem) { ?>
         <tr>
           <td colspan="3"><?= $kem['data'] ?></td>
           <?php
@@ -436,29 +399,50 @@ endif;
         <?php } ?>
 
         <tr>
-          <td colspan="10" style="padding-top: 10px;border: none;"></td>
+          <td colspan="8" style="padding-top: 20px;border: none;"></td>
         </tr>
 
         <tr>
-          <td colspan="10" style="text-align: left;border: none;font-weight: bold;">B.Kriteria Dampak</td>
+          <td colspan="8" style="text-align: left;border: none;font-weight: bold;">B.Kriteria Dampak</td>
         </tr>
 
         <?php
         $kriteriaData     = $this->db->where('category', 'impact')->get(_TBL_LEVEL)->result_array();
-        $defaultColors    = [1 => 'green',2 => 'lightgreen',3 => 'yellow',4 => 'orange',5 => 'red'];
+        $defaultColors    = [
+                              1 => 'green',
+                              2 => 'lightgreen',
+                              3 => 'yellow',
+                              4 => 'orange',
+                              5 => 'red'
+                            ];
+    
         $kriteria_dampak  = [];
         foreach ($kriteriaData as $item) {
-          $level                    = (int)$item['code']; 
-          $kriteria_dampak[$level]  = ['name' => $item['level'],'color' => $defaultColors[$level] ?? 'gray'];
+          $level        = (int)$item['code']; 
+          $kriteria_dampak[$level]  = [
+                                        'name' => $item['level'],
+                                        'color' => $defaultColors[$level] ?? 'gray' 
+                                      ];
         }
     
-        $dampak                     = $this->db->where('kelompok', 'kriteria-dampak')->where('param1', $d['id'])->get(_TBL_DATA_COMBO)->result_array();
+        $dampak                     = $this->db
+                                      ->where('kelompok', 'kriteria-dampak')
+                                      ->where('param1', $d['id'])  
+                                      ->get(_TBL_DATA_COMBO)
+                                      ->result_array();
     
 
         if (empty($dampak)) {
-          $dampak                   = $this->db->where('kelompok', 'kriteria-dampak')->group_start()->where('param1', NULL)->or_where('param1', '')->group_end()->get(_TBL_DATA_COMBO)->result_array();
+          $dampak   = $this->db
+                      ->where('kelompok', 'kriteria-dampak')
+                      ->group_start()               
+                      ->where('param1', NULL)
+                      ->or_where('param1', '')  
+                      ->group_end()               
+                      ->get(_TBL_DATA_COMBO)
+                      ->result_array();
         }
-        ?>
+      ?>
         <tr>
           <th>Kategori</th>
           <th colspan="2">Dampak</th>
@@ -468,12 +452,12 @@ endif;
             </td>
           <?php endforeach; ?>
         </tr>
-        <?php foreach ($dampak as $dam): 
+      <?php foreach ($dampak as $dam): 
             $subDampak = $this->db->where('kelompok', 'sub-kriteria-dampak')
                         ->where('pid', $dam['id'])
                         ->get(_TBL_DATA_COMBO)
                         ->result_array();
-        ?>
+          ?>
             <?php foreach ($subDampak as $key => $subd): ?>
               <tr>
                 <?php if ($key + 1 == 1): ?>
@@ -497,55 +481,50 @@ endif;
               </tr>
             <?php endforeach; ?>
           <?php endforeach; ?>
+      </thead>
     </table>
-    <div class="page-break"></div>
+
   <?php
     }
   endif;
   ?>
-  
 
-
+<div class="page-break"></div>
 <!-- APPETITE -->
 <?php
 if($parent) :
   foreach ($parent as $d) {
 ?>
-    <table class="header">
-        <tr>
-          <td colspan="2" rowspan="3" style="width:20%;text-align: center;border-right:none;padding-left: 10px;">
-            <img src="<?= img_url('logo.png'); ?>" width="90">
-          </td>
-          <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-            <h4>RISK APPETITE</h4>
-          </td>
-          <td style="width: 10%;">No.</td>
-          <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
+
+<table>
+    <thead>
+    <tr>
+          <td colspan="2" rowspan="3" style="text-align: center;border-right:none;padding-left: 10px;"><img src="<?= img_url('logo.png'); ?>" width="90"></td>
+          <td colspan="6" rowspan="3" style="border-left: none; text-align: center;vertical-align: middle;"><h4>RISK APPETITE</h4></td>
+          <td>No.</td>
+          <td>: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
         </tr>
         <tr>
           <td>Revisi</td>
-          <td colspan="3">: 1</td>
+          <td>: 1</td>
         </tr>
         <tr>
           <td>Tanggal Revisi</td>
-          <td colspan="3">: 31 Januari <?= $d['periode_name'];?></td>
+          <td>: 31 Januari <?= $d['periode_name'];?></td>
         </tr>
         <tr>
-          <td colspan="6" style="border: none;">Risk Owner</td>
+          <td colspan="8" style="border: none;">Risk Owner</td>
           <td colspan="2" style="border: none;">: <?= $d['name']; ?></td>
         </tr>
         <tr>
-          <td colspan="6" style="border: none;">Risk Agent</td>
+          <td colspan="8" style="border: none;">Risk Agent</td>
           <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
         </tr>
         <tr>
-          <td colspan="10" style="padding-top: 10px;border: none;"></td>
+          <td colspan="10" style="padding-top: 20px;border: none;"></td>
         </tr>
-    </table>
-<table class="kriteria">
-    <thead>
         <tr>
-            <th rowspan="3" style="width: 5px;">No.</th>
+            <th rowspan="3" style="width: 5%;">No.</th>
             <th rowspan="3">Sasaran</th>
             <th rowspan="3">Risk Appetite Statement</th>
             <th colspan="6">Threshold</th>
@@ -590,53 +569,47 @@ if($parent) :
         </tr>
     </tbody>
 </table>
-<div class="page-break"></div>
 <?php
 }
 endif;
 ?>
-
-
-<!-- RISK REGISTER -->
+<div class="page-break"></div>
+<!-- REGISTER -->
 <?php
 if($parent) :
   foreach ($parent as $d) {
-    $field        = $this->data->get_data_risk_register($d['id']);
-    if(!empty($field)) :
 ?>
-    <table class="header">
-        <tr>
-          <td colspan="2" rowspan="3" style="width:20%;text-align: center;border-right:none;padding-left: 10px;">
-            <img src="<?= img_url('logo.png'); ?>" width="90">
-          </td>
-          <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-            <h4>RISK REGISTER</h4>
-          </td>
-          <td style="width: 10%;">No.</td>
-          <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
-        </tr>
-        <tr>
-          <td>Revisi</td>
-          <td colspan="3">: 1</td>
-        </tr>
-        <tr>
-          <td>Tanggal Revisi</td>
-          <td colspan="3">: 31 Januari <?= $d['periode_name'];?></td>
-        </tr>
-        <tr>
-          <td colspan="6" style="border: none;">Risk Owner</td>
-          <td colspan="2" style="border: none;">: <?= $d['name']; ?></td>
-        </tr>
-        <tr>
-          <td colspan="6" style="border: none;">Risk Agent</td>
-          <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
-        </tr>
-        <tr>
-          <td colspan="10" style="padding-top: 10px;border: none;"></td>
-        </tr>
-    </table>
-<table class="kriteria" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 12px;">
+<table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 12px;">
   <thead>
+    <tr>
+        <td colspan="2" rowspan="3" style="text-align: center; border-right: none; padding-left: 10px;">
+            <img src="<?= img_url('logo.png'); ?>" width="90">
+        </td>
+        <td colspan="4" rowspan="3" style="border-left: none; text-align: center; vertical-align: middle;">
+            <h4>RISK REGISTER</h4>
+        </td>
+        <td>No.</td>
+        <td colspan="2">: 001/RM-FORM/I/<?= $d['periode_name']; ?></td>
+    </tr>
+    <tr>
+        <td>Revisi</td>
+        <td  colspan="2">: 1</td>
+    </tr>
+    <tr>
+        <td>Tanggal Revisi</td>
+        <td  colspan="2">: 31 Januari <?= $d['periode_name']; ?></td>
+    </tr>
+    <tr>
+        <td colspan="7" style="border: none;">Risk Owner</td>
+        <td colspan="2" style="border: none;">: <?= $d['name']; ?></td>
+    </tr>
+    <tr>
+        <td colspan="7" style="border: none;">Risk Agent</td>
+        <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
+    </tr>
+    <tr>
+        <td colspan="9" style="padding-top: 20px; border: none;"></td>
+    </tr>
     <tr style="background-color: #f2f2f2;">
         <th rowspan="2" style="width: 5%; border: 1px solid #000; padding: 5px;">No.</th>
         <th colspan="3" style="width: 30%; border: 1px solid #000; padding: 5px;">Inheren</th>
@@ -652,6 +625,7 @@ if($parent) :
         <th style="width: 8.33%; border: 1px solid #000; padding: 5px;">Skala Likelihood</th>
         <th style="width: 8.33%; border: 1px solid #000; padding: 5px;">Level Risiko</th>
     </tr>
+
   </thead>
     
     <tbody>
@@ -660,7 +634,7 @@ if($parent) :
       $groupedRows  = array();
 			$id_rcsa      = $this->input->post('id');
 			$owner_no     = $this->input->post('owner_no');
-			
+			$field        = $this->data->get_data_risk_register($d['id']);
 			
 
       foreach ($field as $key => $row) :
@@ -841,14 +815,13 @@ if($parent) :
       </tr>
     </tbody>
 </table>
-<div class="page-break"></div>
-<?php endif;?>
 <?php
   }
 endif;
 ?>
 
-<!--RISK EFEKTIFITAS CONTROL -->
+<div class="page-break"></div>
+<!-- EFEKTIFITAS CONTROL -->
 <?php
 $cboPengujian = [
   '1' => 'Inquery',
@@ -878,119 +851,114 @@ $comboColor = [
 
   if($parent) :
   foreach ($parent as $d) {
-      $bisnis_proses = $this->db->where('rcsa_no', $d['id'])->get(_TBL_RCM)->result_array(); 
-      if(!empty($bisnis_proses)):
-        $test = $this->db->select([
-            'proses_bisnis',
-            'note_control',
-            'JSON_LENGTH(note_control) as note_count'  
-        ])
-        ->where('rcsa_no', $d['id'])  
-        ->get(_TBL_RCSA_DETAIL)
-        ->result_array();
-      $options = [];
-      foreach ($test as $row) {
-          $options[$row['proses_bisnis']] = $row['proses_bisnis'];
-      }
-    ;?>
-    <table class="header">
-        <tr>
-          <td colspan="2" rowspan="3" style="width:20%;text-align: center;border-right:none;padding-left: 10px;">
-            <img src="<?= img_url('logo.png'); ?>" width="90">
-          </td>
-          <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-            <h4>RISK EFEKTIFITAS CONTROL</h4>
-          </td>
-          <td style="width: 10%;">No.</td>
-          <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
-        </tr>
-        <tr>
-          <td>Revisi</td>
-          <td colspan="3">: 1</td>
-        </tr>
-        <tr>
-          <td>Tanggal Revisi</td>
-          <td colspan="3">: 31 Januari <?= $d['periode_name'];?></td>
-        </tr>
-        <tr>
-          <td colspan="6" style="border: none;">Risk Owner</td>
-          <td colspan="2" style="border: none;">: <?= $d['name']; ?></td>
-        </tr>
-        <tr>
-          <td colspan="6" style="border: none;">Risk Agent</td>
-          <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
-        </tr>
-        <tr>
-          <td colspan="10" style="padding-top: 10px;border: none;"></td>
-        </tr>
-    </table>
-  
-    <table class="kriteria" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 12px;">
-      <thead>
-          <tr>
-              <th rowspan="2" style="width: 5px;" class="text-center">No.</th>
-              <th colspan="4" rowspan="2" style="width: 20%;" class="text-center">Business Process</th>
-              <th colspan="5" style="width: 75%;" class="text-center">Metode & Control</th>
-          </tr>
-          <tr>
-              <th style="width: 15%;" class="text-center">Existing Control</th>
-              <th style="width: 15%;" class="text-center">Metode Pengujian</th>
-              <th style="width: 15%;" class="text-center">Penilaian Internal Control</th>
-              <th style="width: 15%;" class="text-center">Kelemahan Control</th>
-              <th style="width: 15%;" class="text-center">Rencana Tindak Lanjut</th>
-          </tr>
-      </thead>
-      <tbody>
-          <?php        
-              $i = 0;
-              foreach ($bisnis_proses as $key => $row): $i++; 
-                  $exiting_control = $this->db->where('rcm_id', $row['id'])->get(_TBL_EXISTING_CONTROL)->result_array();
-          ?>
-          
-          <tr>
-              <td style="text-align:center;"><?= $i; ?></td>
-              <td colspan="4"><?= $row['bussines_process']; ?></td>
-              <td colspan="5" style="padding: 0; margin: 0;">
-                  <table style="width: 100%; border-collapse: collapse; margin: 0;">
-                      <tbody>
-                          <?php 
-                              $j = 0;
-                              foreach ($exiting_control as $ex): 
-                                  $j++; 
-                          ?>
-                              <tr>
-                                  <td style="width: 189px; padding:5px ; margin: 0; min-width: 16%;"><?= $ex['component']; ?></td>
-                                  <td style="width: 190px; padding:5px ; margin: 0;"><?= $cboPengujian[$ex['metode_pengujian']]; ?></td>
-                                  <td style="width: 190px; padding:5px ; margin: 0;">
-                                      <span style="font-size: 12px; background-color: <?= $comboColor[$ex['penilaian_intern_control']]; ?>; color: <?= ($comboColor[$ex['penilaian_intern_control']] == '#00712D' || $comboColor[$ex['penilaian_intern_control']] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;">
-                                          <?= $cboPenilaian[$ex['penilaian_intern_control']]; ?>
-                                      </span>
-                                  </td>
-                                  <td style="width: 190px; padding:5px ; margin: 0;"><?= $ex['kelemahan_control']; ?></td>
-                                  <td style=" padding:5px ; margin: 0;"><?= $ex['rencana_tindak_lanjut']; ?></td>
-                              </tr>
-                          <?php endforeach; ?>
-                      </tbody>
-                  </table>
-              </td>
-          </tr>
-          <?php endforeach; ?>
-          <tr>
-              <td colspan="10" style="padding-top: 10px; border: none;"></td>
-          </tr>
-      </tbody>  
-    </table>
+?>
 
-    <div class="page-break"></div>
-    <?php endif;?>
+<table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 12px;">
+    <thead>
+        <tr>
+            <td colspan="2" rowspan="3" style="text-align: center; border-right: none;">
+                <img src="<?= img_url('logo.png'); ?>" width="90">
+            </td>
+            <td colspan="3" rowspan="3" style="text-align: center; border-left: none; vertical-align: middle;">
+                <h4>RISK EFEKTIFITAS CONTROL</h4>
+            </td>
+            <td style="width: 10%;">No.</td>
+            <td style="width: 20%;">: 001/RM-FORM/I/<?= $d['periode_name']; ?></td>
+        </tr>
+        <tr>
+            <td>Revisi</td>
+            <td>: 1</td>
+        </tr>
+        <tr>
+            <td>Tanggal Revisi</td>
+            <td>: 31 Januari <?= $d['periode_name']; ?></td>
+        </tr>
+        <tr>
+            <td colspan="5" style="border: none;">Risk Owner</td>
+            <td colspan="2" style="border: none;">: <?= $d['name']; ?></td>
+        </tr>
+        <tr>
+            <td colspan="5" style="border: none;">Risk Agent</td>
+            <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
+        </tr>
+        <tr>
+            <td colspan="7" style="padding-top: 20px; border: none;"></td>
+        </tr>
+        <tr>
+            <th rowspan="2" style="width: 5%;" class="text-center">No.</th>
+            <th rowspan="2" style="width: 20%;" class="text-center">Business Process</th>
+            <th colspan="5" style="width: 75%;" class="text-center">Metode & Control</th>
+        </tr>
+        <tr>
+            <th style="width: 15%;" class="text-center">Existing Control</th>
+            <th style="width: 15%;" class="text-center">Metode Pengujian</th>
+            <th style="width: 15%;" class="text-center">Penilaian Internal Control</th>
+            <th style="width: 15%;" class="text-center">Kelemahan Control</th>
+            <th style="width: 15%;" class="text-center">Rencana Tindak Lanjut</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php        
+            $bisnis_proses = $this->db->where('rcsa_no', $d['id'])->get(_TBL_RCM)->result_array(); 
+            $test = $this->db->select([
+                'proses_bisnis',
+                'note_control',
+                'JSON_LENGTH(note_control) as note_count'  
+            ])
+            ->where('rcsa_no', $d['id'])  
+            ->get(_TBL_RCSA_DETAIL)
+            ->result_array();
+            $options = [];
+            foreach ($test as $row) {
+                $options[$row['proses_bisnis']] = $row['proses_bisnis'];
+            }
+            $i = 0;
+            
+            foreach ($bisnis_proses as $key => $row): $i++; 
+                $exiting_control = $this->db->where('rcm_id', $row['id'])->get(_TBL_EXISTING_CONTROL)->result_array();
+        ?>
+        
+        <tr>
+            <td style="text-align:center;"><?= $i; ?></td>
+            <td><?= $row['bussines_process']; ?></td>
+            <td colspan="5" style="padding: 0; margin: 0;">
+                <table style="width: 100%; border-collapse: collapse; margin: 0;">
+                    <tbody>
+                        <?php 
+                            $j = 0;
+                            foreach ($exiting_control as $ex): 
+                                $j++; 
+                        ?>
+                            <tr>
+                                <td style="width: 189px; padding:5px ; margin: 0; min-width: 16%;"><?= $ex['component']; ?></td>
+                                <td style="width: 190px; padding:5px ; margin: 0;"><?= $cboPengujian[$ex['metode_pengujian']]; ?></td>
+                                <td style="width: 190px; padding:5px ; margin: 0;">
+                                    <span style="font-size: 12px; background-color: <?= $comboColor[$ex['penilaian_intern_control']]; ?>; color: <?= ($comboColor[$ex['penilaian_intern_control']] == '#00712D' || $comboColor[$ex['penilaian_intern_control']] == '#B8001F') ? '#FFFFFF' : '#000000'; ?>;">
+                                        <?= $cboPenilaian[$ex['penilaian_intern_control']]; ?>
+                                    </span>
+                                </td>
+                                <td style="width: 190px; padding:5px ; margin: 0;"><?= $ex['kelemahan_control']; ?></td>
+                                <td style=" padding:5px ; margin: 0;"><?= $ex['rencana_tindak_lanjut']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+        <tr>
+            <td colspan="7" style="padding-top: 20px; border: none;"></td>
+        </tr>
+    </tbody>
+</table>
 
 <?php
   }
 endif;
-
 ?>
 
-<!-- LOST EVENT -->
+<div class="page-break"></div>
+
 <?php
   foreach ($parent as $d) {
     $data_event   = $this->db->where('rcsa_no', $d['id'])->get(_TBL_VIEW_RCSA_LOST_EVENT)->row_array();
@@ -1001,7 +969,7 @@ endif;
       $label_in   = "<span style='background-color:" . $row_in['warna_bg'] . ";color:" . $row_in['warna_txt'] . ";'>&nbsp;" . $row_in['tingkat'] . "&nbsp;</span>";
       $label_res  = "<span style='background-color:" . $row_res['warna_bg'] . ";color:" . $row_res['warna_txt'] . ";'>&nbsp;" . $row_res['tingkat'] . "&nbsp;</span>";
 ?>
-<table class="kriteria" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 12px;">
+<table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 12px;">
     <thead>
         <tr>
             <td colspan="2" rowspan="3" style="text-align: center; border-right: none;">
@@ -1187,47 +1155,45 @@ endif;
     </tbody>
 </table>
 
-<div class="page-break"></div>
+
 <?php
     }
   }
 ?>
 
-
+<div class="page-break"></div>
 <!-- EARLY WARNING -->
-<table class="header">
-    <tr>
-      <td colspan="2" rowspan="3" style="width:20%;text-align: center;border-right:none;padding-left: 10px;">
-        <img src="<?= img_url('logo.png'); ?>" width="90">
-      </td>
-      <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-        <h4>RISK REGISTER</h4>
-      </td>
-      <td style="width: 10%;">No.</td>
-      <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
-    </tr>
-    <tr>
-      <td>Revisi</td>
-      <td colspan="3">: 1</td>
-    </tr>
-    <tr>
-      <td>Tanggal Revisi</td>
-      <td colspan="3">: 31 Januari <?= $d['periode_name'];?></td>
-    </tr>
-    <tr>
-      <td colspan="6" style="border: none;">Risk Owner</td>
-      <td colspan="2" style="border: none;">: <?= $d['name']; ?></td>
-    </tr>
-    <tr>
-      <td colspan="6" style="border: none;">Risk Agent</td>
-      <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
-    </tr>
-    <tr>
-      <td colspan="10" style="padding-top: 10px;border: none;"></td>
-    </tr>
-</table>
-<table class="kriteria">
+<table>
 <thead>
+      <tr>
+          <td colspan="2" rowspan="3" style="text-align: center; border-right: none;">
+              <img src="<?= img_url('logo.png'); ?>" width="90">
+          </td>
+          <td colspan="10" rowspan="3" style="text-align: center; border-left: none; vertical-align: middle;">
+              <h4>EARLY WARNING</h4>
+          </td>
+          <td colspan="4" style="width: 12%;">No.</td>
+          <td colspan="4" style="width: 12%;">: 001/RM-FORM/I/<?= $parent[0]['periode_name']; ?></td>
+      </tr>
+      <tr>
+          <td colspan="4" style="width: 12%;">Revisi</td>
+          <td colspan="4" style="width: 12%;">: 1</td>
+      </tr>
+      <tr>
+          <td colspan="4" style="width: 12%;">Tanggal Revisi</td>
+          <td colspan="4" style="width: 12%;">: 31 Januari <?= $parent[0]['periode_name']; ?></td>
+      </tr>
+      <tr>
+          <td colspan="16" style="border: none;">Risk Owner</td>
+          <td colspan="4" style="border: none;">: <?= $parent[0]['name']; ?></td>
+      </tr>
+      <tr>
+          <td colspan="16" style="border: none;">Risk Agent</td>
+          <td colspan="4" style="border: none;">: <?= $parent[0]['officer_name']; ?></td>
+      </tr>
+      <tr>
+          <td colspan="20" style="padding-top: 20px; border: none;"></td>
+      </tr>
     <tr>
         <th style="text-align:center;" rowspan="2" width="4%">No</th>
         <th style="text-align:center;" rowspan="2" width="8%">Risk Owner</th>
@@ -1310,8 +1276,7 @@ endif;
         <?php } ?>
     </tbody>
 </table>
-
-
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 <div class="page-break"></div>
 <?php
 $bulanName = [
@@ -1331,37 +1296,7 @@ $bulanName = [
 ?>
 
 
-<table class="header">
-    <tr>
-      <td colspan="2" rowspan="3" style="width:20%;text-align: center;border-right:none;padding-left: 10px;">
-        <img src="<?= img_url('logo.png'); ?>" width="90">
-      </td>
-      <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-        <h4>RISK REGISTER</h4>
-      </td>
-      <td style="width: 10%;">No.</td>
-      <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
-    </tr>
-    <tr>
-      <td>Revisi</td>
-      <td colspan="3">: 1</td>
-    </tr>
-    <tr>
-      <td>Tanggal Revisi</td>
-      <td colspan="3">: 31 Januari <?= $d['periode_name'];?></td>
-    </tr>
-    <tr>
-      <td colspan="6" style="border: none;">Risk Owner</td>
-      <td colspan="2" style="border: none;">: <?= $d['name']; ?></td>
-    </tr>
-    <tr>
-      <td colspan="6" style="border: none;">Risk Agent</td>
-      <td colspan="2" style="border: none;">: <?= $d['officer_name']; ?></td>
-    </tr>
-    <tr>
-      <td colspan="10" style="padding-top: 10px;border: none;"></td>
-    </tr>
-</table>
+  
 <?php foreach ($bulanName as $keyB => $bulanheader) {?>
 
   <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse; font-size: 12px;">
@@ -1470,8 +1405,6 @@ $bulanName = [
 }
 ?>
 <div class="page-break"></div>
-
-
 <div style="width: 100%; text-align: center;">
   <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
       <thead>
