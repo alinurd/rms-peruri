@@ -13,7 +13,8 @@ class pdf {
 		/** PHPExcel root directory */
 		if (!defined('PDF_ROOT')) {
 			define('PDF_ROOT', dirname(__FILE__) . '/');
-			require(PDF_ROOT . 'mpdf60/mpdf.php');
+			// require(PDF_ROOT . 'mpdf60/mpdf.php');
+			require(PDF_ROOT . 'mpdf61/mpdf.php');
 		}
 		
 		// Doi::dump($param);die();
