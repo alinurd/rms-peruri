@@ -168,7 +168,7 @@ if($data){
             <?php endif; ?>
             <td><?= $subd['data'] ?></td>
             <?php foreach ($kriteria_dampak as $kee => $k): ?>
-              <td>
+              <td style="word-wrap: break-word;">
                 <?php
                 $damp = $this->db->where('sub_dampak_id', $subd['id'])
                   ->where('criteria_risiko', $kee)

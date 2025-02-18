@@ -28,6 +28,8 @@
 
 if($data){
   foreach ($data as $d) {
+    $bisnis_proses = $this->db->where('rcsa_no', $d['id'])->get(_TBL_RCM)->result_array(); 
+    if(!empty($bisnis_proses)) :
 ?>
   <table class="table table-bordered">
     <thead>
@@ -74,7 +76,7 @@ if($data){
     </thead>
     <tbody>
         <?php        
-            $bisnis_proses = $this->db->where('rcsa_no', $d['id'])->get(_TBL_RCM)->result_array(); 
+            
             $test = $this->db->select([
               'proses_bisnis',
               'note_control',
@@ -165,6 +167,7 @@ if($data){
   
 
 <?php
+endif;
   }
 }
 ?>

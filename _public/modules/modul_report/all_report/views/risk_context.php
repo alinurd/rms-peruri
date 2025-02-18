@@ -76,7 +76,7 @@ if($data){
           ?>  
             <tr>
             <td class="text-center" style="vertical-align: middle !important;"><?= $no++; ?>.</td>
-            <td style="text-align: center;" valign="top" colspan=""><?= $s['sasaran']; ?></td>
+            <td style="text-align: left;" valign="top" colspan=""><?= $s['sasaran']; ?></td>
             </tr>
             <?php
             }

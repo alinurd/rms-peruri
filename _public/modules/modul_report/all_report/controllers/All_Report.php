@@ -249,13 +249,15 @@ class All_Report extends BackendController {
 
     public function cetak_pdf($data, $nama = "All-Report")
     {
-        $this->load->library('pdf');
+        // doi::dump($data);
+        // die;
+        // $this->load->library('pdf');
         $tgl = date('d-m-Y');
         $this->nmFile = $nama . '-' . $tgl . ".pdf";
         $this->pdfFilePath = download_path_relative($this->nmFile);
         $html = "";
         $html .= $data;
-        $pdf = $this->pdf->load('en-GB-x,legal,,,5,5,5,5,6,3');
+        $pdf = $this->pdf->load();
         $font = [
             'fontawesome' => [
                 'R' => FCPATH . 'themes/default/assets/fonts/fontawesome-webfont.ttf',
@@ -265,8 +267,9 @@ class All_Report extends BackendController {
 
         $pdf->fontdata = array_merge($pdf->fontdata, $font);
         $pdf->default_font = 'fontawesome';
-        $pdf->AddPage('L', '', '', '', '', 10, 10, 10, 10, 5, 5);
+        $pdf->AddPage('L', 'A4', '', '', '', 10, 10, 10, 10, 5, 5);
         $pdf->setTitle($nama);
+        $pdf->SetDisplayMode('real');
         $pdf->SetHeader('');
         $pdf->setFooter('|{PAGENO} Dari {nb} Halaman|');
         $pdf->WriteHTML($html);
