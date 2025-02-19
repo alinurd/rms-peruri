@@ -366,18 +366,30 @@ class Data extends MX_Model {
 			if ($data['id_period'] > 0) {
 				$this->db->where('period_no', $data['id_period']);
 			}
-			$rows = $this->db->select('inherent_level, count(inherent_level) as jml')->group_by(['inherent_level'])->where('sts_propose', 4)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+			$rows = $this->db->select('residual_likelihood, residual_impact, COUNT(*) as jml')
+			->from(_TBL_VIEW_RCSA_DETAIL)
+			->where('sts_propose', 4)
+			->where('sts_heatmap', '1')
+			->group_by(['residual_likelihood', 'residual_impact'])
+			->get()
+			->result_array();
 			$arrData = [];
-			foreach ($rows as &$ros) {
-				$arrData[$ros['inherent_level']] = $ros['jml'];
+			foreach ($rows as $ros) {
+				if (isset($ros['residual_likelihood'], $ros['residual_impact'])) {
+					$key = $ros['residual_likelihood'] . '-' . $ros['residual_impact']; 
+					$arrData[$key] = $ros['jml'];
+				}
 			}
+			// === Update Mapping with Inherent Values ===
 			foreach ($mapping as &$row) {
-				if (array_key_exists($row['id'], $arrData))
-					$row['nilai'] = $arrData[$row['id']];
-				else
-					$row['nilai'] = '';
+			// Pastikan kolom likelihood dan impact ada dalam $mapping
+			if (isset($row['like_no'], $row['impact_no'])) {
+					$key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
+					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
+					
+				}
 			}
-			unset($row);
+						unset($row);
 			$hasil['inherent'] = $this->data->draw_rcsa($mapping);
 
 			// residual
@@ -410,7 +422,7 @@ class Data extends MX_Model {
 					->group_by(['b.residual_likelihood_action', 'b.residual_impact_action']) 
 					->get()
 					->result_array();
-  
+   
         $arrData = [];
         foreach ($rows as $ros) {
 
@@ -419,7 +431,7 @@ class Data extends MX_Model {
                 $arrData[$key] = $ros['jml'];
             }
         }
-
+ 
         // === Update Mapping with Inherent Values ===
         foreach ($mapping as &$row) {
             // Pastikan kolom likelihood dan impact ada dalam $mapping
@@ -458,6 +470,7 @@ class Data extends MX_Model {
         ->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
         ->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner') // Perbaiki alias di sini
         ->where('a.sts_propose', 4)
+				->where('b.bulan', 12)
         ->where('a.sts_heatmap', '1')
         ->group_by(['b.target_like', 'b.target_impact']) 
         ->get()
