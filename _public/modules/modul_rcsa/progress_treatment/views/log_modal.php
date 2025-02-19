@@ -1,9 +1,11 @@
-<table class="table table-bordered table-hover">
+<div class="table-responsive">
+<table class="table table-bordered table-hover table-responsive">
     <thead>
         <tr>
             <th class="text-center">No</th>
             <th class="text-center">Risk Owner</th>
             <th class="text-center">Peristiwa</th>
+            <th class="text-center">Treatment</th>
             <th class="text-center">Tahun</th>
             <th class="text-center">Tanggal Validasi</th>
             <th class="text-center">Bulan</th>
@@ -52,11 +54,12 @@
         <td class="text-center"><?= $no++; ?></td>
         <td><?= $row['name'] ?></td>
         <td><?= $row['event_name'] ?></td>
+        <td class="text-center"> <?= ($row['proaktif']) ? $row['proaktif'] : $row['reaktif']; ?></td>
         <td class="text-center"><?= $row['tahun'] ?></td>
         <td class="text-center"><?=  date("d-m-Y", strtotime($row['tanggal_validasi'])); ?></td>
         <td class="text-center"><?= isset($bulan_names[$bulan]) ? $bulan_names[$bulan] : 'Unknown' ?></td>
         <td class="text-center"><span class="<?= $class_text; ?>"><?= $status; ?></span></td>
-        <td style="max-width:200px;">
+        <td>
             <div class="form-group" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
                 <div>
                     <label for="progressInput">Progress (%)</label>
@@ -83,3 +86,5 @@
     <?php endforeach; ?>
     </tbody>
 </table>
+
+</div>
