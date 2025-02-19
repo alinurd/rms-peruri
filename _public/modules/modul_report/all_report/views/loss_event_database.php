@@ -5,8 +5,9 @@ if($data){
     $data_event = $this->db->where('rcsa_no', $d['id'])->get(_TBL_VIEW_RCSA_LOST_EVENT)->row_array();
     $lost_event = $this->db->where('rcsa_no', $d['id'])->get(_TBL_RCSA_LOST_EVENT)->row_array();
     if($lost_event){
-      $row_in     = $this->db->where('impact_no', $lost_event['skal_prob_in'])->where('like_no', $lost_event['skal_dampak_in'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
-      $row_res    = $this->db->where('impact_no', $lost_event['target_res_prob'])->where('like_no', $lost_event['target_res_dampak'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+      // doi::dump($lost_event);
+      $row_in     = $this->db->where('impact_no', $lost_event['skal_dampak_in'])->where('like_no', $lost_event['skal_prob_in'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
+      $row_res    = $this->db->where('impact_no', $lost_event['target_res_dampak'])->where('like_no', $lost_event['target_res_prob'])->get(_TBL_VIEW_MATRIK_RCSA)->row_array();
       $label_in   = "<span style='background-color:" . $row_in['warna_bg'] . ";color:" . $row_in['warna_txt'] . ";'>&nbsp;" . $row_in['tingkat'] . "&nbsp;</span>";
       $label_res  = "<span style='background-color:" . $row_res['warna_bg'] . ";color:" . $row_res['warna_txt'] . ";'>&nbsp;" . $row_res['tingkat'] . "&nbsp;</span>";
 ?>
@@ -111,10 +112,10 @@ if($data){
                 <tr>
                     <th width="20%">Inheren</th>
                     <td>
-                      <?= $cboLike[$lost_event['skal_dampak_in']];?>
-                    </td>
-                    <td>
-                      <?= $cboImpact[$lost_event['skal_prob_in']];?>
+                      <?= $cboImpact[$lost_event['skal_dampak_in']];?>
+                      </td>
+                      <td>
+                        <?= $cboLike[$lost_event['skal_prob_in']];?>
                     </td>
                     <td align="center">
                         <span id="level_risiko_inher_label" class="text-center">
@@ -128,10 +129,10 @@ if($data){
                 <tr>
                     <th width="20%">Target Residual</th>
                     <td>
-                      <?= $cboLike[$lost_event['target_res_dampak']];?>
-                    </td>
-                    <td>
-                      <?= $cboImpact[$lost_event['target_res_prob']];?>
+                      <?= $cboImpact[$lost_event['target_res_dampak']];?>
+                      </td>
+                      <td>
+                      <?= $cboLike[$lost_event['target_res_prob']];?>
                     </td>
                     <td align="center">
                         <span id="level_risiko_res_label" class="text-center">
