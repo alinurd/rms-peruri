@@ -1,3 +1,35 @@
+<style>
+     #scrollUp, #scrollDown {
+            position: fixed;
+            right: 20px;
+            padding: 10px 15px;
+            font-size: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none; /* Sembunyikan secara default */
+            z-index: 1000; /* Pastikan tombol di atas elemen lain */
+            transition: background-color 0.3s ease; /* Efek transisi */
+            width: 50px;
+            height: 50px;
+        }
+
+        #scrollUp {
+            bottom: 80px; /* Posisi tombol up */
+        }
+
+        #scrollDown {
+            bottom: 20px; /* Posisi tombol down */
+        }
+
+        /* Efek saat tombol ditekan */
+        #scrollUp:active, #scrollDown:active {
+            background-color: #0056b3; /* Warna lebih gelap saat ditekan */
+            transform: scale(0.95); /* Sedikit mengecil saat ditekan */
+        }
+</style>
 <div class="row">
     <div class="col-md-12">
         <div class="row">
@@ -322,9 +354,12 @@
             </div>
             <!-- End Accordion Section -->
         </section>
-
+        <!-- Tombol Scroll Up dan Down -->
     </div>
+    <button id="scrollUp" class="btn btn-sm btn-primary"><i class="fa fa-chevron-up"></i></button>
+    <button id="scrollDown" class="btn btn-sm btn-primary"><i class="fa fa-chevron-down"></i></button>
 </div>
+
 
 <script>
     $(document).ready(function() {
@@ -344,4 +379,50 @@
             responsive: true
         });
     });
+
+    $(document).ready(function() {
+    const scrollDistance = 100; // Jarak scroll per interval
+    let scrollInterval;
+
+    // Fungsi scroll
+    function scrollUp() {
+        $('html, body').animate({ scrollTop: $('html, body').scrollTop() - scrollDistance }, 10);
+    }
+    function scrollDown() {
+        $('html, body').animate({ scrollTop: $('html, body').scrollTop() + scrollDistance }, 10);
+    }
+
+    // Tampilkan atau sembunyikan tombol berdasarkan posisi scroll
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 100) {
+            $('#scrollUp').fadeIn();
+        } else {
+            $('#scrollUp').fadeOut();
+        }
+
+        // Selalu tampilkan tombol scroll down jika tidak di bagian bawah halaman
+        if ($(this).scrollTop() + $(this).height() < $(document).height() - 100) {
+            $('#scrollDown').fadeIn();
+        } else {
+            $('#scrollDown').fadeOut();
+        }
+    });
+
+    // Mulai scroll saat tombol ditekan
+    $('#scrollUp').on('mousedown touchstart', function(e) {
+        e.preventDefault();
+        clearInterval(scrollInterval); // Hentikan scroll yang sedang berjalan
+        scrollInterval = setInterval(scrollUp, 20);
+    });
+    $('#scrollDown').on('mousedown touchstart', function(e) {
+        e.preventDefault();
+        clearInterval(scrollInterval); // Hentikan scroll yang sedang berjalan
+        scrollInterval = setInterval(scrollDown, 20);
+    });
+
+    // Berhenti scroll saat tombol dilepas
+    $('#scrollUp, #scrollDown').on('mouseup touchend', function() {
+        clearInterval(scrollInterval);
+    });
+});
 </script>

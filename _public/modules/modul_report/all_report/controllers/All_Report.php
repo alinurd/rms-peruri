@@ -100,7 +100,8 @@ class All_Report extends BackendController {
 		$data['tahun']  			= $tahun;
 		$data['kategori_kejadian'] 	= $this->get_combo('data-combo', 'kat-kejadian');
         $data['frekuensi_kejadian'] = $this->get_combo('data-combo', 'frek-kejadian');
-		$data['kat_risiko'] 		= $this->get_combo('data-combo', 'kel-library');
+		// $data['kat_risiko'] 		= $this->get_combo('data-combo', 'kel-library');
+		$data['kat_risiko'] 		=  $this->get_combo('tasktonimi', 'kategori_risiko_loss', '');
 		$data['cboLike']    		= $this->get_combo('likelihood');
         $data['cboImpact'] 			= $this->get_combo('impact');
         return $this->load->view('loss_event_database',$data,true);
@@ -226,7 +227,7 @@ class All_Report extends BackendController {
             'parent'                    => $this->data->risk_parent(['periode_no' => $periode_no, 'owner_no' => $owner_no]),
             'kategori_kejadian'         => $this->get_combo('data-combo', 'kat-kejadian'),
             'frekuensi_kejadian'        => $this->get_combo('data-combo', 'frek-kejadian'),
-            'kat_risiko'                => $this->get_combo('data-combo', 'kel-library'),
+            'kat_risiko'                => $this->get_combo('tasktonimi', 'kategori_risiko_loss', ''),
             'cboLike'                   => $this->get_combo('likelihood'),
             'cboImpact'                 => $this->get_combo('impact'),
             'heatmap'                   => $image_paths['heatmap'],
