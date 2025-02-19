@@ -247,7 +247,7 @@ if($data){
                                             ->where('id', $residual_level['impact'])
                                             ->get('bangga_level')->row_array();
   
-                $likeinherent       = $this->db
+                $likeinherent       = $this->db 
                                             ->where('id', $inherent_level['likelihood'])
                                             ->get('bangga_level')->row_array();
 
@@ -257,6 +257,15 @@ if($data){
                 $act                = $this->db
                                             ->where('rcsa_detail_no', $row['id'])
                                             ->get('bangga_rcsa_action')->row_array();
+
+                $risk_level_inherent = $this->db->select('score')
+                                            ->where('likelihood', $likeinherent['id'])
+                                            ->where('impact', $impactinherent['id'])
+                                            ->get('bangga_level_color')->row_array();
+                $risk_level_residual = $this->db->select('score')
+                                            ->where('likelihood', $like['id'])
+                                            ->where('impact', $impact['id'])
+                                            ->get('bangga_level_color')->row_array();
 
 ?>
                 <tr>
@@ -279,7 +288,7 @@ if($data){
                     <td valign="top" style="text-align: left;">Rp.<?= number_format($row['nilai_in_impact']); ?></td>
                     <td valign="top" style="text-align: center;"><?= $likeinherent['code'].' '. $likeinherent['level'] ; ?></td>
                     <td valign="top" style="text-align: right;"><?= number_format($row['nilai_in_likelihood']); ?>%</td>
-                    <td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= intval($likeinherent['code']) * intval($impactinherent['code']).' '.$inherent_level['level_mapping']; ?></td>
+                    <td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= intval($risk_level_inherent['score']).' '.$inherent_level['level_mapping']; ?></td>
                     <td valign="top" style="text-align: left; ">Rp.<?= number_format($row['nilai_in_exposure']); ?></td>
 
                     <td valign="top"><?= format_list($row['control_name'], "### "); ?></td>
@@ -292,7 +301,7 @@ if($data){
                     <td valign="top" style="text-align: left;">Rp.<?= number_format($row['nilai_res_impact']); ?></td>
                     <td valign="top" style="text-align: center;"><?= $like['code'].' '. $like['level'] ; ?></td>
                     <td valign="top" style="text-align: right;"><?= number_format($row['nilai_res_likelihood']); ?>%</td>
-                    <td valign="top" style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= intval($like['code']) * intval($impact['code']).' '.$residual_level['level_mapping']; ?></td>
+                    <td valign="top" style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= intval($risk_level_residual['score']).' '.$residual_level['level_mapping']; ?></td>
                     <td valign="top" style="text-align: left; ">Rp.<?= number_format($row['nilai_res_exposure']); ?></td>
                     <td valign="top" width="100">
                         <?php if (!empty($treatments)): ?>

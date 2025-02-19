@@ -55,24 +55,25 @@
 <div class="double-scroll" style='height:550px;'>
     <table class="table table-bordered table-sm test" id="datatables_event" border="1">
     <thead>
-            <tr> 
-                <td colspan="2" rowspan="6" style="text-align: left;border-right:none;vertical-align: middle;">
+        
+    <tr>
+                <td colspan="2" rowspan="6" style="text-align: left;border-right:none;">
                 <?php
                     $relative_path = "themes/default/assets/images/logo.png";
                     if (file_exists($relative_path)) {
-                        ?><img src="<?= base_url().$relative_path ?>" width="200"></td>
+                        ?><img src="<?= $relative_path ?>" width="100"></td>
                     <?php
                     } else {
                         echo $relative_path.'<br>File does not exist.';
                     }
 
                 ?>
-                <td colspan="40" rowspan="6" style="text-align:center;border-left:none;vertical-align: middle;">
+                <td colspan="40" rowspan="6" style="text-align:center;border-left:none;">
                     <h1>RISK REGISTER</h1>
                 </td>
 
                 <td colspan="2" rowspan="2" style="text-align:left;">No.</td>
-                <td colspan="4" rowspan="2" style="text-align:left;">: 004/RM-FORM/I/<?= $row1['periode_name']; ?></td>
+                <td colspan="4" rowspan="2" style="text-align:left;">: 004/RM-FORM/I/<?= $fields[0]['periode_name']; ?></td>
             </tr>
 
             <tr>
@@ -90,7 +91,7 @@
 
             <tr>
                 <td colspan="2" rowspan="2" style="text-align:left;">Tanggal Revisi</td>
-                <td colspan="4" rowspan="2" style="text-align:left;">: 31 Januari <?= $row1['periode_name']; ?> </td>
+                <td colspan="4" rowspan="2" style="text-align:left;">: 31 Januari <?= $fields[0]['periode_name']; ?> </td>
             </tr>
 
             <tr>
@@ -103,12 +104,12 @@
 
             <tr>
                 <td colspan="2" style="border: none;">Risk Owner</td>
-                <td colspan="20" style="border: none;">: <?= $row1['name']; ?></td>
+                <td colspan="20" style="border: none;">: <?= $fields[0]['name']; ?></td>
             </tr>
 
             <tr>
                 <td colspan="2" style="border: none;">Risk Agent</td>
-                <td colspan="20" style="border: none;">: <?= $row1['officer_name']; ?></td>
+                <td colspan="20" style="border: none;">: <?= $fields[0]['officer_name']; ?></td>
             </tr>
 
             <tr>

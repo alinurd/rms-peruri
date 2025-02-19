@@ -46,10 +46,10 @@
 
 <!-- button cetak excel dan pdf -->
 <span class="btn btn-primary btn-flat">
-    <a href="<?= base_url('rcsa/cetak-register/excel/' . $id . '/' . $owner); ?>" target="_blank" style="color:#ffffff;"><i class="fa fa-file-excel-o"></i> Ms-Excel </a>
+    <a href="<?= base_url('report-risk-register/cetak-register/excel/' . $id . '/' . $owner); ?>" target="_blank" style="color:#ffffff;"><i class="fa fa-file-excel-o"></i> Ms-Excel </a>
 </span>
 <span class="btn btn-warning btn-flat">
-    <a href="<?= base_url('rcsa/cetak-register/pdf/' . $id . '/' . $owner); ?>" target="_blank" style="color:#ffffff;"><i class="fa fa-file-pdf-o"></i> PDF </a>
+    <a href="<?= base_url('report-risk-register/cetak-register/pdf/' . $id . '/' . $owner); ?>" target="_blank" style="color:#ffffff;"><i class="fa fa-file-pdf-o"></i> PDF </a>
 </span>
 
 <div class="double-scroll" style='height:550px;'>
@@ -72,7 +72,7 @@
                 </td>
 
                 <td colspan="2" rowspan="2" style="text-align:left;">No.</td>
-                <td colspan="4" rowspan="2" style="text-align:left;">: 004/RM-FORM/I/<?= $row1['periode_name']; ?></td>
+                <td colspan="4" rowspan="2" style="text-align:left;">: 004/RM-FORM/I/<?= $fields[0]['periode_name']; ?></td>
             </tr>
 
             <tr>
@@ -90,7 +90,7 @@
 
             <tr>
                 <td colspan="2" rowspan="2" style="text-align:left;">Tanggal Revisi</td>
-                <td colspan="4" rowspan="2" style="text-align:left;">: 31 Januari <?= $row1['periode_name']; ?> </td>
+                <td colspan="4" rowspan="2" style="text-align:left;">: 31 Januari <?= $fields[0]['periode_name']; ?> </td>
             </tr>
 
             <tr>
@@ -103,12 +103,12 @@
 
             <tr>
                 <td colspan="2" style="border: none;">Risk Owner</td>
-                <td colspan="20" style="border: none;">: <?= $row1['name']; ?></td>
+                <td colspan="20" style="border: none;">: <?= $fields[0]['name']; ?></td>
             </tr>
 
             <tr>
                 <td colspan="2" style="border: none;">Risk Agent</td>
-                <td colspan="20" style="border: none;">: <?= $row1['officer_name']; ?></td>
+                <td colspan="20" style="border: none;">: <?= $fields[0]['officer_name']; ?></td>
             </tr>
 
             <tr>
@@ -289,6 +289,15 @@
                                             ->where('rcsa_detail_no', $row['id'])
                                             ->get('bangga_rcsa_action')->row_array();
 
+                $risk_level_inherent = $this->db->select('score')
+                                            ->where('likelihood', $likeinherent['id'])
+                                            ->where('impact', $impactinherent['id'])
+                                            ->get('bangga_level_color')->row_array();
+                $risk_level_residual = $this->db->select('score')
+                                            ->where('likelihood', $like['id'])
+                                            ->where('impact', $impact['id'])
+                                            ->get('bangga_level_color')->row_array();
+
 ?>
                 <tr>
                     <td valign="top" style="text-align: center;"><?= $no++; ?></td>
@@ -310,7 +319,7 @@
                     <td valign="top" style="text-align: left;">Rp.<?= number_format($row['nilai_in_impact']); ?></td>
                     <td valign="top" style="text-align: center;"><?= $likeinherent['code'].' '. $likeinherent['level'] ; ?></td>
                     <td valign="top" style="text-align: right;"><?= number_format($row['nilai_in_likelihood']); ?>%</td>
-                    <td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= intval($likeinherent['code']) * intval($impactinherent['code']).' '.$inherent_level['level_mapping']; ?></td>
+                    <td valign="top" style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= intval($risk_level_inherent['score']).' '.$inherent_level['level_mapping']; ?></td>
                     <td valign="top" style="text-align: left; ">Rp.<?= number_format($row['nilai_in_exposure']); ?></td>
 
                     <td valign="top"><?= format_list($row['control_name'], "### "); ?></td>
@@ -323,7 +332,7 @@
                     <td valign="top" style="text-align: left;">Rp.<?= number_format($row['nilai_res_impact']); ?></td>
                     <td valign="top" style="text-align: center;"><?= $like['code'].' '. $like['level'] ; ?></td>
                     <td valign="top" style="text-align: right;"><?= number_format($row['nilai_res_likelihood']); ?>%</td>
-                    <td valign="top" style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= intval($like['code']) * intval($impact['code']).' '.$residual_level['level_mapping']; ?></td>
+                    <td valign="top" style="text-align: center; background-color:<?= $residual_level['color']; ?>;color:<?= $residual_level['color_text']; ?>;"><?= intval($risk_level_residual['score']).' '.$residual_level['level_mapping']; ?></td>
                     <td valign="top" style="text-align: left; ">Rp.<?= number_format($row['nilai_res_exposure']); ?></td>
                     <td valign="top" width="100">
                         <?php if (!empty($treatments)): ?>
@@ -397,7 +406,7 @@
                                         $total_target_damp_loss += $data_treatment[$j]['target_damp_loss'];
                                     }
                                     
-                                ?>
+                                ?> 
                                     <tr>
                                         <td style="border: none;"><?= $index + 1 .'.'; ?></td>
                                         <td style="border: none;"><?= !empty($total_target_damp_loss) ? number_format($total_target_damp_loss, 2) : '-'; ?></td>
