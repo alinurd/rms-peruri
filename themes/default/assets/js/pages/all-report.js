@@ -110,41 +110,111 @@ $(function () {
       alert("Harap masukkan data yang diperlukan!");
     }
   });
-  
+
   $("#downloadExcelRegister").on("click", function () {
-    var owner_no    = $("#owner_no").val();
-    var periode_no  = $("#periode_no").val();
+    var owner_no = $("#owner_no").val();
+    var periode_no = $("#periode_no").val();
     if (owner_no > 0 && periode_no) {
-        var url =
-          modul_name +
-          "/exportExcelRegister?owner_no=" +
-          owner_no +
-          "&periode_no=" +
-          periode_no;
-        window.location.href = url;
+      var url =
+        modul_name +
+        "/exportExcelRegister?owner_no=" +
+        owner_no +
+        "&periode_no=" +
+        periode_no;
+      window.location.href = url;
     } else {
       alert("Harap masukkan data yang diperlukan!");
     }
   });
 
-  $('#bulan').change(function() {
-    var bulan           = $(this).val();
-    var owner_no        = $("#owner_no").val();
-    var periode_no      = $("#periode_no").val();
+  $("#bulan").change(function () {
+    var bulan = $(this).val();
+    var owner_no = $("#owner_no").val();
+    var periode_no = $("#periode_no").val();
 
-      var parent        = $(this).parent();
-      var data        = { owner_no: owner_no, periode_no: periode_no, bulan: bulan };
-      // var target_combo = $("#mapping");
-      var url = modul_name + "/get_map_residual";
+    var parent = $(this).parent();
+    var data = { owner_no: owner_no, periode_no: periode_no, bulan: bulan };
+    // var target_combo = $("#mapping");
+    var url = modul_name + "/get_map_residual";
 
-      cari_ajax_combo("post", parent, data, '', url, "result_map");
+    cari_ajax_combo("post", parent, data, "", url, "result_map");
   });
 
-  
+  $(document).on("click", ".sub_detail", function () {
+    var parent = $(this).parent().parent();
+    var id = $(this).data("id");
+    var kel = $(this).data("kel");
+    var data = { id: id };
+    var target_combo = $("#sub_detail");
+    var url = modul_name + "/get-subdetail";
+    if (kel == "Target") {
+      var bulan = $(this).data("bulan");
+      var data = { id: id, bulan: bulan };
+      var target_combo = $("#sub_detail_target");
+      var url = modul_name + "/get-subdetailTarget";
+    }
+
+    cari_ajax_combo("post", parent, data, target_combo, url);
+  });
 });
+function hoho(e) {
+  var parent = $(e).parent();
+  var nilai = $(e).data("nilai");
+
+  if (nilai > 0) {
+    var id = $(e).data("id");
+    var kel = $(e).data("kel");
+    var like = $(e).data("like");
+    var impact = $(e).data("impact");
+    var owner = $("#owner_no").val();
+    var tahun = $("#period_no").val();
+    var bulan = $("#bulan").val();
+    // var bulanx = $("#bulanx").val();
+    // console.log(kel + '2')
+    var data = {
+      id: id,
+      owner: owner,
+      tahun: tahun,
+      // bulanx: bulanx,
+      bulan: bulan,
+      kel: kel,
+      like: like,
+      impact: impact,
+    };
+    // console.log(data)
+    var target_combo = $("#detail_map");
+    var url = modul_name + "/get-detail-map";
+
+    if (kel == "residual1" || kel == "residual2") {
+      var target_combo = $("#detail_map2");
+      var url = modul_name + "/get-detail-map2";
+      // console.log('masuk ke =>residual2')
+    }
+    if (kel == "residual") {
+      var target_combo = $("#detail_map");
+      var url = modul_name + "/get-detail-map-res";
+      // get_detail_map_res
+    }
+
+    if (kel == "Target") {
+      var target_combo = $("#detail_map");
+      var url = modul_name + "/get-detail-map-target";
+      // get_detail_map_res
+    }
+    console.log(kel);
+
+    cari_ajax_combo("post", parent, data, target_combo, url, "show_detail");
+  }
+}
 
 function result_map(hasil) {
   $("#mapping_residual").html(hasil.residual);
+}
+
+function show_detail(hasil) {
+  $("#modal_general").find(".modal-body").html(hasil.combo);
+  $("#modal_general").find(".modal-title").html("CORPORATE RISK");
+  $("#modal_general").modal("show");
 }
 
 function result_show(hasil) {
@@ -164,14 +234,14 @@ function result_show(hasil) {
   $("#grapik_progress_treatment").html(hasil.grapik_progress_treatment);
   $("#heatmap").html(hasil.heatmap);
 
-  if (hasil.combo.trim() === '') {
+  if (hasil.combo.trim() === "") {
     if ($("#collapseOne").length) {
-        $("#collapseOne").collapse("hide");
+      $("#collapseOne").collapse("hide");
     }
   } else {
-      if ($("#collapseOne").length) {
-          $("#collapseOne").collapse("show");
-      }
+    if ($("#collapseOne").length) {
+      $("#collapseOne").collapse("show");
+    }
   }
   $("#collapseTwo").collapse("show");
   $("#collapseThree").collapse("show");
@@ -188,7 +258,6 @@ function result_show(hasil) {
   $("#collapseFourteen").collapse("show");
   $("#collapseFiveteen").collapse("show");
 }
-
 
 function result_map(hasil) {
   // $("#mapping_inherent").html(hasil.inherent);
