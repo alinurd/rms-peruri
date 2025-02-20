@@ -921,11 +921,6 @@ if ( ! function_exists('_build_menu'))
 				$html .='<li>
 				<a href="'.base_url('auth/logout').'" style="color:#E6F260 !important;" id="logout"><i class="fa fa-sign-out" style=" " ></i><span> Logout </span></a>
 				</li>';
-				$html .= '<li style="text-align: center; background-color: #0B2161;"> <!-- Menambahkan style untuk memusatkan teks -->
-							<a href="https://rcsa.peruri.co.id" style="color: white !important;" class="blinking-text">
-								<span>RCSA PERURI</span>
-							</a>
-						</li>';
 				$html .='</ul>';
 			}elseif($pos=='atas-kiri' || $pos=='atas-kanan'){
 				foreach($ad as $row){
