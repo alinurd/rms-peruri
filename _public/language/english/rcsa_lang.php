@@ -1,16 +1,69 @@
 <?php
 
-$lang['msg_title']						= "Risk Assessment";
-$lang['msg_field_owner_no']				= "Risk Owner";
-$lang['msg_field_type']					= "Assessment Type";
-$lang['msg_field_period_no']			= "Periode";
-$lang['msg_field_term_no']				= "Term";
-$lang['msg_field_officer_no']			= "Risk Agent";
+$lang['msg_title']						      = "Drafting Risk Register";
+
+// Tabel List Name
+$lang['msg_field_title']				    = "Assesment Title";
+$lang['msg_field_owner']				    = "Risk Owner";
+$lang['msg_field_jml_sasaran']	    = "Jumlah Sasaran";
+$lang['msg_field_jml_peristiwa']	  = "Jumlah Peristiwa";
+$lang['msg_field_periode']				  = "Periode";
+$lang['msg_field_progress']				  = "Progress";
+$lang['msg_field_status']				    = "Status";
+$lang['msg_field_register']				  = "Risk Register";
+$lang['msg_action_table']				    = "Start Risk Register";
+
+// Filter Name  
+$lang['msg_field_owner_no']			    = "Risk Owner";
+$lang['msg_field_period_no']			  = "Periode";
+
+// Label Name Risk Event
+$lang['msg_sub_title']					    = "Routine Risk Identification List";
+$lang['msg_title_assesment']			  = "Assesment";
+$lang['msg_owner_assesment']			  = "Risk Owner";
+$lang['msg_agent_assesment']			  = "Risk Agent";
+$lang['msg_periode_assesment']		  = "Risk Owner";
+$lang['msg_anggaran_assesment']		  = "Anggaran RKAP";
+$lang['msg_field_risk_register']		= "Risk Register";
+
+// Label Name Field Tabel Peristiwa
+$lang['msg_field_event_no']				  = "No.";
+$lang['msg_field_event_key']				= "Key Risk";
+$lang['msg_field_event_priority']	  = "Risk Priority";
+$lang['msg_field_event_identify']	  = "Risk Identify";
+$lang['msg_field_event_inherent']	  = "Risk Analysis Inherent";
+$lang['msg_field_event_evaluasi']		= "Risk Evaluasi";
+$lang['msg_field_event_residual']		= "Risk Analysis residual";
+$lang['msg_field_event_treatment']	= "Risk Treatment";
+$lang['msg_field_event_create']			= "Created";
+$lang['msg_field_event_progress']		= "Progress Pengisian";
+
+// LABEL NAME TAB TAMBAH PERISTIWA
+$lang['msg_field_tab1']							= "Risk Identification";
+$lang['msg_field_tab2']							= "Risk Analysis";
+$lang['msg_field_tab3']							= "Risk Evaluation";
+$lang['msg_field_tab4']							= "Risk Treatment";
+$lang['msg_field_tab5']							= "Risk Treatment";
+$lang['msg_field_tab6']							= "Key Risk Indikator";
+
+// LABEL NAME FORM TAB IDENTIFICATION
+$lang['msg_field1_sasaran']						= "Sasaran";
+$lang['msg_field1_tema_risk']					= "Tema Risiko (T1)";
+$lang['msg_field1_kat_risk']					= "Kategori Risiko (T2)";
+$lang['msg_field1_kel_risk']					= "Kelompok Risiko (T3)";
+$lang['msg_field1_subkel_risk']				= "Sub-Kelompok Risiko (T4)";
+$lang['msg_field1_jenis_risk']				= "Jenis Risiko";
+$lang['msg_field1_proses_bisnis']			= "Proses Bisnis";
+$lang['msg_field1_det_event_risk']		= "Detail Peristiwa Risiko (T5)";
+
+$lang['msg_field_type']					    = "Assessment Type";
+$lang['msg_field_term_no']				  = "Term";
+$lang['msg_field_officer_no']			  = "Risk Agent";
 $lang['msg_field_anggaran_rkap']		= "Anggaran RKAP";
-$lang['msg_field_owner_pic']			= "Pimpinan Unit Kerja";
+$lang['msg_field_owner_pic']			  = "Pimpinan Unit Kerja";
 $lang['msg_field_anggota_pic']			= "Anggota Unit Kerja";
 $lang['msg_field_tugas_pic']			= "Tugas Pokok & Fungsi";
-$lang['msg_field_tupoksi']				= "Pekerjaan diluar Tupoksi";
+$lang['msg_field_tupoksi']				= "Pekerjaan diluar Tupoksi"; 
 $lang['msg_field_man']					= "Man";
 $lang['msg_field_method']				= "Method";
 $lang['msg_field_machine']				= "Machine";

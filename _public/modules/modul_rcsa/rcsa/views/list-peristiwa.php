@@ -1,5 +1,5 @@
 <?php
-$revisi = "hide";
+$revisi     = "hide";
 if ($parent['sts_propose'] == 5) {
     $revisi = "";
 }
@@ -19,17 +19,16 @@ if ($parent['sts_propose'] == 5) {
     <table class="display table table-bordered" id="tbl_event">
         <thead>
             <tr>
-                <th class="text-center" width="5%">No.</th>
-                <th class="text-center" width="5%">Key Risk</th>
-                <th class="text-center" width="5%">Risk Priority</th>
-                <th class="text-center">Risk Identify</th>
-                <th class="text-center" width="20%">Risk Analysis Inherent </th>
-                <th class="text-center" width="15%">Risk Evaluasi</th>
-                <th class="text-center" width="20%">Risk Analysis Residual </th>
-                <th class="text-center" width="15%">Risk Treatment</th>
-                <!-- <th width="10%">Progress Treatment</th> -->
-                <th class="text-center" width="10%">Created</th>
-                <th class="text-center" width="10%">Progress Pengisian</th>
+                <th class="text-center" width="5%"><?= lang('msg_field_event_no');?></th>
+                <th class="text-center" width="5%"><?= lang('msg_field_event_key');?></th>
+                <th class="text-center" width="5%"><?= lang('msg_field_event_priority');?></th>
+                <th class="text-center"><?= lang('msg_field_event_identify');?></th>
+                <th class="text-center" width="20%"><?= lang('msg_field_event_inherent');?> </th>
+                <th class="text-center" width="15%"><?= lang('msg_field_event_evaluasi');?></th>
+                <th class="text-center" width="20%"><?= lang('msg_field_event_residual');?></th>
+                <th class="text-center" width="15%"><?= lang('msg_field_event_treatment');?></th>
+                <th class="text-center" width="10%"><?= lang('msg_field_event_create');?></th>
+                <th class="text-center" width="10%"><?= lang('msg_field_event_progress');?></th>
             </tr>
         </thead>
         <tbody>

@@ -41,9 +41,9 @@ class Sub_Bahasa extends BackendController {
 		$data=$this->input->post();
 		$this->bahasa=$data['cboBahasa'];
 		$this->module=$data['cboModul'];
-		$content = $data['code'];
+		$content = html_entity_decode($data['code']);
 		$path = $this->get_path_language();
-		// Doi::dump($data);
+		// Doi::dump(html_entity_decode($data['code']));
 		// Doi::dump($path);
 		// die();
 		if (!empty($path)){

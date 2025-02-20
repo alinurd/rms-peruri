@@ -1,3 +1,34 @@
+<style>
+    .card-title-peristiwa.card.bg-primary {
+        position: relative;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        padding: 20px;
+        overflow: hidden; /* Supaya cahaya tidak keluar dari batas elemen */
+    }
+
+    .card-title-peristiwa.card.bg-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%; /* Cahaya mulai dari luar elemen */
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+        animation: slide-right 3s infinite; /* Animasi berjalan ke kanan */
+    }
+
+    @keyframes slide-right {
+        0% {
+            left: -100%; /* Mulai dari luar sisi kiri elemen */
+        }
+        100% {
+            left: 100%; /* Bergerak ke luar sisi kanan elemen */
+        }
+    }
+</style>
+
 <?php
 $hide_edit      = '';
 $sts_risk       = intval($parent['sts_propose']);
@@ -88,30 +119,29 @@ if ($field['iskri'] == 0) {
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <section class="x_panel">
-            <div class="x_title">
-                <strong>Assesment : <?= strtoupper($parent['name']); ?></strong>
+        <div class="x_title">
+                <strong><?= lang('msg_title_assesment');?> : <?= strtoupper($parent['name']); ?></strong>
                 <ul class="nav navbar-right panel_toolbox">
                     <li class="pull-right"><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a></li>
-
                 </ul>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content" style="overflow-x: auto;">
                 <table class="table">
                     <tr>
-                        <td width="20%"><em>Risk Owner</em></td>
+                        <td width="20%"><em><?= lang('msg_owner_assesment');?></em></td>
                         <td><?= $parent['name']; ?></td>
                     </tr>
                     <tr>
-                        <td><em>Risk Agent</em></td>
+                        <td><em><?= lang('msg_agent_assesment');?></em></td>
                         <td><?= $parent['officer_name']; ?></td>
                     </tr>
                     <tr>
-                        <td><em>Periode</em></td>
+                        <td><em><?= lang('msg_periode_assesment');?></em></td>
                         <td><?= $parent['periode_name']; ?></td>
                     </tr>
                     <tr>
-                        <td><em>Anggaran RKAP</em></td>
+                        <td><em><?= lang('msg_anggaran_assesment');?></em></td>
                         <td><?= number_format($parent['anggaran_rkap']); ?></td>
                     </tr>
                 </table>
@@ -124,7 +154,7 @@ if ($field['iskri'] == 0) {
     <div class="col-md-12 col-sm-12 col-xs-12">
         <section class="x_panel">
             <a href="<?= base_url(_MODULE_NAME_REAL_ . '/tambah-peristiwa/add/' . $parent['owner_no'] . '/' . $parent['id']) ?>" class="btn btn-primary <?= $hide_edit ?>"> <?= lang('msg_tombol_add'); ?> </a>
-            <a href="<?= base_url(_MODULE_NAME_REAL_ . '/risk_event/' . $parent['owner_no'] . '/' . $parent['id']); ?>" class="btn btn-default"> Kembali ke List </a>
+            <a href="<?= base_url(_MODULE_NAME_REAL_ . '/risk_event/' . $parent['owner_no'] . '/' . $parent['id']); ?>" class="btn btn-default"><?= lang('msg_tombol_kembali_list'); ?></a>
             <div class="clearfix"></div>
         </section>
         <h4><?= lang('msg_sub_title'); ?></h4>
@@ -134,55 +164,19 @@ if ($field['iskri'] == 0) {
         <section class="x_panel">
             <div class="x_content" id="list_peristiwa">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab">Risk Identification</a></li>
-                    <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab">Risk Analysis</a></li>
-                    <li role="presentation" class="<?= $evaluasiact ?> <?= $evaluasiacthide ?>"><a href="#evaluasi" data-toggle="tab">Risk Evaluation</a></li>
-                    <li role="presentation" class="<?= $treatmentact ?> <?= $treatmentacthide ?>"><a href="#treatment" data-toggle="tab">Risk Treatment</a></li>
-                    <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab">Risk Treatment</a></li>
-                    <li role="presentation" class="<?= $kriact ?> <?= $krion  ?>"><a href="#iskri" data-toggle="tab">Key Risk Indikator</a></li>
+                    <li role="presentation" class="<?= $identifyact ?>"><a href="#identify" data-toggle="tab"><?= lang('msg_field_tab1');?></a></li>
+                    <li role="presentation" class="<?= $analysisact ?> <?= $analysisacthide ?>"><a href="#analysis" data-toggle="tab"><?= lang('msg_field_tab2');?></a></li>
+                    <li role="presentation" class="<?= $evaluasiact ?> <?= $evaluasiacthide ?>"><a href="#evaluasi" data-toggle="tab"><?= lang('msg_field_tab3');?></a></li>
+                    <li role="presentation" class="<?= $treatmentact ?> <?= $treatmentacthide ?>"><a href="#treatment" data-toggle="tab"><?= lang('msg_field_tab4');?></a></li>
+                    <li role="presentation" class="<?= $progresact ?> <?= $progresacthide ?>"><a href="#progres" data-toggle="tab"><?= lang('msg_field_tab5');?></a></li>
+                    <li role="presentation" class="<?= $kriact ?> <?= $krion  ?>"><a href="#iskri" data-toggle="tab"><?= lang('msg_field_tab6');?></a></li>
                 </ul>
             </div>
-            <section class="x_panel" style="margin: 0px !important;padding:0px !important;">
-                <!-- <div class="x_content">
-                    <strong>Peristiwa Risiko : <?= $detail['event_name']; ?></strong>
-                </div> -->
-                
-            </section>
+
 
             <div class="tab-content">
-                <style>
-                    .card.bg-primary {
-                        position: relative;
-                        background-color: #007bff;
-                        color: white;
-                        border-radius: 4px;
-                        padding: 20px;
-                        overflow: hidden; /* Supaya cahaya tidak keluar dari batas elemen */
-                    }
-
-                    .card.bg-primary::before {
-                        content: "";
-                        position: absolute;
-                        top: 0;
-                        left: -100%; /* Cahaya mulai dari luar elemen */
-                        width: 100%;
-                        height: 100%;
-                        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
-                        animation: slide-right 3s infinite; /* Animasi berjalan ke kanan */
-                    }
-
-                    @keyframes slide-right {
-                        0% {
-                            left: -100%; /* Mulai dari luar sisi kiri elemen */
-                        }
-                        100% {
-                            left: 100%; /* Bergerak ke luar sisi kanan elemen */
-                        }
-                    }
-
-                </style>
                 <?php if($detail['event_name']) {?>
-                <div class="card bg-primary">
+                <div class="card-title-peristiwa card bg-primary">
                     <div class="card-body">
                         <h4>
                         <strong>Peristiwa Risiko : </strong> <?= $detail['event_name']; ?>
@@ -190,6 +184,8 @@ if ($field['iskri'] == 0) {
                     </div>
                 </div>
                 <?php } ?>
+
+                <!-- RISK IDENTIFICATION -->
                 <div id="identify" class="tab-pane fade in  <?= $identifyact ?>">
                     <div class="clearfix"> </div>
                     <?= form_open_multipart(base_url(_MODULE_NAME_REAL_ . '/' . _METHOD_ . '/save'), array('id' => 'form_peristiwa'), ['id_edit' => $id_edit, 'rcsa_no' => $rcsa_no]); ?>
@@ -202,52 +198,46 @@ if ($field['iskri'] == 0) {
                                 <table class="table table-borderless" id="tbl_peristiwa">
                                     <tbody>
                                         <tr>
-                                            <td width="25%">Sasaran <span class="mandatory">*</span></td>
+                                            <td width="25%"><?= lang('msg_field1_sasaran');?> <span class="mandatory">*</span></td>
                                             <td colspan="2"><?= form_dropdown('sasaran', $sasaran, ($detail) ? $detail['sasaran_no'] : '', 'class="select2 form-control" style="width:100%;" id="sasaran"' . $disable); ?></td>
                                         </tr>
                                         <tr>
-                                            <td width="25%">Tema Risiko (T1) <span class="mandatory">*</span></td> 
+                                            <td width="25%"><?= lang('msg_field1_tema_risk');?> <span class="mandatory">*</span></td> 
                                             <td colspan="2"><?= form_input('tema_risiko', ($detail['tema_risiko'] !== NULL) ? ($detail['tema_risiko']) : 'Bisnis BUMN', 'class="form-control" id="tema_risiko" readonly'); ?>
-                                        </td>
-                                            
-                                            
+                                        </td>                                            
                                         </tr>
                                         <tr>
-                                            <td width="25%">Kategori Risiko (T2) <span class="mandatory">*</span></td>
+                                            <td width="25%"><?= lang('msg_field1_kat_risk');?> <span class="mandatory">*</span></td>
                                             <td colspan="2"><?= form_dropdown('tema', $tema, ($detail) ? $detail['tema'] : '', 'class=" select2 form-control" style="width:100%;" id="tema"' . $disable); ?></td>
                                         </tr>
                                         <tr>
-                                            <td width="25%">Kelompok Risiko (T3) <span class="mandatory">*</span></td>
+                                            <td width="25%"><?= lang('msg_field1_kel_risk');?> <span class="mandatory">*</span></td>
                                             <td colspan="2"><?= form_dropdown('kategori', $kategori, ($detail) ? $detail['kategori_no'] : '', 'class="select2 form-control" style="width:100%;" id="kategori"' . $disable); ?></td>
                                         </tr>
                                         <tr class="">
-                                            <td width="25%">Sub-Kelompok Risiko (T4) <span class="mandatory">*</span></td>
+                                            <td width="25%"><?= lang('msg_field1_subkel_risk');?> <span class="mandatory">*</span></td>
                                             <td colspan="2"><?= form_dropdown('sub_kategori', $subkategori, ($detail) ? $detail['sub_kategori'] : '', 'class="select2 form-control" style="width:100%;" id="sub_kategori"' . $disable); ?></td>
 
                                         </tr>
                                         <tr>
-                                            <td width="25%">Jenis Risiko <span class="mandatory">*</span></td>
+                                            <td width="25%"><?= lang('msg_field1_jenis_risk');?> <span class="mandatory">*</span></td>
                                             <td colspan="2"><?= form_dropdown('subrisiko', $np, ($detail) ? $detail['subrisiko'] : '', 'class="select2 form-control" style="width:100%;" id="subrisiko"' . $disable); ?></td>
                                         </tr>
-
-
                                         <tr>
-                                            <td width="25%">Proses Bisnis <span class="mandatory">*</span></td>
+                                            <td width="25%"><?= lang('msg_field1_proses_bisnis');?> <span class="mandatory">*</span></td>
                                             <td colspan="2"><?= form_input('proses_bisnis', ($detail) ? ($detail['proses_bisnis']) : '', 'class="form-control" placeholder="Input Proses Bisnis" id="proses_bisnis"'); ?></td>
                                         </tr>
-
                                         <tr>
-                                            <td width="25%" rowspan="3">Detail Peristiwa Risiko (T5) <span class="mandatory">*</span></td>
+                                            <td width="25%" rowspan="3"><?= lang('msg_field1_det_event_risk');?> <span class="mandatory">*</span></td>
                                         </tr>
                                         <tr class="peristiwa_lib">
                                             <td>
                                                 <?= form_dropdown('event_no', $cboper, ($detail) ? $detail['event_no'] : '', 'class="select2 form-control" style="width:100%;" id="event_no"' . $disable); ?>
                                                 <?php if ($detail) {
-                                                    // echo form_hidden('event_no', $detail['event_no']);
+                                                    echo form_hidden('event_no', $detail['event_no']);
                                                 } ?>
                                             </td>
                                             <td>
-
                                                 <span class="btn btn-info <?= $hide_edit ?>" id="peristiwa_baru">New</span>
                                             </td>
                                         </tr>
@@ -267,64 +257,49 @@ if ($field['iskri'] == 0) {
                                                         <td colspan="3">Penyebab <span class="mandatory">*</span></td>
                                                     </tr>
                                                     <tr>
-                                                        <!-- <th width="10%" style="text-align:center;">No.</th> -->
                                                         <th style="text-align:center;">Risk Cause</th>
                                                         <th width="10%" style="text-align:center;">Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
                                                     <?php
                                                         $couse_lib='hide';
                                                         if($detail['event_no']){
-                                                        $couse_lib='';
-                                                    }
-                                                     $risk_couseno_array = explode(',', $risk_couseno1);
-
-                                                    // Menghapus spasi di sekitar angka
-                                                    $risk_couseno_array = array_map('trim', $risk_couseno_array);
-                                                    $no = 1;
-
-
-                                                    $edit = form_hidden('id_edit[]', '0');
-                                                    $cbn = $inp_couse;
-                                                    $cbbo = form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="select2 form-control" style="width:100%;" id="risk_couseno' . $no++ . '"');
-                                                    foreach ($risk_couseno_array as $couseno) {
-                                                        // doi::dump($couseno);
-
-
+                                                            $couse_lib='';
+                                                        }
+                                                        $risk_couseno_array = explode(',', $risk_couseno1);
+                                                        $risk_couseno_array = array_map('trim', $risk_couseno_array);
+                                                        $no     = 1;
+                                                        $edit   = form_hidden('id_edit[]', '0');
+                                                        $cbn    = $inp_couse;
+                                                        $cbbo   = form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="select2 form-control" style="width:100%;" id="risk_couseno' . $no++ . '"');
+                                                        foreach ($risk_couseno_array as $couseno) {
                                                     ?>
 
-                                                        <tr class="couse_lib <?=$couse_lib?>">
-                                                            <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
-                                                            <td>
-                                                                <?= form_dropdown('risk_couse_no[]', $cbogroup, ($couseno) ? $couseno : '', 'class="select2 form-control" style="width:100%;" id="risk_cousenox"' . $disable); ?>
-                                                            </td>
-                                                            <td style="text-align:center;width:10%;">
-                                                                <span data-edit="<?php echo $id_edit; ?>" data-couseno="<?php echo $couseno; ?>" class="btn" id="couse_delete">
-                                                                    <i class="fa fa-cut <?= $hide_edit ?>" title="menghapus data"></i>
+                                                            <tr class="couse_lib <?=$couse_lib?>">
+                                                                <td>
+                                                                    <?= form_dropdown('risk_couse_no[]', $cbogroup, ($couseno) ? $couseno : '', 'class="select2 form-control" style="width:100%;" id="risk_cousenox"' . $disable); ?>
+                                                                </td>
+                                                                <td style="text-align:center;width:10%;">
+                                                                    <span data-edit="<?php echo $id_edit; ?>" data-couseno="<?php echo $couseno; ?>" class="btn" id="couse_delete">
+                                                                        <i class="fa fa-cut <?= $hide_edit ?>" title="menghapus data"></i>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="couse_text">
+                                                                <td>
+                                                                    <?= $inp_couse ?>
+                                                                </td>
+                                                                <td style="text-align:center;width:10%;">
+                                                                    <a data-nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" id="couse_delete">
+                                                                        <i class="fa fa-cut" title="menghapus data"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
 
-                                                                </span>
-
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="couse_text">
-                                                            <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
-                                                            <td>
-                                                                <?= $inp_couse ?>
-                                                            </td>
-                                                            <td style="text-align:center;width:10%;">
-                                                                <a data-nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" id="couse_delete">
-                                                                    <i class="fa fa-cut" title="menghapus data"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-
-                                                    <?php
-                                                    }
-
-
-                                                    ?>
+                                                        <?php
+                                                        }
+                                                        ?>
                                                 </tbody>
                                             </table>
                                             <center>
@@ -332,7 +307,6 @@ if ($field['iskri'] == 0) {
                                                 <span class="btn btn-info <?= $hide_edit ?>" id="add_cause_news"> Library Cause </span>
                                                 <span class="btn btn-info <?= $hide_edit ?>" id="add_new_cause"> New Cause </span>
                                             </center>
-
                                         </tr>
 
                                         <tr>
@@ -342,59 +316,48 @@ if ($field['iskri'] == 0) {
                                                         <td colspan="3">Dampak <span class="mandatory">*</span></td>
                                                     </tr>
                                                     <tr>
-                                                        <!-- <th width="10%" style="text-align:center;">No.</th> -->
                                                         <th style="text-align:center;">Risk Impact</th>
                                                         <th width="10%" style="text-align:center;">Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
                                                     <?php
-                                                       $impect_lib='hide';
+                                                       $impect_lib  = 'hide';
                                                        if($detail['event_no']){
-                                                           $impect_lib='';
+                                                           $impect_lib  = '';
                                                        }
-                                                    $risk_impactno = explode(',', $risk_impectno1);
+                                                        $risk_impactno          = explode(',', $risk_impectno1);
+                                                        $risk_impactno          = array_map('trim', $risk_impactno);
+                                                        $risk_impactno_unique   = array_unique($risk_impactno);
 
-                                                    // Menghapus spasi di sekitar angka
-                                                    $risk_impactno = array_map('trim', $risk_impactno);
+                                                        $no     = 1;
+                                                        $cbbi   = form_dropdown('risk_impact_no[]', $cbogroup1,  '', 'class="select2 form-control" style="width:100%;" id="impactno"');
+                                                        $edit   = form_hidden('id_edit[]', '0');
+                                                        $cbni   = $inp_impact;
 
-                                                    // Menghapus nilai duplikat
-                                                    $risk_impactno_unique = array_unique($risk_impactno);
-
-                                                    $no = 1;
-
-                                                    $cbbi = form_dropdown('risk_impact_no[]', $cbogroup1,  '', 'class="select2 form-control" style="width:100%;" id="impactno"');
-
-                                                    $edit = form_hidden('id_edit[]', '0');
-                                                    $cbni = $inp_impact;
-
-                                                    foreach ($risk_impactno_unique as $impactno) {
-                                                        // doi::dump($impactno);
+                                                        foreach ($risk_impactno_unique as $impactno) {
                                                     ?>
 
-                                                        <tr class="impect_lib <?=$impect_lib?>">
-                                                            <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
-                                                            <td><?= form_dropdown('risk_impact_no[]', $cbogroup1, ($impactno) ? $impactno : '', 'class="select2 form-control" style="width:100%;" id="impactnox"' . $disable); ?>
-                                                            </td>
-                                                            <td style="text-align:center;width:10%;">
-                                                                <span data-edit="<?php echo $id_edit; ?>" data-impactno="<?php echo $impactno; ?>" class="btn" id="impct_delete">
-                                                                    <i class="fa fa-cut <?= $hide_edit ?>" title="menghapus data"></i>
+                                                            <tr class="impect_lib <?=$impect_lib?>">
+                                                                <td><?= form_dropdown('risk_impact_no[]', $cbogroup1, ($impactno) ? $impactno : '', 'class="select2 form-control" style="width:100%;" id="impactnox"' . $disable); ?>
+                                                                </td>
+                                                                <td style="text-align:center;width:10%;">
+                                                                    <span data-edit="<?php echo $id_edit; ?>" data-impactno="<?php echo $impactno; ?>" class="btn" id="impct_delete">
+                                                                        <i class="fa fa-cut <?= $hide_edit ?>" title="menghapus data"></i>
 
-                                                                </span>
-                                                            </td>
-                                                        </tr>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
 
-                                                        <tr class="impect_text">
-                                                            <!-- <td style="text-align:center;width:10%;"> <?= $no++ ?></td> -->
-                                                            <td><?= $inp_impact ?>
-                                                            </td>
-                                                            <td style="text-align:center;width:10%;">
-                                                                <a nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" onclick="remove_install_impact(this,<?php echo $edit_no; ?>)">
-                                                                    <i class="fa fa-cut " title="menghapus data"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
+                                                            <tr class="impect_text">
+                                                                <td><?= $inp_impact ?>
+                                                                </td>
+                                                                <td style="text-align:center;width:10%;">
+                                                                    <a nilai="<?php echo $edit_no; ?>" style="cursor:pointer;" onclick="remove_install_impact(this,<?php echo $edit_no; ?>)">
+                                                                        <i class="fa fa-cut " title="menghapus data"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
 
                                                     <?php
                                                     }
@@ -403,9 +366,7 @@ if ($field['iskri'] == 0) {
                                             </table>
                                             <center>
                                                 <input id="add_impactx" class="btn btn-warning" type="button" value="Library Impact " name="add_impact">
-                                                <!-- <input id="add_impact" class="btn btn-info <?= $hide_edit ?>" type="button" onclick="add_install_impact()" value="Library Impact " name="add_impact"> -->
                                                 <span class="btn btn-info <?= $hide_edit ?>" id="add_impact_news"> Library Impact </span>
-
                                                 <button id="add_new_impact" class="btn btn-info <?= $hide_edit ?>" type="button" onclick="add_new_install_impact()" value="Impact New" name="add_new_impact"> New Impact </button>
                                             </center>
                                         </tr>
@@ -420,7 +381,6 @@ if ($field['iskri'] == 0) {
                                                         <td width="25%">Kategori Dampak <span class="mandatory">*</span></td>
                                                         <td>
                                                             <div id="l_risk_impact_parent" class="input-group">
-                                                                <!-- Dropdown untuk memilih Kuantitatif atau Kualitatif -->
                                                                 <?= form_dropdown('kategori_dampak', 
                                                                     array(
                                                                         'kuantitatif' => 'Kuantitatif', 
@@ -440,11 +400,7 @@ if ($field['iskri'] == 0) {
                                                     <tr>
                                                         <td width="25%">Asumsi Perhitungan Dampak <span class="mandatory">*</span></td>
                                                         <td>
-                                                            <!-- <div id="risk_asumsi_perhitungan_dampak" class="input-group" style="width:100%;"> -->
-
                                                             <?= form_textarea('risk_asumsi_perhitungan_dampak', ($detail) ? ($detail['risk_asumsi_perhitungan_dampak']) : '', 'class="form-control" style="width:100%;height:100px;" id="risk_asumsi_perhitungan_dampak"' . $disable); ?>
-
-                                                            <!-- </div> -->
                                                         </td>
                                                     </tr>
                                                 </thead>
@@ -460,16 +416,11 @@ if ($field['iskri'] == 0) {
                                                 </thead>
                                             </table>
                                         </tr>
-
-
-
-
+                                    </tbody>
+                                </table>
                             </div>
-                            </tbody>
-                            </table>
                             <div class="x_footer">
                                 <ul class="nav navbar-right panel_toolbox">
-
                                     <li><span class="btn btn-primary pointer <?= $hide_edit ?>" data-tab="identify" id="simpan_peristiwa"> Simpan </span></li>
                                     <!-- <li><span class="btn btn-default pointer " id="cancel_peristiwa" data-dismiss="modal"> Kembali </span></li> -->
                                 </ul>
@@ -479,6 +430,7 @@ if ($field['iskri'] == 0) {
                     </div>
                     <?= form_close(); ?>
                 </div>
+                <!-- END RISK IDENTIFICATION -->
 
                 <div id="analysis" class="tab-pane fade in <?= $analysisact ?> ">
 

@@ -14,13 +14,13 @@ class Rcsa extends BackendController
 		$this->load->helper('text');
 
 		$this->load->model('Data'); //membuat load model data
-		$this->nil_tipe			= 1;
+		$this->nil_tipe					= 1;
 		$this->set_Tbl_Master(_TBL_VIEW_RCSA);
-		$this->cbo_periode 		= $this->get_combo('periode');
-		$this->cbo_parent 		= $this->get_combo('parent-input');
+		$this->cbo_periode 			= $this->get_combo('periode');
+		$this->cbo_parent 			= $this->get_combo('parent-input');
 		$this->cbo_parent_all 	= $this->get_combo('parent-input-all');
-		$this->cbo_type 		= $this->get_combo('type-project');
-		$this->cbo_bulan 		= $this->get_combo('bulan');
+		$this->cbo_type 				= $this->get_combo('type-project');
+		$this->cbo_bulan 				= $this->get_combo('bulan');
 
 		$this->set_Open_Tab('General Information');
 		$this->addField(array('field' => 'id', 'type' => 'int', 'show' => false, 'size' => 4));
@@ -87,14 +87,14 @@ class Rcsa extends BackendController
 		$this->set_Bid(array('nmtbl' => $this->tbl_master, 'field' => 'create_user', 'readonly' => true));
 
 		$this->set_Sort_Table($this->tbl_master, 'name', 'ASC');
-		$this->set_Table_List($this->tbl_master, 'judul_assesment', 'Judul Assessment ', 10);
-		$this->set_Table_List($this->tbl_master, 'name', 'Risk Owner', 20);
-		$this->set_Table_List($this->tbl_master, 'man', 'Jumlah Sasaran', 5, 'center');
-		$this->set_Table_List($this->tbl_master, 'tupoksi', 'Jumlah Peristiwa', 5, 'center');
-		$this->set_Table_List($this->tbl_master, 'periode_name', 'Periode', 5, 'center');
-		$this->set_Table_List($this->tbl_master, 'status', 'Progress', 5, 'center');
-		$this->set_Table_List($this->tbl_master, 'sts_propose_text', 'Status', 0, 'center');
-		$this->set_Table_List($this->tbl_master, 'id', 'Risk Register', 5, 'center');
+		$this->set_Table_List($this->tbl_master, 'judul_assesment', lang('msg_field_title'), 10);
+		$this->set_Table_List($this->tbl_master, 'name', lang('msg_field_owner'), 20);
+		$this->set_Table_List($this->tbl_master, 'man', lang('msg_field_jml_sasaran'), 5, 'center');
+		$this->set_Table_List($this->tbl_master, 'tupoksi', lang('msg_field_jml_peristiwa'), 5, 'center');
+		$this->set_Table_List($this->tbl_master, 'periode_name', lang('msg_field_periode'), 5, 'center');
+		$this->set_Table_List($this->tbl_master, 'status', lang('msg_field_progress'), 5, 'center');
+		$this->set_Table_List($this->tbl_master, 'sts_propose_text', lang('msg_field_status'), 0, 'center');
+		$this->set_Table_List($this->tbl_master, 'id', lang('msg_field_register'), 5, 'center');
 
 		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
 		$this->_CHANGE_TABLE_MASTER(_TBL_RCSA);
@@ -131,10 +131,10 @@ class Rcsa extends BackendController
 	// MOD LIST TABLE JUMLAH PERISTIWA
 	function listBox_TUPOKSI($rows, $value)
 	{
-		$id = $rows['l_id'];
-		$jml = '';
+		$id 		= $rows['l_id'];
+		$jml 		= '';
 		if (array_key_exists($id, $this->use_list['peristiwa'])) {
-			$jml = $this->use_list['peristiwa'][$id];
+			$jml 	= $this->use_list['peristiwa'][$id];
 		}
 
 		return $jml;
@@ -144,9 +144,9 @@ class Rcsa extends BackendController
 	function listBox_STS_PROPOSE_TEXT($row, $value, $res_nilai)
 	{
 		$nilai 	= intval($row['l_sts_propose']);
-		$id 	= $row['l_id'];
+		$id 		= $row['l_id'];
 		$owner 	= $row['l_owner_no'];
-		$jml 	= '';
+		$jml 		= '';
 		if (array_key_exists($id, $this->use_list['peristiwa'])) {
 			$jml = $this->use_list['peristiwa'][$id];
 		}
@@ -178,15 +178,16 @@ class Rcsa extends BackendController
 		return $hasil;
 	}
 
-
+	// MOD FIELD TABLE RISK REGISTER 
 	function listBox_ID($row, $value)
 	{
-		$id 	= $row['l_id'];
+		$id 		= $row['l_id'];
 		$owner 	= $row['l_owner_no'];
 		$result = '<i class="fa fa-search showRegister pointer" data-id="' . $id . '" data-owner="' . $owner . '">  </i>';
 		return $result;
 	}
 	
+	// MOD FIELD TABLE STATUS
 	function listBox_STATUS($rows, $value)
 	{
 		$id 	= $rows['l_id'];
@@ -195,48 +196,48 @@ class Rcsa extends BackendController
 			$jml = $this->use_list['peristiwa'][$id];
 		}
 
-		$dt 		= $this->db->select('pi, rcsa_no')->where('rcsa_no', $id)	->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		$dt 			= $this->db->select('pi, rcsa_no')->where('rcsa_no', $id)	->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		$dtkri 		= $this->db->where('rcsa_no', $id)->where('iskri', 1)->where('pi ', 6)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		$jmldtkr 	= count($dtkri);
 		foreach($dtkri as $ii){
 			$actkri[] = $this->db->where('id', $ii['kri'])->get('bangga_data_combo')->row_array();
 		}
 		$jmlactkri	= count($actkri);
-		$ttlkr		= $jmldtkr- $jmlactkri;
+		$ttlkr			= $jmldtkr- $jmlactkri;
 
 		if($dtkri){
 			$jml 		= $jml-$ttlkr;
 		}
 
-		$dt 			= $this->db->select('pi, rcsa_no')->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+		$dt 					= $this->db->select('pi, rcsa_no')->where('rcsa_no', $id)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 		$groupedData 	= array();
-		$totals 		= array(); // Array untuk melacak total nilai berdasarkan 'rcsa_no'
+		$totals 			= array(); // Array untuk melacak total nilai berdasarkan 'rcsa_no'
 
 		foreach ($dt as $datax) {
 			$rcsa_no = $datax['rcsa_no'];
 
 			// Mengassign nilai-nilai berdasarkan kondisi 'pi'
 			if ($datax['pi'] == 1) {
-				$bg = 'danger';
-				$nilai = '25';
-				$inf = 'risk identity';
+				$bg 		= 'danger';
+				$nilai 	= '25';
+				$inf 		= 'risk identity';
 			} elseif ($datax['pi'] == 2) {
-				$bg = 'warning';
-				$nilai = '30';
-				$inf = 'risk analysis';
+				$bg 		= 'warning';
+				$nilai 	= '30';
+				$inf 		= 'risk analysis';
 			} elseif ($datax['pi'] == 3) {
-				$bg = 'primary';
-				$nilai = '55';
-				$inf = 'risk evaluation';
+				$bg 		= 'primary';
+				$nilai 	= '55';
+				$inf 		= 'risk evaluation';
 			} elseif ($datax['pi'] == 4) {
-				$bg = 'info';
-				$nilai = '75';
-				$inf = 'risk treatment';
+				$bg 		= 'info';
+				$nilai 	= '75';
+				$inf 		= 'risk treatment';
 			} elseif($datax['pi'] >= 5) {
 
-				$bg = 'success';
-				$nilai = '100';
-				$inf = 'progress treatment';
+				$bg 		= 'success';
+				$nilai 	= '100';
+				$inf 		= 'progress treatment';
 			}
 
 			// Menjumlahkan nilai berdasarkan 'rcsa_no'
@@ -250,47 +251,43 @@ class Rcsa extends BackendController
 		// Menampilkan total nilai berdasarkan 'rcsa_no'
 		$res_nilai=0;
 		$res_text = 'danger';
-		$iskri = 'hide';
-		$cl = " #6c757d";
-		$tl = "data kri belum ada";
+		$iskri 		= 'hide';
+		$cl 			= " #6c757d";
+		$tl 			= "data kri belum ada";
 		foreach ($totals as $rcsa_no => $total_nilai) {
 			// doi::dump($jml);
  			$res_nilai = round($total_nilai / $jml);
 			if ($res_nilai<35) {
-				$res_bg = 'danger';
+				$res_bg		= 'danger';
 				$res_text = '';
   			}	
 			elseif ($res_nilai<55) {
-				$res_bg = 'waring';
-								$res_text = '';
-
-  			} elseif ($res_nilai < 65) {
-				$res_bg = 'primary';
+				$res_bg 	= 'waring';
 				$res_text = '';
 
+			} elseif ($res_nilai < 65) {
+			$res_bg 	= 'primary';
+			$res_text = '';
+
 			} elseif ($res_nilai < 85) {
-				$res_bg = 'info';
+				$res_bg 	= 'info';
 				$res_text = '';
 
 			} elseif ($res_nilai < 99) {
-				$res_bg = 'info';
+				$res_bg 	= 'info';
 				$res_text = '';
 				
 
 			} elseif ($res_nilai > 100) {
-				$res_bg = 'success';
+				$res_bg 	= 'success';
 				$res_text = '';
-				$iskri = '';
+				$iskri 		= '';
 				$res_nilai=99; 
 			}
 			else{
-				// $res_nilai=97;
 				$res_bg = 'success';
-				
-				// $res_text = 'white';
-
 			}
-			$kirim = "nilai: " . $res_nilai . " id: " . $rcsa_no;
+			$kirim 		= "nilai: " . $res_nilai . " id: " . $rcsa_no;
 
 		}
 
@@ -343,6 +340,205 @@ class Rcsa extends BackendController
 		}
 		return $result;
 	}
+
+	// MOD FIELD ACTION TABLE
+	function list_MANIPULATE_PERSONAL_ACTION($tombol, $rows)
+	{
+		$tombol['print'] 	= [];
+		$id 							= $rows['l_id'];
+		$owner 						= $rows['l_owner_no'];
+		$url 							= base_url($this->modul_name . '/risk-event/' . $owner);
+		$tombol['detail'] = array("default" => true, "url" => $url, "label" => lang('msg_action_table'));
+		$tombol['edit'] 	= ['default' => false, 'url' => base_url($this->_Snippets_['modul'] . '/edit'), 'label' => 'Edit'];	
+		
+		if (array_key_exists($id, $this->use_list)) {
+			if ($this->use_list[$id]['jml'] > 0)
+				$tombol['delete'] = [];
+		}
+		return $tombol;
+	}
+
+	// FUNTION RISK EVENT
+	function risk_event()
+	{
+		$owner 					= intval($this->uri->segment(3));
+		$id 						= intval($this->uri->segment(4));
+		$data['parent'] = $this->db->where('id', $id)->get(_TBL_VIEW_RCSA)->row_array();
+		$data['field'] 	= $this->data->get_peristiwa($id);
+		$data['list'] 	= $this->load->view('list-peristiwa', $data, true);
+		$this->template->build('risk-event', $data);
+	}
+
+	// FUNCTION TAMBAH PERISTIWA RISK REGISTER
+	function tambah_peristiwa()
+	{
+		$mode 						= $this->uri->segment(3);
+		$id_rcsa 					= $this->uri->segment(5);
+		$id_edit 					= $this->input->post('edit');
+
+		if ($mode !== 'add') {
+			$id_edit 				= $this->uri->segment(4);
+		}
+
+		$data['krii'] 		= $this->get_combo('data-combo', 'kri');
+		$data['per_data'] = [0 => '-select-', 1 => 'Bulan', 2 => 'Triwulan', 3 => 'semester'];
+		$data['area'] 		= $this->get_combo('parent-input');
+		$data['rcsa_no']	= $id_rcsa;
+		$data['np'] 			= $this->get_combo('negatif_poisitf');
+		$data['parent'] 	= $this->db->where('id', $id_rcsa)->get(_TBL_VIEW_RCSA)->row_array();
+		$rows 						= $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_RCSA_SASARAN)->result_array();
+		$data['sasaran'] 	= [0=>lang('msg_cbo_select')];
+
+		foreach ($rows as $row) {
+			$data['sasaran'][$row['id']] = $row['sasaran'];
+		}
+
+		$rows_bisnis 						= $this->db->where('rcsa_no',$id_rcsa)->get(_TBL_RCM)->result_array();
+		$data['proses_bisnis'] 	= [0=>lang('msg_cbo_select')];
+
+		foreach ($rows_bisnis as $rb) {
+			$data['proses_bisnis'][$rb['id']] = $rb['bussines_process'];
+		}
+
+		$couse 		= [];
+		$impact 	= [];
+		$detail 	= [];
+		$sub 			= [];
+		$event 		= [];
+		$rcsa_det = [];
+		if ($id_edit > 0) {
+			
+			$detail 	= $this->db->where('id', $id_edit)->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
+			$rcsa_det = $this->db->where('id', $id_edit)->get(_TBL_RCSA_DETAIL)->row_array();
+
+			if ($detail["sts_propose"] == 4) {
+				$disabled = 'disabled';
+				$readonly = 'readonly="true"';
+			}
+			
+			if ($detail) {
+				$couse 									= json_decode($detail['risk_couse_no'], true);
+				$couse_implode 					= implode(", ", $couse);
+				$data['risk_couseno1'] 	= $couse_implode;
+				$impect 								= json_decode($detail['risk_impact_no'], true);
+				$impect_implode 				= implode(", ", $impect);
+				$data['risk_impectno1'] = $impect_implode;
+				$impact									= json_decode($detail['risk_impact_no'], true);
+				$impact_implode 				= implode(", ", $impact);
+				$peristiwa 							= $this->db->where('id', $detail['event_no'])->where('status', 1)->order_by('description')->get(_TBL_LIBRARY)->result_array();
+				$dtkri 									= $this->db->where('id', $detail['kri'])->get(_TBL_DATA_COMBO)->result_array();
+			}
+
+
+			$tblkri = '<table class="table peristiwa" id="tblkri"><tbody>';
+			if ($peristiwa) :
+				foreach ($dtkri as $key => $crs) :
+					$tambah = '';
+					$del 		= '';
+					if ($key == 0) {
+						$tambah = '  | <i class="fa fa-plus add-kri text-danger pointer"></i>';
+						$del 		= 'del-event ';
+					}
+					$tblkri .= '<tr class="browse-kri"><td style="padding-left:0px;">' . form_textarea('kri[]', $crs['data'], " readonly='readonly'  id='kri' maxlength='500' size=500 class='form-control' rows='2' cols='5' readonly='readonly' style='overflow: hidden; width: 500 !important; height: 104px;'") . form_input(['kri_no[]' => $id_rcsa]) . '</td><td class="text-center" width="10%"><i class="fa fa-search browse-kri text-primary pointer"></i>  </td></tr>';
+				endforeach;
+			else :
+				$tblkri .= '<tr class="browse-kri"><td style="padding-left:0px;">' . form_textarea('kri[]', '', " readonly='readonly'  id='kri' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 500 !important; height: 104px;'") . form_input(['kri_no[]' => 0]) . '</td><td class="text-center"  width="10%"><i class="fa fa-search browse-event text-primary pointer"></i> </td></tr>';
+			endif;
+			$tblkri .= '</tbody></table>';
+
+
+			$data['krii'] 				= $this->get_combo('data-combo', 'kri');
+			$data['per_data'] 		= [0 => '-select-', 1 => 'Bulan', 2 => 'Triwulan', 3 => 'semester'];
+			$data['satuan'] 			= $this->get_combo('data-combo', 'satuan');
+			$data['area'] 				= $this->get_combo('parent-input');
+			$data['rcsa_no'] 			= $id_rcsa;
+			$data['events'] 			= $event;
+			$data['np'] 					= $this->get_combo('negatif_poisitf');
+			$data['detail'] 			= $detail;
+			$data['tblkri'] 			= $tblkri;
+			$data['id_edit']			= $id_edit;
+			$arrControl 					= json_decode($data['detail']['control_no'], true);
+			//analisis
+			$cboLike 								= $this->get_combo('likelihood');
+			$cboImpact 							= $this->get_combo('impact'); 
+			$data['cboTreatment'] 	= $this->get_combo('treatment');
+			$data['cboTreatment1'] 	= $this->get_combo('treatment1');
+			$data['cboTreatment2'] 	= $this->get_combo('treatment2');
+			$data['cboRiskControl'] = $this->get_combo('data-combo', 'control-assesment');
+			$inherent_level 				= $this->data->get_master_level(true, $data['detail']['inherent_level']);
+			$residual_level 				= $this->data->get_master_level(true, $data['detail']['residual_level']);
+
+			if (!$inherent_level) {
+				$inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+			}
+			$a = $inherent_level['level_mapping'];
+
+			if (!$residual_level) {
+				$residual_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
+			}
+
+			$arl = $residual_level['level_mapping'];
+			$data['inherent_level']= $inherent_level;
+			$data['residual_level']= $residual_level;
+			$check = '';
+			
+		}
+		$check .= '<div>' . form_textarea("note_control", ($data['detail']) ? $data['detail']['note_control'] : '', ' class="form-control" style="width:100%;height:150px"' . $readonly) . '</div><br/>';
+
+		
+		$action 									= $this->db->where('rcsa_detail_no', $id_edit)->get(_TBL_RCSA_ACTION)->row_array();
+		$data["rcsa_det"] 				= $rcsa_det;
+		$data['field'] 						= $action;
+		$data['id_edit_mitigasi'] = $action['id'];
+		$data['cbo_owner'] 				= $this->get_combo('parent-input-all');
+		$data['list_mitigasi'] 		= $this->load->view('input_mitigasi', $data, true);
+		$data['list_mitigasi'] 		= $this->load->view('input_mitigasi', $data, true);
+		$data['area']							= $this->get_combo('parent-input');
+		$bulan 										= 2;
+	
+
+		$data['realisasi'] 				= $this->data->get_realisasi($id_edit);
+		$data['list_realisasi'] 	= $this->load->view('list-realisasi', $data, true);
+		$data['inptkri'] 					= $this->load->view('kri', $data, true);
+		$data['cboper'] 					= [0=>lang('msg_cbo_select')];
+		$data['kategori'] 				= [0=>lang('msg_cbo_select')];
+		$data['subkategori'] 			= [0=>lang('msg_cbo_select')];
+		$data['tema'] 						= $this->get_combo('library_t1');
+		$cbogroup 								= [0=>lang('msg_cbo_select')];
+		$cbogroup1 								= [0=>lang('msg_cbo_select')];
+
+		if($detail['sub_kategori']){
+			$data['cboper']					= $this->get_combo('tasktonimi', 't4', $detail['sub_kategori']);
+		}
+
+		if($detail['tema']){
+			$data['kategori'] 			= $this->get_combo('tasktonimi', 't2', $detail['tema']);
+		}
+
+		
+		if($detail['kategori_no']){
+			$data['subkategori'] 		= $this->get_combo('tasktonimi', 't3', $detail['kategori_no']);
+		}
+
+		if($detail['event_no']){
+ 			$cbogroup = $this->get_combo('tasktonimi',['t5', 'cause', $detail['event_no']] );
+			$cbogroup1 = $this->get_combo('tasktonimi',['t5', 'impact', $detail['event_no']] );
+		}
+
+		$data['satuan'] 		= $this->get_combo('data-combo', 'satuan');
+		$data['cbogroup']  	= $cbogroup;
+		$data['inp_couse'] 	= form_input('', '', ' id="new_cause[]" name="new_cause[]" class="form-control" placeholder="Input Risk Cause Baru"');
+		$data['lib_couse'] 	= form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="form-control select2" id="risk_couseno');
+ 		$data['cbogroup1'] 	= $cbogroup1;
+		$data['inp_impact'] = form_input('', '', ' id="new_impact[]" name="new_impact[]" class="form-control" placeholder="Input Risk Impact Baru"');
+		$data['cbbii'] 			= form_dropdown('new_impact_no[]', $cbogroup1, '', 'class="form-control select2"');
+		$data['cboLike']		= $cboLike;
+		$data['cboImpact']	= $cboImpact;
+		$data['analisiData'] = $this->db->where('id', $id_edit)->get("bangga_view_rcsa_detail")->row_array();
+		$data['rcsa_action'] 	= $this->db->where('rcsa_detail_no', $id_edit)->get("bangga_rcsa_action")->result_array();
+		$this->template->build('fom_peristiwa', $data);
+	}
+
 
 	public function updateBox_KRITERIA_KEMUNGKINAN_RISIKO($field)
 	{
@@ -681,301 +877,20 @@ class Rcsa extends BackendController
 		return $result;
 	}
 
-	function list_MANIPULATE_PERSONAL_ACTION($tombol, $rows)
-	{
-		$tombol['print'] = [];
-		$id = $rows['l_id'];
-		$owner = $rows['l_owner_no'];
-		// $url = base_url($this->modul_name . '/risk-event/'.$id.'/'.$owner);
-		$url = base_url($this->modul_name . '/risk-event/' . $owner);
-		$tombol['detail'] = array("default" => true, "url" => $url, "label" => "Start Risk Register");
-		$tombol['edit'] = ['default' => false, 'url' => base_url($this->_Snippets_['modul'] . '/edit'), 'label' => 'Edit'];
-		// $tombol['reset'] = ['default' => false, 'url' => base_url($this->_Snippets_['modul'] . '/reset'), 'label' => 'Reset'];
-		
-		
-
-		if (array_key_exists($id, $this->use_list)) {
-			if ($this->use_list[$id]['jml'] > 0)
-				$tombol['delete'] = [];
-		}
-		return $tombol;
-	}
-
-	function risk_event()
-	{
-		$owner = intval($this->uri->segment(3));
-		$id = intval($this->uri->segment(4));
-		$data['parent'] = $this->db->where('id', $id)->get(_TBL_VIEW_RCSA)->row_array();
-		$data['field'] = $this->data->get_peristiwa($id);
- 
-		// $inherent_level = $this->data->get_master_level(true, $data['field']['inherent_level']);
-
-		// $residual_level = $this->data->get_master_level(true, $data['field']['residual_level']);
-		// // var_dump($a);
-		// if (!$inherent_level) {
-		// 	$inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-		// }
-		// $a = $inherent_level['level_mapping'];
-
-		// if (!$residual_level) {
-		// 	$residual_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-		// }
-
-		// $arl = $residual_level['level_mapping'];
-		// doi::dump($residual_level);
-		// $data['inherent_level'] = $inherent_level;
-		// $data['residual_level'] = $residual_level;
-
-
-
-		$data['list'] = $this->load->view('list-peristiwa', $data, true);
-		$this->template->build('risk-event', $data);
-	}
-	function tambah_peristiwa_()
-	{
-		$owner = intval($this->uri->segment(3));
-		$id = intval($this->uri->segment(4));
-		$data['parent'] = $this->db->where('id', $id)->get(_TBL_VIEW_RCSA)->row_array();
-		$data['field'] = $this->data->get_peristiwa($id);
-		
-		$this->template->build('fom_peristiwa', $data);
-	}
-
-	function tambah_peristiwa()
-	{
-		$mode = $this->uri->segment(3);
-		$id_rcsa = $this->uri->segment(5);
-		$id_edit = $this->input->post('edit');
-		if ($mode !== 'add') {
-			$id_edit = $this->uri->segment(4);
-		}
-		$data['krii'] = $this->get_combo('data-combo', 'kri');
-		$data['per_data'] = [0 => '-select-', 1 => 'Bulan', 2 => 'Triwulan', 3 => 'semester'];
-		
-		$data['area'] = $this->get_combo('parent-input');
-		$data['rcsa_no'] = $id_rcsa;
-		$data['np'] = $this->get_combo('negatif_poisitf');
-
-
-		// $id_rcsa = $this->input->post('id');
-		$data['parent'] = $this->db->where('id', $id_rcsa)->get(_TBL_VIEW_RCSA)->row_array();
-
-		$rows = $this->db->where('rcsa_no', $id_rcsa)->get(_TBL_RCSA_SASARAN)->result_array();
-		$data['sasaran'] = [0=>lang('msg_cbo_select')];
-		foreach ($rows as $row) {
-			$data['sasaran'][$row['id']] = $row['sasaran'];
-		}
-		$rows_bisnis = $this->db->where('rcsa_no',$id_rcsa)->get(_TBL_RCM)->result_array();
-		$data['proses_bisnis'] = [0=>lang('msg_cbo_select')];
-		foreach ($rows_bisnis as $rb) {
-			$data['proses_bisnis'][$rb['id']] = $rb['bussines_process'];
-		}
-
-		$couse = [];
-		$impact = [];
-		$detail = [];
-		$sub = [];
-		$event = [];
-		$rcsa_det = [];
-		if ($id_edit > 0) {
-			
-			$detail = $this->db->where('id', $id_edit)->get(_TBL_VIEW_RCSA_DETAIL)->row_array();
-			$rcsa_det = $this->db->where('id', $id_edit)->get(_TBL_RCSA_DETAIL)->row_array();
-			// doi::dump($rcsa_det);
-			if ($detail["sts_propose"] == 4) {
-				$disabled = 'disabled';
-				$readonly = 'readonly="true"';
-			}
-			if ($detail) {
-
-				$couse = json_decode($detail['risk_couse_no'], true);
-				$couse_implode = implode(", ", $couse);
-				$data['risk_couseno1'] = $couse_implode;
-				$impect = json_decode($detail['risk_impact_no'], true);
-				$impect_implode = implode(", ", $impect);
-				$data['risk_impectno1'] = $impect_implode;
-
-				$impact = json_decode($detail['risk_impact_no'], true);
-				$impact_implode = implode(", ", $impact);
-
-				$peristiwa = $this->db->where('id', $detail['event_no'])->where('status', 1)->order_by('description')->get(_TBL_LIBRARY)->result_array();
-				$dtkri = $this->db->where('id', $detail['kri'])->get(_TBL_DATA_COMBO)->result_array();
-			}
-
-
-			$tblkri = '<table class="table peristiwa" id="tblkri"><tbody>';
-			if ($peristiwa) :
-				foreach ($dtkri as $key => $crs) :
-					$tambah = '';
-					$del = '';
-					if ($key == 0) {
-						$tambah = '  | <i class="fa fa-plus add-kri text-danger pointer"></i>';
-						$del = 'del-event ';
-					}
-					$tblkri .= '<tr class="browse-kri"><td style="padding-left:0px;">' . form_textarea('kri[]', $crs['data'], " readonly='readonly'  id='kri' maxlength='500' size=500 class='form-control' rows='2' cols='5' readonly='readonly' style='overflow: hidden; width: 500 !important; height: 104px;'") . form_input(['kri_no[]' => $id_rcsa]) . '</td><td class="text-center" width="10%"><i class="fa fa-search browse-kri text-primary pointer"></i>  </td></tr>';
-				endforeach;
-			else :
-				$tblkri .= '<tr class="browse-kri"><td style="padding-left:0px;">' . form_textarea('kri[]', '', " readonly='readonly'  id='kri' maxlength='500' size=500 class='form-control' rows='2' cols='5' style='overflow: hidden; width: 500 !important; height: 104px;'") . form_input(['kri_no[]' => 0]) . '</td><td class="text-center"  width="10%"><i class="fa fa-search browse-event text-primary pointer"></i> </td></tr>';
-			endif;
-			$tblkri .= '</tbody></table>';
-
-
-			$data['krii'] = $this->get_combo('data-combo', 'kri');
-			$data['per_data'] = [0 => '-select-', 1 => 'Bulan', 2 => 'Triwulan', 3 => 'semester'];
-			$data['satuan'] = $this->get_combo('data-combo', 'satuan');
-			// $data['kategori'] = $this->get_combo('data-combo', 'kel-library');
-			// $data['subkategori'] = $this->get_combo('data-combo', 'subkel-library');
-			$data['area'] = $this->get_combo('parent-input');
-			$data['rcsa_no'] = $id_rcsa;
-			$data['events'] = $event;
-			$data['np'] = $this->get_combo('negatif_poisitf');
-
-
-			$data['detail'] = $detail;
-			$data['tblkri'] = $tblkri;
-			$data['id_edit'] = $id_edit;
-			$arrControl = json_decode($data['detail']['control_no'], true);
-			//analisis
-			$cboLike = $this->get_combo('likelihood');
-			$cboImpact = $this->get_combo('impact'); 
-			$data['cboTreatment'] = $this->get_combo('treatment');
-			$data['cboTreatment1'] = $this->get_combo('treatment1');
-			$data['cboTreatment2'] = $this->get_combo('treatment2');
-			$data['cboRiskControl'] = $this->get_combo('data-combo', 'control-assesment');
-			$inherent_level = $this->data->get_master_level(true, $data['detail']['inherent_level']);
-			
-			$residual_level = $this->data->get_master_level(true, $data['detail']['residual_level']);
-			// var_dump($a);
-			if (!$inherent_level) {
-				$inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-			}
-			$a = $inherent_level['level_mapping'];
-
-			if (!$residual_level) {
-				$residual_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-			}
-
-			$arl = $residual_level['level_mapping'];
-			// doi::dump($residual_level);
-			$data['inherent_level']= $inherent_level;
-			$data['residual_level']= $residual_level;
-			// $cboControl = $this->db->where('status', 1)->get(_TBL_EXISTING_CONTROL)->result_array();
-			// $jml = intval(count($cboControl) / 2);
-			$check = '';
-			// $i = 1;
-			// $control = array();
-			// $check .= '<div class="well p100">';
-			// if (is_array($arrControl))
-			// 	$control = $arrControl;
-			// foreach ($cboControl as $row) {
-			// 	if ($i == 1)
-			// 		$check .= '<div class="col-md-6">';
-
-			// 	$sts = false;
-			// 	foreach ($control as $ctrl) {
-			// 		if ($row['component'] == $ctrl) {
-			// 			$sts = true;
-			// 			break;
-			// 		}
-			// 	}
-
-			// 	$check .= '<label class="pointer">' . form_checkbox('check_item[]', $row['component'], $sts);
-			// 	$check .= '&nbsp;' . $row['component'] . '</label><br/>';
-			// 	if ($i == $jml)
-			// 		$check .= '</div><div class="col-md-6">';
-
-			// 	++$i;
-			// }
-		}
-		$check .= '<div>' . form_textarea("note_control", ($data['detail']) ? $data['detail']['note_control'] : '', ' class="form-control" style="width:100%;height:150px"' . $readonly) . '</div><br/>';
-
-		// $data['level_resiko'][] = ['label' => lang('msg_field_inherent_risk'), 'isi' => ' Kemungkinan : ' . form_dropdown('inherent_likelihood', $cboLike, ($data['detail']) ? $data['detail']['inherent_likelihood'] : '', ' class="form-control select2" id="inherent_likelihood" style="width:35%;"' . $disabled) . ' Dampak: ' . form_dropdown('inherent_impact', $cboImpact, ($data['detail']) ? $data['detail']['inherent_impact'] : '', ' class="form-control select2" id="inherent_impact" style="width:35%;"' . $disabled)];
-		
-		// $data['level_resiko'][] = ['label' => lang('msg_field_inherent_level'), 'isi' => '<span id="inherent_level_label"><span style="background-color:' . $inherent_level['color'] . ';color:' . $inherent_level['color_text'] . ';">&nbsp;' . $inherent_level['level_mapping'] . '&nbsp;</span></span>' . form_hidden(['inherent_level' => ($data['detail']) ? $data['detail']['inherent_level'] : 0]) . form_hidden(['inherent_name' => ($data['detail']) ? $a : ''])];
-		
-		// $data['level_resiko'][] = ['label' => lang('msg_field_existing_control'), 'isi' => $check];
-		// $data['level_resiko'][] = ['label' => lang('msg_field_coa'), 'isi' => '<div class="input-group"><span  id="span_dampak" class="input-group-addon">Rp. </span>' . form_input('coa', ($data['detail']) ? number_format($data['detail']['coa'],0,',',',') : '', ' class="form-control rupiah text-right" id="coa" style="width:100%;"') . '</div>'];
-		// $data['level_resiko'][] = ['show' => true, 'label' => lang('msg_field_kode_jasa'), 'isi' => form_input('kode_jasa', ($data['detail']) ? $data['detail']['kode_jasa'] : '', 'class="form-control" style="width:100%;" id="kode_jasa"')];
-		// $data['level_resiko'][] = ['label' => lang('msg_field_ket_coa'), 'isi' =>   form_textarea("keterangan_coa", ($data['detail']) ? $data['detail']['keterangan_coa'] : '', ' class="form-control" style="width:100%;height:150px"' . $readonly) . ' '];
-		// $data['level_resiko'][] = ['label' => lang('msg_field_risk_control_assessment'), 'isi' => form_dropdown('risk_control_assessment', $cboRiskControl, ($data['detail']) ? $data['detail']['risk_con
-		// // $data['level_resiko'][] = ['label' => lang('msg_field_residual_risk'), 'isi' => ' Kemungkinan : ' . form_dropdown('residual_likelihood', $cboLike, ($data['detail']) ? $data['detail']['residual_likelihood'] : '', ' class="form-control select2" id="residual_likelihoodx" style="width:35%;"' . $disabled) . ' Dampak: ' . form_dropdown('residual_impact', $cboImpact, ($data['detail']) ? $data['detail']['residual_impact'] : '', ' class="form-control select2" id="residual_impactx" style="width:35%;"' . $disabled)];
-		// // $data['level_resiko'][] = ['label' => lang('msg_field_residual_level'), 'isi' => '<span id="residual_level_label"><span style="background-color:' . $residual_level['color'] . ';color:' . $residual_level['color_text'] . ';">&nbsp;' . $residual_level['level_mapping'] . '&nbsp;</span></span>' . form_hidden(['residual_level' => ($data['detail']) ? $data['detail']['residual_level'] : 0]) . form_hidden(['residual_name' => ($data['detail']) ? $arl : ''])];
-
-		// if ($a == "Ekstrem") {
-		// 	$data['level_resiko'][] = ['label' => lang('msg_field_treatment'), 'isi' => form_dropdown('treatment_no', $cboTreatment1, ($data['detail']) ? $data['detail']['treatment_no'] : '', ' class="form-control select2" id="treatment_no" style="width:100%;"' . $disabled)];
-		// } elseif ($a == "Low") {
-		// 	$data['level_resiko'][] = ['label' => lang('msg_field_treatment'), 'isi' => form_dropdown('treatment_no', $cboTreatment2, ($data['detail']) ? $data['detail']['treatment_no'] : '', ' class="form-control select2" id="treatment_no" style="width:100%;"' . $disabled)];
-		// } else {
-		// 	$data['level_resiko'][] = ['label' => lang('msg_field_treatment'), 'isi' => form_dropdown('treatment_no', $cboTreatment, ($data['detail']) ? $data['detail']['treatment_no'] : '', ' class="form-control select2" id="treatment_no" style="width:100%;"' . $disabled)];
-		// }
-		
-		$action = $this->db->where('rcsa_detail_no', $id_edit)->get(_TBL_RCSA_ACTION)->row_array();
-		$data["rcsa_det"] = $rcsa_det;
-		$data['field'] = $action;
-		$data['id_edit_mitigasi'] = $action['id'];
-
-		$data['cbo_owner'] = $this->get_combo('parent-input-all');
-		$data['list_mitigasi'] = $this->load->view('input_mitigasi', $data, true);
-		$data['list_mitigasi'] = $this->load->view('input_mitigasi', $data, true);
-		$data['area'] = $this->get_combo('parent-input');
-
-		$bulan = 2;
-		// $data['kri'] = $this->data->get_data_kri($id_edit, $bulan);
-
-		$data['realisasi'] = $this->data->get_realisasi($id_edit);
-		$data['list_realisasi'] = $this->load->view('list-realisasi', $data, true);
-		$data['inptkri'] = $this->load->view('kri', $data, true);
-		$data['cboper'] = [0=>lang('msg_cbo_select')];
-		$data['kategori'] = [0=>lang('msg_cbo_select')];
-		$data['subkategori'] = [0=>lang('msg_cbo_select')];
-		$data['tema'] = $this->get_combo('library_t1');
-		$cbogroup = [0=>lang('msg_cbo_select')];
-		$cbogroup1 = [0=>lang('msg_cbo_select')];
-		if($detail['sub_kategori']){
-			$data['cboper'] = $this->get_combo('tasktonimi', 't4', $detail['sub_kategori']);
-		}
-		if($detail['tema']){
-			$data['kategori'] = $this->get_combo('tasktonimi', 't2', $detail['tema']);
-		}
-
-		
-		if($detail['kategori_no']){
-			$data['subkategori'] = $this->get_combo('tasktonimi', 't3', $detail['kategori_no']);
-		}
-
-		if($detail['event_no']){
- 			$cbogroup = $this->get_combo('tasktonimi',['t5', 'cause', $detail['event_no']] );
-			$cbogroup1 = $this->get_combo('tasktonimi',['t5', 'impact', $detail['event_no']] );
-		}
-
-		$data['satuan'] = $this->get_combo('data-combo', 'satuan');
-	 
+	
 
 	
-		$data['cbogroup'] = $cbogroup;
-		$data['inp_couse'] = form_input('', '', ' id="new_cause[]" name="new_cause[]" class="form-control" placeholder="Input Risk Cause Baru"');
-		$data['lib_couse'] = form_dropdown('risk_couse_no[]', $cbogroup, '', 'class="form-control select2" id="risk_couseno');
-
- 		$data['cbogroup1'] = $cbogroup1;
-		$data['inp_impact'] = form_input('', '', ' id="new_impact[]" name="new_impact[]" class="form-control" placeholder="Input Risk Impact Baru"');
-		$data['cbbii'] = form_dropdown('new_impact_no[]', $cbogroup1, '', 'class="form-control select2"');
+	// function tambah_peristiwa_()
+	// {
+	// 	$owner = intval($this->uri->segment(3));
+	// 	$id = intval($this->uri->segment(4));
+	// 	$data['parent'] = $this->db->where('id', $id)->get(_TBL_VIEW_RCSA)->row_array();
+	// 	$data['field'] = $this->data->get_peristiwa($id);
 		
-		$data['cboLike']=$cboLike;
-		$data['cboImpact']=$cboImpact;
-		$data['analisiData'] = $this->db->where('id', $id_edit)->get("bangga_view_rcsa_detail")->row_array();
-		// $data['targetData'] = $this->db->where('id_detail', $id_edit)->get("bangga_analisis_risiko")->result_array();
-		// $data['target_like']=json_decode($data['analisiData']['target_like']);
-		// $data['target_impact']=json_decode($data['analisiData']['target_impact']);
-		$data['rcsa_action'] 	= $this->db->where('rcsa_detail_no', $id_edit)->get("bangga_rcsa_action")->result_array();
-		
+	// 	$this->template->build('fom_peristiwa', $data);
+	// }
 
-		// doi::dump($data['targetData']);
-		$this->template->build('fom_peristiwa', $data);
-
-		// echo json_encode($result);
-
-	}
-
+	
 	function update_sts_heatmap(){
 		$id   	= $this->input->post('id');
 		$status = $this->input->post('status');
