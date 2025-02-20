@@ -302,7 +302,7 @@ if($parent) :
         <td colspan="3"><?= $rows1['stakeholder']; ?></td>
         <td colspan="2"><?= $rows1['peran']; ?></td>
         <td colspan="2" valign="top"><?= $rows1['komunikasi']; ?></td>
-        <td colspan="2" valign="top"><?= $rows1['komunikasi']; ?></td>
+        <td colspan="2" valign="top"><?= $rows1['potensi']; ?></td>
       </tr>
       <?php
       }
@@ -331,7 +331,7 @@ if($parent) :
           <td colspan="3"><?= $rows2['stakeholder']; ?></td>
           <td colspan="2"><?= $rows2['peran']; ?></td>
           <td colspan="2"><?= $rows2['komunikasi']; ?></td>
-          <td colspan="2"><?= $rows2['komunikasi']; ?></td>
+          <td colspan="2"><?= $rows2['potensi']; ?></td>
         </tr>
       <?php
       }

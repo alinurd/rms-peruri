@@ -183,14 +183,14 @@ if($data){
       $stakholder_internal =$this->db->where('rcsa_no', $d['id'])->where('stakeholder_type', 1)->get(_TBL_RCSA_STAKEHOLDER)->result_array();
       $no = 1;
       foreach ($stakholder_internal as $key => $rows1) {
-       
+      //  doi::dump($rows1);
       ?>
         <tr>
           <td style="text-align: center;"><?= $no++ ?></td>
           <td colspan="3"><?= $rows1['stakeholder']; ?></td>
           <td colspan="3"><?= $rows1['peran']; ?></td>
           <td colspan="2" valign="top"><?= $rows1['komunikasi']; ?></td>
-          <td colspan="2" valign="top"><?= $rows1['komunikasi']; ?></td>
+          <td colspan="2" valign="top"><?= $rows1['potensi']; ?></td>
         </tr>
       <?php
       }
@@ -222,7 +222,7 @@ if($data){
         <td colspan="3"><?= $rows2['stakeholder']; ?></td>
         <td colspan="3"><?= $rows2['peran']; ?></td>
         <td colspan="2"><?= $rows2['komunikasi']; ?></td>
-        <td colspan="2"><?= $rows2['komunikasi']; ?></td>
+        <td colspan="2"><?= $rows2['potensi']; ?></td>
       </tr>
     <?php
     }
