@@ -55,7 +55,7 @@ class Dashboard extends BackendController
 		$owner_no = 0;
 		if ($this->_Group_['owner']) {
 			$owner_no = $this->_Group_['owner']['owner_no'];
-		}
+		} 
 
 		$data['haha'] = $this->_Group_['owner'];
 		$data['task'] = $this->data->get_task($owner_no);
