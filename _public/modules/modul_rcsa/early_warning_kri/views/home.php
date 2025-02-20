@@ -68,11 +68,11 @@
             <thead>
                 <tr>
                     <th class="text-center" rowspan="2" style="position: sticky; left: 0; z-index: 94;" width="5%">No</th>
-                    <th class="text-center" rowspan="2" style="position: sticky; left: 30px; z-index: 95;" width="10%">Risk Owner</th>
-                    <th class="text-center" rowspan="2" style="position: sticky; left: 120px; z-index: 96;" width="15%">Peristiwa Risiko</th>
-                    <th class="text-center" rowspan="2" style="position: sticky; left: 250px; z-index: 97;" width="10%">Indikator</th>
-                    <th class="text-center" rowspan="2" style="position: sticky; left: 360px; z-index: 98;" width="10%">Satuan</th>
-                    <th colspan="3" class="text-center" style="position: sticky; left: 475px; z-index: 99;" width="28%">Threshold</th>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 3%; z-index: 95;" width="10%">Risk Owner</th>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 11%; z-index: 96;" width="15%">Peristiwa Risiko</th>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 22%; z-index: 97;" width="10%">Indikator</th>
+                    <th class="text-center" rowspan="2" style="position: sticky; left: 32%; z-index: 98;" width="10%">Satuan</th>
+                    <th colspan="3" class="text-center" style="position: sticky; left: 42%; z-index: 99;" width="28%">Threshold</th>
                     <?php if ($triwulan == 1): ?>
                         <th class="text-center" rowspan="2" width="5%">Januari</th>
                         <th class="text-center" rowspan="2" width="5%">Februari</th>
@@ -92,9 +92,9 @@
                     <?php endif; ?>
                 </tr>
                 <tr class="text-center">
-                    <td class="text-center" style="background-color: #7FFF00; color: #000; position: sticky; left: 475px; z-index: 99;" width="9%">Aman</td>
-                    <td class="text-center" style="background-color: #FFFF00; color: #000; position: sticky; left: 530px; z-index: 99;" width="9%">Hati-Hati</td>
-                    <td class="text-center" style="background-color: #FF0000; color: #000; position: sticky; left: 490px; z-index: 99;" width="9%">Bahaya</td>
+                    <td class="text-center" style="background-color: #7FFF00; color: #000; position: sticky; left: 42%; z-index: 99;" width="9%">Aman</td>
+                    <td class="text-center" style="background-color: #FFFF00; color: #000; position: sticky; left: 48%; z-index: 99;" width="9%">Hati-Hati</td>
+                    <td class="text-center" style="background-color: #FF0000; color: #000; position: sticky; left: 49%; z-index: 99;" width="9%">Bahaya</td>
                 </tr>
             </thead>
             <tbody>
@@ -122,15 +122,15 @@
                 ?>
                 <tr>
                     <td class="text-center" style="background-color: #fff; position: sticky; left: 0; z-index: 94;"><?= $no++ ?></td>
-                    <td style="background-color: #fff; position: sticky; left: 30px; z-index: 95;"><?= $q['name'] ?></td>
-                    <td style="background-color: #fff; position: sticky; left: 120px; z-index: 96;"><?= $act['event_name'] ?></td>
-                    <td style="background-color: #fff; position: sticky; left: 250px; z-index: 97;"><?= $combo['data'] ?></td>
-                    <td style="background-color: #fff; position: sticky; left: 360px; z-index: 98;">
+                    <td style="background-color: #fff; position: sticky; left: 3%; z-index: 95;"><?= $q['name'] ?></td>
+                    <td style="background-color: #fff; position: sticky; left: 11%; z-index: 96;"><?= $act['event_name'] ?></td>
+                    <td style="background-color: #fff; position: sticky; left: 22%; z-index: 97;"><?= $combo['data'] ?></td>
+                    <td style="background-color: #fff; position: sticky; left: 32%; z-index: 98;">
                         <center><?= $combo_stuan['data'] == "%" ? "persentase [%]" : $combo_stuan['data'] ?></center>
                     </td>
-                    <td class="text-center" style="background-color: #7FFF00; color: #000; position: sticky; left: 475px; z-index: 99;"><?= $q['min_rendah'] ?> - <?= $q['max_rendah'] ?></td>
-                    <td class="text-center" style="background-color: #FFFF00; color: #000; position: sticky; left: 530px; z-index: 99;"><?= $q['min_menengah'] ?> - <?= $q['max_menengah'] ?></td>
-                    <td class="text-center" style="background-color: #FF0000; color: #000; position: sticky; left: 490px; z-index: 99;"><?= $q['min_tinggi'] ?> - <?= $q['max_tinggi'] ?></td>
+                    <td class="text-center" style="background-color: #7FFF00; color: #000; position: sticky; left: 42%; z-index: 99;"><?= $q['min_rendah'] ?> - <?= $q['max_rendah'] ?></td>
+                    <td class="text-center" style="background-color: #FFFF00; color: #000; position: sticky; left: 48%; z-index: 99;"><?= $q['min_menengah'] ?> - <?= $q['max_menengah'] ?></td>
+                    <td class="text-center" style="background-color: #FF0000; color: #000; position: sticky; left: 49%; z-index: 99;"><?= $q['min_tinggi'] ?> - <?= $q['max_tinggi'] ?></td>
                     <?php
                     $start = ($triwulan - 1) * 3 + 1;
                     $end = $start + 3;
