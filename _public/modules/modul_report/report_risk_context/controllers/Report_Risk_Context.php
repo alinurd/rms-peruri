@@ -73,14 +73,6 @@ class Report_Risk_Context extends BackendController {
 		$this->addField(array('field' => 'stakeholder_external', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
 		$this->set_Close_Tab();
 
-		// $this->set_Open_Tab('Kriteria Kemungkinan Risiko ');
-		// $this->addField(array('field' => 'kriteria_kemungkinan_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-		// $this->set_Close_Tab();
-
-		// $this->set_Open_Tab('Kriteria Dampak Risiko ');
-		// $this->addField(array('field' => 'kriteria_dampak_risiko', 'type' => 'free', 'input' => 'free', 'mode' => 'e'));
-		// $this->set_Close_Tab();
-
 		$this->set_Open_Tab('Dokumen Lainnnya');
 		$this->addField(array('field' => 'nm_file', 'input' => 'upload', 'path' => 'regulasix', 'file_type' => 'pdf|pdfx|PDF|docx|doc|', 'file_random' => false));
 		$this->set_Close_Tab();
@@ -100,7 +92,7 @@ class Report_Risk_Context extends BackendController {
 		$this->set_Table_List($this->tbl_master, 'tupoksi', 'Jumlah Peristiwa', 10, 'center');
 		$this->set_Table_List($this->tbl_master, 'periode_name','Periode',10,'center');
 		$this->set_Table_List($this->tbl_master, 'nm_file', 'Download', 8, 'center',true,false);
-		$this->set_Table_List($this->tbl_master, 'aksi', 'View Risk Context', 8, 'center',true,false);
+		$this->set_Table_List($this->tbl_master, 'register', 'View Risk Context', 8, 'center',true,false);
 		// $this->set_Table_List($this->tbl_master, 'register', 'View Risk Context', 10, 'center');
 
 		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
@@ -314,7 +306,7 @@ class Report_Risk_Context extends BackendController {
 		}
 	}
 
-		function listBox_AKSI($row, $value)
+		function listBox_REGISTER($row, $value)
 	{
 		$id = $row['l_id'];
 		$owner = $row['l_owner_no'];
