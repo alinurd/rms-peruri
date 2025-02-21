@@ -61,7 +61,7 @@ class Report_Risk_Criteria extends BackendController {
 		$this->set_Table_List($this->tbl_master, 'kriteria_probabilitas', 'Jumlah Probabilitas', 10, 'center');
 		$this->set_Table_List($this->tbl_master, 'kriteria_dampak', 'Jumlah Dampak', 10, 'center');
 		$this->set_Table_List($this->tbl_master, 'periode_name','Periode',10,'center');
-		$this->set_Table_List($this->tbl_master, 'aksi', 'View Risk Criteria', 10, 'center');
+		$this->set_Table_List($this->tbl_master, 'register', 'View Risk Criteria', 10, 'center');
 
 		$this->_CHECK_PRIVILEGE_OWNER($this->tbl_master, 'owner_no');
 		$this->_CHANGE_TABLE_MASTER(_TBL_RCSA);
@@ -85,7 +85,7 @@ class Report_Risk_Criteria extends BackendController {
 		return $result;
 	}
 
-	function listBox_AKSI($row, $value)
+	function listBox_REGISTER($row, $value)
 	{
 		$id 	= $row['l_id'];
 		$owner 	= $row['l_owner_no'];
