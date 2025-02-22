@@ -35,13 +35,14 @@ if ($parent['sts_propose'] == 5) {
 
             <?php
             // doi::dump();
+            $no = 0; 
             foreach ($field as $key => $row) : ?>
 
                 <tr style="background-color:#d5edef;">
                     <td colspan="10"><strong><?= strtoupper($row['nama']); ?></strong></td>
                 </tr>
                 <?php
-                $no = 0; 
+                
                 foreach ($row['detail'] as $ros) :
                     $sts_heatmap = $this->db->where('id',$ros['id'])->get('bangga_rcsa_detail')->row_array();
                     // doi::dump($sts_heatmap);
