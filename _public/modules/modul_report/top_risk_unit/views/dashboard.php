@@ -59,61 +59,16 @@
 								</section>
 								<?php  echo form_close();?>
 							</div>
-						</div>
-<span class="btn btn-warning btn-flat"><a href="#" style="color:#ffffff;" id="export_data"><i class="fa fa-file-pdf-o"></i> Export To PDF </a></span>
-						<!--state overview start-->
-						<div class="row" id="diagram">
-<table class="table table-bordered table-sm"  id="golum" border="5" style="display: none;">
-
-<thead>
-<tr>
-<td colspan="3" rowspan="3" style="text-align: left;border-right:none;" ><img src="<?=img_url('logo.png');?>" width="90"></td>
-<td colspan="6" rowspan="3" style="text-align: center;border-left:none;vertical-align: middle !important;"> TOP RISK</td>
-<td colspan="4" style="text-align: left;">No.</td>
-<td style="text-align: left;">: 009/RM-FORM/I/<span class="tahun2"></span></td>
-</tr>
-<tr>
-<td colspan="4" style="text-align: left;">Revisi</td>
-<td style="text-align: left;">: 1</td>
-</tr>
-<tr>
-<td colspan="4" style="text-align: left;">Tanggal Revisi</td>
-<td style="text-align: left;">: 31 Januari <span class="tahun2"></span></td>
-</tr>
-<tr>
-<td colspan="2" style="text-align: left;border: none;">Risk Owner </td>
-<td colspan="12" style="text-align: left;border: none;">: <span class="owner"></span></td>
-</tr>
-<tr>
-<td colspan="2" style="text-align: left;border: none;">Bulan </td>
-<td colspan="12" style="text-align: left;border: none;">: <span class="bulan2"></span></td>
-</tr>
-</thead>
-</table>
-						<div class="row">
-							<aside class="profile-info col-md-12">
-								<section class="x_panel">
-									<div class="profile-info col-md-4">
+						</div> 
+ 							<aside class="  col-md-12">
+								<section class=" "> 
 										<!-- <strong>Inherent</strong> -->
-										<div class="x_content text-center" id="mapping_inherent">
+										<div class="  text-center" id="mapping_inherent">
 											<?=$mapping['inherent'];?>
 										</div>
-									</div>
-									<div class="profile-info col-md-4">
-										<!-- <strong>Residual</strong> -->
-										<div class="x_content text-center" id="mapping_residual">
-											<?=$mapping['residual'];?>
-										</div>
-									</div>
-									<div class="profile-info col-md-4">
-										<div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual1">
-											<?= $mapping2['residual1']; ?>
-										</div>
-									</div>
-								</section>
+ 								</section>
 							</aside>
-						</div>
-						<div class="overlay hide" id="overlay_content">
+ 						<div class="overlay hide" id="overlay_content">
 							<i class="fa fa-refresh fa-spin"></i>
 						</div>
 					</div>

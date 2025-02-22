@@ -48,55 +48,9 @@ class Data extends MX_Model
 				}
 			}
 			unset($row);
-			$hasil['inherent'] = $this->data->draw_rcsa($mapping);
+			$hasil['inherent'] = $this->data->draw_rcsa_unit($mapping);
 
-			// residual
-			$mapping = $this->db->get(_TBL_VIEW_MATRIK_RCSA)->result_array();
-			if ($data['id_owner'] > 0) {
-                $this->get_owner_child($data['id_owner']);
-				$this->owner_child[] = $data['id_owner'];
-				$this->db->where_in('owner_no', $this->owner_child);
-			}
-
-			if ($data['id_period'] > 0) {
-				$this->db->where('a.period_no', $data['id_period']);
-			}
-
-			// // Validasi bulan dan bulanx
-			if (isset($data['bulan']) && $data['bulan'] > 0) {
-				$this->db->where("b.bulan",$data['bulan']);
-			}else{
-				$this->db->where('b.bulan', $current_month);
-			}
-
-			$rows = $this->db->select('b.residual_likelihood_action as residual_like, b.residual_impact_action as residual_impact, COUNT(*) as jml')
-			->from(_TBL_VIEW_RCSA_DETAIL . ' a') 
-			->join('bangga_rcsa_action_detail b', 'a.id = b.rcsa_detail', 'inner') 
-			->where('a.sts_propose', 4)
-			->where('a.sts_heatmap', '1')
-			->group_by(['b.residual_likelihood_action', 'b.residual_impact_action']) 
-			->get()
-			->result_array();
-   
-			$arrData = [];
-			foreach ($rows as $ros) {
-				if (isset($ros['residual_like'], $ros['residual_impact'])) {
-					$key = $ros['residual_like'] . '-' . $ros['residual_impact'];
-					$arrData[$key] = $ros['jml'];
-				}
-			}
-
-			// === Update Mapping with Residual Values ===
-			foreach ($mapping as &$row) {
-				// Pastikan kolom likelihood dan impact ada dalam $mapping
-				if (isset($row['like_no'], $row['impact_no'])) {
-					$key = $row['like_no'] . '-' . $row['impact_no']; // Gabungkan likelihood dan impact untuk mencocokkan
-					$row['nilai'] = array_key_exists($key, $arrData) ? $arrData[$key] : ''; 
-					
-				}
-			}
-			unset($row);
-			$hasil['residual'] = $this->data->draw_rcsa_res($mapping);
+			 
 		}
 		return $hasil;
 		// var_dump($hasil);
