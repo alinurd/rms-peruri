@@ -1092,8 +1092,7 @@ class MX_Model extends CI_Model
 	}
 	function draw_rcsa_unit($data, $type = 'inherent')
 	{ 
-
-		$like = $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
+ 		$like = $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
 		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
 		$abjad = ['E', 'D', 'C', 'B', 'A'];
 
@@ -1120,13 +1119,18 @@ class MX_Model extends CI_Model
 				$code_abjad
 			);
 
- 			foreach ($impact as $row_i) {
+			foreach ($impact as $row_i) {
 				$like_no = $row_l['id'];
-				$impact_no = $row_i['id']; 
+				$impact_no = $row_i['id'];
 				$item_data = $this->find_data_target($data, $like_no, $impact_no);
-				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
-			 
-				$nilai = $item_data['nilai'] ?? '';
+				$score = $this->db->where('impact', $item_data['impact_no'])
+								  ->where('likelihood', $item_data['like_no'])
+								  ->get(_TBL_LEVEL_COLOR)
+								  ->row_array();
+			
+				$nilai_1 = $item_data['nilai_1'] ?? '';
+				$nilai_2 = $item_data['nilai_2'] ?? '';
+				$nilai_3 = $item_data['nilai_3'] ?? '';
 				$warna_bg = $item_data['warna_bg'] ?? '#ffffff';
 				$warna_txt = $item_data['warna_txt'] ?? '#000000';
 				$tingkat = $item_data['tingkat'] ?? '';
@@ -1134,38 +1138,54 @@ class MX_Model extends CI_Model
 				$atas_impact = $item_data['atas_impact'] ?? '';
 				$bawah_like = $item_data['bawah_like'] ?? '';
 				$atas_like = $item_data['atas_like'] ?? '';
+				 
+				$arrNorut1 = explode(", ", $nilai_1);
+				$val1 = '';
+				foreach ($arrNorut1 as $n) {
+					$val1 .= '<span class="badge rounded-pill" style="border: solid 0px #000;background-color: #2e4053 ; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+				}
 
+				$arrNorut2 = explode(", ", $nilai_2);
+				$val2 = '';
+				foreach ($arrNorut2 as $n) {
+					$val2 .= '<span title="jkjkjk2" class="badge rounded-pill" style="border: solid 0px #000;background-color: #85929e  ; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+				}
+
+				$arrNorut3 = explode(", ", $nilai_3);
+				$val3 = ''; 
+				foreach ($arrNorut3 as $n) {
+					$val3 .= '<span class="badge rounded-pill" style="border: solid 0px #000;background-color:#93CDDD; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+				}
+			
 				$content .= '
 					<td data-id="' . $row_i['id'] . '" 
 						class="pointer peta" onclick="hoho(this)" 
 						style="position: relative; background-color:' . $warna_bg . '; 
-								color:' . $warna_txt . '; 
-								width: 150px; 
-								height: 130px;  
-								border: 1px solid white; 
-								font-size: 15px; 
-								font-weight: bold; 
-								text-align: center; 
-								vertical-align: middle;"
-								data-toggle="popover"
-								data-placement="top"
-								data-html="true"
-								data-content="<strong>' . $tingkat . '</strong><br/>Standar Nilai :<br/>Impact: [ >= ' . $bawah_impact . ' s.d <= ' . $atas_impact . ']<br/>Likelihood: [ >=' . $bawah_like . ' s.d <= ' . $atas_like . ']"
-								data-nilai="' . $nilai . '"
-								data-kel="' . $type . '"
-								data-like="' . $item_data['like_no'] . '"
-								data-impact="' . $item_data['impact_no'] . '"
-								>
- 						' . $nilai . '  
-						<span class="badge rounded-pill" style="border: solid 0px #000;background-color:#215968 ;z-index: 1;position: relative;font-size:16px">4</span>
-						<span class="badge rounded-pill" style="border: solid 0px #000;background-color:#3A9491 ;z-index: 1;position: relative;font-size:16px">4</span>
-						<span class="badge rounded-pill" style="border: solid 0px #000;background-color:#93CDDD ;z-index: 1;position: relative;font-size:16px">4</span>
-
-						<div style="width:10px; margin:2px;position: absolute; top: 2px;   font-size: 10px; font-weight: normal; color: #555;">
-						<strong style="font-weight:900;">' . $score['score'] . '</strong>
-					</div>
+							   color:' . $warna_txt . '; 
+							   width: 150px; 
+							   height: 130px;  
+							   border: 1px solid white; 
+							   font-size: 15px; 
+							   font-weight: bold; 
+							   text-align: center; 
+							   vertical-align: middle;"
+						data-toggle="popover"
+						data-placement="top"
+						data-html="true"
+						data-content="<strong>' . $tingkat . '</strong><br/>Standar Nilai :<br/>Impact: [ >= ' . $bawah_impact . ' s.d <= ' . $atas_impact . ']<br/>Likelihood: [ >= ' . $bawah_like . ' s.d <= ' . $atas_like . ']"
+ 						data-kel="' . $type . '"
+						data-like="' . $item_data['like_no'] . '"
+						data-impact="' . $item_data['impact_no'] . '"
+					>
+						' . $val1 . ' <br> 
+						' . $val2 . ' <br> 
+						' . $val3 . '  
+						<div style="width:10px; margin:2px;position: absolute; top: 2px; font-size: 10px; font-weight: normal; color: #555;">
+							<strong style="font-weight:900;">' . $score['score'] . '</strong>
+						</div>
 					</td>';
 			}
+			
 
 			$content .= '</tr>';
 		}
