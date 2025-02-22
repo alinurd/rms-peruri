@@ -116,6 +116,7 @@ if ($parent['sts_propose'] == 5) {
                                 type="checkbox" 
                                 id="sts_heatmap_<?php echo htmlspecialchars($ros['id'], ENT_QUOTES, 'UTF-8'); ?>" 
                                 name="sts_heatmap" 
+                                data-norut="<?=$no?>" 
                                 value="<?php echo htmlspecialchars($ros['id'], ENT_QUOTES, 'UTF-8'); ?>" 
                                 <?php echo ($sts_heatmap['sts_heatmap'] == 1) ? 'checked' : ''; ?>>
                                 </center>
@@ -294,12 +295,13 @@ if ($parent['sts_propose'] == 5) {
             var isChecked = $(this).is(':checked') ? 1 : 0; // 1 untuk checked, 0 untuk unchecked
             var id = $(this).val(); // Ambil nilai checkbox (ID)
             // console.log(id);
+            var norut=$(this).data('norut')
 
             // Mengirim data ke server
             $.ajax({
                 url: "<?= base_url(_MODULE_NAME_REAL_ . '/update_sts_heatmap') ?>",
                 type: 'POST',
-                data: { id: id, status: isChecked }, // Mengirim ID dan status
+                data: { id: id, status: isChecked, norut:norut }, // Mengirim ID dan status
                 success: function(response) {
                     alert(response); // Menampilkan pesan dari server
                 },

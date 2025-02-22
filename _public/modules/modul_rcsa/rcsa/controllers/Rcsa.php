@@ -894,10 +894,11 @@ class Rcsa extends BackendController
 	function update_sts_heatmap(){
 		$id   	= $this->input->post('id');
 		$status = $this->input->post('status');
+		$norut = $this->input->post('norut');
 		// Validasi ID dan status
         if (is_numeric($id) && ($status == 0 || $status == 1)) {
 
-			$result = $this->data->save_status($id, $status);
+			$result = $this->data->save_status($id, $status, $norut);
             // Memanggil model untuk mengupdate status
             if ($result) {
                 echo "Data berhasil di Update!";
