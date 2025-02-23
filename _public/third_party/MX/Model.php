@@ -1101,7 +1101,7 @@ class MX_Model extends CI_Model
  		$content .= '
 			<tr>
 				<td></td><td></td>
-				<td colspan="5" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . ucfirst($type) . ' Risk</td>
+				<td colspan="5" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">Top Risk</td>
 			</tr>';
  
 		$content .= '<tr>';
@@ -1142,19 +1142,19 @@ class MX_Model extends CI_Model
 				$arrNorut1 = explode(", ", $nilai_1);
 				$val1 = '';
 				foreach ($arrNorut1 as $n) {
-					$val1 .= '<span class="badge rounded-pill" style="border: solid 0px #000;background-color: #2e4053 ; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+					$val1 .= '<span class="currentMap badge rounded-pill" style="border: solid 0px #000;background-color: #3d004f ; z-index: 1; position: relative; font-size:16px;" data-norut=' . trim($n) . '>' . trim($n) . '</span> ';
 				}
 
 				$arrNorut2 = explode(", ", $nilai_2);
 				$val2 = '';
 				foreach ($arrNorut2 as $n) {
-					$val2 .= '<span title="jkjkjk2" class="badge rounded-pill" style="border: solid 0px #000;background-color: #85929e  ; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+					$val2 .= '<span   class="inherentMap badge rounded-pill" style="border: solid 0px #000;background-color: #97beac  ; z-index: 1; position: relative; font-size:16px;"data-norut=' . trim($n) . '>' . trim($n) . '</span> ';
 				}
 
 				$arrNorut3 = explode(", ", $nilai_3);
 				$val3 = ''; 
 				foreach ($arrNorut3 as $n) {
-					$val3 .= '<span class="badge rounded-pill" style="border: solid 0px #000;background-color:#93CDDD; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+					$val3 .= '<span   class="residualMap badge rounded-pill" style="border: solid 0px #000;background-color:#00d3ac; z-index: 1; position: relative; font-size:16px;" data-norut=' . trim($n) . '>' . trim($n) . '</span> ';
 				}
 			
 				$content .= '

@@ -85,7 +85,7 @@ class Data extends MX_Model
 			}
 	 
 			$this->filter($data);
-			$this->db->where('bulan', 1);
+			$this->db->where('bulan', $data['bulan']);
 	
 			$rows3 = $this->db->select('MAX(rcsa_no) AS rcsa_no, MAX(create_date) AS create_date, risk_level_action, COUNT(risk_level_action) AS jml, norut, residual_likelihood_action, residual_impact_action')
                  ->order_by('create_date', 'desc')
