@@ -10,14 +10,14 @@ class Data extends MX_Model
 
 	function filter($data = []){
 		if ($data['id_owner'] > 0) {
-			$this->get_owner_child(1778);
-			$this->owner_child[] = 1778;
+			$this->get_owner_child($data['id_owner']);
+			$this->owner_child[] = $data['id_owner'];
 			$this->db->where_in('owner_no', $this->owner_child);
 		}
 
 		// Filter berdasarkan period jika ada
 		if ($data['id_period'] > 0) {
-			$this->db->where('period_no', 14);
+			$this->db->where('period_no', $data['id_period']);
 		}
 	}
 	function get_map_rcsa($data = [])
