@@ -65,7 +65,7 @@ if ($post['project_no'] > 0)
 								<div class="  text-center" id="mapping_inherent">
 									<?= $mapping['inherent']; ?>
 								</div>
-								<div style="margin-top: 20px; text-align: center; display: flex; justify-content: center; gap: 20px;">
+								<div style="margin-left: 235px; margin-top: 20px; margin-bottom: 20px; text-align: center; display: flex; justify-content: center; gap: 20px;">
 										<div class="current">
 											<button id="currentText" class="badge rounded-pill" style="border: solid 0px #000; background-color:#3d004f; font-size:16px; padding: 8px 12px; color: #fff;">Current Risk</button>
 										</div>
