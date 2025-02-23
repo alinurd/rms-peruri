@@ -140,10 +140,16 @@ class Data extends MX_Model
 		return true;
 	}
 
-	function save_status($id,$status){
-		$data = array('sts_heatmap' => $status);
-        $this->db->where('id', $id);
-		$this->db->update(_TBL_RCSA_DETAIL, $data);
+	function save_status($id,$status, $norut){
+		$upd = array();
+ 
+		$upd['sts_heatmap'] = $status;
+		$upd['norut'] = ($status=='1'? $norut:0);
+ 
+ 	  $this->crud->crud_data(array('table' => _TBL_RCSA_DETAIL, 'field' => $upd, 'where' => array('id' => $id), 'type' => 'update'));
+
+		// $result = $this->crud->crud_data(array('table' => , 'field' => $data, 'type' => 'add'));
+ 
         return  true;
 	}
 	function get_data_tanggal($id_rcsa)
