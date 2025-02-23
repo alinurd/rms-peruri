@@ -1090,8 +1090,388 @@ class MX_Model extends CI_Model
 
 		return $content;
 	}
+	function draw_rcsa_unit($data, $type = 'inherent')
+	{ 
+ 		$like = $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
+		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
+		$abjad = ['E', 'D', 'C', 'B', 'A'];
+
+ 		$content = '<center><table style="text-align:center; border-collapse: collapse;   font-size: 12px;" border="0">';
+
+ 		$content .= '
+			<tr>
+				<td></td><td></td>
+				<td colspan="5" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . ucfirst($type) . ' Risk</td>
+			</tr>';
+ 
+		$content .= '<tr>';
+		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold;   padding-right:100px; height: 100px;  ">
+						 
+					</td>';
+		$content .= '</tr>';
+
+ 		foreach ($like as $index => $row_l) {
+			$code_abjad = $abjad[$index] ?? $row_l['code'];
+			$content .= '<tr>';
+			$content .= sprintf(
+				'<td style="text-align:center; font-weight:bolder; color:black;   font-size:10px; height: 40px;">%s<br>%s</td>',
+				$row_l['level'],
+				$code_abjad
+			);
+
+			foreach ($impact as $row_i) {
+				$like_no = $row_l['id'];
+				$impact_no = $row_i['id'];
+				$item_data = $this->find_data_target($data, $like_no, $impact_no);
+				$score = $this->db->where('impact', $item_data['impact_no'])
+								  ->where('likelihood', $item_data['like_no'])
+								  ->get(_TBL_LEVEL_COLOR)
+								  ->row_array();
+			
+				$nilai_1 = $item_data['nilai_1'] ?? '';
+				$nilai_2 = $item_data['nilai_2'] ?? '';
+				$nilai_3 = $item_data['nilai_3'] ?? '';
+				$warna_bg = $item_data['warna_bg'] ?? '#ffffff';
+				$warna_txt = $item_data['warna_txt'] ?? '#000000';
+				$tingkat = $item_data['tingkat'] ?? '';
+				$bawah_impact = $item_data['bawah_impact'] ?? '';
+				$atas_impact = $item_data['atas_impact'] ?? '';
+				$bawah_like = $item_data['bawah_like'] ?? '';
+				$atas_like = $item_data['atas_like'] ?? '';
+				 
+				$arrNorut1 = explode(", ", $nilai_1);
+				$val1 = '';
+				foreach ($arrNorut1 as $n) {
+					$val1 .= '<span class="badge rounded-pill" style="border: solid 0px #000;background-color: #2e4053 ; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+				}
+
+				$arrNorut2 = explode(", ", $nilai_2);
+				$val2 = '';
+				foreach ($arrNorut2 as $n) {
+					$val2 .= '<span title="jkjkjk2" class="badge rounded-pill" style="border: solid 0px #000;background-color: #85929e  ; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+				}
+
+				$arrNorut3 = explode(", ", $nilai_3);
+				$val3 = ''; 
+				foreach ($arrNorut3 as $n) {
+					$val3 .= '<span class="badge rounded-pill" style="border: solid 0px #000;background-color:#93CDDD; z-index: 1; position: relative; font-size:16px;">' . trim($n) . '</span> ';
+				}
+			
+				$content .= '
+					<td data-id="' . $row_i['id'] . '" 
+						class="pointer peta" onclick="hoho(this)" 
+						style="position: relative; background-color:' . $warna_bg . '; 
+							   color:' . $warna_txt . '; 
+							   width: 150px; 
+							   height: 130px;  
+							   border: 1px solid white; 
+							   font-size: 15px; 
+							   font-weight: bold; 
+							   text-align: center; 
+							   vertical-align: middle;"
+						data-toggle="popover"
+						data-placement="top"
+						data-html="true"
+						data-content="<strong>' . $tingkat . '</strong><br/>Standar Nilai :<br/>Impact: [ >= ' . $bawah_impact . ' s.d <= ' . $atas_impact . ']<br/>Likelihood: [ >= ' . $bawah_like . ' s.d <= ' . $atas_like . ']"
+ 						data-kel="' . $type . '"
+						data-like="' . $item_data['like_no'] . '"
+						data-impact="' . $item_data['impact_no'] . '"
+					>
+						' . $val1 . ' <br> 
+						' . $val2 . ' <br> 
+						' . $val3 . '  
+						<div style="width:10px; margin:2px;position: absolute; top: 2px; font-size: 10px; font-weight: normal; color: #555;">
+							<strong style="font-weight:900;">' . $score['score'] . '</strong>
+						</div>
+					</td>';
+			}
+			
+
+			$content .= '</tr>';
+		}
+
+		// Footer tabel untuk kode dampak
+		$content .= '<tr><td></td><td></td>';
+		foreach ($impact as $row_i) {
+			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['code'] . '</td>';
+		}
+		$content .= '</tr>';
+
+		// Footer tabel untuk level dampak
+		$content .= '<tr><td></td><td></td>';
+		foreach ($impact as $row_i) {
+			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['level'] . '</td>';
+		}
+		$content .= '</tr>';
+
+		// Footer utama untuk judul "Tingkatan Dampak"
+		$content .= sprintf(
+			'<tr><td></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;"> </td></tr>',
+			count($impact)
+		);
+
+		// Menutup tabel
+		$content .= '</table></center>';
+
+		return $content;
+	}
+
+	function dfhjkdf($data, $type = 'inherent', $tipe = 'angka', $optional = [], $isPositif = 0)
+	{ 
+        $separate = ($isPositif == 1) ? '+' : 'x';
+        $opti = '';
+        $dtawal = [];
+        if (isset($optional['dtawal'])) {
+            $dtawal = $optional['dtawal'];
+        }
+        $dtmid = [];
+        if (isset($optional['dtmid'])) {
+            $dtmid = $optional['dtmid'];
+        }
+        $dtsetelah = [];
+        if (isset($optional['dtsetelah'])) {
+            $dtsetelah = $optional['dtsetelah'];
+        }
+
+        if ($optional) {
+            if (is_array($optional)) {
+                foreach ($optional as $key => $opt) {
+                    if ($key == 'tipe') {
+                        $opti .= ' data-' . $key . '="' . $opt . '" ';
+                    }
+                }
+            } else {
+                $opti = ' data-' . $key . '="' . $opt . '" ';
+            }
+        }
+
+        $like = $this->db->where('category', 'likelihood')->where('is_positif', $isPositif)->order_by('urut', 'desc')->get(_TBL_LEVEL)->result_array();
+        $impact = $this->db->where('category', 'impact')->where('is_positif', $isPositif)->order_by('urut')->get(_TBL_LEVEL)->result_array();
+        
 
 
+        $content = "<style>
+
+        #table_seb {
+            width:70%;
+            margin-top:40px;
+        }
+
+        #table_h {
+            width:70%;
+            
+        }
+
+        #table_seb td, #table_h td {
+            
+            position:relative;
+        }
+        #table_seb td:after{
+            content:'';
+            display:block;
+            margin-top:100%;
+        }
+        #table_seb td .content {
+            text-align:center;
+            position:absolute;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            overflow: auto;
+            padding: 10px 0px;
+        }
+        .bad{
+            display: inline-block;
+            min-width: 20px;
+            min-height: 20px;
+            padding: 4px 4px;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            background-color: #777;
+            border-radius: 50%;
+            margin: 1px;
+        }
+        .rotate {
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            width: 1.5em;
+            font-size:16px;
+          }
+          .rotate div {
+               -moz-transform: rotate(-90.0deg);  /* FF3.5+ */
+                 -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
+            -webkit-transform: rotate(-90.0deg);  /* Saf3.1+, Chrome */
+                       filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+                   -ms-filter: 'progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)'; /* IE8 */
+                   margin-left: -10em;
+                   margin-right: -10em;
+          }
+       
+        </style>";
+
+        
+        $content .= '';
+        $content .= '<center>';
+
+        $content .= '<table id="table_seb" style="text-align:center;" border="0" width="100%">';
+        
+        $no = 0;
+        $noTd = 5;
+        $nourut = 0;
+        $arrBorder = [];
+        
+        foreach ($data as $key => $row) {
+            $icon = '&nbsp;&nbsp;';
+            if (!empty($row['icon'])) {
+                $icon = show_image($row['icon'], 0, 10, 'slide', 0, 'pull-right');
+            }
+
+            $apetite = ' <i class="fa fa-minus-circle pull-right text-primary"></i> ';
+            if ($row['sts_apetite'] == 1) {
+                $apetite = ' <i class="fa fa-check-circle pull-right text-primary"></i> ';
+            }
+            $icon = '&nbsp;&nbsp;';
+            ++$no;
+            if ($tipe == 'angka') {
+                $nilai = (!empty($row['nilai'])) ? $row['nilai'] : '';
+                $nilaiket = $nilai;
+            } else {
+                $nilaiket = (!empty($row['nilai'])) ? '<span class="glyphicon glyphicon-ok-circle gi-2x"></span>' : '';
+                $nilai = (!empty($row['nilai'])) ? $row['nilai'] : '';
+            }
+
+            if ($key == 0) {
+                $content .= '<tr><td width="15%" class="hidden" style="padding:5px;text-align:center;">' . $like[$nourut]['level'] . '</td><td style="padding:5px;border-color: transparent;font-weight:bold" width="10%" class="hiddenx rotate" rowspan="5"><div>Kemungkinan Risiko</div></td><td style="padding:5px;border-color: transparent;font-weight:bold" width="10%" class="hiddenx"><div class="content">
+                <div style="width: 100%;top: 40%;position: absolute;">' . $like[$nourut]['urut'] . '</div></div></td>';
+                ++$nourut;
+            }
+
+            $notif = '<strong>' . $row['tingkat'] . '</strong><br/>Standar Nilai :<br/>Impact: [ >' . $row['bawah_impact'] . ' s.d <=' . $row['atas_impact'] . ']<br/>Likelihood: [ >' . $row['bawah_like'] . ' s.d <=' . $row['atas_like'] . ']<br/>Treatment : ' . $row['treatment'];
+
+            $fa = 16;
+            $awal = '';
+            if (isset($dtawal[$row['score_dampak'] . $separate . $row['score_kemungkinan']])) {
+                $aw = $dtawal[$row['score_dampak'] . $separate . $row['score_kemungkinan']];
+
+                if (count($aw) > 50) {
+                    $fa = 10;
+                } elseif (count($aw) > 25) {
+                    $fa = 12;
+                }
+                // $awal .= count($aw);
+                foreach ($aw as $sey => $set) {
+                    // $awal .= '<span class="badge" style="padding:3px 9px;border-color:#000;background-color:#02ae00;z-index: 1;position: relative;font-size:'.$fa.'px">'.$set.'</span>';
+                    $awal .= '<span class="bad" style="border: solid 0px #000;background-color:#215968;z-index: 1;position: relative;font-size:' . $fa . 'px">' . $set . '</span>';
+                }
+            }
+
+            $fm = 16;
+            $mid = '';
+            if (isset($dtmid[$row['score_dampak'] . $separate . $row['score_kemungkinan']])) {
+                $am = $dtmid[$row['score_dampak'] . $separate . $row['score_kemungkinan']];
+
+                if (count($am) > 50) {
+                    $fm = 10;
+                } elseif (count($am) > 25) {
+                    $fm = 12;
+                }
+                // $awal .= count($aw);
+                foreach ($am as $sem => $sei) {
+                     $mid .= '<span class="bad" style="border: solid 0px #000;background-color:#3A9491 ;z-index: 1;position: relative;font-size:' . $fm . 'px">' . $sei . '</span>';
+                }
+            }
+
+            $fs = 16;
+            $setelah = '';
+
+            if (isset($dtsetelah[$row['score_dampak'] . $separate . $row['score_kemungkinan']])) {
+                $se = $dtsetelah[$row['score_dampak'] . $separate . $row['score_kemungkinan']];
+
+                if (count($se) > 50) {
+                    $fs = 10;
+                } elseif (count($se) > 25) {
+                    $fs = 12;
+                }
+                // $awal .= count($aw);
+                foreach ($se as $sem => $pak) {
+                     $setelah .= '<span class="bad" style="border: solid 0px #000;background-color:#93CDDD;z-index: 1;position: relative;font-size:' . $fs . 'px;color:#000">' . $pak . '</span>';
+                }
+            }
+
+            $border = 'border:solid 3px #fff;';
+             if ($row['score_dampak'] == 1 && $row['score_kemungkinan'] == 5) {
+                $border = 'border-right-color: black !important;
+                border-right-style: dasheds !important;border-right-width: thick !important;';
+            } elseif ($row['score_dampak'] == 2 && $row['score_kemungkinan'] == 4) {
+                $border = 'border-right-color: black !important;
+                border-right-style: dasheds !important;
+                border-right-width: thick !important;
+                border-top-color: black !important;
+                border-top-style: dasheds !important;
+                border-top-width: thick !important;
+                border-bottom-color: #fff !important;
+                border-bottom-style: solid !important;
+                border-bottom-width: thick !important;';
+            } elseif ($row['score_dampak'] == 2 && $row['score_kemungkinan'] == 3) {
+                $border = 'border-right-color: black !important;
+                border-right-style: dasheds !important;border-right-width: thick !important;';
+            } elseif ($row['score_dampak'] == 3 && $row['score_kemungkinan'] == 2) {
+                $border = 'border-right-color: black !important;
+                border-right-style: dasheds !important;
+                border-right-width: thick !important;
+                border-top-color: black !important;
+                border-top-style: dasheds !important;
+                border-top-width: thick !important;';
+            } elseif ($row['score_dampak'] == 4 && $row['score_kemungkinan'] == 1) {
+                $border = 'border-right-color: black !important;
+                border-right-style: dasheds !important;
+                border-right-width: thick !important;
+                border-top-color: black !important;
+                border-top-style: dasheds !important;
+                border-top-width: thick !important;';
+            }
+
+            $content .= '<td ' . $opti . ' data-id="' . $row['id'] . '" class=" peta" style="' . $border . 'background-color:' . $row['warna_bg'] . ';color:' . $row['warna_txt'] . ';padding:5px; font-size:16px; font-weight:bold;height:50px !important;" data-togglex = "popover" data-placementx="top" data-htmlx="true" data-contentx="' . $notif . '" data-nilai="' . $nilai . '" data-batas="' . $row['sts_apetite'] . '"><div class="content">' . $awal . '<br>' . $mid . '<br>' . $setelah . '<div style="width: 100%;top: 40%;position: absolute;">' . $row['code_mapping'] . '<br>' . $row['tingkat_ex'] . '</div></div></td>';
+            if ($no % 5 == 0 && $key < 24) {
+                --$noTd;
+                $content .= '</tr><tr><td class="hidden" width="15%" class="td-nomor-v" style="padding:5px;text-align:center;">' . $like[$nourut]['level'] . '</td><td class="hiddenx" width="10%" style="padding:5px;border-color: transparent;font-weight:bold"><div class="content">
+                <div style="width: 100%;top: 40%;position: absolute;">' . $like[$nourut]['urut'] . '</div></div></td>';
+                ++$nourut;
+            }
+        }
+
+        $content .= '</tr>';
+        $content .= '</table>';
+
+        $content .= '<table id="table_h" style="text-align:center;"  width="100%">';
+        $content .= '<tr><td class="hiddenx"  style="padding:5px" width="10%"></td>';
+
+        foreach ($impact as $key => $row) {
+            $px = 5;
+            if ($key == 0) {
+                $px = 7;
+            }
+            
+            $content .= '<td class="hiddenx" style="padding:' . $px . 'px; font-size:16px; font-weight:bold;height:50px !important;">' . $row['urut'] . '</td>';
+        }
+        $content .= '</tr><tr>';
+        $content .= '<td></td><td class="hiddenx" colspan="5" style="padding:' . $px . 'px; font-size:16px; font-weight:bold;height:50px !important;">Dampak Risiko</td>';
+        $content .= '</tr></table><br/>&nbsp;';
+
+        $content .= '<div style="display:inline-flex"><span style="background-color:#215968 ;width: 30px;border-radius: 50%;border: solid 0px black;height: 30px;"></span><strong style="padding-top: 4px;">&nbsp;Inherent&nbsp;&nbsp;</strong><span style="background-color:#3A9491  ;width: 30px;border-radius: 50%;border: solid 0px black;height: 30px;"></span><strong style="padding-top: 4px;">&nbsp;Target&nbsp;&nbsp;</strong><span style="background-color:#93CDDD ;width: 30px;border-radius: 50%;border: solid 0px black;height: 30px;"></span><strong style="padding-top: 4px;">&nbsp;Residual</strong></div>';
+
+        $content .= '';
+        $content .= '</center>';
+ 
+		return $content;
+	}
 
 
 
