@@ -49,8 +49,7 @@ class Top_Risk_Unit extends BackendController
 		}else{
 			$param = ['id_period' => _TAHUN_NO_,'bulan' => date('n'), 'id_owner' => $owner_id ];
 		}
-		$data['mapping'] = $this->data->get_map_rcsa($param);
-		$data['mapping2'] = $this->data->get_map_residual1($param);
+		$data['mapping'] = $this->data->get_map_rcsa($param); 
 		$this->template->build('dashboard', $data);
 	}
 
