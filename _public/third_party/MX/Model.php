@@ -1299,6 +1299,9 @@ class MX_Model extends CI_Model
 					data-toggle="popover"
 					data-placement="top"
 					data-html="true"
+					data-norut1="'.$nilai_1.'"
+					data-norut2="'.$nilai_2.'"
+					data-norut3="'.$nilai_3.'"
 					data-content="<strong>' . $tingkat . '</strong><br/>Standar Nilai :<br/>Impact: [ >= ' . $bawah_impact . ' s.d <= ' . $atas_impact . ' ]<br/>Likelihood: [ >= ' . $bawah_like . ' s.d <= ' . $atas_like . ' ]"
 					data-kel="' . $type . '"
 					data-like="' . $item_data['like_no'] . '"
@@ -1306,10 +1309,10 @@ class MX_Model extends CI_Model
 				>';
 			 
 				if ($type == "Inherent") {
-					$content .= $val2 . '<br>';
+					$content .= $val1 . '<br>';
 				}
 				if ($type == "Current") {
-					$content .= $val1 . '<br>';
+					$content .= $val2 . '<br>';
 				}
 				if ($type == "Residual") {
 					$content .= $val3 . '<br>';
