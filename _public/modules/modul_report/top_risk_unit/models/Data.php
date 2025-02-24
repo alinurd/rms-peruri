@@ -20,6 +20,7 @@ class Data extends MX_Model
 			$this->db->where('period_no', $data['id_period']);
 		}
 	}
+
 	function get_map_rcsa($data = [])
 	{
 		$hasil['inherent'] = '';
@@ -137,6 +138,8 @@ class Data extends MX_Model
 	}
 	
 	
+ 
+
 
 	function get_data($id)
 	{

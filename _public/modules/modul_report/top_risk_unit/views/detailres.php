@@ -7,6 +7,7 @@
 		<tr>
 			<th class="text-center" rowspan="2" width="2%">No.</th>
 			<th class="text-center" rowspan="2">Risk Owner</th>
+			<th class="text-center" rowspan="2">Urut</th>
 			<th class="text-center" rowspan="2">Kategori</th>
 			<th class="text-center" rowspan="2">Peristiwa Risiko</th>
 			<th class="text-center" rowspan="2">Inherent</th>
@@ -46,7 +47,8 @@
 			?>
 				<tr class="pointer sub_detail" title="klik untuk melihat detail" data-id="<?= $row['id']; ?>">
 					<td class="text-center"><?= ++$no; ?></td>
-					<td><?= $row['name']; ?></td>
+ 					<td><?= $row['name']; ?></td>
+					 <td class="text-center"><?= $row['norut']; ?></td>
 					<td><?= $row['kategori']; ?></td>
 					<td><?= $row['event_name']; ?></td>
 
