@@ -127,9 +127,12 @@ class Data extends MX_Model
 			}
 			unset($row);
 	
-			$hasil['inherent'] = $this->data->draw_rcsa_unit($mapping);
+			$hasil['inherent'] = $this->data->draw_rcsa_unit($mapping, 'Inherent');
+			$hasil['current'] = $this->data->draw_rcsa_unit($mapping, 'Current');
+			$hasil['residual'] = $this->data->draw_rcsa_unit($mapping, 'Residual');
 		}
 	
+		// doi::dump($hasil);
 		return $hasil;
 	}
 	

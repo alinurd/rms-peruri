@@ -26,8 +26,7 @@ $(function () {
     var url = modul_name + "/get_map";
     var url2 = modul_name + "/map_residual2";
 
-    cari_ajax_combo("post", parent, data, target_combo, url, "result_map");
-    cari_ajax_combo("post", parent, data, target_combo, url2, "result_map1");
+    cari_ajax_combo("post", parent, data, target_combo, url, "result_map"); 
   });
    
 });
@@ -54,13 +53,10 @@ $(".current, .inherent, .residual").click(function () {
 
 function result_map(hasil) {
   $("#mapping_inherent").html(hasil.inherent);
+  $("#mapping_current").html(hasil.current);
   $("#mapping_residual").html(hasil.residual);
 }
-
-function result_map1(hasil) {
-  $("#mapping_residual1").html(hasil.residual1);
-}
-
+ 
 function show_detail(hasil) {
   $("#modal_general").find(".modal-body").html(hasil.combo);
   $("#modal_general").find(".modal-title").html("TOP RISK");
