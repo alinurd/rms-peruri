@@ -64,14 +64,15 @@ if ($post['project_no'] > 0)
 						<section class="x_panel">
 						<div class="profile-info col-md-4">
 										<!-- <strong>Residual</strong> -->
-										<div class="x_content text-center" id="mapping_current">
-											<?=$mapping['current'];?>
+										
+										<div class="x_content text-center" id="mapping_inherent">
+											<?=$mapping['inherent'];?>
 										</div>
 									</div>
 									<div class="profile-info col-md-4">
 										<!-- <strong>Inherent</strong> -->
-										<div class="x_content text-center" id="mapping_inherent">
-											<?=$mapping['inherent'];?>
+										<div class="x_content text-center" id="mapping_current">
+											<?=$mapping['current'];?>
 										</div>
 									</div>
 									<div class="profile-info col-md-4">

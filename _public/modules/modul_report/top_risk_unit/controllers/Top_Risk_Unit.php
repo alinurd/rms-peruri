@@ -80,6 +80,7 @@ class Top_Risk_Unit extends BackendController
 
 		$owner	= $post['owner'];
 		$this->data->owner_child=array();
+		$norut = isset($post['norut']) ? explode(',', $post['norut']) : [];
 
 		if ($owner>0){
 			$this->data->owner_child[]=$owner;
@@ -88,20 +89,20 @@ class Top_Risk_Unit extends BackendController
 		$this->data->get_owner_child($owner);
 		$owner_child=$this->data->owner_child;
 
-		if ($post['kel'] == 'inherent') {
+		if ($post['kel'] == 'Inherent') {
 			$this->db->where('residual_likelihood', $post['like']);
 			$this->db->where('residual_impact', $post['impact']);
 			
 			if ($post['tahun'] > 0) {
 				$this->db->where('period_no', $post['tahun']);
 			}
-		} 
-
-
-		if ($post['owner'] == 0 && $post['kel'] == 'inherent') {
+		}  
+		if ($post['owner'] == 0 && $post['kel'] == 'Inherent') {
+ 
 			$rows = $this->db->where('sts_propose', 4)
 				->where('urgensi_no', 0)
 				->where('sts_heatmap', '1')
+				// ->where_in('norut', $norut)
 				->order_by('residual_likelihood', 'DESC')
 				->order_by('residual_impact', 'DESC')
 				->get(_TBL_VIEW_RCSA_DETAIL)
@@ -113,6 +114,7 @@ class Top_Risk_Unit extends BackendController
 					->where('sts_heatmap', '1')
 					->where('parent_no', $post['owner'])
 					->where('period_no', $post['tahun'])
+					// ->where_in('norut', $norut)
 					->order_by('residual_likelihood', 'DESC')
 					->order_by('residual_impact', 'DESC')
 					->get(_TBL_VIEW_RCSA_DETAIL)
@@ -127,6 +129,7 @@ class Top_Risk_Unit extends BackendController
 				$rows = $this->db->where('sts_propose', 4)
 					->where('urgensi_no', 0)
 					->where('sts_heatmap', '1')
+					// ->where_in('norut', $norut)
 					->where('period_no', $post['tahun'])
 					->order_by('residual_likelihood', 'DESC')
 					->order_by('residual_impact', 'DESC')
@@ -141,26 +144,13 @@ class Top_Risk_Unit extends BackendController
 				$rows = $this->db->where('sts_propose', 4)
 					->where('urgensi_no', 0)
 					->where('sts_heatmap', '1')
+					// ->where_in('norut', $norut)
 					->where('period_no', $post['tahun'])
 					->order_by('residual_likelihood', 'DESC')
 					->order_by('residual_impact', 'DESC')
 					->get(_TBL_VIEW_RCSA_DETAIL)
 					->result_array();
-			// } else {
-			// 	$this->db->select('*,a.bulan, b.id') 
-			// 			->from('bangga_analisis_risiko a') 
-			// 			->join('bangga_view_rcsa_detail b', 'b.id = a.id_detail', 'left') 
-			// 			->where('b.sts_propose', 4) 
-			// 			->where('b.urgensi_no', 0) 
-			// 			->where('b.sts_heatmap', '1') 
-			// 			->where('a.bulan', $post['bulan']) 
-			// 			->where('b.period_no', $post['tahun']) 
-			// 			->order_by('a.target_impact', 'DESC') 
-			// 			->order_by('a.target_like', 'DESC'); 
-
-			// 	$query = $this->db->get();
-			// 	$rows['bobo']= $query->result_array();
-			// }
+		 
 		}
 		
 		$a = $post['kel'];
@@ -188,7 +178,7 @@ class Top_Risk_Unit extends BackendController
 		$this->data->get_owner_child($owner);
 		$owner_child=$this->data->owner_child;
 
-		if ($post['kel'] == 'residual') {
+		if ($post['kel'] == 'Residual') {
 			$this->db->where('bangga_view_rcsa_action_detail.residual_likelihood_action', $post['like']);
 			$this->db->where('bangga_view_rcsa_action_detail.residual_impact_action', $post['impact']);
 			if ($post['bulan'] > 0) {
@@ -203,7 +193,7 @@ class Top_Risk_Unit extends BackendController
 		}
 
 
-		if ($post['owner'] == 0 && $post['kel'] == 'residual') {
+		if ($post['owner'] == 0 && $post['kel'] == 'Residual') {
 			$rows = $this->db->select('*') 
                 ->from("bangga_view_rcsa_action_detail")
                 ->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_view_rcsa_action_detail.rcsa_detail_no', 'left') // Ganti dengan tabel dan kondisi yang sesuai
@@ -217,7 +207,7 @@ class Top_Risk_Unit extends BackendController
                 ->get()
                 ->result_array();
 
-		} elseif ($post['owner'] == 0 && $post['kel'] == 'residual') {
+		} elseif ($post['owner'] == 0 && $post['kel'] == 'Residual') {
 			$rows = $this->db->select('*') 
                 ->from("bangga_view_rcsa_action_detail")
                 ->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_view_rcsa_action_detail.rcsa_detail_no', 'left') // Ganti dengan tabel dan kondisi yang sesuai
@@ -234,7 +224,7 @@ class Top_Risk_Unit extends BackendController
                 ->result_array();
 			// $rows['bobo'] = $this->db->where('sts_propose', 4)->where('urgensi_no', 0)->where('bulan >=', $post['bulan'])
 			// 	->where('bulan <=', $post['bulan'])->where('period_no', $post['tahun'])->where('risk_level_action', $post['id'])->order_by('residual_analisis_id', 'DESC')->order_by('residual_analisis_id', 'DESC')->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-		} elseif ($post['owner'] > 0 && $post['kel'] == 'residual') {
+		} elseif ($post['owner'] > 0 && $post['kel'] == 'Residual') {
 			// doi::dump("Ok");
 			if ($b == 3) {
 				$rows = $this->db->select('*') 
@@ -522,100 +512,7 @@ class Top_Risk_Unit extends BackendController
 	}
 
 
-	function get_detail_map_old()
-	{
-
-		$post = $this->input->post();
-		$a = $this->db->select('id,level_no')->where('id',$post['owner'])->get(_TBL_OWNER)->result_array();
-		$b = array();
-		foreach ($a as $key => $value) {
-		$b = $value['level_no'];
-		}
-		if ($post['kel']=='inherent'){
-			$this->db->where('inherent_level', $post['id']);
-		}else{
-			$this->db->where('risk_level_action', $post['id']);
-		}
-		if ($post['owner'] == 0 && $post['kel']=='inherent') {
-			
-		$rows = $this->db->where('urgensi_no >',0)->where('urgensi_no_kadiv', 1)->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-		}elseif($post['owner'] == 0 && $post['kel']=='residual') {
-
-		$rows['bobo'] = $this->db->where('urgensi_no >',0)->where('urgensi_no_kadiv', 1)->where('bulan', $post['bulan'])->where('risk_level_action', $post['id'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-			
-		}elseif ($post['owner'] > 0 && $post['kel']=='inherent') {
-			if ($b == 3) {
-			$rows = $this->db->where('urgensi_no >',0)->where('urgensi_no_kadiv', 1)->where('parent_no', $post['owner'])->where('period_no', $post['tahun'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-			}else{
-				$rows = $this->db->where('urgensi_no >',0)->where('urgensi_no_kadiv', 1)->where('owner_no', $post['owner'])->where('period_no', $post['tahun'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-
-			}
-		}else {
-		
-		$rows['bobo'] = $this->db->where('urgensi_no >', 0)->where('urgensi_no_kadiv', 1)->where('owner_no', $post['owner'])->where('period_no', $post['tahun'])->where('bulan', $post['bulan'])->order_by('inherent_analisis_id','DESC')->order_by('residual_analisis_id','DESC')->get(_TBL_VIEW_RCSA_ACTION_DETAIL)->result_array();
-		}
-		if ($post['kel']=='inherent') {
-		foreach ($rows as &$row) {
-			$arrCouse = json_decode($row['risk_couse_no'], true);
-			$rows_couse = array();
-			if ($arrCouse)
-				$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-			$arrCouse = array();
-			foreach ($rows_couse as $rc) {
-				$arrCouse[] = $rc['description'];
-			}
-			$row['couse'] = implode(', ', $arrCouse);
-
-			$arrCouse = json_decode($row['risk_impact_no'], true);
-			$rows_couse = array();
-			if ($arrCouse)
-				$rows_couse = $this->db->where_in('id', $arrCouse)->get(_TBL_LIBRARY)->result_array();
-			$arrCouse = array();
-			foreach ($rows_couse as $rc) {
-				$arrCouse[] = $rc['description'];
-			}
-			$row['impact'] = implode(', ', $arrCouse);
-		}
-		unset($row);
-		}else{
-		$rows['baba'] = array();
-
-		foreach ($rows['bobo'] as $key => $value) {
-			if($post['owner'] > 0 && $b == 3){
-				$this->db->where('parent_no',$post['owner']);
-				$this->db->where('period_no',$post['tahun']);
-				$this->db->where('id', $value['rcsa_detail_no']);
-			 }elseif($post['owner'] > 0){
-				$this->db->where('owner_no',$post['owner']);
-				$this->db->where('period_no',$post['tahun']);
-				$this->db->where('id', $value['rcsa_detail_no']);
-			 }else{
-			 	$this->db->where('period_no',$post['tahun']);
-				$this->db->where('id', $value['rcsa_detail_no']);
-			 }
-
-		$row = $this->db->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-
-		if ($row) {
-			foreach ($row as $key1 => $value1) {
-			$rows['baba'][$value['rcsa_detail_no']]['inherent_analisis']=$value1['inherent_analisis'];
-			$rows['baba'][$value['rcsa_detail_no']]['warna']=$value1['warna'];
-			$rows['baba'][$value['rcsa_detail_no']]['warna_text']=$value1['warna_text'];
-		}
-		}else{
-			$rows['baba'][$value['rcsa_detail_no']]['inherent_analisis']="";
-			$rows['baba'][$value['rcsa_detail_no']]['warna']="";
-			$rows['baba'][$value['rcsa_detail_no']]['warna_text']="";
-		}
-	}
-
-	}
-		$a = $post['kel'];
-		$hasil['combo'] = $this->load->view('detail', ['data' => $rows,'kel'=>$a], true);
-
-		echo json_encode($hasil);
-
-	}
+	 
 
 	function get_subdetail()
 	{
