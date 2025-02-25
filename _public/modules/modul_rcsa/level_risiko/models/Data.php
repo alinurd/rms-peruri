@@ -47,7 +47,7 @@ class Data extends MX_Model {
 
 		// Cek apakah ada periode pada $data
 		if ($data['periode']) {
-			$this->db->where('bangga_view_rcsa_action_detail.periode_name', $data['periode']);
+			$this->db->where('bangga_period.periode_name', $data['periode']);
 		}
 
 		// Filter on 'sts_propose' value
@@ -76,6 +76,7 @@ class Data extends MX_Model {
 		}
 
 		$this->db->join('bangga_rcsa_log_level_risiko', 'bangga_rcsa_log_level_risiko.id_action_detail = bangga_view_rcsa_action_detail.id', 'left'); // Ganti dengan nama tabel yang sesuai
+		$this->db->join('bangga_period', 'bangga_period.id = bangga_view_rcsa_action_detail.period_no', 'left'); // Ganti dengan nama tabel yang sesuai
 		$this->db->limit($limit, $offset);
 		$this->db->order_by('bangga_view_rcsa_action_detail.bulan', 'ASC');
 
