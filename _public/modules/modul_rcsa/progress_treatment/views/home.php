@@ -136,7 +136,7 @@
                             <td style="position: sticky; left: 50px; background: white; min-width: 150px; z-index: 1000;"><?= $q['name'] ?></td>
                             <td style="position: sticky; left: 200px; background: white; min-width: 200px; z-index: 1000;"><?= $q['event_name'] ?></td>
                             <td style="position: sticky; left: 400px; background: white; min-width: 200px; z-index: 1000;"><?= ($q['proaktif']) ? $q['proaktif'] : $q['reaktif']; ?></td>
-                            <td style="min-width: 100px;"><?= $q['tahun'] ?></td>
+                            <td style="min-width: 100px;"><?= $q['periode_name'] ?></td>
                             <?php
                             $start = ($triwulan - 1) * 3 + 1;
                             $end = $start + 3;

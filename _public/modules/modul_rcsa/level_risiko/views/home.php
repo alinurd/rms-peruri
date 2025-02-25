@@ -109,7 +109,7 @@
                                     <td class="text-center" style="position: sticky; left: 0; background: white; z-index: 99;"><?= $no++ ?></td>
                                     <td style="position: sticky; left: 30px; background: white; z-index: 99;"><?= $q['name'] ?></td>
                                     <td style="position: sticky; left: 180px; background: white; z-index: 99;"><?= $q['event_name'] ?></td>
-                                    <td class="text-center"><?= $q['tahun'] ?></td>
+                                    <td class="text-center"><?= $q['periode_name'] ?></td>
                                     <td><?php echo $inherent ?></td>
                                     <td style="text-align: center; color: red;">
                                         <?= ($target_desember) ? $target : '<span style="color: red;">Target risiko desember belum di input</span>' ?>
