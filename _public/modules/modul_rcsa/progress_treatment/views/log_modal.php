@@ -54,8 +54,8 @@
         <td class="text-center"><?= $no++; ?></td>
         <td><?= $row['name'] ?></td>
         <td><?= $row['event_name'] ?></td>
-        <td class="text-center"> <?= ($row['proaktif']) ? $row['proaktif'] : $row['reaktif']; ?></td>
-        <td class="text-center"><?= $row['tahun'] ?></td>
+        <td> <?= ($row['proaktif']) ? $row['proaktif'] : $row['reaktif']; ?></td>
+        <td class="text-center"><?= $row['periode_name'] ?></td>
         <td class="text-center"><?=  date("d-m-Y", strtotime($row['tanggal_validasi'])); ?></td>
         <td class="text-center"><?= isset($bulan_names[$bulan]) ? $bulan_names[$bulan] : 'Unknown' ?></td>
         <td class="text-center"><span class="<?= $class_text; ?>"><?= $status; ?></span></td>

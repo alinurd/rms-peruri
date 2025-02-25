@@ -63,7 +63,7 @@
                 <td class="text-center"><?= $no++; ?></td>
                 <td><?= $row['owner_name'] ?></td>
                 <td><?= $row['event_name'] ?></td>
-                <td><?= $row['tahun'] ?></td>
+                <td><?= $row['periode_name'] ?></td>
                 <td><?= $row['tanggal_validasi'] ?></td>
                 <td><?= isset($bulan_names[$bulan]) ? $bulan_names[$bulan] : 'Unknown' ?></td>
                 <td><span class="<?= $class_text; ?>"><?= $status; ?></span></td>
