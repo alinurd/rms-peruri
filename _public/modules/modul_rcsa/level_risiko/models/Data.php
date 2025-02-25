@@ -25,7 +25,7 @@ class Data extends MX_Model {
         }
 
         if($data['periode']){
-            $this->db->where('tahun', $data['periode']);
+            $this->db->where('periode_name', $data['periode']);
         }
         $this->db->where('sts_propose', 4);
 
@@ -47,7 +47,7 @@ class Data extends MX_Model {
 
 		// Cek apakah ada periode pada $data
 		if ($data['periode']) {
-			$this->db->where('bangga_view_rcsa_action_detail.tahun', $data['periode']);
+			$this->db->where('bangga_view_rcsa_action_detail.periode_name', $data['periode']);
 		}
 
 		// Filter on 'sts_propose' value
@@ -102,7 +102,7 @@ class Data extends MX_Model {
         }
 
         if($data['periode']){
-            $this->db->where('tahun', $data['periode']);
+            $this->db->where('periode_name', $data['periode']);
         }
         
         $this->db->where('sts_propose', 4);
