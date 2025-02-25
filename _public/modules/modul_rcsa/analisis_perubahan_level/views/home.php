@@ -121,7 +121,7 @@
                                         <td style="position: sticky; left: 0; background: white;z-index: 99;"><?= $no++ ?></td>
                                         <td style="position: sticky; left: 50px; background: white;z-index: 98;"><?= $q['name'] ?></td>
                                         <td style="position: sticky; left: 170px; background: white;z-index: 97;"><?= $q['event_name'] ?></td>
-                                        <td style="position: sticky; left: 310px; background: white; z-index: 96; "><?= $q['tahun'] ?></td>
+                                        <td style="position: sticky; left: 310px; background: white; z-index: 96; "><?= $q['periode_name'] ?></td>
                                         <td style="position: sticky; left: 360px; background: white; z-index: 95; "><?= $inherent ?></td>
                                         <td style="position: sticky; left:400px; background: white; z-index: 95; "><?= $getMonitoring['lv'] ?></td>
                                         <td style="position: sticky; left:440px; background: white; z-index: 95; ">
