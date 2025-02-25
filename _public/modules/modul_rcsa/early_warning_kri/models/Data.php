@@ -171,7 +171,7 @@ class Data extends MX_Model {
         }
 
         if($data['periode']){
-            $this->db->where('tahun', $data['periode']);
+            $this->db->where('periode_name', $data['periode']);
         }
         $this->db->where('sts_propose', 4);
  
@@ -189,7 +189,7 @@ class Data extends MX_Model {
         }
 
         if($data['periode']){
-            $this->db->where('tahun', $data['periode']);
+            $this->db->where('periode_name', $data['periode']);
         }
         
         $this->db->where('sts_propose', 4);
