@@ -43,8 +43,8 @@ class Data extends MX_Model {
 			$this->db->where_in('bangga_view_rcsa_detail.owner_no', $this->owner_child);     
 		}
 
-		if (isset($data['periode_no']) && $data['periode_no']) {
-			$this->db->where('bangga_view_rcsa_detail.period_no', $data['periode_no']);
+		if (isset($post['periode_no']) && $post['periode_no']) {
+			$this->db->where('bangga_view_rcsa_detail.period_no', $post['periode_no']);
 		}
 
 		$this->db->where('bangga_view_rcsa_detail.sts_propose', 4);
@@ -68,8 +68,8 @@ class Data extends MX_Model {
             $this->db->where_in('owner_no', $this->owner_child);     
         }
 
-		if (isset($data['periode_no']) && $data['periode_no']) {
-			$this->db->where('period_no', $data['periode_no']);
+		if (isset($post['periode_no']) && $post['periode_no']) {
+			$this->db->where('period_no', $post['periode_no']);
 		}
 
         $this->db->where('sts_propose', 4);
@@ -91,8 +91,8 @@ class Data extends MX_Model {
 			$this->owner_child[] = $post['owner_no'];
 			$this->db->where_in('bangga_view_rcsa_detail.owner_no', $this->owner_child);     
 		}
-		if (isset($data['periode_no']) && $data['periode_no']) {
-			$this->db->where('bangga_view_rcsa_detail.period_no', $data['periode_no']);
+		if (isset($post['periode_no']) && $post['periode_no']) {
+			$this->db->where('bangga_view_rcsa_detail.period_no', $post['periode_no']);
 		}
 		$this->db->where('bangga_view_rcsa_detail.sts_propose', 4); 
 		return $this->db->get('bangga_view_rcsa_detail')->result_array();
