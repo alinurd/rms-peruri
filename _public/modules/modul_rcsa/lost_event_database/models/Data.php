@@ -66,6 +66,8 @@ class Data extends MX_Model {
     // Description: Adds or updates a loss event entry
     // ==========================================
     public function simpan_lost_event($data) {
+        // doi::dump();
+        // die;
         $upd = [
             'rcsa_no'                     => $data['rcsa_no_e'],
             'event_no'                    => $data['event_no'],
@@ -78,14 +80,14 @@ class Data extends MX_Model {
             'kat_risiko'                  => $data['kat_risiko'],
             'hub_kejadian_risk_event'     => $data['hub_kejadian_risk_event'],
             'status_asuransi'             => $data['status_asuransi'],
-            'nilai_premi'                 => str_replace(",", "", $data['nilai_premi']),
-            'nilai_klaim'                 => str_replace(",", "", $data['nilai_klaim']),
+            'nilai_premi'                 => (double)str_replace(",", "", $data['nilai_premi']),
+            'nilai_klaim'                 => (double)str_replace(",", "", $data['nilai_klaim']),
             'mitigasi_rencana'            => $data['mitigasi_rencana'],
             'mitigasi_realisasi'          => $data['mitigasi_realisasi'],
             'rencana_perbaikan_mendatang' => $data['rencana_perbaikan_mendatang'],
             'pihak_terkait'               => $data['pihak_terkait'],
             'penjelasan_kerugian'         => $data['penjelasan_kerugian'],
-            'nilai_kerugian'              => str_replace(",", "", $data['nilai_kerugian']),
+            'nilai_kerugian'              => (double)str_replace(",", "", $data['nilai_kerugian']),
             'kejadian_berulang'           => $data['kejadian_berulang'],
             'frekuensi_kejadian'          => $data['frekuensi_kejadian'],
             'skal_dampak_in'              => $data['skal_dampak_in'],
@@ -130,14 +132,14 @@ class Data extends MX_Model {
                 'kat_risiko'                  => $data['kat_risiko'],
                 'hub_kejadian_risk_event'     => $data['hub_kejadian_risk_event'],
                 'status_asuransi'             => $data['status_asuransi'],
-                'nilai_premi'                 => str_replace(",", "", $data['nilai_premi']),
-                'nilai_klaim'                 => str_replace(",", "", $data['nilai_klaim']),
+                'nilai_premi'                 => (double)str_replace(",", "", $data['nilai_premi']),
+                'nilai_klaim'                 => (double)str_replace(",", "", $data['nilai_klaim']),
                 'mitigasi_rencana'            => $data['mitigasi_rencana'],
                 'mitigasi_realisasi'          => $data['mitigasi_realisasi'],
                 'rencana_perbaikan_mendatang' => $data['rencana_perbaikan_mendatang'],
                 'pihak_terkait'               => $data['pihak_terkait'],
                 'penjelasan_kerugian'         => $data['penjelasan_kerugian'],
-                'nilai_kerugian'              => str_replace(",", "",$data['nilai_kerugian']),
+                'nilai_kerugian'              => (double)str_replace(",", "",$data['nilai_kerugian']),
                 'kejadian_berulang'           => $data['kejadian_berulang'],
                 'frekuensi_kejadian'          => $data['frekuensi_kejadian'],
                 'skal_dampak_in'              => $data['skal_dampak_in'],
