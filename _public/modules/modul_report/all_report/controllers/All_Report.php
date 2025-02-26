@@ -15,24 +15,24 @@ class All_Report extends BackendController {
 
     // GET GRAFIK
 	function get_grafik(){
-		$post									= $this->input->post();
-		$data_parent							= $this->data->risk_parent($post);
-		$data_progress_treatment				= $this->data->risk_progress_treatment($post);
-		$data_early_warning						= $this->data->risk_early_warning($post);
-		$data_tasktonomi						= $this->data->risk_tasktonomi($post);
-		$result['combo']						= $this->risk_context($data_parent);
-		$result['risk_criteria']				= $this->risk_criteria($data_parent);
-		$result['risk_appetite']				= $this->risk_appetite($data_parent);
-		$result['risk_register']				= $this->risk_register($data_parent);
-		$result['efektifitas_control']			= $this->risk_efektifitas_control($data_parent);
-		$result['progress_treatment']			= $this->risk_progress_treatment($data_progress_treatment);
-		$result['loss_event_database']			= $this->lost_event_database($data_parent);
-		$result['early_warning']				= $this->risk_early_warning($data_early_warning);
-		$result['perubahan_level']				= $this->perubahan_level($post); 
-		$result['heatmap']						= $this->heatmap($post);
-		$result['risk_distribution']			= $this->risk_distribution($post);
-		$result['risk_categories']				= $this->risk_categories($post);
-		$result['risk_tasktonomi']				= $this->risk_tasktonomi($data_tasktonomi);
+		$post																	= $this->input->post();
+		$data_parent													= $this->data->risk_parent($post);
+		$data_progress_treatment							= $this->data->risk_progress_treatment($post);
+		$data_early_warning										= $this->data->risk_early_warning($post);
+		$data_tasktonomi											= $this->data->risk_tasktonomi($post);
+		$result['combo']											= $this->risk_context($data_parent);
+		$result['risk_criteria']							= $this->risk_criteria($data_parent);
+		$result['risk_appetite']							= $this->risk_appetite($data_parent);
+		$result['risk_register']							= $this->risk_register($data_parent);
+		$result['efektifitas_control']				= $this->risk_efektifitas_control($data_parent);
+		$result['progress_treatment']					= $this->risk_progress_treatment($data_progress_treatment);
+		$result['loss_event_database']				= $this->lost_event_database($data_parent);
+		$result['early_warning']							= $this->risk_early_warning($data_early_warning);
+		$result['perubahan_level']						= $this->perubahan_level($post); 
+		$result['heatmap']										= $this->heatmap($post);
+		$result['risk_distribution']					= $this->risk_distribution($post);
+		$result['risk_categories']						= $this->risk_categories($post);
+		$result['risk_tasktonomi']						= $this->risk_tasktonomi($data_tasktonomi);
 		$result['grapik_efektifitas_control']	= $this->grapik_efektifitas_control($post);
 		$result['grapik_progress_treatment']	= $this->grapik_progress_treatment($post);
 		echo json_encode($result);
@@ -86,9 +86,9 @@ class All_Report extends BackendController {
     // RISK PROGRESS TREATMENT
     public function risk_progress_treatment($data)
     {
-		$data['data'] 	= $data;
-		$tahun 			= $data[0]['periode_name'];
-		$data['tahun']  = $tahun;
+				$data['data'] 	= $data;
+				$tahun 					= $data[0]['periode_name'];
+				$data['tahun']  = $tahun;
         return $this->load->view('progress_treatment',$data,true);
     }
 
