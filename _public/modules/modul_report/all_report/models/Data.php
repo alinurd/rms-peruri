@@ -354,6 +354,7 @@ class Data extends MX_Model {
 	// GET MAP INHERENT & RESIDUAL
 	function get_map_rcsa($data = [])
 	{
+
 		$hasil['inherent'] = '';
 		$hasil['residual'] = '';
 		if ($data) {
@@ -363,8 +364,8 @@ class Data extends MX_Model {
 				$this->owner_child[] = $data['owner_no'];
 				$this->db->where_in('owner_no', $this->owner_child);
 			}
-			if ($data['id_period'] > 0) {
-				$this->db->where('period_no', $data['id_period']);
+			if ($data['periode_no'] > 0) {
+				$this->db->where('period_no', $data['periode_no']);
 			}
 			$rows = $this->db->select('residual_likelihood, residual_impact, COUNT(*) as jml')
 			->from(_TBL_VIEW_RCSA_DETAIL)
@@ -403,8 +404,8 @@ class Data extends MX_Model {
 			
 			$current_month = date('n');
 			// === Filter by Period ===
-			if (isset($data['id_period']) && $data['id_period'] > 0) {
-				$this->db->where('a.period_no', $data['id_period']);
+			if (isset($data['periode_no']) && $data['periode_no'] > 0) {
+				$this->db->where('a.period_no', $data['periode_no']);
 			}
 	
 			// // Validasi bulan dan bulanx
@@ -461,8 +462,8 @@ class Data extends MX_Model {
 	
 
         // === Filter by Period ===
-        if (isset($data['id_period']) && $data['id_period'] > 0) {
-            $this->db->where('a.period_no', $data['id_period']);
+        if (isset($data['periode_no']) && $data['periode_no'] > 0) {
+            $this->db->where('a.period_no', $data['periode_no']);
         }
 
 
@@ -527,7 +528,7 @@ class Data extends MX_Model {
 			$this->db->where_in('period_no',$data['periode_no']);
         }
 
-        $rows=$this->db->select('periode_name,inherent_analisis_id, inherent_analisis, count(inherent_analisis_id) as jml')->group_by(['inherent_analisis_id', 'inherent_analisis'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+        $rows=$this->db->select('inherent_analisis_id, inherent_analisis, count(inherent_analisis_id) as jml')->group_by(['inherent_analisis_id', 'inherent_analisis'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 
         foreach($master as $key=>$mr){
             foreach($rows as $row){
@@ -536,7 +537,8 @@ class Data extends MX_Model {
                 }
             }
         }
-		$result['periode_name'] = $rows[0]['periode_name'];
+
+				$result['periode_name'] = ($data['periode_no'] > 0) ? $data['tahun'] : "";
         $result['master']=$master;
 
         // setelah progress
@@ -632,9 +634,9 @@ class Data extends MX_Model {
 			$this->db->where_in('period_no',$data['periode_no']);
         }
         
-        $rows=$this->db->select('periode_name,kategori_no, kategori, count(kategori_no) as jml')->group_by(['kategori_no', 'kategori'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+        $rows=$this->db->select('kategori_no, kategori, count(kategori_no) as jml')->group_by(['kategori_no', 'kategori'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 
-		$result['periode_name'] = $rows[0]['periode_name'];
+		$result['periode_name'] = ($data['periode_no'] > 0) ? $data['tahun'] : "";
         foreach($master as $key=>$mr){
             foreach($rows as $row){
                 if ($row['kategori_no']==$key){
@@ -673,56 +675,50 @@ class Data extends MX_Model {
 
 		// Mengisi master dengan data dari cboPenilaian dan comboColor
 		foreach ($cboPenilaian as $id => $name) {
-			// Pastikan id ada dalam comboColor untuk menghindari error
 			if (array_key_exists($id, $comboColor)) {
 				$master[$id] = [
 					'name' => $name, 
-					'color' => $comboColor[$id], // Mengambil warna berdasarkan id
+					'color' => $comboColor[$id],
 					'jml' => 0
 				];
 			}
 		}
 
-		// doi::dump($master);
+			$this->owner_child=array();
 
-        $this->owner_child=array();
+			if ($data['owner_no']>0){
+				$this->owner_child[]=$data['owner_no'];
+			}
 
-		if ($data['owner_no']>0){
-			$this->owner_child[]=$data['owner_no'];
-		}
+			$this->get_owner_child($data['owner_no']);
+			$owner_child=$this->owner_child;
 
-		$this->get_owner_child($data['owner_no']);
-		$owner_child=$this->owner_child;
-
-		if ($owner_child){
-			$this->db->where_in('c.owner_no',$owner_child);
-		}else{
-			$this->db->where('c.owner_no',$data['owner_no']);
-		}
+			if ($owner_child){
+				$this->db->where_in('c.owner_no',$owner_child);
+			}else{
+				$this->db->where('c.owner_no',$data['owner_no']);
+			}
 		
-		if ($data['periode_no'] > 0){
-			$this->db->where_in('c.period_no',$data['periode_no']);
-        }
+			if ($data['periode_no'] > 0){
+				$this->db->where_in('c.period_no',$data['periode_no']);
+			}
 
-        // $rows=$this->db->select('periode_name,inherent_analisis_id, inherent_analisis, count(inherent_analisis_id) as jml')->group_by(['inherent_analisis_id', 'inherent_analisis'])->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
-		$rows = $this->db->select('c.periode_name, a.id, a.penilaian_intern_control, COUNT(a.id) AS jml')
-							->from('bangga_existing_control a')
-							->join('bangga_rcm b', 'a.rcm_id = b.id', 'left') 
-							->join('bangga_view_rcsa_detail c', 'b.rcsa_no = c.rcsa_no', 'left') 
-							->group_by(['c.periode_name','a.id', 'a.penilaian_intern_control'])
-							->get()
-							->result_array();
+  
+			$rows = $this->db->select('c.periode_name, a.penilaian_intern_control, COUNT(DISTINCT a.id) AS jml')
+                 ->from('bangga_existing_control a')
+                 ->join('bangga_rcm b', 'a.rcm_id = b.id', 'left')
+                 ->join('bangga_view_rcsa_detail c', 'b.rcsa_no = c.rcsa_no', 'left')
+                 ->group_by(['c.periode_name', 'a.penilaian_intern_control']) // Mengelompokkan berdasarkan periode_name dan penilaian_intern_control
+                 ->get()
+                 ->result_array();
 
-		// doi::dump($rows);
-
-        foreach($master as $key=>$mr){
-            foreach($rows as $row){
-                if ($row['penilaian_intern_control']==$key){
-                    $master[$key]['jml']=$row['jml'];
-                }
-            }
-        }
-		// $result['periode_name'] = $rows[0]['periode_name'];
+			foreach($master as $key=>$mr){
+					foreach($rows as $row){
+							if ($row['penilaian_intern_control']==$key){
+									$master[$key]['jml']=$row['jml'];
+							}
+					}
+			}
         $result['master']=$master;
         return $result;
     }

@@ -42,44 +42,44 @@ class All_Report extends BackendController {
     public function risk_context($data)
     {
         $data['data'] 	= $data;
-		$tahun 			= $data[0]['periode_name'];
-		$data['tahun']  = $tahun;
+				$tahun 					= $data[0]['periode_name'];
+				$data['tahun']  = $tahun;
         return $this->load->view('risk_context',$data,true);
     }
 
     // RISK KRITERIA
     public function risk_criteria($data)
     {
-		$data['data'] 	= $data;
-		$tahun 			= $data[0]['periode_name'];
-		$data['tahun']  = $tahun;
+			$data['data'] 	= $data;
+			$tahun 					= $data[0]['periode_name'];
+			$data['tahun']  = $tahun;
         return $this->load->view('risk_criteria',$data,true);
     }
 
     // RISK APPETITE
     public function risk_appetite($data)
     {
-		$data['data'] 	= $data;
-		$tahun 			= $data[0]['periode_name'];
-		$data['tahun']  = $tahun;
+			$data['data'] 	= $data;
+			$tahun 					= $data[0]['periode_name'];
+			$data['tahun']  = $tahun;
         return $this->load->view('risk_appetite',$data,true);
     }
 	
     // RISK REGISTER
     public function risk_register($data)
     {
-		$data['data'] 	= $data;
-		$tahun 			= $data[0]['periode_name'];
-		$data['tahun']  = $tahun;
+				$data['data'] 	= $data;
+				$tahun 					= $data[0]['periode_name'];
+				$data['tahun']  = $tahun;
         return $this->load->view('risk_register',$data,true);
     }
 
     // RISK EFEKTIFITAS CONTROL
     public function risk_efektifitas_control($data)
     {
-		$data['data'] 	= $data;
-		$tahun 			= $data[0]['periode_name'];
-		$data['tahun']  = $tahun;
+			$data['data'] 	= $data;
+			$tahun 					= $data[0]['periode_name'];
+			$data['tahun']  = $tahun;
         return $this->load->view('efektifitas_control',$data,true);
     }
 
@@ -95,25 +95,25 @@ class All_Report extends BackendController {
     // RISK LOST EVENT DATABASE
 	public function lost_event_database($data)
     {
-        $data['data'] 				= $data;
-		$tahun 						= $data[0]['periode_name'];
-		$data['tahun']  			= $tahun;
-		$data['kategori_kejadian'] 	= $this->get_combo('data-combo', 'kat-kejadian');
-        $data['frekuensi_kejadian'] = $this->get_combo('data-combo', 'frek-kejadian');
-		// $data['kat_risiko'] 		= $this->get_combo('data-combo', 'kel-library');
-		$data['kat_risiko'] 		=  $this->get_combo('tasktonimi', 'kategori_risiko_loss', '');
-		$data['cboLike']    		= $this->get_combo('likelihood');
-        $data['cboImpact'] 			= $this->get_combo('impact');
-        return $this->load->view('loss_event_database',$data,true);
+			$data['data'] 				= $data;
+			$tahun 								= $data[0]['periode_name'];
+			$data['tahun']  			= $tahun;
+			$data['kategori_kejadian'] 	= $this->get_combo('data-combo', 'kat-kejadian');
+			$data['frekuensi_kejadian'] = $this->get_combo('data-combo', 'frek-kejadian');
+			// $data['kat_risiko'] 		= $this->get_combo('data-combo', 'kel-library');
+			$data['kat_risiko'] 		=  $this->get_combo('tasktonimi', 'kategori_risiko_loss', '');
+			$data['cboLike']    		= $this->get_combo('likelihood');
+			$data['cboImpact'] 			= $this->get_combo('impact');
+			return $this->load->view('loss_event_database',$data,true);
     }
 
     // RISK ERLY WARNING
 	public function risk_early_warning($data)
     {
-		$data['data'] 	= $data;
-		$tahun 			= $data[0]['periode_name']; 
-		$data['tahun']  = $tahun;
-        return $this->load->view('early_warning',$data,true);
+			$data['data'] 	= $data;
+			$tahun 			= $data[0]['periode_name']; 
+			$data['tahun']  = $tahun;
+			return $this->load->view('early_warning',$data,true);
     }
 
 	public function perubahan_level($data){
@@ -137,7 +137,7 @@ class All_Report extends BackendController {
 	public function risk_distribution($data)
     {
         $data['data'] 		= $data;
-		$data				= $this->data->grafik($data);
+				$data							= $this->data->grafik($data);
         return $this->load->view('risk_distribution',$data,true);
     }
 
@@ -157,7 +157,7 @@ class All_Report extends BackendController {
 	public function grapik_efektifitas_control($data)
     {
         $data['data'] 		= $data;
-		$data				= $this->data->grapik_efektifitas_control($data);
+				$data							= $this->data->grapik_efektifitas_control($data);
         return $this->load->view('grapik_efektifitas_control',$data,true);
     }
 
