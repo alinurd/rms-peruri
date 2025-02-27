@@ -1,11 +1,4 @@
-<?php
-// Mengambil bulan dan tahun saat ini
-$bulan = date('n');
-$tahun = date('Y');
 
-// Menentukan semester berdasarkan bulan
-$selectedSemester = ($bulan >= 1 && $bulan <= 6) ? '1' : '2';
-?>
 <style>
     .form-control{
 	border-radius: 10px;
@@ -52,8 +45,8 @@ $selectedSemester = ($bulan >= 1 && $bulan <= 6) ? '1' : '2';
             <div class="col-md-2 col-sm-2 col-xs-2">
                 <label for="filter_semester">Semester</label>
                 <select name="semester" id="filter_semester" class="form-control select2" style="width: 80%;">
-                    <option value="1" <?= $selectedSemester == $semester ? 'selected' : ''; ?>>Semester 1</option>
-                    <option value="2" <?= $selectedSemester == $semester ? 'selected' : ''; ?>>Semester 2</option>
+                    <option value="1" <?= ($semester == 1) ? 'selected' : ''; ?>>Semester 1</option>
+                    <option value="2" <?= ($semester == 2) ? 'selected' : ''; ?>>Semester 2</option>
                 </select>
             </div>
 

@@ -95,7 +95,12 @@
 			<td class="no-padding" ><div class="checkbox"><label><input type="radio" name="sign_sts" value="custom" <?php echo $sign[1];?>> <?php echo lang('msg_field_custom');?></label></div></td>
 			<td>:</td>
 			<td>
-				<input name="sign_custom" type="text" class="form-control p100" value="<?php echo (isset($field['param'])) ? $field['param']['sign_custom']:"";?>"><br/>
+				<input name="sign_custom" type="text" class="form-control p100" value="<?php echo (isset($field['param'])) ? $field['param']['sign_custom']:"";?>">
+		</tr>
+		<tr>
+			<td class="no-padding" ><div class="checkbox"><label>Sign Position</label></div></td>
+			<td>:</td>
+			<td>
 				<input name="sign_position" type="text" class="form-control p100" value="<?php echo (isset($field['param'])) ? $field['param']['sign_position']:"";?>"></td>
 		</tr>
 		<tr>
@@ -108,13 +113,13 @@
 
 <script>
 	
-	$("#l_type_project_no, #l_owner_no, #l_periode_no").change(function(){
-		var type_dash = $("#l_type_project_no").val();
-		var id_owner = $("#l_owner_no").val();
-		var id_period = $("#l_periode_no").val();
-		var id=parseFloat(id_owner) + "-" + parseFloat(id_period) + "-" + parseFloat(type_dash);
-		$("button#btn-search").addClass('disabled');
-		cari_ajax_combo(id, 'spinner_param', 'l_rcsa_no', 'ajax/get_project_name');
-	});
+	// $("#l_type_project_no, #l_owner_no, #l_periode_no").change(function(){
+	// 	var type_dash = $("#l_type_project_no").val();
+	// 	var id_owner = $("#l_owner_no").val();
+	// 	var id_period = $("#l_periode_no").val();
+	// 	var id=parseFloat(id_owner) + "-" + parseFloat(id_period) + "-" + parseFloat(type_dash);
+	// 	$("button#btn-search").addClass('disabled');
+	// 	cari_ajax_combo(id, 'spinner_param', 'l_rcsa_no', 'ajax/get_project_name');
+	// });
 	
 </script>
