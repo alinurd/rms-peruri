@@ -53,6 +53,7 @@ class Daftar_Corporate_Risk extends BackendController {
 		$this->set_Field_Primary('id');
 		$this->set_Join_Table(array('pk' => $this->tbl_master,'id_pk'=>'event_no','sp'=>$this->tbl_library,'id_sp'=>'id'));
 		$this->set_Where_Table($this->tbl_master, 'urgensi_no', '=', $this->urgensi);
+		$this->set_Where_Table($this->tbl_master, 'sts_heatmap', '=',1);
 		$this->set_Table_List($this->tbl_master, 'name','Risk Owner',10);
 		$this->set_Table_List($this->tbl_master, 'kategori_no','Kategori',10);
 		$this->set_Table_List($this->tbl_master, 'event_name','Risk Event',20);
