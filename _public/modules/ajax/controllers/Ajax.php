@@ -119,7 +119,7 @@ class Ajax extends FrontendController {
 	function get_project_name(){
 		$id = $this->input->post('id');
 		$id = $this->input->post('id');
-		$x=$this->data->get_data_project($id);
+		$x=$this->data->get_data_project($id); 
 		echo json_encode($x);
 	}
 	

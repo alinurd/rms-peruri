@@ -16,8 +16,8 @@ class Stress_Test extends BackendController
 
 		parent::__construct();
 		$this->cbo_status_action 	= $this->get_combo('status-action');
-		$this->cbo_parent 			= $this->get_combo('parent-input');
-		$this->cbo_periode 			= $this->get_combo('periode');
+		$this->cbo_parent 				= $this->get_combo('parent-input');
+		$this->cbo_periode 				= $this->get_combo('periode');
 		
 		$user=$this->authentication->get_Info_User();
 		$this->owner=$user['group']['owner']['owner_no'];
@@ -26,7 +26,7 @@ class Stress_Test extends BackendController
 		if ($this->input->get('periode')) {
 			$this->periode = $this->input->get('periode');
 		}
-		if ($this->input->get('periode')) {
+		if ($this->input->get('semester')) {
 			$this->semester = $this->input->get('semester');
 		}
 
@@ -34,12 +34,12 @@ class Stress_Test extends BackendController
 	
 
 	public function index() { 
-		$periode = $this->periode;
-		$semester =  $this->semester;
+		$periode 								= $this->periode;
+		$semester 							=  $this->semester;
 		$data['indikatorData'] 	= $this->data->getIndikatorData($periode,$semester);
-		$data['periode']		= $periode;
-		$data['semester']		= $semester;
-		$data['cboPeriod']  	= $this->cbo_periode;
+		$data['periode']				= $periode;
+		$data['semester']				= $semester;
+		$data['cboPeriod']  		= $this->cbo_periode;
 		$this->template->build('home', $data);
 	}
 
