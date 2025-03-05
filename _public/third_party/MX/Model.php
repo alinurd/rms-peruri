@@ -1224,10 +1224,10 @@ class MX_Model extends CI_Model
     $abjad = ['E', 'D', 'C', 'B', 'A'];
 
     // Ukuran dinamis dalam px
-    $dynamic_size = 50; // Ukuran sel dalam px (bisa disesuaikan)
+    $dynamic_size = 60; // Ukuran sel dalam px (bisa disesuaikan)
     $table_width = 100; // Lebar tabel disesuaikan dengan jumlah kolom
 
-    $content = '<center><div style="overflow-x: auto;"><table style="text-align:center; border-collapse: collapse; width: ' . $table_width . '%; font-size: 12px; table-layout: fixed;" border="0">';
+    $content = '<center><table style="text-align:center; border-collapse: collapse; width: ' . $table_width . '%; font-size: 12px; table-layout: fixed;" border="0">';
 
     // Header tabel
     $content .= '
@@ -1347,7 +1347,7 @@ class MX_Model extends CI_Model
     );
 
     // Menutup tabel
-    $content .= '</table></div></center>';
+    $content .= '</table></center>';
 
     return $content;
 }
