@@ -10,54 +10,61 @@ class Top_Risk_Unit extends BackendController
 
 	public function __construct()
 	{
-		parent::__construct();
+		parent::__construct(); 
 		$this->load->model('data');
 	}
 
 	public function index()
 	{
 		$data 		= array();
+
 		if ($this->input->post())
 			$post 	= $this->input->post();
 		else
 			$post 	= array('owner_no' => 0, 'period_no' => 0,'bulan' =>0, 'project_no' => 0);
+		
 		if (isset($post['project_no'])) {
 			$data['project_no'] = $post['project_no'];
 		}
-		$data['type_dash'] = 1;
-		$data['setting'] = $this->crud->get_setting($data);
-		$data['post'] = $post;
+
+		$data['type_dash'] 	= 1;
+		$data['setting'] 		= $this->crud->get_setting($data);
+		$data['post'] 			= $post;
+
 		if (count($data['setting']['rcsa']) > 0)
 			$data['cbo_project'] = $this->get_combo('project_rcsa', $data['setting']['rcsa'][0]);
 		else
-			$data['cbo_project'] = array();
-		$data['cbo_owner'] = $this->get_combo('parent-input');
+			$data['cbo_project'] 	= array();
+			$data['cbo_owner'] 		= $this->get_combo('parent-input');
 
 		if ($this->id_param_owner['privilege_owner']['id'] == 1) {
 			$data['cbo_owner'][0] = 'Perum Peruri';
 		}
-		$data['cbo_bulan']=$this->get_combo('bulan');
+
+		$data['cbo_bulan']	=	$this->get_combo('bulan');
 		$data['cbo_period'] = $this->get_combo('periode');
-		$hoho = $data['cbo_owner']; 
+		$hoho 							= $data['cbo_owner']; 
+
 		foreach ($hoho as $key => $value) {
  			$owner_id = $key;
-			}	
+		}	
 		
 		if ($this->id_param_owner['privilege_owner']['id'] == 1){
 			$data['cbo_owner'][0] = 'Perum Peruri ';
-			$param = ['id_period' => _TAHUN_NO_,'bulan' => date('n'), 'id_owner' => 0];
+			$param 								= ['id_period' => _TAHUN_NO_,'bulan' => date('n'), 'id_owner' => 0];
 		}else{
-			$param = ['id_period' => _TAHUN_NO_,'bulan' => date('n'), 'id_owner' => $owner_id ];
+			$param 								= ['id_period' => _TAHUN_NO_,'bulan' => date('n'), 'id_owner' => $owner_id ];
 		}
-		$data['mapping'] = $this->data->get_map_rcsa($param); 
+
+		$data['mapping']				= $this->data->get_map_rcsa($param); 
 		$this->template->build('dashboard', $data);
 	}
 
 	function get_map()
 	{
-		$post = $this->input->post();
-		$data = $this->data->get_map_rcsa($post);
-		$hasil = $data;
+		$post 	= $this->input->post();
+		$data 	= $this->data->get_map_rcsa($post);
+		$hasil 	= $data;
 		echo json_encode($hasil);
 
 	}
