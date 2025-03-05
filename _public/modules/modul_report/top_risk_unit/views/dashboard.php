@@ -65,18 +65,18 @@ if ($post['project_no'] > 0)
 						<div class="profile-info col-md-4">
 										<!-- <strong>Residual</strong> -->
 										
-										<div class="x_content text-center" id="mapping_inherent">
+										<div class="x_content text-center" style="width: 100%;border: 2px solid blue;display:flex;" id="mapping_inherent">
 											<?=$mapping['inherent'];?>
 										</div>
 									</div>
 									<div class="profile-info col-md-4">
 										<!-- <strong>Inherent</strong> -->
-										<div class="x_content text-center" id="mapping_current">
+										<div class="x_content text-center" id="mapping_current" style="width: 100%;border: 2px solid blue;">
 											<?=$mapping['current'];?>
 										</div>
 									</div>
 									<div class="profile-info col-md-4">
-										<div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual">
+										<div class="x_content text-center"  style="width: 100%;border: 2px solid blue;" id="mapping_residual">
 											<?= $mapping['residual']; ?>
 										</div>
 									</div>
