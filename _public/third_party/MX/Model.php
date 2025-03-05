@@ -1358,7 +1358,7 @@ function format_nilai($nilai, $class, $bg_color)
     $arrNorut = explode(", ", $nilai);
     $val = '';
     foreach ($arrNorut as $n) {
-        $val .= '<span class="' . $class . ' badge rounded-pill" style="border: solid 0px #000; background-color: ' . $bg_color . '; z-index: 1; position: relative; font-size:8px;" data-norut=' . trim($n) . '>' . trim($n) . '</span> ';
+        $val .= '<span class="' . $class . ' badge rounded-pill" style="border: solid 0px #000; background-color: ' . $bg_color . '; z-index: 1; position: relative; font-size:8px;margin: 0;" data-norut=' . trim($n) . '>' . trim($n) . '</span> ';
     }
     return $val;
 }
