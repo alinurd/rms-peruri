@@ -1234,7 +1234,7 @@ class MX_Model extends CI_Model
 			// Header tabel
 			$content .= '
     <tr>
-        <td style="width: ' . (($type != "Current" && $type != "Residual") ? $dynamic_size : "20") . 'px; height: ' . $dynamic_size. 'px;"></td>
+        <td style="width: ' . (($type != "Current" && $type != "Residual") ? $dynamic_size : 20) . 'px; height: ' . $dynamic_size. 'px;"></td>
         <td colspan="' . count($impact) . '" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . $type . ' Risk</td>
     </tr>';
 	
@@ -1277,8 +1277,8 @@ class MX_Model extends CI_Model
 	
 							// Format nilai
 							$val1 = $this->format_nilai($nilai_1, 'currentMap', '#3d004f');
-							$val2 = $this->format_nilai($nilai_2, 'inherentMap', '#97beac');
-							$val3 = $this->format_nilai($nilai_3, 'residualMap', '#00d3ac');
+							$val2 = $this->format_nilai($nilai_2, 'inherentMap', '#3d004f');
+							$val3 = $this->format_nilai($nilai_3, 'residualMap', '#3d004f');
 	
 							// Kolom impact
 							$content .= sprintf(

@@ -76,7 +76,7 @@ class Data extends MX_Model
 			->where('a.sts_heatmap', '1')
 			->group_by(['b.residual_likelihood_action', 'b.residual_impact_action']) 
 			->get()
-			->result_array();
+			->result_array(); 
    
 			$arrData = [];
 			foreach ($rows as $ros) {

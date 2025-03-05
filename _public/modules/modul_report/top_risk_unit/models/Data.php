@@ -57,22 +57,23 @@ class Data extends MX_Model
 					$arrData1[$key1]['norut'][] = $ros['norut'];
 				}
 			}
-	
-			 
+
 			$this->filter($data);
-			$rows2 = $this->db->select('b.target_like, b.target_impact, COUNT(*) as jml, a.norut')
-				->from(_TBL_VIEW_RCSA_DETAIL . ' a')
-				->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner')
-				->where('a.sts_propose', 4)
-				->where('b.bulan', 12)
-				->where('a.sts_heatmap', '1')
-				->group_by(['b.target_like', 'b.target_impact', 'a.norut'])
-				->get()
-				->result_array();
+			$this->db->where('bulan', $data['bulan']);
 	
+			$rows2 = $this->db->select('MAX(rcsa_no) AS rcsa_no, MAX(create_date) AS create_date, risk_level_action, COUNT(risk_level_action) AS jml, norut, residual_likelihood_action, residual_impact_action')
+                 ->order_by('create_date', 'desc')
+                ->where('sts_propose', 4)
+                ->where('urgensi_no', 0)
+								->group_by(['risk_level_action', 'norut','residual_impact_action', 'residual_likelihood_action' ])
+                ->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
+                ->result_array();
+	
+ 			
+				
 			foreach ($rows2 as $ros) {
-				if (isset($ros['target_like'], $ros['target_impact'])) {
-					$key2 = $ros['target_like'] . '-' . $ros['target_impact'];
+				if (isset($ros['residual_likelihood_action'], $ros['residual_impact_action'])) {
+					$key2 = $ros['residual_likelihood_action'] . '-' . $ros['residual_impact_action'];
 	
 					if (!isset($arrData2[$key2])) {
 						$arrData2[$key2] = [
@@ -84,25 +85,24 @@ class Data extends MX_Model
 					$arrData2[$key2]['norut'][] = $ros['norut'];
 				}
 			}
-	 
+	
+			 
 			$this->filter($data);
-			$this->db->where('bulan', $data['bulan']);
+			$rows3 = $this->db->select('b.target_like, b.target_impact, COUNT(*) as jml, a.norut')
+				->from(_TBL_VIEW_RCSA_DETAIL . ' a')
+				->join('bangga_analisis_risiko b', 'a.id = b.id_detail', 'inner')
+				->where('a.sts_propose', 4)
+				->where('b.bulan', 12)
+				->where('a.sts_heatmap', '1')
+				->group_by(['b.target_like', 'b.target_impact', 'a.norut'])
+				->get()
+				->result_array();
 	
-			$rows3 = $this->db->select('MAX(rcsa_no) AS rcsa_no, MAX(create_date) AS create_date, risk_level_action, COUNT(risk_level_action) AS jml, norut, residual_likelihood_action, residual_impact_action')
-                 ->order_by('create_date', 'desc')
-                ->where('sts_propose', 4)
-                ->where('urgensi_no', 0)
-								->group_by(['risk_level_action', 'norut','residual_impact_action', 'residual_likelihood_action' ])
-                ->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
-                ->result_array();
-	
- 			
-				
 			foreach ($rows3 as $ros) {
-				if (isset($ros['residual_likelihood_action'], $ros['residual_impact_action'])) {
-					$key3 = $ros['residual_likelihood_action'] . '-' . $ros['residual_impact_action'];
+				if (isset($ros['target_like'], $ros['target_impact'])) {
+					$key3 = $ros['target_like'] . '-' . $ros['target_impact'];
 	
-					if (!isset($arrData2[$key3])) {
+					if (!isset($arrData3[$key3])) {
 						$arrData3[$key3] = [
 							'jml' => 0,
 							'norut' => []
@@ -112,8 +112,7 @@ class Data extends MX_Model
 					$arrData3[$key3]['norut'][] = $ros['norut'];
 				}
 			}
-
- 
+	  
 	
 			// === Update Mapping with Values ===
 			foreach ($mapping as &$row) {
