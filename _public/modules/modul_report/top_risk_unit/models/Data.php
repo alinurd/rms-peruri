@@ -54,10 +54,41 @@ class Data extends MX_Model
 						];
 					}
 					$arrData1[$key1]['jml'] += (int) $ros['jml'];
-					$arrData1[$key1]['norut'][] = $ros['norut'];
+					// Tambahkan norut ke array sesuai dengan jumlah jml
+        for ($i = 0; $i < (int) $ros['jml']; $i++) {
+            $arrData1[$key1]['norut'][] = $ros['norut'];
+        }
 				}
 			}
+			// doi::dump($arrData1);
+			// $rows1 = $this->db->select('residual_likelihood, residual_impact, COUNT(*) as jml')
+			// 		->from(_TBL_VIEW_RCSA_DETAIL)
+			// 		->where('sts_propose', 4)
+			// 		->where('sts_heatmap', '1')
+			// 		->group_by(['residual_likelihood', 'residual_impact'])
+			// 		->get()
+			// 		->result_array();
 
+			// $arrData1 = [];
+
+			// foreach ($rows1 as $ros) {
+			// 		if (isset($ros['residual_likelihood'], $ros['residual_impact'])) {
+			// 				$key1 = $ros['residual_likelihood'] . '-' . $ros['residual_impact'];
+
+			// 				if (!isset($arrData1[$key1])) {
+			// 						$arrData1[$key1] = [
+			// 								'jml' => 0,
+			// 								'norut' => []
+			// 						];
+			// 				}
+			// 				$arrData1[$key1]['jml'] += (int) $ros['jml'];
+
+			// 				// Buat norut baru dari 1 sampai jml
+			// 				for ($i = 1; $i <= (int) $ros['jml']; $i++) {
+			// 						$arrData1[$key1]['norut'][] = $i;
+			// 				}
+			// 		}
+			// }
 			$this->filter($data);
 			$this->db->where('bulan', $data['bulan']);
 	
