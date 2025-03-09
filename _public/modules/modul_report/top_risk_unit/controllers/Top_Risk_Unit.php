@@ -84,7 +84,7 @@ class Top_Risk_Unit extends BackendController
 		foreach ($a as $key => $value) {
 			$b 	= $value['level_no'];
 		}
-
+// doi::dump($post);
 		$owner	= $post['owner'];
 		$this->data->owner_child=array();
 		$norut = isset($post['norut']) ? explode(',', $post['norut']) : [];
@@ -146,18 +146,17 @@ class Top_Risk_Unit extends BackendController
 			}
 		} else {
 			// if ($b == 3) {
-				$this->owner_child[] = $post['post'];
-				$this->db->where_in('rcsa_owner_no', $this->owner_child);
-				$rows = $this->db->where('sts_propose', 4)
+  				$rows = $this->db->where('sts_propose', 4)
+					->where('owner_no', $post['owner'])
 					->where('urgensi_no', 0)
 					->where('sts_heatmap', '1')
-					// ->where_in('norut', $norut)
+					->where_in('norut', $norut)
 					->where('period_no', $post['tahun'])
 					->order_by('residual_likelihood', 'DESC')
 					->order_by('residual_impact', 'DESC')
 					->get(_TBL_VIEW_RCSA_DETAIL)
 					->result_array();
-		 
+ 		 
 		}
 		
 		$a = $post['kel'];
