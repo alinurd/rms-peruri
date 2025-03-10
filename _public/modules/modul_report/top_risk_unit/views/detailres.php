@@ -34,6 +34,7 @@
             ];
 			$no = 0;
 			foreach ($data as $row) :
+				// doi::dump($row['bulan']);
 				$couse 			= $row['ket_likelihood'];
 				$impact 		= $row['ket_impact'];
 				// $inherent_level = $this->data->get_master_level(true, $row['inherent_level']);

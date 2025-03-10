@@ -133,8 +133,7 @@ function hoho(e) {
     var url = modul_name + "/get-detail-map";
 
    
-    alert(kel)
-    if (kel == "Inherent") {
+     if (kel == "Inherent") {
       norut =$(e).data("norut1");
       var target_combo = $("#detail_map");
       var url = modul_name + "/get-detail-map";
