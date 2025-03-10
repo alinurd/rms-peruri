@@ -27,7 +27,7 @@ $(function () {
     var url2 = modul_name + "/map_residual2";
 
     cari_ajax_combo("post", parent, data, target_combo, url, "result_map");
-   });
+  });
 
   $(document).on("click", "#export_data, .show_detail", function () {
     var owner = $("#owner_no").val();
@@ -81,17 +81,16 @@ $(function () {
   $(document).on("click", ".sub_detail", function () {
     var parent = $(this).parent().parent();
     var id = $(this).data("id");
-    var kel =  $(this).data("kel");
+    var kel = $(this).data("kel");
     var data = { id: id };
     var target_combo = $("#sub_detail");
     var url = modul_name + "/get-subdetail";
-    if(kel == "Target"){
-      var bulan =  $(this).data("bulan");
-      var data = { id: id , bulan:bulan };
+    if (kel == "Target") {
+      var bulan = $(this).data("bulan");
+      var data = { id: id, bulan: bulan };
       var target_combo = $("#sub_detail_target");
       var url = modul_name + "/get-subdetailTarget";
     }
-    
 
     cari_ajax_combo("post", parent, data, target_combo, url);
   });
@@ -118,54 +117,53 @@ $(function () {
 function hoho(e) {
   var parent = $(e).parent();
   var nilai = $(e).data("norut1");
-  
-    var id = $(e).data("id");
-    var kel = $(e).data("kel");
-    var owner = $("#owner_no").val();
-    var tahun = $("#period_no").val();
-    var bulan = $("#bulan").val();
-    var bulanx = $("#bulanx").val();
-    var like = $(e).data("like");
-    var impact = $(e).data("impact");
-    // console.log(kel + '2')
-   var norut=[];
-     var target_combo = $("#detail_map");
+
+  var id = $(e).data("id");
+  var kel = $(e).data("kel");
+  var owner = $("#owner_no").val();
+  var tahun = $("#period_no").val();
+  var bulan = $("#bulan").val();
+  var bulanx = $("#bulanx").val();
+  var like = $(e).data("like");
+  var impact = $(e).data("impact");
+  // console.log(kel + '2')
+  var norut = [];
+  var target_combo = $("#detail_map");
+  var url = modul_name + "/get-detail-map";
+
+  if (kel == "Inherent") {
+    norut = $(e).data("norut1");
+    var target_combo = $("#detail_map");
     var url = modul_name + "/get-detail-map";
+  }
+  if (kel == "Current") {
+    norut = $(e).data("norut3");
+    var target_combo = $("#detail_map");
+    var url = modul_name + "/get-detail-map-res";
+    // kel = "Residual";
+  }
+  if (kel == "Residual") {
+    kel = "Target";
+    norut = $(e).data("norut2");
+    var target_combo = $("#detail_map");
+    var url = modul_name + "/get-detail-map-target";
+    // get_detail_map_res
+  }
 
-   
-    if (kel == "Inherent") {
-      norut =$(e).data("norut1");
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map";
-    }
-    if (kel == "Current") {
-      kel="Target"
-      norut =$(e).data("norut2");
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map-target";
-    }
-    if (kel == "Residual") {
-      norut =$(e).data("norut3");
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map-res";
-      // get_detail_map_res
-    }
-   
-    var data = {
-      id: id,
-      norut: norut,
-      owner: owner,
-      like: like,
-      impact: impact,
-      tahun: tahun,
-      bulanx: bulanx,
-      bulan: bulan,
-      kel: kel,
-    };
-    console.log(data);
+  var data = {
+    id: id,
+    norut: norut,
+    owner: owner,
+    like: like,
+    impact: impact,
+    tahun: tahun,
+    bulanx: bulanx,
+    bulan: bulan,
+    kel: kel,
+  };
+  console.log(data);
 
-    cari_ajax_combo("post", parent, data, target_combo, url, "show_detail");
- 
+  cari_ajax_combo("post", parent, data, target_combo, url, "show_detail");
 }
 
 function result_map(hasil) {
@@ -173,7 +171,6 @@ function result_map(hasil) {
   $("#mapping_current").html(hasil.current);
   $("#mapping_residual").html(hasil.residual);
 }
-
 
 function result_map1(hasil) {
   $("#mapping_residual1").html(hasil.residual1);
