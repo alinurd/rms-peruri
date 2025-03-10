@@ -133,21 +133,22 @@ function hoho(e) {
     var url = modul_name + "/get-detail-map";
 
    
+    alert(kel)
     if (kel == "Inherent") {
       norut =$(e).data("norut1");
       var target_combo = $("#detail_map");
       var url = modul_name + "/get-detail-map";
     }
     if (kel == "Current") {
-      kel="Target"
-      norut =$(e).data("norut2");
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map-target";
-    }
-    if (kel == "Residual") {
-      norut =$(e).data("norut3");
+       norut =$(e).data("norut2");
       var target_combo = $("#detail_map");
       var url = modul_name + "/get-detail-map-res";
+    }
+    if (kel == "Residual") {
+      kel='Target'
+      norut =$(e).data("norut3");
+      var target_combo = $("#detail_map");
+      var url = modul_name + "/get-detail-map-target";
       // get_detail_map_res
     }
    
