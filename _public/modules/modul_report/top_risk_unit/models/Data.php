@@ -69,7 +69,34 @@ class Data extends MX_Model
 				->group_by(['risk_level_action', 'norut','residual_impact_action', 'residual_likelihood_action' ])
                 ->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
                 ->result_array();
+
+			// if ($data['id_owner'] > 0) {
+			// 	$this->get_owner_child($data['id_owner']);
+			// 	$this->owner_child[] = $data['id_owner'];
+			// 	$this->db->where_in('owner_no', $this->owner_child);
+			// }
+
+			// if ($data['id_period'] > 0) {
+			// 	$this->db->where('period_no', $data['id_period']);
+			// }
+
+			// // // Validasi bulan dan bulanx
+			// if (isset($data['bulan']) && $data['bulan'] > 0) {
+			// 	$this->db->where("bulan",$data['bulan']);
+			// }else{
+			// 	$this->db->where('bulan', $current_month);
+			// }
+
+			// $rows2 = $this->db->select('MAX(rcsa_no) AS rcsa_no, MAX(create_date) AS create_date, risk_level_action, COUNT(risk_level_action) AS jml, norut, residual_likelihood_action, residual_impact_action')
+      //      ->order_by('create_date', 'desc')
+      //     ->where('sts_propose', 4)
+      //     ->where('urgensi_no', 0)
+			// 		->group_by(['risk_level_action', 'norut','residual_impact_action', 'residual_likelihood_action' ])
+      //     ->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
+      //     ->result_array();
 	
+			// // doi::dump($rows2);
+			// // die;
  			
 				
 			foreach ($rows2 as $ros) {

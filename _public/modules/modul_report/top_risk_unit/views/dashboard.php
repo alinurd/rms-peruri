@@ -3,6 +3,17 @@ $disabled = 'disabled';
 if ($post['project_no'] > 0)
 	$disabled = '';
 ?>
+<style>
+	div {
+    -ms-overflow-style: none;  /* Untuk Internet Explorer 10+ */
+    scrollbar-width: none;      /* Untuk Firefox */
+}
+
+div::-webkit-scrollbar {     /* Untuk Webkit (Chrome, Safari) */
+    display: none;
+}
+
+</style>
 <section id="main-content">
 	<section class="wrapper site-min-height">
 		<div class="row">

@@ -168,8 +168,9 @@ class Top_Risk_Unit extends BackendController
 	public function get_detail_map_res()
 	{
 		$post 	= $this->input->post();
-		$a 		= $this->db->select('id,level_no')->where('id', $post['owner'])->get(_TBL_OWNER)->result_array();
-		$b 		= array();
+		$a 			= $this->db->select('id,level_no')->where('id', $post['owner'])->get(_TBL_OWNER)->result_array();
+		$b 			= array();
+		
 		foreach ($a as $key => $value) {
 			$b = $value['level_no'];
 		}
@@ -183,7 +184,9 @@ class Top_Risk_Unit extends BackendController
 
 		$this->data->get_owner_child($owner);
 		$owner_child=$this->data->owner_child;
+
 		if ($post['kel'] =='Current') {
+
 			$this->db->where('bangga_view_rcsa_action_detail.residual_likelihood_action', $post['like']);
 			$this->db->where('bangga_view_rcsa_action_detail.residual_impact_action', $post['impact']);
 			if ($post['bulan'] > 0) {
@@ -193,6 +196,7 @@ class Top_Risk_Unit extends BackendController
 			if ($post['tahun'] > 0) {
 				$this->db->where('bangga_view_rcsa_action_detail.period_no', $post['tahun']);
 			}
+
 		}  
 		 
 		if ($owner_child){
