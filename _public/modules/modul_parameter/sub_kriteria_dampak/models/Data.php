@@ -40,7 +40,7 @@ class Data extends MX_Model {
 				foreach($data['risk_couse_no'] as $key=>$row){
 					if (!empty($data['area'][$key])){
 						$upd['sub_dampak_id'] = $newid;
-						$upd['area'] = $data['area'][$key];
+						$upd['area'] = str_replace( ['&amp;', '&lt;', '&gt;', '&quot;', '&#39;'],['&', '<', '>', '"', "'"], $data['area'][$key]);
 						$upd['criteria_risiko'] = $data['criteria_risiko'][$key];
 					
 						
