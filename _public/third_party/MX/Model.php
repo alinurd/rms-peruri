@@ -1229,7 +1229,7 @@ class MX_Model extends CI_Model
     $table_width = 100; // Lebar tabel dalam persen
 
     // Mulai membuat tabel
-    $content = '<center><table style="padding:0px !important; text-align:center; border-collapse: collapse; width: ' . $table_width . '%; font-size: 12px; table-layout: fixed; border="0">';
+    $content = '<center><table style="padding:0px !important; text-align:center; border-collapse: collapse; width: ' . $table_width . '%; font-size: 12px; border="0">';
 
     // Header tabel
     $content .= '
@@ -1345,7 +1345,7 @@ class MX_Model extends CI_Model
     $content .= '<tr><td style="width: ' . $fixed_size . 'px; height: 30px;"></td>';
     foreach ($impact as $row_i) {
         $content .= '<td style="padding:0px !important; transform: rotate(-50deg); text-align:center; font-size:8px; font-weight:bold; color:black; width: ' . $fixed_size . 'px; height: 30px;">' 
-                    . (($type != "Current" && $type != "Residual") ? $row_i['level'] : '') 
+                    . $row_i['level']
                     . '</td>';
     }
     $content .= '</tr>';
@@ -1368,7 +1368,7 @@ class MX_Model extends CI_Model
 			$arrNorut = explode(", ", $nilai);
 			$val = '';
 			foreach ($arrNorut as $n) {
-					$val .= '<div><span class="' . $class . ' badge rounded-pill" style="border: solid 0px #000; background-color: ' . $bg_color . '; z-index: 1; position: relative; font-size:8px; margin: 0px;padding:2px;" data-norut=' . trim($n) . '>' . trim($n) . '</span></div>';
+					$val .= '<span class="' . $class . ' badge rounded-pill" style="border: solid 0px #000; background-color: ' . $bg_color . '; z-index: 1; position: relative; font-size:10px; margin: 3px;padding:3px;" data-norut=' . trim($n) . '>' . trim($n) . '</span>';
 			}
 			return $val;
 	}
