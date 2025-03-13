@@ -306,11 +306,57 @@ class Data extends MX_Model
 
 		return $rows;
 	}
-
-
 	function get_peristiwa($rcsa_no)
 	{
+		$this->db->order_by('detail_create_date', 'ASC');
+		$rows = $this->db->where('rcsa_no', $rcsa_no)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
+	
+		// Ambil daftar ID untuk mitigasi dan realisasi
+		$idArr = array_column($rows, 'id');
+	
+		$arrMitigasi = [];
+		if (!empty($idArr)) {
+			$rows_tmp = $this->db->where_in('rcsa_detail_no', $idArr)
+				->select('rcsa_detail_no, count(id) as jml')
+				->group_by('rcsa_detail_no')
+				->get(_TBL_VIEW_RCSA_MITIGASI)
+				->result_array();
+	
+			foreach ($rows_tmp as $row) {
+				$arrMitigasi[$row['rcsa_detail_no']] = $row['jml'];
+			}
+		}
+	
+		$arrRealisasi = [];
+		if (!empty($idArr)) {
+			$rows_tmp = $this->db->where_in('rcsa_detail_no', $idArr)
+				->select('rcsa_detail_no, count(id) as jml')
+				->group_by('rcsa_detail_no')
+				->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
+				->result_array();
+	
+			foreach ($rows_tmp as $row) {
+				$arrRealisasi[$row['rcsa_detail_no']] = $row['jml'];
+			}
+		}
+	
+		// Menggabungkan data menjadi satu array tanpa pengelompokan
+		$peristiwa = [];
+		foreach ($rows as $row) {
+			$row['jml_mitigasi'] = $arrMitigasi[$row['id']] ?? 0;
+			$row['jml_realisasi'] = $arrRealisasi[$row['id']] ?? 0;
+			$peristiwa[] = $row;
+		}
+	
+		return $peristiwa;
+	}
+	
+
+	function get_peristiwa_($rcsa_no)
+	{
 		// doi::dump($rcsa_no);
+		$this->db->order_by('norut', 'DESC');
+$this->db->order_by('detail_create_date', 'ACS');
 		$rows = $this->db->where('rcsa_no', $rcsa_no)->get(_TBL_VIEW_RCSA_DETAIL)->result_array();
 
 		$idArr = [];
