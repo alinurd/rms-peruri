@@ -34,16 +34,16 @@ if ($parent['sts_propose'] == 5) {
         <tbody>
 
             <?php
-            // doi::dump();
-            $no = 0; 
-            foreach ($field as $key => $row) : ?>
+            // doi::dump($field);
+            $no = 1; 
+            foreach ($field as $key => $ros) : ?>
 
-                <tr style="background-color:#d5edef;">
+                <!-- <tr style="background-color:#d5edef;">
                     <td colspan="10"><strong><?= strtoupper($row['nama']); ?></strong></td>
-                </tr>
+                </tr> -->
                 <?php
                 
-                foreach ($row['detail'] as $ros) :
+                // foreach ($row['detail'] as $ros) :
                     $sts_heatmap = $this->db->where('id',$ros['id'])->get('bangga_rcsa_detail')->row_array();
                     // doi::dump($sts_heatmap);
                     // doi::dump($ros);
@@ -80,7 +80,7 @@ if ($parent['sts_propose'] == 5) {
                     }
                 ?>
                     <tr>
-                        <td><?= ++$no; ?></td>
+                        <td><?=$no; ?></td>
                         <td class="text-center" style="vertical-align: middle;">
                             <?php
                             $iskri = 'hide';
@@ -109,7 +109,7 @@ if ($parent['sts_propose'] == 5) {
                             
 
                         </td>
-                        <td class="text-center" style="vertical-align: middle;">
+                        <td class="text-center" style="vertical-align: middle;" title="<?= ($ros['sts_heatmap']>0) ? "nomor urut: ". $ros['norut']: "";?> "> 
                             <?php $sts_heatmap_value = isset($sts_heatmap['sts_heatmap']) ? $sts_heatmap['sts_heatmap'] : 0;?>
                                 <center>
                                 <input class="form-control custom-checkbox" 
@@ -272,7 +272,8 @@ if ($parent['sts_propose'] == 5) {
                         </td>
                     </tr>
             <?php
-                endforeach;
+                // endforeach;
+               $no++;
             endforeach; ?>
         </tbody>
     </table>
