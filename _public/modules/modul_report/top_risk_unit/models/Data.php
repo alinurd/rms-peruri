@@ -66,6 +66,7 @@ class Data extends MX_Model
                  ->order_by('create_date', 'desc')
                 ->where('sts_propose', 4)
                 ->where('urgensi_no', 0)
+				->where('sts_heatmap', '1')
 				->group_by(['risk_level_action', 'norut','residual_impact_action', 'residual_likelihood_action' ])
                 ->get(_TBL_VIEW_RCSA_ACTION_DETAIL)
                 ->result_array();
