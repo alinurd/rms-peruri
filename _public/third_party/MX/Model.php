@@ -705,59 +705,49 @@ class MX_Model extends CI_Model
 
 	function draw_rcsa($data, $type = 'inherent')
 	{
-		// doi::dump($data);
-		// Mengambil data 'likelihood' dan 'impact' dari database
-		$like 	= $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
-		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
-		$abjad 	= ['E', 'D', 'C', 'B', 'A']; // Daftar abjad untuk menggantikan kode tingkat kemungkinan
 
-		
+		$like 				= $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
+		$impact 			= $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
+		$abjad 				= ['E', 'D', 'C', 'B', 'A'];
+		$fixed_size 	= 60;
+    $table_width 	= 100;
 
-		// Awal tabel HTML
-		$content = '<center><table style="text-align:center; border-collapse: collapse; width: 100%; font-size: 12px;" border="0">';
-		
-		// Judul tabel
-		$content .= '
-			<tr>
-				<td></td><td></td>
-				<td colspan="5" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . ucfirst($type) . ' Risk</td>
-			</tr>';
+		// Mulai membuat tabel
+    $content = '<center><table style="padding:0px !important; text-align:center; border-collapse: collapse; width: ' . $table_width . '%; font-size: 12px; border="0">';
 
-		// Header vertikal "Tingkatan Kemungkinan"
-		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
-						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
-							TINGKATAN KEMUNGKINAN
-						</div>
-					</td>';
-		$content .= '</tr>';
+    // Header tabel
+    $content .= '
+    <tr>
+        <td style="width: ' . $fixed_size . 'px; height: ' . $fixed_size . 'px;"></td>
+        <td colspan="' . count($impact) . '" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . $type . ' Risk</td>
+    </tr>';
 
 		// Baris tingkat kemungkinan
 		foreach ($like as $index => $row_l) {
+
 			$code_abjad = $abjad[$index] ?? $row_l['code'];
 			$content .= '<tr>';
+
 			$content .= sprintf(
-				'<td style="text-align:center; font-weight:bolder; color:black; padding:5px; font-size:10px; height: 40px;">%s<br>%s</td>',
-				$row_l['level'],
-				$code_abjad
+					'<td style="text-align: %s; font-weight: bolder; color: black; font-size: 8px; width: %dpx; height: %dpx; aspect-ratio: 1; %s">%s<br>%s</td>',
+					 "center",
+						$fixed_size, // Lebar sel
+						$fixed_size, // Tinggi sel
+					 "", 
+					 $row_l['level'],
+					$code_abjad // Konten kode abjad
 			);
-
-			// Kolom tingkat dampak
+					// Kolom tingkat dampak
 			foreach ($impact as $row_i) {
-				$like_no 	= $row_l['id'];
-				$impact_no 	= $row_i['id'];
-				
-
-				$item_data = $this->find_data($data, $like_no, $impact_no);
-				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
-				// Data default jika tidak ditemukan
-				// $score 			= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
-				// $score 			= $row_l['id'];
-				$nilai 			= $item_data['nilai'] ?? '';
+				$like_no 			= $row_l['id'];
+				$impact_no 		= $row_i['id'];
+				$item_data 		= $this->find_data($data, $like_no, $impact_no);
+				$score 				= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
+				$nilai 				= $item_data['nilai'] ?? '';
 				$warna_bg 		= $item_data['warna_bg'] ?? '#ffffff';
 				$warna_txt 		= $item_data['warna_txt'] ?? '#000000';
-				$tingkat		= $item_data['tingkat'] ?? '';
-				$bawah_impact 	= $item_data['bawah_impact'] ?? '';
+				$tingkat			= $item_data['tingkat'] ?? '';
+				$bawah_impact = $item_data['bawah_impact'] ?? '';
 				$atas_impact 	= $item_data['atas_impact'] ?? '';
 				$bawah_like 	= $item_data['bawah_like'] ?? '';
 				$atas_like 		= $item_data['atas_like'] ?? '';
@@ -769,8 +759,8 @@ class MX_Model extends CI_Model
 					style="position: relative; 
 						background-color:' . $warna_bg . '; 
 						color:' . $warna_txt . '; 
-						width: 60px; 
-						height: 60px; 
+						width: '.$fixed_size.'px !important; 
+						height: '.$fixed_size.'px !important; 
 						padding: 5px; 
 						border: 1px solid white; 
 						font-size: 10px; 
@@ -787,9 +777,9 @@ class MX_Model extends CI_Model
 					data-impact="'.$item_data['impact_no'].'"
 				>
 				
-					<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;">
+					<div style="max-height: 60px; overflow: auto; cursor: pointer;">
+					<span class="badge rounded-pill" style="border: solid 0px #000; background-color: #3d004f; z-index: 1; position: relative; font-size:10px; margin: 3px;padding:3px;" data-norut=' . trim($nilai) . '>' . trim($nilai) . '</span>
 					</div>
-					' . $nilai . '
 					<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
 						<strong style="font-weight:900;">' . $score['score'] . '</strong>
 					</div>
@@ -799,31 +789,31 @@ class MX_Model extends CI_Model
 			}
 
 			// <!-- Score di pojok kiri bawah -->
-					
-
 			$content .= '</tr>';
 		}
 
 		// Footer tabel untuk kode dampak
-		$content .= '<tr><td></td><td></td>';
-		foreach ($impact as $row_i) {
-			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['code'] . '</td>';
-		}
-		$content .= '</tr>';
+    $content .= '<tr><td style="width: ' . $fixed_size . 'px; height: 20px;"></td>';
+    foreach ($impact as $row_i) {
+        $content .= '<td style="text-align:center; font-size:8px; font-weight:bold; color:black; width: ' . $fixed_size . 'px; height: 20px;">' . $row_i['code'] . '</td>';
+    }
+    $content .= '</tr>';
 
-		// Footer tabel untuk level dampak
-		$content .= '<tr><td></td><td></td>';
-		foreach ($impact as $row_i) {
-			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['level'] . '</td>';
-		}
-		$content .= '</tr>';
+    // Footer tabel untuk level dampak
+    $content .= '<tr><td style="width: ' . $fixed_size . 'px; height: 30px;"></td>';
+    foreach ($impact as $row_i) {
+        $content .= '<td style="padding:0px !important; transform: rotate(-50deg); text-align:center; font-size:8px; font-weight:bold; color:black; width: ' . $fixed_size . 'px; height: 30px;">' 
+                    . $row_i['level']
+                    . '</td>';
+    }
+    $content .= '</tr>';
 
-		// Footer utama untuk judul "Tingkatan Dampak"
-		$content .= sprintf(
-			'<tr><td></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;">TINGKATAN DAMPAK</td></tr>',
-			count($impact)
-		);
-
+    // Footer utama untuk judul "Tingkatan Dampak"
+    $content .= sprintf(
+        '<tr><td style="width: ' . $fixed_size . 'px; height: ' . $fixed_size . 'px;"></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;"> </td></tr>',
+        count($impact)
+    );
+	
 		// Menutup tabel
 		$content .= '</table></center>';
 
@@ -834,8 +824,6 @@ class MX_Model extends CI_Model
 
 	function draw_rcsa_res($data, $type = 'residual')
 	{
-		// doi::dump($data);
-		// Mengambil data 'likelihood' dan 'impact' dari database
 		$like 	= $this->db->where('category', 'likelihood')->order_by('code', 'desc')->get(_TBL_LEVEL)->result_array();
 		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
 		$abjad 	= ['E', 'D', 'C', 'B', 'A']; // Daftar abjad untuk menggantikan kode tingkat kemungkinan
@@ -851,62 +839,57 @@ class MX_Model extends CI_Model
 			return null;
 		}
 
-		// Awal tabel HTML
-		$content = '<center><table style="text-align:center; border-collapse: collapse; width: 100%; font-size: 12px;" border="0">';
+		$fixed_size 	= 60;
+    $table_width 	= 100;
+
+		// Mulai membuat tabel
+    $content = '<center><table style="padding:0px !important; text-align:center; border-collapse: collapse; width: ' . $table_width . '%; font-size: 12px; border="0">';
+
+    // Header tabel
+    $content .= '
+    <tr>
+        <td style="width: ' . $fixed_size . 'px; height: ' . $fixed_size . 'px;"></td>
+        <td colspan="' . count($impact) . '" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . $type . ' Risk</td>
+    </tr>';
+
 		
-		// Judul tabel
-		$content .= '
-			<tr>
-				<td></td><td></td>
-				<td colspan="5" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . ucfirst($type) . ' Risk</td>
-			</tr>';
-
-		// Header vertikal "Tingkatan Kemungkinan"
-		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
-						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
-							TINGKATAN KEMUNGKINAN
-						</div>
-					</td>';
-		$content .= '</tr>';
-
 		// Baris tingkat kemungkinan
 		foreach ($like as $index => $row_l) {
 			$code_abjad = $abjad[$index] ?? $row_l['code'];
 			$content .= '<tr>';
+
 			$content .= sprintf(
-				'<td style="text-align:center; font-weight:bolder; color:black; padding:5px; font-size:10px; height: 40px;">%s<br>%s</td>',
-				$row_l['level'],
-				$code_abjad
-			);
+				'<td style="text-align: %s; font-weight: bolder; color: black; font-size: 8px; width: %dpx; height: %dpx; aspect-ratio: 1; %s">%s<br>%s</td>',
+				 "right",
+					$fixed_size, // Lebar sel
+					$fixed_size, // Tinggi sel
+				 "padding-right: 5px !important;", 
+				 "",
+				$code_abjad // Konten kode abjad
+		);
 
 			// Kolom tingkat dampak
 			foreach ($impact as $row_i) {
-				$like_no 	= $row_l['id'];
-				$impact_no 	= $row_i['id'];
-				
-
-				$item_data = find_data_res($data, $like_no, $impact_no);
-				$score 	= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
-				// doi::dump($item_data);
-				// Data default jika tidak ditemukan
-				// $score 		= $item_data['code_likelihood'].' - '.$item_data['code_impact'] ?? '';
-				$nilai 		= $item_data['nilai'] ?? '';
-				$warna_bg 	= $item_data['warna_bg'] ?? '#ffffff';
-				$warna_txt 	= $item_data['warna_txt'] ?? '#000000';
-				$tingkat	= $item_data['tingkat'] ?? '';
+				$like_no 			= $row_l['id'];
+				$impact_no 		= $row_i['id'];
+				$item_data 		= find_data_res($data, $like_no, $impact_no);
+				$score 				= $this->db->where('impact', $item_data['impact_no'])->where('likelihood', $item_data['like_no'])->get(_TBL_LEVEL_COLOR)->row_array();
+				$nilai 				= $item_data['nilai'] ?? '';
+				$warna_bg 		= $item_data['warna_bg'] ?? '#ffffff';
+				$warna_txt 		= $item_data['warna_txt'] ?? '#000000';
+				$tingkat			= $item_data['tingkat'] ?? '';
 				$bawah_impact = $item_data['bawah_impact'] ?? '';
-				$atas_impact = $item_data['atas_impact'] ?? '';
-				$bawah_like = $item_data['bawah_like'] ?? '';
-				$atas_like = $item_data['atas_like'] ?? '';
+				$atas_impact 	= $item_data['atas_impact'] ?? '';
+				$bawah_like 	= $item_data['bawah_like'] ?? '';
+				$atas_like 	= $item_data['atas_like'] ?? '';
 
 				$content .= '
 					<td data-id="' . $row_i['id'] . '" 
-						class="pointer peta" onclick="hoho(this)" 
-						style="position: relative; background-color:' . $warna_bg . '; 
+								class="pointer peta" onclick="hoho(this)" 
+								style="position: relative; background-color:' . $warna_bg . '; 
 								color:' . $warna_txt . '; 
-								width: 60px; 
-								height: 60px; 
+								width: '.$fixed_size.'px !important; 
+								height: '.$fixed_size.'px !important; 
 								padding: 5px; 
 								border: 1px solid white; 
 								font-size: 10px; 
@@ -922,8 +905,9 @@ class MX_Model extends CI_Model
 								data-like="'.$item_data['like_no'].'"
 								data-impact="'.$item_data['impact_no'].'"
 								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
-						' . $nilai . '
+						<div style="max-height: 60px; overflow: auto; cursor: pointer;">
+					<span class="badge rounded-pill" style="border: solid 0px #000; background-color: #3d004f; z-index: 1; position: relative; font-size:10px; margin: 3px;padding:3px;" data-norut=' . trim($nilai) . '>' . trim($nilai) . '</span>
+					</div>
 						<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
 						<strong style="font-weight:900;">' . $score['score'] . '</strong>
 					</div>
@@ -934,33 +918,32 @@ class MX_Model extends CI_Model
 		}
 
 		// Footer tabel untuk kode dampak
-		$content .= '<tr><td></td><td></td>';
-		foreach ($impact as $row_i) {
-			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['code'] . '</td>';
-		}
-		$content .= '</tr>';
+    $content .= '<tr><td style="width: ' . $fixed_size . 'px; height: 20px;"></td>';
+    foreach ($impact as $row_i) {
+        $content .= '<td style="text-align:center; font-size:8px; font-weight:bold; color:black; width: ' . $fixed_size . 'px; height: 20px;">' . $row_i['code'] . '</td>';
+    }
+    $content .= '</tr>';
 
-		// Footer tabel untuk level dampak
-		$content .= '<tr><td></td><td></td>';
-		foreach ($impact as $row_i) {
-			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['level'] . '</td>';
-		}
-		$content .= '</tr>';
+    // Footer tabel untuk level dampak
+    $content .= '<tr><td style="width: ' . $fixed_size . 'px; height: 30px;"></td>';
+    foreach ($impact as $row_i) {
+        $content .= '<td style="padding:0px !important; transform: rotate(-50deg); text-align:center; font-size:8px; font-weight:bold; color:black; width: ' . $fixed_size . 'px; height: 30px;">' 
+                    . $row_i['level']
+                    . '</td>';
+    }
+    $content .= '</tr>';
 
-		// Footer utama untuk judul "Tingkatan Dampak"
-		$content .= sprintf(
-			'<tr><td></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;">TINGKATAN DAMPAK</td></tr>',
-			count($impact)
-		);
+    // Footer utama untuk judul "Tingkatan Dampak"
+    $content .= sprintf(
+        '<tr><td style="width: ' . $fixed_size . 'px; height: ' . $fixed_size . 'px;"></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;"> </td></tr>',
+        count($impact)
+    );
 
 		// Menutup tabel
 		$content .= '</table></center>';
 
 		return $content;
 	}
-
-
-
 
 	// Fungsi global untuk mencari data berdasarkan like_no dan impact_no
 
@@ -982,33 +965,32 @@ class MX_Model extends CI_Model
 		$impact = $this->db->where('category', 'impact')->order_by('code', 'asc')->get(_TBL_LEVEL)->result_array();
 		$abjad = ['E', 'D', 'C', 'B', 'A']; // Daftar abjad untuk menggantikan kode tingkat kemungkinan
 
-		// Awal tabel HTML
-		$content = '<center><table style="text-align:center; border-collapse: collapse; width: 100%; font-size: 12px;" border="0">';
+		$fixed_size 	= 60;
+    $table_width 	= 100;
 
-		// Judul tabel
-		$content .= '
-			<tr>
-				<td></td><td></td>
-				<td colspan="5" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . ucfirst($type) . ' Risk</td>
-			</tr>';
+		// Mulai membuat tabel
+    $content = '<center><table style="padding:0px !important; text-align:center; border-collapse: collapse; width: ' . $table_width . '%; font-size: 12px; border="0">';
 
-		// Header vertikal "Tingkatan Kemungkinan"
-		$content .= '<tr>';
-		$content .= '<td class="text-primary" rowspan="' . (count($like) + 1) . '" style="text-align:center; font-weight:bold; padding:0; margin:0; height: 100px; width: 20px;">
-						<div style="position:absolute;top:250px;left:-10px;padding:0px;transform: rotate(-90deg); transform-origin:center; white-space: nowrap; width: 20px;">
-							TINGKATAN KEMUNGKINAN
-						</div>
-					</td>';
-		$content .= '</tr>';
+    // Header tabel
+    $content .= '
+    <tr>
+        <td style="width: ' . $fixed_size . 'px; height: ' . $fixed_size . 'px;"></td>
+        <td colspan="' . count($impact) . '" style="text-align:center; font-weight:bold; padding:5px; font-size:14px;">' . $type . ' Risk</td>
+    </tr>';
 
 		// Baris tingkat kemungkinan
 		foreach ($like as $index => $row_l) {
 			$code_abjad = $abjad[$index] ?? $row_l['code'];
 			$content .= '<tr>';
+
 			$content .= sprintf(
-				'<td style="text-align:center; font-weight:bolder; color:black; padding:5px; font-size:10px; height: 40px;">%s<br>%s</td>',
-				$row_l['level'],
-				$code_abjad
+				'<td style="text-align: %s; font-weight: bolder; color: black; font-size: 8px; width: %dpx; height: %dpx; aspect-ratio: 1; %s">%s<br>%s</td>',
+				 "right",
+					$fixed_size, // Lebar sel
+					$fixed_size, // Tinggi sel
+				 "padding-right: 5px !important;", 
+				 "",
+				$code_abjad // Konten kode abjad
 			);
 
 			// Kolom tingkat dampak
@@ -1037,8 +1019,8 @@ class MX_Model extends CI_Model
 						class="pointer peta" onclick="hoho(this)" 
 						style="position: relative; background-color:' . $warna_bg . '; 
 								color:' . $warna_txt . '; 
-								width: 60px; 
-								height: 60px; 
+								width: '.$fixed_size.'px !important; 
+								height: '.$fixed_size.'px !important;
 								padding: 5px; 
 								border: 1px solid white; 
 								font-size: 10px; 
@@ -1054,8 +1036,9 @@ class MX_Model extends CI_Model
 								data-like="' . $item_data['like_no'] . '"
 								data-impact="' . $item_data['impact_no'] . '"
 								>
-						<div style="position: absolute; top: 0; left: 2px; font-size: 8px; font-weight: normal;"></div>
-						' . $nilai . '
+					<div style="max-height: 60px; overflow: auto; cursor: pointer;">
+					<span class="badge rounded-pill" style="border: solid 0px #000; background-color: #3d004f; z-index: 1; position: relative; font-size:10px; margin: 3px;padding:3px;" data-norut=' . trim($nilai) . '>' . trim($nilai) . '</span>
+					</div>
 						<div style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; font-weight: normal; color: #555;">
 						<strong style="font-weight:900;">' . $score['score'] . '</strong>
 					</div>
@@ -1066,23 +1049,25 @@ class MX_Model extends CI_Model
 		}
 
 		// Footer tabel untuk kode dampak
-		$content .= '<tr><td></td><td></td>';
+		$content .= '<tr><td style="width: ' . $fixed_size . 'px; height: 20px;"></td>';
 		foreach ($impact as $row_i) {
-			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['code'] . '</td>';
+				$content .= '<td style="text-align:center; font-size:8px; font-weight:bold; color:black; width: ' . $fixed_size . 'px; height: 20px;">' . $row_i['code'] . '</td>';
 		}
 		$content .= '</tr>';
 
 		// Footer tabel untuk level dampak
-		$content .= '<tr><td></td><td></td>';
+		$content .= '<tr><td style="width: ' . $fixed_size . 'px; height: 30px;"></td>';
 		foreach ($impact as $row_i) {
-			$content .= '<td style="text-align:center; font-size:10px; font-weight:bold; color:black;">' . $row_i['level'] . '</td>';
+				$content .= '<td style="padding:0px !important; transform: rotate(-50deg); text-align:center; font-size:8px; font-weight:bold; color:black; width: ' . $fixed_size . 'px; height: 30px;">' 
+										. $row_i['level']
+										. '</td>';
 		}
 		$content .= '</tr>';
 
 		// Footer utama untuk judul "Tingkatan Dampak"
 		$content .= sprintf(
-			'<tr><td></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;">TINGKATAN DAMPAK</td></tr>',
-			count($impact)
+				'<tr><td style="width: ' . $fixed_size . 'px; height: ' . $fixed_size . 'px;"></td><td></td><td class="text-primary" colspan="%d" style="text-align:center; font-weight:bold; padding:5px;"> </td></tr>',
+				count($impact)
 		);
 
 		// Menutup tabel

@@ -69,22 +69,23 @@ $info_owner = $this->authentication->get_info_user('group_owner');
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <section class="x_panel">
-                                    <div class="x_title">
-                                        <strong>Inherent & Residual</strong>
-                                        <ul class="nav navbar-right panel_toolbox">
-                                            <li class="pull-right"><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a></li>
-                                        </ul>
-                                        <div class="clearfix"></div>
+                                    <div class="row">
+                                        <div class="x_title">
+                                            <strong>Inherent & Residual</strong>
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li class="pull-right"><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a></li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
                                     </div>
                                     <div class="x_content" style="overflow-x: auto;">
                                         <div class="profile-info col-md-4">
-                                            <!-- <strong>Inherent </strong> -->
                                             <div class="x_content text-center" style="max-width: 100%;" id="mapping_inherent">
                                                 <?= $mapping1['inherent']; ?>
                                             </div>
                                         </div>
                                         
-                                        <div class="profile-info col-md-4">
+                                        <div class="profile-info col-md-4" >
                                             <div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual">
                                                 <?= $mapping1['residual']; ?>
                                             </div>
@@ -99,37 +100,6 @@ $info_owner = $this->authentication->get_info_user('group_owner');
                                 </section>
                             </div>
                         </div>
-
-                        <!-- Residual-1 and Residual-2 Section -->
-                        <!-- <div class="row">
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <section class="x_panel">
-                                    <div class="x_title">
-                                        <strong>Residual</strong>
-                                        <ul class="nav navbar-right panel_toolbox">
-                                            <li class="pull-right"><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a></li>
-                                        </ul>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="x_content" style="overflow-x: auto;">
-                                        <div class="profile-info col-md-6">
-
-                                            <strong>Residual-1 </strong>
-                                            </strong>
-                                            <div class="x_content text-center" id="mapping_residual1">
-                                                <?= $mapping2['residual1']; ?>
-                                            </div>
-                                        </div>
-                                        <div class="profile-info col-md-6">
-                                            <strong>Residual-2</strong>
-                                            <div class="x_content text-center" id="mapping_residual2">
-                                                <?= $mapping3['residual2']; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                            </div>
-                        </div> -->
                     </div>
 
                     <!-- Overlay Spinner for loading -->
