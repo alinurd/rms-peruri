@@ -91,7 +91,7 @@ $info_owner = $this->authentication->get_info_user('group_owner');
                                             </div>
                                         </div>
 
-                                        <div class="profile-info col-md-4">
+                                        <div class="profile-info col-md-4"> 
                                             <div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual1">
                                                 <?= $mapping2['residual1']; ?>
                                             </div>
