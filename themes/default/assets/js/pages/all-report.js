@@ -5,9 +5,9 @@ $(function () {
 
   $("#proses").click(function () {
     var tahun = $("#periode_no option:selected").text();
-    $("#tahun").val(tahun);
     var owner_no = $("#owner_no option:selected").text();
     var owner_name = owner_no.trim();
+    $("#tahun").val(tahun);
     $("#owner_name").val(owner_name);
     var data = $("#form_grafik").serialize();
     var parent = $(this).parent();
@@ -157,63 +157,66 @@ $(function () {
     cari_ajax_combo("post", parent, data, target_combo, url);
   });
 });
+
 function hoho(e) {
   var parent = $(e).parent();
-  var nilai = $(e).data("nilai");
+  var nilai = $(e).data("norut1");
 
-  if (nilai > 0) {
-    var id = $(e).data("id");
-    var kel = $(e).data("kel");
-    var like = $(e).data("like");
-    var impact = $(e).data("impact");
-    var owner = $("#owner_no").val();
-    var tahun = $("#period_no").val();
-    var bulan = $("#bulan").val();
-    // var bulanx = $("#bulanx").val();
-    // console.log(kel + '2')
-    var data = {
-      id: id,
-      owner: owner,
-      tahun: tahun,
-      // bulanx: bulanx,
-      bulan: bulan,
-      kel: kel,
-      like: like,
-      impact: impact,
-    };
-    // console.log(data)
+  var id = $(e).data("id");
+  var kel = $(e).data("kel");
+  var owner = $("#owner_no").val();
+  var tahun = $("#periode_no").val();
+  var bulan = $("#bulan").val();
+  var bulanx = $("#bulanx").val();
+  var like = $(e).data("like");
+  var impact = $(e).data("impact");
+  // console.log(kel + '2')
+  var norut = [];
+  var target_combo = $("#detail_map");
+  var url = modul_name + "/get-detail-map";
+
+  if (kel == "Inherent") {
+    norut = $(e).data("norut1");
     var target_combo = $("#detail_map");
     var url = modul_name + "/get-detail-map";
-
-    if (kel == "residual1" || kel == "residual2") {
-      var target_combo = $("#detail_map2");
-      var url = modul_name + "/get-detail-map2";
-      // console.log('masuk ke =>residual2')
-    }
-    if (kel == "residual") {
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map-res";
-      // get_detail_map_res
-    }
-
-    if (kel == "Target") {
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map-target";
-      // get_detail_map_res
-    }
-    console.log(kel);
-
-    cari_ajax_combo("post", parent, data, target_combo, url, "show_detail");
   }
+  if (kel == "Current") {
+    norut = $(e).data("norut3");
+    var target_combo = $("#detail_map");
+    var url = modul_name + "/get-detail-map-res";
+    // kel = "Residual";
+  }
+  if (kel == "Residual") {
+    kel = "Target";
+    norut = $(e).data("norut2");
+    var target_combo = $("#detail_map");
+    var url = modul_name + "/get-detail-map-target";
+    // get_detail_map_res
+  }
+
+  var data = {
+    id: id,
+    norut: norut,
+    owner: owner,
+    like: like,
+    impact: impact,
+    tahun: tahun,
+    bulanx: bulanx,
+    bulan: bulan,
+    kel: kel,
+  };
+  console.log(data);
+
+  cari_ajax_combo("post", parent, data, target_combo, url, "show_detail");
 }
 
 function result_map(hasil) {
-  $("#mapping_residual").html(hasil.residual);
+  $("#mapping_current").html(hasil.current);
 }
 
 function show_detail(hasil) {
   $("#modal_general").find(".modal-body").html(hasil.combo);
-  $("#modal_general").find(".modal-title").html("CORPORATE RISK");
+  $("#modal_general").find(".modal-title").html("HEATMAP");
   $("#modal_general").modal("show");
 }
 
@@ -259,10 +262,10 @@ function result_show(hasil) {
   $("#collapseFiveteen").collapse("show");
 }
 
-function result_map(hasil) {
-  // $("#mapping_inherent").html(hasil.inherent);
-  $("#mapping_residual").html(hasil.residual);
-}
+// function result_map(hasil) {
+//   // $("#mapping_inherent").html(hasil.inherent);
+//   $("#mapping_current").html(hasil.residual);
+// }
 
 function graph(datas, target) {
   var ctx = document.getElementById(target);

@@ -63,7 +63,7 @@
 				$bulan = $row['bulan'];
                 $nama_bulan_display = isset($nama_bulan[$bulan]) ? $nama_bulan[$bulan] : 'Bulan Tidak Valid';
  			?>
-				<tr class="pointer sub_detail" title="klik untuk melihat detail" data-id="<?= $row['id']; ?>">
+				<tr class="pointer sub_detail" title="klik untuk melihat detail" data-id="<?= $row['id_detail']; ?>">
 					<td class="text-center"><?= ++$no; ?></td>
  					<td><?= $row['name']; ?></td>
 					 <td class="text-center"><?= $row['norut']; ?></td>

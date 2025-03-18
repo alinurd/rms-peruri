@@ -150,39 +150,18 @@ function hoho(e) {
     // get_detail_map_res
   }
 
-
-   
-     if (kel == "Inherent") {
-      norut =$(e).data("norut1");
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map";
-    }
-    if (kel == "Current") {
-       norut =$(e).data("norut2");
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map-res";
-    }
-    if (kel == "Residual") {
-      kel='Target'
-      norut =$(e).data("norut3");
-      var target_combo = $("#detail_map");
-      var url = modul_name + "/get-detail-map-target";
-      // get_detail_map_res
-    }
-   
-    var data = {
-      id: id,
-      norut: norut,
-      owner: owner,
-      like: like,
-      impact: impact,
-      tahun: tahun,
-      bulanx: bulanx,
-      bulan: bulan,
-      kel: kel,
-    };
-    console.log(data);
-
+  var data = {
+    id: id,
+    norut: norut,
+    owner: owner,
+    like: like,
+    impact: impact,
+    tahun: tahun,
+    bulanx: bulanx,
+    bulan: bulan,
+    kel: kel,
+  };
+  console.log(data);
 
   cari_ajax_combo("post", parent, data, target_combo, url, "show_detail");
 }

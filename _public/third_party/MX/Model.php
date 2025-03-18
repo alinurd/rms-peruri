@@ -1279,8 +1279,8 @@ class MX_Model extends CI_Model
                 $fixed_size, // Lebar tetap
                 $fixed_size, // Tinggi tetap
                 $nilai_1,
-                $nilai_2,
                 $nilai_3,
+                $nilai_2,
                 $tingkat,
                 $bawah_impact,
                 $atas_impact,
