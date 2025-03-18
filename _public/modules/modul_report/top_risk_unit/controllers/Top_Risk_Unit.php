@@ -206,15 +206,13 @@ class Top_Risk_Unit extends BackendController
 		}
 		// doi::dump($post);
 		$this->db->where("bangga_view_rcsa_action_detail.bulan = {$post['bulan']}");
-		$rows = $this->db->select('bangga_view_rcsa_detail.bulan as bulan_rcsa, bangga_view_rcsa_detail.*, bangga_view_rcsa_action_detail.*')
+		$rows = $this->db->select('bangga_view_rcsa_detail.bulan as bulan_rcsa, bangga_view_rcsa_detail.*, bangga_view_rcsa_action_detail.*,bangga_view_rcsa_detail.id as id_detail')
 				->from("bangga_view_rcsa_action_detail")
 				->join('bangga_view_rcsa_detail', 'bangga_view_rcsa_detail.id = bangga_view_rcsa_action_detail.rcsa_detail_no')  
 				->where('bangga_view_rcsa_action_detail.sts_propose', 4)
 				->where('bangga_view_rcsa_action_detail.urgensi_no', 0)
 				->where('bangga_view_rcsa_detail.sts_heatmap', '1')
-				->where_in('bangga_view_rcsa_detail.norut', $post['norut'])
-				// ->where('bangga_view_rcsa_action_detail.bulan', $post['bulan'])
-				// ->where('bangga_view_rcsa_action_detail.owner_no', $post['owner'])
+				// ->where_in('bangga_view_rcsa_detail.norut', $post['norut'])
 				->where('bangga_view_rcsa_action_detail.period_no', $post['tahun']) 
 				->get()
 				->result_array();
