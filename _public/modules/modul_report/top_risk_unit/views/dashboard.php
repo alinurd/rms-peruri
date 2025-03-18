@@ -17,7 +17,10 @@ div::-webkit-scrollbar {     /* Untuk Webkit (Chrome, Safari) */
 <section id="main-content">
 	<section class="wrapper site-min-height">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-sm-8 panel-heading">
+					<h3 style="padding-left:10px;"><?php echo lang('msg_title'); ?></h3>
+			</div>
+			<div class="col-md-4" style="text-align:right">
 				<ul class="breadcrumb">
 					<li> <a href="<?php echo base_url(); ?>"> <i class="fa fa-home"></i> <?php echo lang('msg_breadcrumb_home'); ?></a></li>
 					<li><a href="#"><?php echo lang('msg_title'); ?></a></li>
@@ -72,44 +75,47 @@ div::-webkit-scrollbar {     /* Untuk Webkit (Chrome, Safari) */
 							</div>
 						</div>
 						<aside class="">
-						<section class="x_panel">
-						<div class="profile-info col-md-4">
-										<!-- <strong>Residual</strong> -->
-										
-										<div class="x_content text-center" style="width: 100%;display:flex;" id="mapping_inherent">
-											<?=$mapping['inherent'];?>
+							<div class="row">
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<section class="x_panel">
+										<div class="profile-info col-md-4">
+											<div class="x_content text-center" style="max-width: 100%;" id="mapping_inherent">
+												<?=$mapping['inherent'];?>
+											</div>
 										</div>
-									</div>
-									<div class="profile-info col-md-4">
-										<!-- <strong>Inherent</strong> -->
-										<div class="x_content text-center" id="mapping_current" style="width: 100%;">
-											<?=$mapping['current'];?>
+										<div class="profile-info col-md-4">
+											<div class="x_content text-center" id="mapping_current" style="max-width: 100%;">
+												<?=$mapping['current'];?>
+											</div>
 										</div>
-									</div>
-									<div class="profile-info col-md-4">
-										<div class="x_content text-center"  style="width: 100%;" id="mapping_residual">
-											<?= $mapping['residual']; ?>
+										<div class="profile-info col-md-4">
+											<div class="x_content text-center" style="max-width: 100%;" id="mapping_residual">
+												<?= $mapping['residual']; ?>
+											</div>
 										</div>
-									</div>
-								</section>
-								
-							<section class="hide ">
-								<div class="  text-center" id="mapping_inherent"> 
-									<?= $mapping['inherent']; ?>
+									</section>
 								</div>
-								<div style="margin-left: 235px; margin-top: 20px; margin-bottom: 20px; text-align: center; display: flex; justify-content: center; gap: 20px;">
-										<div class="current">
-											<button id="currentText" class="badge rounded-pill" style="border: solid 0px #000; background-color:#3d004f; font-size:16px; padding: 8px 12px; color: #fff;">Current Risk</button>
-										</div>
-										<div class="inherent">
-											<button id="inherentText" class="badge rounded-pill" style="border: solid 0px #000; background-color:#97beac; font-size:16px; padding: 8px 12px; color: #fff;">Inherent Risk</button>
-										</div>
-										<div class="residual">
-											<button id="residualText" class="badge rounded-pill" style="border: solid 0px #000; background-color:#00d3ac; font-size:16px; padding: 8px 12px; color: #fff;">Residual Risk</button>
-										</div>
+							</div>
+									
+								<section class="hide ">
+									<div class="  text-center" id="mapping_inherent"> 
+										<?= $mapping['inherent']; ?>
 									</div>
-								
-							</section>
+									<div style="margin-left: 235px; margin-top: 20px; margin-bottom: 20px; text-align: center; display: flex; justify-content: center; gap: 20px;">
+											<div class="current">
+												<button id="currentText" class="badge rounded-pill" style="border: solid 0px #000; background-color:#3d004f; font-size:16px; padding: 8px 12px; color: #fff;">Current Risk</button>
+											</div>
+											<div class="inherent">
+												<button id="inherentText" class="badge rounded-pill" style="border: solid 0px #000; background-color:#97beac; font-size:16px; padding: 8px 12px; color: #fff;">Inherent Risk</button>
+											</div>
+											<div class="residual">
+												<button id="residualText" class="badge rounded-pill" style="border: solid 0px #000; background-color:#00d3ac; font-size:16px; padding: 8px 12px; color: #fff;">Residual Risk</button>
+											</div>
+										</div>
+									
+								</section>
+								</div>
+						</div>
 						</aside>
 					</div>
 				</div>
