@@ -1207,7 +1207,7 @@ endif;
         <img src="<?= img_url('logo.png'); ?>" width="90">
       </td>
       <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-        <h4>RISK REGISTER</h4>
+        <h4>EARLY WARNING</h4>
       </td>
       <td style="width: 10%;">No.</td>
       <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
@@ -1343,7 +1343,7 @@ $bulanName = [
         <img src="<?= img_url('logo.png'); ?>" width="90">
       </td>
       <td colspan="4" rowspan="3" style="width:40%;border-left: none; text-align: center;vertical-align: middle;">
-        <h4>RISK REGISTER</h4>
+        <h4>IHTISAR PERUBAHAN LEVEL</h4>
       </td>
       <td style="width: 10%;">No.</td>
       <td colspan="3" style="width: 30%;">: 001/RM-FORM/I/<?= $d['periode_name'];?></td>
@@ -1385,11 +1385,11 @@ $bulanName = [
       <th width="10%" style="text-align: center; background-color: #f2f2f2;">PL</th>
       <th width="22%" style="text-align: left; background-color: #f2f2f2;">Keterangan Pergerakan Level Bulan: <?= $bulanheader; ?></th>
     </tr>
-  </thead>
+  </thead> 
   <tbody>
     <?php
-    $data['owner_no']     = $data['owner_no'];
-    $data['periode_no']   = $data['periode_no'];
+    $data['owner_no']     = $id_owner;
+    $data['periode_no']   = $periode_no;
     $data['bulan']        = $keyB;
     $field                = $this->data->perubahan_level($data);
     $no                   = 1;

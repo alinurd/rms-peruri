@@ -248,7 +248,7 @@ class Data extends MX_Model {
 	}
 
 	// IKHTISAR PERUBAHAN LEVEL
-	function perubahan_level($post) {
+	public function perubahan_level($post) {
 		if (!empty($post['owner_no'])) {
 			$this->get_owner_child($post['owner_no']);
 			$this->owner_child[] = $post['owner_no'];
@@ -262,6 +262,7 @@ class Data extends MX_Model {
 		$this->db->join('bangga_rcsa_detail', 'bangga_rcsa_detail.id = bangga_view_rcsa_action_detail.rcsa_detail_no', 'left');
 		return $this->db->get('bangga_view_rcsa_action_detail')->result_array();
 	}
+
 
 	public function level_action($like, $impact)
     {

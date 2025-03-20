@@ -197,7 +197,7 @@ class All_Report extends BackendController {
             'efektifitas_control'   => null,
             'progress_treatment'    => null,
         ];
-    
+				
         // Clear existing images in the folder
         $folder_path = 'themes/upload/grafik/';
         $files = glob($folder_path . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
@@ -230,7 +230,7 @@ class All_Report extends BackendController {
         // Prepare data for the PDF
         $data = [
             'periode_no'                => $periode_no,
-            'owner_no'                  => $owner_no,
+            'id_owner'                  => $owner_no,
             'parent'                    => $this->data->risk_parent(['periode_no' => $periode_no, 'owner_no' => $owner_no]),
             'kategori_kejadian'         => $this->get_combo('data-combo', 'kat-kejadian'),
             'frekuensi_kejadian'        => $this->get_combo('data-combo', 'frek-kejadian'),
