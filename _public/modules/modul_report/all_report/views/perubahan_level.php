@@ -33,8 +33,8 @@ foreach ($bulanName as $keyB => $bulanheader) {
 
     <tbody>
         <?php
-        $data['owner_no']       = $data['owner_no'];
-        $data['periode_no']     = $data['periode_no'];
+        $data['owner_no']       = $owner_no;
+        $data['periode_no']     = $periode_no;
         $data['bulan']          = $keyB;
         $field                  = $this->data->perubahan_level($data);
         // doi::dump($field);
