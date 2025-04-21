@@ -39,6 +39,7 @@ class Risk_Impact_Library extends BackendController {
 		// $this->set_Table_List($this->tbl_master,'notes');
 		$this->set_Table_List($this->tbl_master,'item_use');
 		$this->set_Table_List($this->tbl_master,'status');
+		$this->_SET_PRIVILEGE('add', false);
 		
 		$this->set_Close_Setting();
 	}
