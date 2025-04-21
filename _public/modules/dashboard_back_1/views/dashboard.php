@@ -5,17 +5,7 @@ $units      = $this->authentication->get_info_user('param_level');
 $groups     = $this->authentication->get_info_user('group');
 $info_owner = $this->authentication->get_info_user('group_owner');
 ?>
-<style>
-	div {
-    -ms-overflow-style: none;  /* Untuk Internet Explorer 10+ */
-    scrollbar-width: none;      /* Untuk Firefox */
-}
 
-div::-webkit-scrollbar {     /* Untuk Webkit (Chrome, Safari) */
-    display: none;
-}
-
-</style>
 <!-- Dashboard Section -->
 <div class="row">
     <div class="col-md-12"> 
@@ -90,20 +80,22 @@ div::-webkit-scrollbar {     /* Untuk Webkit (Chrome, Safari) */
                                     </div>
                                     <div class="x_content" style="overflow-x: auto;">
                                         <div class="profile-info col-md-4">
-											<div class="x_content text-center" style="max-width: 100%;" id="mapping_inherent">
-												<?=$mapping['inherent'];?>
-											</div>
-										</div>
-										<div class="profile-info col-md-4">
-											<div class="x_content text-center" id="mapping_current" style="max-width: 100%;">
-												<?=$mapping['current'];?>
-											</div>
-										</div>
-										<div class="profile-info col-md-4">
-											<div class="x_content text-center" style="max-width: 100%;" id="mapping_residual">
-												<?= $mapping['residual']; ?>
-											</div>
-										</div>
+                                            <div class="x_content text-center" style="max-width: 100%;" id="mapping_inherent">
+                                                <?= $mapping1['inherent']; ?>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="profile-info col-md-4" >
+                                            <div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual">
+                                                <?= $mapping1['residual']; ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info col-md-4"> 
+                                            <div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual1">
+                                                <?= $mapping2['residual1']; ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </section>
                             </div>

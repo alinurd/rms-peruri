@@ -96,17 +96,17 @@
             foreach($data['bobo'] as $row):
                 
                 $inherent_level = $this->data->get_master_level(true, $row['residual_level']);
-				if (!$inherent_level) {
+                if (!$inherent_level) {
                     $inherent_level = ['color' => '', 'color_text' => '', 'level_mapping' => '-'];
-				}
+                }
 
                 $likeinherent = $this->db
-				->where('id', $inherent_level['likelihood'])
-				->get('bangga_level')->row_array();
-				
-				$impactinherent = $this->db
-				->where('id', $inherent_level['impact'])
-				->get('bangga_level')->row_array();
+                ->where('id', $inherent_level['likelihood'])
+                ->get('bangga_level')->row_array();
+                
+                $impactinherent = $this->db
+                ->where('id', $inherent_level['impact'])
+                ->get('bangga_level')->row_array();
 
 
             ?>
@@ -131,8 +131,8 @@
                 <td style="text-align: left;">
                     <?php $a = intval($row['id']); ?>
                     <?php if (isset($treatment[$a])) : ?>
-                    <?php $no=1; foreach($treatment[$a] as $row1): ?>
-                        <?= $no++.".".$row1."<br>";?> 
+                    <?php $tno=1; foreach($treatment[$a] as $row1): ?>
+                        <?= $tno++.". ".$row1."<br>";?> 
                     <?php endforeach;?>
                     <?php else: ?>
                         <?= "";?>

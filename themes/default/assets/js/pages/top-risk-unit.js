@@ -95,25 +95,7 @@ $(function () {
     cari_ajax_combo("post", parent, data, target_combo, url);
   });
 });
-// function hoho(e) {
-// 		var parent = $(e).parent();
 
-// 		var nilai = $(e).data('nilai');
-
-// 		if (nilai>0){
-// 		var id = $(e).data('id');
-// 		console.log(nilai)
-// 		var kel = $(e).data('kel');
-// 		var owner = $("#owner_no").val();
-// 		var tahun = $("#period_no").val();
-// 		var bulan = $("#bulan").val();
-// 		var data={'id':id,'owner':owner,'tahun':tahun, 'bulan':bulan,'kel':kel};
-// 		var target_combo = $("#detail_map");
-// 		var url = modul_name+"/get-detail-map";
-
-// 		cari_ajax_combo("post", parent, data, target_combo, url, 'show_detail');
-// 		}
-// 	}
 function hoho(e) {
   var parent = $(e).parent();
   var nilai = $(e).data("norut1");

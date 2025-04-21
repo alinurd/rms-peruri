@@ -3,10 +3,25 @@
 	if ($post['project_no']>0)
 		$disabled = '';
 ?>
+<style>
+	div {
+    -ms-overflow-style: none;  /* Untuk Internet Explorer 10+ */
+    scrollbar-width: none;      /* Untuk Firefox */
+}
+
+div::-webkit-scrollbar {     /* Untuk Webkit (Chrome, Safari) */
+    display: none;
+}
+
+</style>
+
 <section id="main-content">
 	<section class="wrapper site-min-height">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-sm-8 panel-heading">
+					<h3 style="padding-left:10px;"><?php echo lang('msg_title');?></h3>
+			</div>
+			<div class="col-sm-4" style="text-align:right">
 				<ul class="breadcrumb">
 					<li> <a href="<?php echo base_url();?>"> <i class="fa fa-home"></i> <?php echo lang('msg_breadcrumb_home');?></a></li>
 					<li><a href="#"><?php echo lang('msg_title');?></a></li>
@@ -93,23 +108,21 @@
 						<div class="row">
 							<aside class="profile-info col-md-12">
 								<section class="x_panel">
-									<div class="profile-info col-md-4">
-										<!-- <strong>Inherent</strong> -->
-										<div class="x_content text-center" id="mapping_inherent">
-											<?=$mapping['inherent'];?>
+								<div class="profile-info col-md-4">
+											<div class="x_content text-center" style="max-width: 100%;" id="mapping_inherent">
+												<?=$mapping['inherent'];?>
+											</div>
 										</div>
-									</div>
-									<div class="profile-info col-md-4">
-										<!-- <strong>Residual</strong> -->
-										<div class="x_content text-center" id="mapping_residual">
-											<?=$mapping['residual'];?>
+										<div class="profile-info col-md-4">
+											<div class="x_content text-center" id="mapping_current" style="max-width: 100%;">
+												<?=$mapping['current'];?>
+											</div>
 										</div>
-									</div>
-									<div class="profile-info col-md-4">
-										<div class="x_content text-center"  style="max-width: 100%;" id="mapping_residual1">
-											<?= $mapping2['residual1']; ?>
+										<div class="profile-info col-md-4">
+											<div class="x_content text-center" style="max-width: 100%;" id="mapping_residual">
+												<?= $mapping['residual']; ?>
+											</div>
 										</div>
-									</div>
 								</section>
 							</aside>
 						</div>

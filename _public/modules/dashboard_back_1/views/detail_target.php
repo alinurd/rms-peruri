@@ -8,7 +8,6 @@
 		<tr>
 			<th class="text-center" rowspan="2" width="2%">No.</th>
 			<th class="text-center" rowspan="2">Risk Owner</th>
-			<th class="text-center" rowspan="2">Urut</th>
 			<th class="text-center" rowspan="2">Peristiwa Risiko</th>
 			<th class="text-center" rowspan="2">Bulan</th>
 			<th class="text-center" rowspan="2">Target Risk</th>
@@ -51,7 +50,6 @@
 				<tr class="pointer sub_detail" title="klik untuk melihat detail" data-id="<?=$row1['id'];?>" data-bulan="<?=$row1['bulan_target'];?>" data-kel="Target">
 					<td class="text-center"><?= ++$no; ?></td>
 					<td><?= $row1['name']; ?></td>
-					<td class="text-center"><?= $row1['norut']; ?></td>
 					<td><?= $row1['event_name']; ?></td>
 					<td class="text-center"><?=$nama_bulan_display; ?></td>
 					<td style="text-align: center; background-color:<?= $target_level_risiko['color']; ?>;color:<?= $target_level_risiko['color_text']; ?>;"><?= $target; ?></td>
