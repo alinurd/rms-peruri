@@ -7,10 +7,8 @@
 		<tr>
 			<th class="text-center" rowspan="2" width="2%">No.</th>
 			<th class="text-center" rowspan="2">Risk Owner</th>
-			<th class="text-center" rowspan="2">Urut</th>
 			<th class="text-center" rowspan="2">Kategori</th>
 			<th class="text-center" rowspan="2">Peristiwa Risiko</th>
-			<th class="text-center" rowspan="2">Bulan</th>
 			<th class="text-center" rowspan="2">Inherent</th>
 			<th class="text-center" rowspan="2">Residual</th>
 		</tr>
@@ -18,23 +16,8 @@
 	</thead>
 	<tbody>
 			<?php
-			$nama_bulan = [
-                1 => 'Januari',
-                2 => 'Februari',
-                3 => 'Maret',
-                4 => 'April',
-                5 => 'Mei',
-                6 => 'Juni',
-                7 => 'Juli',
-                8 => 'Agustus',
-                9 => 'September',
-                10 => 'Oktober',
-                11 => 'November',
-                12 => 'Desember'
-            ];
 			$no = 0;
 			foreach ($data as $row) :
-				// doi::dump($row['bulan']);
 				$couse 			= $row['ket_likelihood'];
 				$impact 		= $row['ket_impact'];
 				// $inherent_level = $this->data->get_master_level(true, $row['inherent_level']);
@@ -60,16 +43,12 @@
 				} else {
 					$realisasi 	= "<p class='text-danger'>-</p>";
 				}
-				$bulan = $row['bulan'];
-                $nama_bulan_display = isset($nama_bulan[$bulan]) ? $nama_bulan[$bulan] : 'Bulan Tidak Valid';
- 			?>
-				<tr class="pointer sub_detail" title="klik untuk melihat detail" data-id="<?= $row['id_detail']; ?>">
+			?>
+				<tr class="pointer sub_detail" title="klik untuk melihat detail" data-id="<?= $row['id']; ?>">
 					<td class="text-center"><?= ++$no; ?></td>
- 					<td><?= $row['name']; ?></td>
-					 <td class="text-center"><?= $row['norut']; ?></td>
-					 <td><?= $row['kategori']; ?></td>
-					 <td><?= $row['event_name']; ?></td>
-					 <td><?= $nama_bulan_display; ?></td>
+					<td><?= $row['name']; ?></td>
+					<td><?= $row['kategori']; ?></td>
+					<td><?= $row['event_name']; ?></td>
 
 					<td style="text-align: center; background-color:<?= $inherent_level['color']; ?>;color:<?= $inherent_level['color_text']; ?>;"><?= $inherent_level['level_mapping']; ?> <br>[&nbsp;<?=$score_inh['score'];?>&nbsp;]</td>
 
