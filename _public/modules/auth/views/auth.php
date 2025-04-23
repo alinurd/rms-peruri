@@ -42,7 +42,7 @@
                 <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
             </div>
         </form>
-        <div class="etc-login-form">
+        <div class="etc-login-form hide">
             
                 <button data-toggle="modal" data-target="#knowledge-password" class="button-evnt" data-toggle="tooltip" title="Panduan Lupa Password">
                     <i class="fa fa-info fa-fw"></i>
