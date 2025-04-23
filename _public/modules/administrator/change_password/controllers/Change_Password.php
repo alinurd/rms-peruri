@@ -46,13 +46,6 @@ class Change_Password extends BackendController {
 		return $result;
 	}
 	
-	function POST_UPDATE_HANDLEx($data, $old_data){
-		$result=true;
-		if (!empty($new_data['l_password']))
-			$result = $this->authentication->change_password($new_data['l_password'], '', $id);
-		die("berhasil");
-		return $result;
-	}
 	
 	function POST_UPDATE_HANDLE($new_data, $old_data){
 		
@@ -62,17 +55,17 @@ class Change_Password extends BackendController {
 
 			// cek sama
 			if ($new_data['data']['l_password'] === $new_data['data']['l_passwordc']){
-				$pref = $this->authentication->get_Preference();
-					$validasi_password= $this->authentication->rulesPassword($new_data['data']['l_password'],$pref);
-					if (!empty($validasi_password)) {
-							$errorMessage = implode('<br>', $validasi_password);
-							$this->session->set_userdata('result_proses_error', $errorMessage);
-							$result = false;
-					}else{
-						$result = $this->authentication->change_password($new_data['data']['l_password'], '', $old_data['l_id']);
-						$this->session->set_userdata('result_proses', 'Data berhasil diedit');
-						$result = true;
-					}
+				$cek = checkPassword($new_data['data']['l_password'], $errors);
+				if($cek){
+					$errorMessage = implode('<br>', $cek);
+					$this->session->set_userdata('result_proses_error', $errorMessage);
+					$result = false;
+				}else{
+					$result = $this->authentication->change_password($new_data['data']['l_password'], '', $old_data['l_id']);
+					$this->session->set_userdata('result_proses', 'Data berhasil diedit');
+					$result = true;
+				}
+				
 			}else{
 				$this->session->set_userdata('result_proses_error', 'Password tidak sama');
 				$result = false;
@@ -83,6 +76,7 @@ class Change_Password extends BackendController {
 		}
 		return $result;
 	}
+
 	
 	function POST_UPDATE_REDIRECT_URL($url){
 		$url = base_url($this->_Snippets_['modul']);

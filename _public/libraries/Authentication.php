@@ -1065,63 +1065,7 @@ public function login_season($username, $password)
 		return false;
 	}
 
-		/**
-	 * Validates password against given rules
-	 * 
-	 * @param string $password Password to validate
-	 * @param array $rules Validation rules array
-	 * @return array Array of error messages (empty if valid)
-	 */
-	public function rulesPassword($password, $rules) 
-	{
-			$errors = [];
 
-			$min_length = isset($rules['pass_min']) ? (int)$rules['pass_min'] : null;
-			$max_length = isset($rules['pass_max']) ? (int)$rules['pass_max'] : null;
-			
-			if ($min_length !== null && strlen($password) < $min_length) {
-					$errors[] = "Password minimal harus {$min_length} karakter";
-			}
-			
-			if ($max_length !== null && strlen($password) > $max_length) {
-					$errors[] = "Password maksimal {$max_length} karakter";
-			}
-			
-			$validations = [
-					'pass_letter' => [
-							'pattern' => '/[a-zA-Z]/',
-							'message' => 'Password harus mengandung huruf'
-					],
-					'pass_lower' => [
-							'pattern' => '/[a-z]/',
-							'message' => 'Password harus mengandung huruf kecil'
-					],
-					'pass_upper' => [
-							'pattern' => '/[A-Z]/',
-							'message' => 'Password harus mengandung huruf besar'
-					],
-					'pass_number' => [
-							'pattern' => '/[0-9]/',
-							'message' => 'Password harus mengandung angka'
-					],
-					'pass_symbol' => [
-							'pattern' => '/[^a-zA-Z0-9]/',
-							'message' => 'Password harus mengandung simbol'
-					]
-			];
-			
-			
-			
-			foreach ($validations as $rule => $validation) {
-					if (isset($rules[$rule]) && $rules[$rule] == '1') {
-							if (!preg_match($validation['pattern'], $password)) {
-									$errors[] = $validation['message'];
-							}
-					}
-			}
-			
-			return $errors;
-	}
 
 	/**
 	 * Change password
