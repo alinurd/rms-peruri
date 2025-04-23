@@ -32,11 +32,11 @@
                 <div class="login-group">
                     <div class="form-group">
                         <label for="lg_username" class="sr-only"><i class="fa fa-key fa-fw"></i>Username</label>
-                        <input name="username" class="form-control" type="text" placeholder="username/email/nip" autocomplete="off">
+                        <input name="username" class="form-control" type="text" placeholder="username/email/nip" autocomplete="new-username">
                     </div>
                     <div class="form-group">
                         <label for="lg_password" class="sr-only">Password</label>
-                        <input  name="password" class="form-control" type="password" placeholder="password" autocomplete="off">
+                        <input  name="password" class="form-control" type="password" placeholder="password" autocomplete="new-password">
                     </div>
                 </div>
                 <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
