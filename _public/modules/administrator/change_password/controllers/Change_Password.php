@@ -54,10 +54,33 @@ class Change_Password extends BackendController {
 		return $result;
 	}
 	
-	function POST_UPDATE_PROCESSOR($id , $new_data, $old_data){
+	function POST_UPDATE_HANDLE($new_data, $old_data){
+		
 		$result=true;
-		if (!empty($new_data['l_password']))
-			$result = $this->authentication->change_password($new_data['l_password'], '', $id);
+		// cek field kosong
+		if(!empty($new_data['data']['l_password'])){
+
+			// cek sama
+			if ($new_data['data']['l_password'] === $new_data['data']['l_passwordc']){
+				$pref = $this->authentication->get_Preference();
+					$validasi_password= $this->authentication->rulesPassword($new_data['data']['l_password'],$pref);
+					if (!empty($validasi_password)) {
+							$errorMessage = implode('<br>', $validasi_password);
+							$this->session->set_userdata('result_proses_error', $errorMessage);
+							$result = false;
+					}else{
+						$result = $this->authentication->change_password($new_data['data']['l_password'], '', $old_data['l_id']);
+						$this->session->set_userdata('result_proses', 'Data berhasil diedit');
+						$result = true;
+					}
+			}else{
+				$this->session->set_userdata('result_proses_error', 'Password tidak sama');
+				$result = false;
+			}
+		}else{
+			$this->session->set_userdata('result_proses_error', 'Field tidak boleh kosong');
+			$result = false;
+		}
 		return $result;
 	}
 	

@@ -1065,37 +1065,63 @@ public function login_season($username, $password)
 		return false;
 	}
 
-	function rulesPassword($password, $rules) {
+		/**
+	 * Validates password against given rules
+	 * 
+	 * @param string $password Password to validate
+	 * @param array $rules Validation rules array
+	 * @return array Array of error messages (empty if valid)
+	 */
+	public function rulesPassword($password, $rules) 
+	{
 			$errors = [];
+
+			$min_length = isset($rules['pass_min']) ? (int)$rules['pass_min'] : null;
+			$max_length = isset($rules['pass_max']) ? (int)$rules['pass_max'] : null;
 			
-			// Validasi huruf kecil
-			if ($rules['pass_lower'] == '1' && !preg_match('/[a-z]/', $password)) {
-					$errors[] = "Password harus mengandung huruf kecil";
+			if ($min_length !== null && strlen($password) < $min_length) {
+					$errors[] = "Password minimal harus {$min_length} karakter";
 			}
 			
-			// Validasi huruf besar
-			if ($rules['pass_upper'] == '1' && !preg_match('/[A-Z]/', $password)) {
-					$errors[] = "Password harus mengandung huruf besar";
+			if ($max_length !== null && strlen($password) > $max_length) {
+					$errors[] = "Password maksimal {$max_length} karakter";
 			}
 			
-			// Validasi huruf (baik kecil maupun besar)
-			if ($rules['pass_letter'] == '1' && !preg_match('/[a-zA-Z]/', $password)) {
-					$errors[] = "Password harus mengandung huruf";
-			}
+			$validations = [
+					'pass_letter' => [
+							'pattern' => '/[a-zA-Z]/',
+							'message' => 'Password harus mengandung huruf'
+					],
+					'pass_lower' => [
+							'pattern' => '/[a-z]/',
+							'message' => 'Password harus mengandung huruf kecil'
+					],
+					'pass_upper' => [
+							'pattern' => '/[A-Z]/',
+							'message' => 'Password harus mengandung huruf besar'
+					],
+					'pass_number' => [
+							'pattern' => '/[0-9]/',
+							'message' => 'Password harus mengandung angka'
+					],
+					'pass_symbol' => [
+							'pattern' => '/[^a-zA-Z0-9]/',
+							'message' => 'Password harus mengandung simbol'
+					]
+			];
 			
-			// Validasi angka
-			if ($rules['pass_number'] == '1' && !preg_match('/[0-9]/', $password)) {
-					$errors[] = "Password harus mengandung angka";
-			}
 			
-			// Validasi simbol
-			if ($rules['pass_symbol'] == '1' && !preg_match('/[^a-zA-Z0-9]/', $password)) {
-					$errors[] = "Password harus mengandung simbol";
+			
+			foreach ($validations as $rule => $validation) {
+					if (isset($rules[$rule]) && $rules[$rule] == '1') {
+							if (!preg_match($validation['pattern'], $password)) {
+									$errors[] = $validation['message'];
+							}
+					}
 			}
 			
 			return $errors;
 	}
-
 
 	/**
 	 * Change password
@@ -1129,15 +1155,16 @@ public function login_season($username, $password)
 	
 			// Data yang akan diupdate
 			$data = array(
-					$this->password_field => $password_hash,
-					'salt' => $salt // Asumsi ada kolom salt di database
+					$this->password_field => $password_hash
 			);
-	
+
+			
 			// Update password di database
 			$this->ci->db->where($identifier_field, $user_identifier);
 			if ($this->ci->db->update($this->user_table, $data)) {
-					return $password_hash;
+				return $password_hash;
 			}
+			
 			
 			return false;
 	}
