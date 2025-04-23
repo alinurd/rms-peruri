@@ -1065,6 +1065,37 @@ public function login_season($username, $password)
 		return false;
 	}
 
+	function rulesPassword($password, $rules) {
+			$errors = [];
+			
+			// Validasi huruf kecil
+			if ($rules['pass_lower'] == '1' && !preg_match('/[a-z]/', $password)) {
+					$errors[] = "Password harus mengandung huruf kecil";
+			}
+			
+			// Validasi huruf besar
+			if ($rules['pass_upper'] == '1' && !preg_match('/[A-Z]/', $password)) {
+					$errors[] = "Password harus mengandung huruf besar";
+			}
+			
+			// Validasi huruf (baik kecil maupun besar)
+			if ($rules['pass_letter'] == '1' && !preg_match('/[a-zA-Z]/', $password)) {
+					$errors[] = "Password harus mengandung huruf";
+			}
+			
+			// Validasi angka
+			if ($rules['pass_number'] == '1' && !preg_match('/[0-9]/', $password)) {
+					$errors[] = "Password harus mengandung angka";
+			}
+			
+			// Validasi simbol
+			if ($rules['pass_symbol'] == '1' && !preg_match('/[^a-zA-Z0-9]/', $password)) {
+					$errors[] = "Password harus mengandung simbol";
+			}
+			
+			return $errors;
+	}
+
 
 	/**
 	 * Change password
@@ -1076,41 +1107,39 @@ public function login_season($username, $password)
 	 */
 	public function change_password($password, $identifier_field = "", $user_identifier = "")
 	{
-
-		// If no user identifier has been set
-		if (empty($identifier_field)) {
-			$identifier_field = $this->identifier_field;
-		}
-
-		if (empty($user_identifier)) {
-				// Ensure the current user is logged in
-				if ($this->is_loggedin()) {
-						// Read the user identifier
-						$user_identifier = $user_identifier;
-						// There is no current logged in user
-					} else {
-					return false;
-				}
+			
+			// Jika tidak ada identifier_field yang diberikan, gunakan default
+			if (empty($identifier_field)) {
+					$identifier_field = $this->identifier_field;
 			}
-
-		// Generate salt
-		$salt = $this->generate_salt();
-
-		// Generate hash
-		$password = $this->generate_hash($password, $salt);
-
-		// Define data to update
-		$data = array(
-			$this->password_field => $password
-		);
-
-		// Update the users password
-		if ($this->ci->db->where($identifier_field, $user_identifier)->update($this->user_table, $data)) {
-				return $password;
-				// There was an error updating the user
-			} else {
+	
+			// Jika tidak ada user_identifier yang diberikan
+			if (empty($user_identifier)) {
+					// Pastikan user sudah login
+					if (!$this->is_loggedin()) {
+							return false;
+					}
+					// Gunakan identifier user yang sedang login
+					$user_identifier = $this->ci->session->userdata($this->identifier_field);
+			}
+	
+			// Generate salt dan hash password
+			$salt = $this->generate_salt();
+			$password_hash = $this->generate_hash($password, $salt);
+	
+			// Data yang akan diupdate
+			$data = array(
+					$this->password_field => $password_hash,
+					'salt' => $salt // Asumsi ada kolom salt di database
+			);
+	
+			// Update password di database
+			$this->ci->db->where($identifier_field, $user_identifier);
+			if ($this->ci->db->update($this->user_table, $data)) {
+					return $password_hash;
+			}
+			
 			return false;
-		}
 	}
 
 	public function set_password($password = null, $id)
