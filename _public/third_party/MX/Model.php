@@ -511,28 +511,21 @@ class MX_Model extends CI_Model
 
 	function cari_code_library($data, $tipe)
 	{
+		
 		$no = $tipe;
 		$key = intval($data['l_risk_type_no']);
+		$id_user = $this->authentication->get_Info_User('id');
 		$sql = $this->db->query("select * from " . _TBL_RISK_TYPE . " where id={$key}");
 		$rows = $sql->row();
 		$code = '';
 		if ($rows) {
 			$code = $rows->code;
 		}
-		$arr_risk_type = array();
-
-		// $sql="select a.id, b.code from "._TBL_LIBRARY." a left join "._TBL_RISK_TYPE." b on a.risk_type_no=b.id where a.type='{$no}' and a.risk_type_no='{$key}'";
-		// $query=$this->db->query($sql);
-		// $rows = $query->result_array();
-		// $no_urut=count($rows);
-		// $no_new = str_pad($no_urut,4,'0', STR_PAD_LEFT);
-		// $code = strtoupper($code).$no_new;
 
 		$sql = "select MAX(code) AS max_code from " . _TBL_LIBRARY . "";
 		$query = $this->db->query($sql);
 		$rows = $query->row_array();
-		$code = intval($rows['max_code'] + 1);
-
+		$code = intval($rows['max_code'] . $id_user + 1);
 		return $code;
 	}
 
