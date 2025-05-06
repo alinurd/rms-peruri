@@ -526,7 +526,7 @@ class MX_Model extends CI_Model
 		$query = $this->db->query($sql);
 		$rows = $query->row_array();
 		$code = intval($rows['max_code'] . $id_user + 1);
-		return $code;
+		return $code; 
 	}
 
 	function set_officer_data()
